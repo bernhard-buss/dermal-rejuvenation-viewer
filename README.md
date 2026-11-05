@@ -55,4 +55,10 @@ and the claims register live in a private repository.
 
 ## Licence
 
-MIT, see [LICENSE](LICENSE).
+MIT, © 2026 ETH Zurich and Paul Scherrer Institute (PSI); see [LICENSE](LICENSE).
+
+## Versions
+
+The version is shown in the header; click it for the changelog
+([CHANGELOG.md](CHANGELOG.md)). Versions change only with changes you can see
+or use in the viewer.

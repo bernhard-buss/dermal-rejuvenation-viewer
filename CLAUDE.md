@@ -17,13 +17,25 @@
   value from a related system), `ph` (placeholder), `des` (design / view). A new
   value is `ph` until its source is checked. `cite(key)` makes the in-text link to
   `#help/refs/<key>`; a missing key shows a red marker and a console warning.
+- **Versions are for the people using the viewer.** `VERSION` (top of the
+  script) and `CHANGELOG.md` change only for user-facing changes:
+  - a new feature, or a change in what the viewer computes or shows (including
+    changed default values or sources) → new **minor** version (0.x.0);
+  - a fix the user can notice → **patch** (0.x.y).
+  - Technical work (refactoring, tests, comments, `CLAUDE.md`/`README.md`,
+    repository files such as `LICENSE`) and minimal cosmetic tweaks get **no**
+    new version and **no** changelog entry; they ride along with the next
+    user-facing release.
+  The header shows the version as a chip (`.verchip`) that opens Help ›
+  Changelog; a "new" marker shows until the visitor has opened the changelog of
+  this version (`localStorage` key `drv_seen_version`). Changelog entries
+  (newest first, `## x.y.z — YYYY-MM-DD`) say what the user can do or see
+  differently, not how it was built.
 - **Help is part of every feature.** A feature is done when (1) it has an entry
   in `HELP` (topic → entries), (2) its control carries an ⓘ
-  (`<a class="hl" data-help="topic/entry">`), (3) `VERSION` is raised and
-  `CHANGELOG.md` has an entry (newest first, `## x.y.z — YYYY-MM-DD`): minor for a
-  new feature, patch for smaller changes. Changelog entries are written for the
-  person using the viewer. The in-page changelog renders `CHANGELOG.md`; there is
-  no second copy. Numbers in help text come from the data (`data-n` spans filled
+  (`<a class="hl" data-help="topic/entry">`), (3) if user-facing, `VERSION` and
+  `CHANGELOG.md` follow the rule above. The in-page changelog renders
+  `CHANGELOG.md`; there is no second copy. Numbers in help text come from the data (`data-n` spans filled
   by `fillHelpNumbers()`), not typed constants. `#help/topic/entry` deep links
   open an entry; `?` opens the help.
 - **The address holds the configuration.** `stateQuery()` writes every value that
