@@ -7,8 +7,8 @@ below a fibrotic ceiling?
 
 **Open it:** <https://bernhard-buss.github.io/dermal-rejuvenation-viewer/>
 
-Part of a master thesis project in the Shivashankar group (ETH Zurich / Paul
-Scherrer Institute) by Bernhard Buss and Nicholas Lawler. It builds on the
+Part of the master thesis of Bernhard Buss, supervised by Nicholas Lawler, in
+the group of Prof. G.V. Shivashankar (ETH Zurich / Paul Scherrer Institute). It builds on the
 group's implantation of mechanically reprogrammed fibroblasts into aged skin
 models: Roy B, Pekec T, Yuan L, Shivashankar GV. *Aging Cell* 2024;23:e14032,
 [doi:10.1111/acel.14032](https://doi.org/10.1111/acel.14032).

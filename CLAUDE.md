@@ -10,13 +10,21 @@
 - **Public values only.** The page carries published parameters; lab data never go
   in this repository. The model, parameter table (`docs/parameters.md`) and claims
   register (`docs/claims.md`) live in the private repository `dermal-rejuvenation`.
-- **Sources.** Every entry in `SOURCES` uses the wording checked in the private
-  `docs/claims.md`, and its citation (authors, journal, volume, pages) comes from
-  the Crossref-generated `references.bib` there — never typed from memory. Each
-  parameter in `PARAMS` has a `status`: `src` (sourced), `ana` (analogue: published
-  value from a related system), `ph` (placeholder), `des` (design / view). A new
-  value is `ph` until its source is checked. `cite(key)` makes the in-text link to
-  `#help/refs/<key>`; a missing key shows a red marker and a console warning.
+- **`data/` is generated, never edited.** `data/parameters.js` (+ `.json`) and
+  `data/golden.json` come from the private repository:
+  `pixi run python -m dermsim export-viewer` (writes here). Parameters, their
+  ranges, status, notes and the references (formatted from the Crossref-generated
+  bibliography) live in its `config/parameters.yaml`; change them there. A source
+  cited in the help (`cite(key)`) must be in that file's `sources` section.
+  Status: `src` (sourced), `ana` (analogue: published value from a related
+  system), `ph` (placeholder), `des` (design / view). Notes use `{cite:key}` and
+  `{help:topic/entry|text}`, rendered by `renderNote()`.
+- **Physics = the Python model.** The block between `// >>> physics` and
+  `// <<< physics` holds pure functions (no DOM, no state) mirroring
+  `dermsim.model`. Change both together, re-export, and run
+  `node tests/parity.mjs` (golden cases, relative tolerance 1e-9) and
+  `node tests/page.mjs` (script compiles, noindex, parameters, changelog entry).
+  CI runs both on every push.
 - **Versions are for the people using the viewer.** `VERSION` (top of the
   script) and `CHANGELOG.md` change only for user-facing changes:
   - a new feature, or a change in what the viewer computes or shows (including
@@ -51,7 +59,7 @@
 - Test hook: `window.__drv` (`version`, `params()`, `set({...})`, `derived()`,
   `sites()`, `field(x,y,z)`, `fieldNgml(x,y,z)`, `kernel(r)`, `criticalSpacing()`,
   `metrics()`, `openHelp(target)`, `closeHelp()`, `helpTargets()`).
-- Check after changes: serve the folder (`.claude/static_server.js`, port 8766),
+- Check after changes: `node tests/page.mjs && node tests/parity.mjs`; serve the folder (`.claude/static_server.js`, port 8766),
   no console errors; every `__drv.helpTargets()` resolves to a topic/entry; no
   "missing source" marker in the help; the kernel is continuous at r = R, matches
   the point source × 3(x cosh x − sinh x)/x³ far away, and finite differences

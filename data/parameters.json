@@ -1,0 +1,351 @@
+{
+ "generator": "dermsim 0.1.0",
+ "schema_version": 1,
+ "signal": {
+  "name": "TGF-β3",
+  "status": "working choice",
+  "note": "Working signal since 2026-11-05: anti-scarring in a phase II trial ({cite:mccollum2011avotermin}) and less activating than TGF-β1 in fibroblasts ({cite:urban2023isoforms}). The model is signal-agnostic; the choice is confirmed with the group's secretome and RNA-seq data."
+ },
+ "parameters": [
+  {
+   "key": "D",
+   "group": "Signal",
+   "label": "Diffusion coefficient D",
+   "unit": "µm²/s",
+   "value": 23,
+   "min": 1,
+   "max": 100,
+   "log": true,
+   "status": "src",
+   "sources": [
+    "romgens2015diffusion",
+    "wei2018microneedle"
+   ],
+   "note": "Measured in human dermis for a 40 kDa tracer ({cite:romgens2015diffusion}); other tracers gave 1–20 µm²/s ({cite:wei2018microneedle}). TGF-β dimers are smaller than 40 kDa, so the default is likely conservative."
+  },
+  {
+   "key": "lam",
+   "group": "Signal",
+   "label": "Effective decay length λ",
+   "unit": "µm",
+   "value": 120,
+   "min": 20,
+   "max": 3000,
+   "log": true,
+   "status": "ana",
+   "sources": [
+    "oyleryaniv2017niches",
+    "francis1997distances"
+   ],
+   "note": "How far the signal carries before uptake, capture and degradation remove it. Default: the upper end of 80–120 µm measured for cytokines in dense tissue in vivo ({cite:oyleryaniv2017niches}), an analogous system, not TGF-β itself. A single cell communicates within about 250 µm ({cite:francis1997distances}). Diffusion and chemical clearance alone would give about 1.6 mm (our calculation from {cite:romgens2015diffusion} and {cite:sprugel1987kinetics}). See {help:model/lambda|Decay length λ}."
+  },
+  {
+   "key": "sec",
+   "group": "Signal",
+   "label": "Active secretion per cell",
+   "unit": "pg/10⁶ cells/day",
+   "value": 25,
+   "min": 0.1,
+   "max": 10000,
+   "log": true,
+   "status": "ph",
+   "sources": [],
+   "note": "Secretion of the active (signalling) form by one implanted cell. No checked value per fibroblast was found; this is the most important missing parameter, and a threshold can be expressed in the same unit ({cite:ozawa2004vegf})."
+  },
+  {
+   "key": "mw",
+   "group": "Signal",
+   "label": "Molecular weight",
+   "unit": "kDa",
+   "value": 25,
+   "min": 5,
+   "max": 100,
+   "log": false,
+   "step": 1,
+   "status": "ph",
+   "sources": [],
+   "note": "Only converts between ng/mL, pM and molecules. Placeholder (mature TGF-β dimer assumed) until sourced."
+  },
+  {
+   "key": "con",
+   "group": "Thresholds",
+   "label": "Activation threshold c_on (young cells)",
+   "unit": "ng/mL",
+   "value": 0.1,
+   "min": 0.001,
+   "max": 10,
+   "log": true,
+   "status": "ph",
+   "sources": [],
+   "note": "Concentration at which young fibroblasts respond. No verified value for dermal fibroblasts was found; to be measured. See {help:model/window|The therapeutic window}."
+  },
+  {
+   "key": "sage",
+   "group": "Thresholds",
+   "label": "Aged-cell threshold factor s_age",
+   "unit": "×",
+   "value": 1,
+   "min": 1,
+   "max": 20,
+   "log": true,
+   "status": "ph",
+   "sources": [
+    "liao2026chromatin"
+   ],
+   "note": "Aged cells respond blunted or divergently ({cite:liao2026chromatin}): the direction is sourced, the size of the factor is a placeholder. The aged-cell threshold is c_on × s_age."
+  },
+  {
+   "key": "cfib",
+   "group": "Thresholds",
+   "label": "Fibrotic ceiling c_fib",
+   "unit": "ng/mL",
+   "value": 2,
+   "min": 0.01,
+   "max": 100,
+   "log": true,
+   "status": "ph",
+   "sources": [],
+   "note": "Above this, myofibroblast or fibrotic activation is expected. No verified value for dermal fibroblasts was found. Windows with an upper side are documented for other signals, e.g. CCN2 ({cite:nakerakanti2011ccn2})."
+  },
+  {
+   "key": "a",
+   "group": "Implants",
+   "label": "Site spacing",
+   "unit": "µm",
+   "value": 400,
+   "min": 80,
+   "max": 3000,
+   "log": true,
+   "status": "des",
+   "sources": [],
+   "note": "Distance between neighbouring sites of the lattice (random pattern: same mean density as the hexagonal lattice)."
+  },
+  {
+   "key": "ncells",
+   "group": "Implants",
+   "label": "Cells per site",
+   "unit": "cells",
+   "value": 40000,
+   "min": 1000,
+   "max": 1000000,
+   "log": true,
+   "status": "src",
+   "sources": [
+    "roy2024implanting"
+   ],
+   "note": "Default: the group's protocol, spheroids equivalent to 40,000 cells per site ({cite:roy2024implanting})."
+  },
+  {
+   "key": "R",
+   "group": "Implants",
+   "label": "Cluster radius",
+   "unit": "µm",
+   "value": 150,
+   "min": 5,
+   "max": 600,
+   "log": true,
+   "status": "ph",
+   "sources": [],
+   "note": "Radius of the sphere of implanted cells. Placeholder geometry; implanted cells also spread over days."
+  },
+  {
+   "key": "z0",
+   "group": "Implants",
+   "label": "Injection depth (below the junction)",
+   "unit": "µm",
+   "value": 500,
+   "min": 20,
+   "max": 1980,
+   "log": false,
+   "step": 10,
+   "status": "des",
+   "sources": [],
+   "note": "Design choice. The group implanted within the 2-mm-deep dermis of the skin model ({cite:roy2024implanting})."
+  },
+  {
+   "key": "H",
+   "group": "Tissue",
+   "label": "Dermis thickness (model)",
+   "unit": "µm",
+   "value": 2000,
+   "min": 500,
+   "max": 4000,
+   "log": false,
+   "step": 50,
+   "status": "src",
+   "sources": [
+    "roy2024implanting"
+   ],
+   "note": "Default: the 2-mm-deep dermal region of the reconstructed skin model ({cite:roy2024implanting})."
+  },
+  {
+   "key": "L",
+   "group": "View",
+   "label": "Field of view",
+   "unit": "µm",
+   "value": 4000,
+   "min": 1000,
+   "max": 12000,
+   "log": true,
+   "status": "des",
+   "sources": [],
+   "note": "Width of the en-face map."
+  },
+  {
+   "key": "zv",
+   "group": "View",
+   "label": "Slice depth (en-face map)",
+   "unit": "µm",
+   "value": 500,
+   "min": 0,
+   "max": 4000,
+   "log": false,
+   "step": 10,
+   "status": "des",
+   "sources": [],
+   "note": "Depth of the en-face map below the dermal–epidermal junction. Follows the injection depth until you move it."
+  },
+  {
+   "key": "ys",
+   "group": "View",
+   "label": "Cross-section position",
+   "unit": "% of view",
+   "value": 50,
+   "min": 0,
+   "max": 100,
+   "log": false,
+   "step": 1,
+   "status": "des",
+   "sources": [],
+   "note": "Where the cross-section cuts the en-face map (dashed line)."
+  }
+ ],
+ "sources": {
+  "arnalforne2024dermis": {
+   "short": "Arnal-Forné et al. 2024",
+   "cite": "Arnal-Forné M, Molina-García T, Ortega M, et al.. Changes in human skin composition due to intrinsic aging: a histologic and morphometric study. Histochemistry and Cell Biology. 2024;162:259–271.",
+   "doi": "10.1007/s00418-024-02305-w",
+   "checked": "abstract",
+   "what": "With intrinsic ageing the papillary (not the reticular) dermis becomes thicker; total cellularity and vascularisation fall in both."
+  },
+  "belyakov2005skin": {
+   "short": "Belyakov et al. 2005",
+   "cite": "Belyakov OV, Mitchell SA, Parikh D, et al.. Biological effects in unirradiated human tissue induced by radiation damage up to 1 mm away. Proceedings of the National Academy of Sciences. 2005;102:14203–14208.",
+   "doi": "10.1073/pnas.0505020102",
+   "checked": "abstract",
+   "what": "In a 3D normal human tissue model, unirradiated cells up to 1 mm from irradiated cells showed more micronuclei (1.7-fold) and apoptosis (2.8-fold)."
+  },
+  "francis1997distances": {
+   "short": "Francis & Palsson 1997",
+   "cite": "Francis K, Palsson BO. Effective intercellular communication distances are determined by the relative time constants for cyto/chemokine secretion and diffusion. Proceedings of the National Academy of Sciences. 1997;94:12258–12262.",
+   "doi": "10.1073/pnas.94.23.12258",
+   "checked": "abstract",
+   "what": "A single cell communicates by a soluble signal within a domain of about 250 µm, within 10–30 min; one dimensionless group governs it."
+  },
+  "kretsos2008dermis": {
+   "short": "Kretsos et al. 2008",
+   "cite": "Kretsos K, Miller MA, Zamora-Estrada G, et al.. Partitioning, diffusivity and clearance of skin permeants in mammalian dermis. International Journal of Pharmaceutics. 2008;346:64–79.",
+   "doi": "10.1016/j.ijpharm.2007.06.020",
+   "checked": "abstract",
+   "what": "Decay lengths of topically applied small permeants in dermis 210–920 µm (capillary clearance 0.9–14 × 10⁻⁴ s⁻¹)."
+  },
+  "liao2026chromatin": {
+   "short": "Liao et al. 2026",
+   "cite": "Liao Y, Yuan L, Sornapudi TR, et al.. Chromatin accessibility regulates age-dependent nuclear mechanotransduction. Proceedings of the National Academy of Sciences. 2026;123:e2522217123.",
+   "doi": "10.1073/pnas.2522217123",
+   "checked": "abstract and full text",
+   "what": "Young dermal fibroblasts respond synergistically to tension plus TGF-β; in aged cells the response is blunted or divergent, in line with chromatin accessibility. Cells were stimulated with 10 ng/mL TGF-β (a dose, not a threshold)."
+  },
+  "lichtman2016isoforms": {
+   "short": "Lichtman et al. 2016",
+   "cite": "Lichtman MK, Otero‐Vinas M, Falanga V. Transforming growth factor beta (TGF‐β) isoforms in wound healing and fibrosis. Wound Repair and Regeneration. 2016;24:215–222.",
+   "doi": "10.1111/wrr.12398",
+   "checked": "abstract",
+   "what": "Review: TGF-β1 may mediate fibrosis in adult wounds, while TGF-β3 may promote scarless healing in the fetus and reduced scarring in adults."
+  },
+  "mccollum2011avotermin": {
+   "short": "McCollum et al. 2011",
+   "cite": "McCollum PT, Bush JA, James G, et al.. Randomized phase II clinical trial of avotermin versus placebo for scar improvement. British Journal of Surgery. 2011;98:925–934.",
+   "doi": "10.1002/bjs.7438",
+   "checked": "abstract",
+   "what": "TGF-β3 (avotermin) 500 ng per 100 µL per linear cm of wound margin improved scar appearance in a phase II trial (n = 156)."
+  },
+  "miller2003density": {
+   "short": "Miller et al. 2003",
+   "cite": "Miller CC, Godeau G, Lebreton‐DeCoster C, et al.. Validation of a morphometric method for evaluating fibroblast numbers in normal and pathologic tissues. Experimental Dermatology. 2003;12:403–411.",
+   "doi": "10.1034/j.1600-0625.2003.00023.x",
+   "checked": "abstract",
+   "what": "Mid-dermis fibroblast counts of 2100–4100 per mm³ in normal donors."
+  },
+  "munavalli2013azficel": {
+   "short": "Munavalli et al. 2013",
+   "cite": "Munavalli GS, Smith S, Maslowski JM, et al.. Successful Treatment of Depressed, Distensible Acne Scars Using Autologous Fibroblasts: A Multi-Site, Prospective, Double Blind, Placebo-Controlled Clinical Trial. Dermatologic Surgery. 2013;39:1226–1236.",
+   "doi": "10.1111/dsu.12204",
+   "checked": "abstract",
+   "what": "Three intradermal sessions, 14 days apart, of 2 mL autologous fibroblast suspension at 10–20 million cells per mL (n = 99)."
+  },
+  "nakerakanti2011ccn2": {
+   "short": "Nakerakanti et al. 2011",
+   "cite": "Nakerakanti SS, Bujor AM, Trojanowska M. CCN2 Is Required for the TGF-β Induced Activation of Smad1 - Erk1/2 Signaling Network. PLoS ONE. 2011;6:e21911.",
+   "doi": "10.1371/journal.pone.0021911",
+   "checked": "abstract",
+   "what": "CCN2/CTGF stimulated collagen gene expression below 50 ng/mL and inhibited it at higher doses: a window with a lower and an upper side."
+  },
+  "oyleryaniv2017niches": {
+   "short": "Oyler-Yaniv et al. 2017",
+   "cite": "Oyler-Yaniv A, Oyler-Yaniv J, Whitlock BM, et al.. A Tunable Diffusion-Consumption Mechanism of Cytokine Propagation Enables Plasticity in Cell-to-Cell Communication in the Immune System. Immunity. 2017;46:609–620.",
+   "doi": "10.1016/j.immuni.2017.03.011",
+   "checked": "abstract",
+   "what": "Cytokine diffusion and consumption make niches with sharp boundaries whose size scales with the density of consuming cells; in vivo interactions over 80–120 µm."
+  },
+  "ozawa2004vegf": {
+   "short": "Ozawa et al. 2004",
+   "cite": "Ozawa CR, Banfi A, Glazer NL, et al.. Microenvironmental VEGF concentration, not total dose, determines a threshold between normal and aberrant angiogenesis. Journal of Clinical Investigation. 2004;113:516–527.",
+   "doi": "10.1172/jci18420",
+   "checked": "abstract",
+   "what": "The local amount of VEGF secreted, not the total dose, decides between normal and aberrant angiogenesis."
+  },
+  "quan2002uv": {
+   "short": "Quan et al. 2002",
+   "cite": "Quan T, He T, Kang S, et al.. Ultraviolet Irradiation Alters Transforming Growth Factor β/Smad Pathway in Human Skin In Vivo. Journal of Investigative Dermatology. 2002;119:499–506.",
+   "doi": "10.1046/j.1523-1747.2002.01834.x",
+   "checked": "abstract",
+   "what": "Sun-protected adult human skin expresses TGF-β1, β2 and β3 transcripts in a ratio of 1:5:3."
+  },
+  "romgens2015diffusion": {
+   "short": "Römgens et al. 2015",
+   "cite": "Römgens AM, Bader DL, Bouwstra JA, et al.. Diffusion profile of macromolecules within and between human skin layers for (trans)dermal drug delivery. Journal of the Mechanical Behavior of Biomedical Materials. 2015;50:215–222.",
+   "doi": "10.1016/j.jmbbm.2015.06.019",
+   "checked": "abstract",
+   "what": "FRAP in human skin: median dermal diffusion coefficient 23 µm²/s for 40 kDa dextran (9 µm²/s for 500 kDa), with only marginal differences between papillary and reticular dermis."
+  },
+  "roy2024implanting": {
+   "short": "Roy et al. 2024",
+   "cite": "Roy B, Pekec T, Yuan L, et al.. Implanting mechanically reprogrammed fibroblasts for aged tissue regeneration and wound healing. Aging Cell. 2024;23:e14032.",
+   "doi": "10.1111/acel.14032",
+   "checked": "full text",
+   "what": "Spheroids equivalent to 40,000 cells in 50 µL per implantation site, 2–3 sites per reconstructed aged skin model, within the 2-mm-deep dermis, analysed after 10 days. Matrix deposition of the implanted cells declined after 2–3 divisions; the authors note it could also indicate fibrotic activation."
+  },
+  "sprugel1987kinetics": {
+   "short": "Sprugel et al. 1987",
+   "cite": "Sprugel KH, McPherson JM, Clowes AW, et al.. Effects of growth factors in vivo. I. Cell ingrowth into porous subcutaneous chambers. The American journal of pathology. 1987;129:601–13.",
+   "pmid": "3501246",
+   "checked": "abstract",
+   "what": "¹²⁵I-TGF-β was cleared from subcutaneous collagen chambers in rats with an initial-phase half-life of 22 h."
+  },
+  "urban2023isoforms": {
+   "short": "Urban et al. 2023",
+   "cite": "Urban L, Čoma M, Lacina L, et al.. Heterogeneous response to TGF-β1/3 isoforms in fibroblasts of different origins: implications for wound healing and tumorigenesis. Histochemistry and Cell Biology. 2023;160:541–554.",
+   "doi": "10.1007/s00418-023-02221-5",
+   "checked": "abstract",
+   "what": "In fibroblasts of different origins, TGF-β1 activated signalling more potently than TGF-β3; TGF-β3 was rather inhibitory in keloid- and hypertrophic-scar-derived fibroblasts."
+  },
+  "wei2018microneedle": {
+   "short": "Wei et al. 2018",
+   "cite": "Wei JCJ, Haridass IN, Crichton ML, et al.. Space- and time-resolved investigation on diffusion kinetics of human skin following macromolecule delivery by microneedle arrays. Scientific Reports. 2018;8:17759.",
+   "doi": "10.1038/s41598-018-36009-8",
+   "checked": "abstract",
+   "what": "Ex vivo human skin, 70–2000 kDa dextrans: dermal diffusivities 1–20 µm²/s, lowest at the dermal–epidermal junction (0.7–3 µm²/s)."
+  }
+ }
+}

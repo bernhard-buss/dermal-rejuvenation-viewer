@@ -2,6 +2,13 @@
 
 Newest version first. Each entry says what you can do or see differently.
 
+## 0.2.0 — 2026-11-05
+
+- The header shows the **working signal**, TGF-β3; a new help entry, *Which signal*, explains the TGF-β isoforms and why TGF-β3 was chosen for now.
+- All values, notes and references now come from the project's single parameter file, the same one the Python model uses; references are formatted from the checked bibliography (full author lists and journal names). The numbers are unchanged.
+- Two new references on the TGF-β isoforms (Urban et al. 2023, Lichtman et al. 2016).
+- Credits: master thesis of Bernhard Buss, supervised by Nicholas Lawler, in the group of Prof. G.V. Shivashankar.
+
 ## 0.1.0 — 2026-11-05
 
 First prototype (minimal model, M1).

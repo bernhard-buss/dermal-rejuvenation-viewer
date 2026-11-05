@@ -1,0 +1,25 @@
+name: CI
+
+# Checks on every push and pull request:
+#   - the page script compiles and the page keeps its noindex tag
+#   - the viewer's physics reproduces the golden cases of the Python reference
+#     implementation (data/golden.json, exported by `python -m dermsim export-viewer`)
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - uses: actions/setup-node@v7.1.0
+        with:
+          node-version: 22
+      - name: Page checks
+        run: node tests/page.mjs
+      - name: Parity with the Python model
+        run: node tests/parity.mjs
