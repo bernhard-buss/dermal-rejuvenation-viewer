@@ -9,7 +9,7 @@ const html = readFileSync(new URL("../index.html", import.meta.url), "utf8");
 const block = html.match(/\/\/ >>> physics([\s\S]*?)\/\/ <<< physics/);
 if (!block) { console.error("physics block not found in index.html"); process.exit(1); }
 const api = new Function(`"use strict";${block[1]}
-  return { derived, kernel, buildField, latticeAt, holePoint, criticalSpacing, singleReach, sitesPerCm2, fractions, unitCellFractions, volumeFractions };`)();
+  return { derived, kernel, buildField, latticeAt, holePoint, criticalSpacing, singleReach, sitesPerCm2, fractions, unitCellFractions, volumeFractions, levelDepths, nLevels, optimise };`)();
 const golden = JSON.parse(readFileSync(new URL("../data/golden.json", import.meta.url), "utf8"));
 const rtol = golden.rtol ?? 1e-9;
 
@@ -30,14 +30,30 @@ for (const c of golden.cases) {
   const F = api.buildField(p, c.pattern, c.custom, 7);
   for (const [x, y, z, v] of c.field) close(`${c.name} field(${x.toFixed(0)},${y.toFixed(0)},${z.toFixed(0)})`, F.at(x, y, z), v);
   close(`${c.name} reach`, api.singleReach(p, d, f), c.reach);
+  api.levelDepths(p).forEach((z, i) => close(`${c.name} depth[${i}]`, z, c.depths[i], 1e-12));
   const vf = api.volumeFractions(F, p, c.volume.nxy, c.volume.nz);
   vf.forEach((v, i) => close(`${c.name} volume[${i}]`, v, c.volume.fractions[i], 1e-12));
   if (c.lattice) {
     for (const [a, x, y, z, v] of c.lattice) close(`${c.name} lattice(a=${a}, z=${z})`, api.latticeAt(p, d, f, c.pattern, a, x, y, z), v);
     close(`${c.name} critical spacing`, api.criticalSpacing(p, c.pattern).a, c.critical_spacing ?? NaN, 1e-8);
-    close(`${c.name} sites/cm²`, api.sitesPerCm2(c.pattern, p.a), c.sites_per_cm2);
+    close(`${c.name} sites/cm²`, api.sitesPerCm2(c.pattern, p.a, api.nLevels(p)), c.sites_per_cm2);
     for (const [a, ...fr] of c.unit_cell.rows) api.unitCellFractions(p, c.pattern, a, c.unit_cell.nu, c.unit_cell.nz)
       .forEach((v, i) => close(`${c.name} unit cell a=${a} [${i}]`, v, fr[i], 1e-12));
+  }
+}
+// optimiser: same front (designs, search and exact coverage) as dermsim.optimize
+if (golden.optimise) {
+  const g = golden.optimise;
+  for (const [mode, want] of Object.entries(g.modes)) {
+    const got = api.optimise(g.params, g.pattern, mode, g.opts);
+    close(`optimise ${mode} evaluated`, got.evaluated, want.evaluated, 0);
+    if (got.front.length !== want.front.length) { fails++; console.error(`✗ optimise ${mode}: front has ${got.front.length} solutions, want ${want.front.length}`); continue; }
+    want.front.forEach((w, i) => {
+      const s = got.front[i];
+      for (const k of ["a", "levels", "dz", "z0", "ncells", "cells_per_cm2"]) close(`optimise ${mode}[${i}].${k}`, s[k], w[k], 1e-9);
+      for (const k of ["window", "below", "above"]) close(`optimise ${mode}[${i}].${k}`, s[k], w[k], 1e-12);
+      for (const k of ["window", "below", "above"]) close(`optimise ${mode}[${i}].exact.${k}`, s.exact[k], w.exact[k], 1e-12);
+    });
   }
 }
 console.log(`${golden.generator} golden cases: ${golden.cases.length}, checks: ${checks}, failures: ${fails}, largest relative difference: ${worst.toExponential(2)}`);

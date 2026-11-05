@@ -149,9 +149,37 @@
    "note": "Radius of the sphere of implanted cells. Placeholder geometry; implanted cells also spread over days."
   },
   {
+   "key": "levels",
+   "group": "Implants",
+   "label": "Injection depths (levels)",
+   "unit": "levels",
+   "value": 1,
+   "min": 1,
+   "max": 5,
+   "log": false,
+   "step": 1,
+   "status": "des",
+   "sources": [],
+   "note": "Number of injection depths. With more than one, each depth is a lattice of the same spacing, shifted sideways against its neighbours, so that seen from above the sites are closer together while in depth they keep their distance. See {help:model/depths|Several injection depths}."
+  },
+  {
+   "key": "dz",
+   "group": "Implants",
+   "label": "Spacing between depths",
+   "unit": "µm",
+   "value": 300,
+   "min": 50,
+   "max": 1000,
+   "log": false,
+   "step": 10,
+   "status": "des",
+   "sources": [],
+   "note": "Vertical distance between neighbouring injection depths (used with more than one depth). All depths are kept inside the dermis."
+  },
+  {
    "key": "z0",
    "group": "Implants",
-   "label": "Injection depth (below the junction)",
+   "label": "Injection depth (middle level)",
    "unit": "µm",
    "value": 500,
    "min": 20,
@@ -160,7 +188,7 @@
    "step": 10,
    "status": "des",
    "sources": [],
-   "note": "Design choice. The group implanted within the 2-mm-deep dermis of the skin model ({cite:roy2024implanting})."
+   "note": "Design choice: depth of the middle injection level below the dermal–epidermal junction. The group implanted within the 2-mm-deep dermis of the skin model ({cite:roy2024implanting})."
   },
   {
    "key": "H",

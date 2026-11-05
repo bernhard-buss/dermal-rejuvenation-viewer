@@ -2,6 +2,13 @@
 
 Newest version first. Each entry says what you can do or see differently.
 
+## 0.4.0 — 2026-11-05
+
+- **Several injection depths.** Two new sliders, *Injection depths* (1–5) and *Spacing between depths*, stack lattices at several depths, each shifted sideways against its neighbour: seen from above the sites are closer together, in depth they keep their distance, and the volume of the dermis fills up. On the map, the centre dot of each site gives its depth and sites at other depths are dashed; the coverage panel lists the depths and the spacing seen from above. Hand-placed sites keep their own depth (new ones go to the slice depth).
+- **Optimise.** *Find designs* searches the layouts (flat, volume or both) that put the most dermis inside the window for your tissue and signal values. A plot shows every design evaluated and the best coverage for each dose; cycle through the solutions with ◀ ▶ (or click a point) and see each one in the maps at once; *Back to my design* restores yours.
+- **Cross-section as skin.** The cross-section now shows the epidermis, papillary and reticular dermis and hypodermis with collagen fibres, the host fibroblasts coloured by the signal where they sit (not reached, activated, above the ceiling), implant clusters with their cells, and the injection depths.
+- **Smoother.** The design curve and the coverage of the whole dermis are computed in the background, so the sliders stay responsive; the design curve no longer overflows its panel.
+
 ## 0.3.0 — 2026-11-05
 
 - Every slider shows its **default** as a small grey tick. A value that differs from its default turns teal and gets a **↺** that puts it back (double-clicking the slider does the same); hovering a value shows its default.

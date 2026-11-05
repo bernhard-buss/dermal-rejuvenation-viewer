@@ -23,13 +23,16 @@ header button{background:transparent;color:var(--paper);border-color:#4A5A63}
 header button:hover{border-color:var(--teal-l)}
 button.on{background:var(--teal);color:#fff;border-color:var(--teal)}
 header button.on{background:var(--teal);border-color:var(--teal)}
+button.primary{background:var(--ink);color:var(--paper);border-color:var(--ink);font-weight:600}
+button.primary:disabled{opacity:.5;cursor:default}
+button:disabled{cursor:default}
 a.hl{color:var(--teal);text-decoration:none;font-size:13px;margin-left:2px;cursor:help}
 header a.hl{color:var(--teal-l)}
 a.hl:hover{text-decoration:underline}
 .banner{background:var(--amber-bg);border-bottom:1px solid #EAD7AE;padding:6px 18px;font-size:13px;color:#5B420F}
-main{display:grid;grid-template-columns:340px minmax(440px,1fr) 340px;gap:14px;padding:14px;align-items:start}
-@media (max-width:1180px){main{grid-template-columns:1fr}}
-.panel{background:#fff;border:1px solid var(--rule);border-radius:10px;padding:12px 14px;margin-bottom:14px}
+main{display:grid;grid-template-columns:340px minmax(440px,1fr) 360px;gap:14px;padding:14px;align-items:start}
+@media (max-width:1220px){main{grid-template-columns:1fr}}
+.panel{background:#fff;border:1px solid var(--rule);border-radius:10px;padding:12px 14px;margin-bottom:14px;min-width:0}
 .panel h2{font-size:12px;text-transform:uppercase;letter-spacing:.07em;color:var(--teal);margin:2px 0 6px;display:flex;gap:4px;align-items:center}
 .prow{margin:9px 0 4px}
 .prow .lab{display:flex;align-items:center;gap:5px;font-size:13px}
@@ -40,6 +43,7 @@ main{display:grid;grid-template-columns:340px minmax(440px,1fr) 340px;gap:14px;p
 .val.changed{color:var(--teal)}
 .rst{border:0;background:none;color:var(--teal);font-size:14px;line-height:1;padding:0 1px;cursor:pointer;margin-left:-2px}
 .rst:hover{color:var(--terra)}
+.prow.off{opacity:.45}
 .badge{font-size:10.5px;padding:0 6px;border-radius:999px;border:1px solid;cursor:pointer;text-decoration:none;white-space:nowrap;line-height:16px}
 .b-src{color:var(--teal);border-color:var(--teal)}
 .b-ana{color:var(--teal);border-color:var(--teal);border-style:dashed}
@@ -49,16 +53,31 @@ main{display:grid;grid-template-columns:340px minmax(440px,1fr) 340px;gap:14px;p
 .derived b{color:var(--ink)}
 .toolbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:8px;font-size:13px}
 .toolbar .sp{flex:1}
-.stage canvas{display:block;width:100%;border-radius:8px;background:#E8E3DA;touch-action:none}
+.seg{display:inline-flex}
+.seg button{border-radius:0;margin-left:-1px}
+.seg button:first-child{border-radius:6px 0 0 6px;margin-left:0}
+.seg button:last-child{border-radius:0 6px 6px 0}
+canvas{display:block;width:100%;height:auto;border-radius:8px}
+.stage canvas{background:#E8E3DA;touch-action:none}
 #map.editing{cursor:crosshair}
 .cap{font-size:12.5px;color:var(--soft);margin:6px 2px 10px}
 .legend{display:flex;flex-wrap:wrap;gap:12px;align-items:center;font-size:12.5px;margin:6px 2px}
 .sw{display:inline-block;width:14px;height:14px;border-radius:3px;vertical-align:-2px;margin-right:4px;border:1px solid rgba(0,0,0,.15)}
+.dot{display:inline-block;width:10px;height:10px;border-radius:50%;vertical-align:-1px;margin-right:4px;border:1.5px solid #fff;box-shadow:0 0 0 1px rgba(0,0,0,.35)}
 .metric{display:flex;justify-content:space-between;gap:8px;padding:4px 0;border-bottom:1px solid #F0ECE5;font-size:13.5px}
 .metric:last-child{border-bottom:0}
 .metric .v{font-weight:600;font-variant-numeric:tabular-nums;text-align:right}
 .bar{display:flex;height:12px;border-radius:6px;overflow:hidden;margin:6px 0 2px;border:1px solid var(--rule)}
 .note{font-size:12.5px;color:var(--soft)}
+.prog{height:6px;border-radius:3px;background:#EEE8DF;overflow:hidden;margin:6px 0}
+.prog div{height:100%;width:0;background:var(--teal);transition:width .15s}
+.soln{border:1px solid var(--rule);border-radius:8px;padding:8px 10px;margin-top:8px;font-size:13px}
+.soln .head{display:flex;align-items:center;gap:8px;margin-bottom:4px}
+.soln .nav{font-variant-numeric:tabular-nums;font-weight:600}
+.chip{font-size:11px;border-radius:999px;padding:0 7px;color:#fff;line-height:17px}
+.chip.flat{background:var(--teal)} .chip.volume{background:var(--terra)}
+.soln .big{font-size:20px;font-weight:700;font-variant-numeric:tabular-nums}
+.soln .row{display:flex;flex-wrap:wrap;gap:4px 12px;color:var(--soft);font-variant-numeric:tabular-nums}
 a{color:var(--teal)}
 footer{padding:4px 18px 18px;font-size:12px;color:var(--soft)}
 /* help */
@@ -90,7 +109,6 @@ a.cite{text-decoration:none;border-bottom:1px dotted var(--teal)}
 .hit small{color:var(--soft);margin-left:8px}
 .hit mark{background:#DDF0F1}
 .dim{color:var(--soft)}
-ol.refs li{margin:6px 0}
 </style>
 </head>
 <body>
@@ -102,38 +120,48 @@ ol.refs li{margin:6px 0}
   <span class="sp"></span>
   <button id="presetYoung" title="Young host tissue: threshold factor 1">Young tissue</button>
   <button id="presetAged" title="Aged host tissue: threshold factor raised (placeholder value)">Aged tissue</button><a class="hl" href="#help/start/presets" data-help="start/presets" title="Help: young and aged tissue">ⓘ</a>
-  <button id="reset" title="Back to the default values">Reset</button>
+  <button id="reset" title="All values back to their defaults">Reset</button>
   <span><button id="linkbtn" title="Copy a link that reproduces everything shown: all values, pattern, colouring and your own sites">Copy link</button><a class="hl" href="#help/start/share" data-help="start/share" title="Help: sharing a view">ⓘ</a></span>
   <button id="helpbtn" data-help="" title="Help (press ?)">Help</button>
 </header>
-<div class="banner">Prototype (M1 minimal model). Values marked <span class="badge b-ph" data-help="start/status">placeholder</span> have no checked source yet, so results that depend on them are illustrative only. <a href="#help/model/window" data-help="model/window">Why the thresholds are open</a>.</div>
+<div class="banner">Prototype. Values marked <span class="badge b-ph" data-help="start/status">placeholder</span> have no checked source yet, so results that depend on them are illustrative only. <a href="#help/model/window" data-help="model/window">Why the thresholds are open</a>.</div>
 <main>
   <section id="left"></section>
   <section class="stage">
     <div class="panel">
       <div class="toolbar">
         <span>Show</span>
-        <button id="mWindow" class="on" title="Colour by below / inside / above the window">Window</button>
-        <button id="mLog" title="Colour by concentration, log scale">Concentration</button><a class="hl" href="#help/start/read" data-help="start/read" title="Help: reading the maps">ⓘ</a>
+        <span class="seg"><button id="mWindow" class="on" title="Colour by below / inside / above the window">Window</button><button id="mLog" title="Colour by concentration, log scale">Concentration</button></span><a class="hl" href="#help/start/read" data-help="start/read" title="Help: reading the maps">ⓘ</a>
         <span class="sp"></span>
         <label>Pattern <select id="pattern">
           <option value="hex">hexagonal</option><option value="square">square</option>
           <option value="random">random</option><option value="custom">custom</option></select></label><a class="hl" href="#help/params/pattern" data-help="params/pattern" title="Help: implant patterns">ⓘ</a>
-        <button id="editBtn" title="Click to add a site, drag to move, shift-click to remove">Edit sites</button><a class="hl" href="#help/start/edit" data-help="start/edit" title="Help: editing sites">ⓘ</a>
+        <button id="editBtn" title="Click to add a site at the slice depth, drag to move, shift-click to remove">Edit sites</button><a class="hl" href="#help/start/edit" data-help="start/edit" title="Help: editing sites">ⓘ</a>
       </div>
       <canvas id="map" width="720" height="720" aria-label="En-face map of the signal at the slice depth"></canvas>
       <div class="legend" id="legend"></div>
       <div class="cap" id="mapCap"></div>
-      <canvas id="sec" width="720" height="360" aria-label="Cross-section through the dermis"></canvas>
+      <canvas id="sec" width="720" height="420" aria-label="Schematic cross-section through skin with the signal and the host cells"></canvas>
+      <div class="legend" id="secLegend"></div>
       <div class="cap" id="secCap"></div>
     </div>
   </section>
   <section id="right">
     <div class="panel"><h2>Coverage <a class="hl" href="#help/metrics/coverage" data-help="metrics/coverage" title="Help: coverage">ⓘ</a></h2><div id="metrics"></div></div>
+    <div class="panel" id="optPanel"><h2>Optimise <a class="hl" href="#help/metrics/optimise" data-help="metrics/optimise" title="Help: optimising the design">ⓘ</a></h2>
+      <div class="note">Find the layouts that put the most dermis inside the window, for the current tissue and signal values.</div>
+      <div class="toolbar" style="margin-top:8px">
+        <span class="seg"><button data-om="flat" title="One injection depth">Flat</button><button data-om="volume" title="Several injection depths">Volume</button><button data-om="both" class="on" title="Both, shown together">Both</button></span>
+        <span class="sp"></span><button id="optRun" class="primary">Find designs</button>
+      </div>
+      <div class="prog" id="optProg" hidden><div></div></div>
+      <canvas id="optPlot" width="660" height="400" aria-label="Designs found: share of dermis in the window against cells per cm²"></canvas>
+      <div id="optSol"><div class="note">Not run yet. The search takes a few seconds and runs in the background.</div></div>
+    </div>
     <div class="panel"><h2>Design curve <a class="hl" href="#help/metrics/curve" data-help="metrics/curve" title="Help: design curve">ⓘ</a></h2>
-      <canvas id="chart" width="620" height="380" aria-label="Share of dermis below, inside and above the window against site spacing"></canvas>
+      <canvas id="chart" width="660" height="380" aria-label="Share of dermis below, inside and above the window against site spacing"></canvas>
       <div class="cap" id="chartCap"></div></div>
-    <div class="panel"><h2>Read me first</h2><div class="note">Each implant site is a sphere of cells secreting one signal into homogeneous dermis, at steady state; the signal decays over the length λ. The goal is as much of the dermis as possible <b>inside the window</b>, between the activation threshold of the aged cells and the fibrotic ceiling. Every value has a badge saying where it comes from; click it, or any ⓘ, for the details and the references. <a href="#help/start/what" data-help="start/what">Quick start</a>.</div></div>
+    <div class="panel"><h2>Read me first</h2><div class="note">Each implant site is a sphere of cells secreting one signal into homogeneous dermis, at steady state; the signal decays over the length λ. The goal is as much of the dermis as possible <b>inside the window</b>, between the activation threshold of the aged cells and the fibrotic ceiling. Use several <b>injection depths</b> to fill the volume, or let <b>Optimise</b> search for you. Every value has a badge saying where it comes from; click it, or any ⓘ, for details and references. <a href="#help/start/what" data-help="start/what">Quick start</a>.</div></div>
   </section>
 </main>
 <footer>Bernhard Buss (master thesis), supervised by Nicholas Lawler; group of Prof. G.V. Shivashankar (ETH Zurich / PSI). Builds on Roy et al., <i>Aging Cell</i> 2024 (<a href="https://doi.org/10.1111/acel.14032" target="_blank" rel="noopener">doi:10.1111/acel.14032</a>). Prototype, not peer-reviewed. Runs entirely in your browser; nothing is uploaded. <a href="#help/refs" data-help="refs">References</a> · <a href="#help/about" data-help="about">About</a></footer>
@@ -157,7 +185,7 @@ ol.refs li{margin:6px 0}
 <script src="data/parameters.js"></script>
 <script>
 "use strict";
-const VERSION = "0.3.0";
+const VERSION = "0.4.0";
 const $ = id => document.getElementById(id);
 function esc(s) { return String(s).replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); }
 
@@ -182,26 +210,22 @@ const PARAMS = DP.parameters.map(q => ({ ...q, def: q.value, src: q.sources, not
 const PDEF = Object.fromEntries(PARAMS.map(p => [p.key, p]));
 const STATUS = { src: ["b-src", "source"], ana: ["b-ana", "analogue"], ph: ["b-ph", "placeholder"], des: ["b-des", "design"] };
 
-// ---------------------------------------------------------------------------
-// State
-// ---------------------------------------------------------------------------
-const S = { p: {}, pattern: "hex", mode: "window", edit: false, custom: [], zvLinked: true, seed: 7 };
-function resetParams() { for (const d of PARAMS) S.p[d.key] = d.def; S.pattern = "hex"; S.custom = []; S.zvLinked = true; }
-resetParams();
-
 // >>> physics
 // ---------------------------------------------------------------------------
-// Physics (M1): steady state, homogeneous dermis, linear decay, uniform
-// spherical source per site, no-flux dermal–epidermal junction (image source).
+// Physics: steady state, homogeneous dermis, linear decay, uniform spherical
+// source per site, no-flux dermal–epidermal junction (image source).
 //   D ∇²c − k c + s = 0,  s = s0 inside a sphere of radius R,  k = D/λ²
 //   outside: c = (s0/k) [x cosh x − sinh x] e^{−r/λ}/(r/λ),  x = R/λ
 //   inside:  c = (s0/k) [1 − (1+x) e^{−x} sinh(r/λ)/(r/λ)]
 //   R → 0: point source q/(4πDr) e^{−r/λ}.
+// Injection depths: `levels` lattices of spacing a at depths z0 + (ℓ − (n−1)/2)·dz,
+// shifted sideways (ABC stacking for hex, AB for square).
 // Units: µm, s, molecules; concentrations shown in ng/mL.
-// Pure functions only (no DOM, no state): the same equations as dermsim.model
-// in Python. tests/parity.mjs runs this block against data/golden.json.
+// Pure functions only (no DOM, no state): the same equations and algorithms as
+// dermsim.model and dermsim.optimize in Python. tests/parity.mjs runs this block
+// against data/golden.json; the page also runs it in a background worker.
 // ---------------------------------------------------------------------------
-const NA_ = 6.02214076e23;
+const NA_ = 6.02214076e23, SQRT3 = Math.sqrt(3);
 function derived(p) {
   const kap = 1 / p.lam, k = p.D * kap * kap;                      // 1/µm, 1/s
   const qcell = p.sec * 1e-12 / (p.mw * 1000) * NA_ / 1e6 / 86400; // molecules/cell/s
@@ -220,34 +244,50 @@ function kernel(p, d) {
     return pref * (1 - a * (kr < 1e-6 ? 1 : Math.sinh(kr) / kr));
   };
 }
+const nLevels = p => Math.max(1, Math.round(p.levels ?? 1));
+function levelDepths(p) {                                          // middle level at z0, kept 20 µm inside
+  const n = nLevels(p), dz = p.dz ?? 0, out = [];
+  for (let l = 0; l < n; l++) out.push(Math.min(Math.max(p.z0 + (l - (n - 1) / 2) * dz, 20), p.H - 20));
+  return out;
+}
+function levelShift(pattern, l, a) {
+  if (pattern === "hex") { const m = l % 3; return [m * a / 2, m * a / (2 * SQRT3)]; }
+  if (pattern === "square") { const m = l % 2; return [m * a / 2, m * a / 2]; }
+  return [0, 0];
+}
+const topDownSpacing = (pattern, a, levels) => levels <= 1 ? a : (pattern === "hex" ? a / SQRT3 : a / Math.SQRT2);
+const sitesPerCm2 = (pattern, a, levels = 1) => levels * 1e8 / (pattern === "square" ? a * a : a * a * SQRT3 / 2);
 function rng(seed) { return () => { seed |= 0; seed = seed + 0x6D2B79F5 | 0; let t = Math.imul(seed ^ seed >>> 15, 1 | seed); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
-function makeSites(p, d, pattern, custom, seed) {
-  if (pattern === "custom") return (custom || []).map(s => [s[0], s[1]]);
-  const L = p.L, m = d.rc, a = p.a, out = [], c0 = L / 2;
+function makeSites(p, d, pattern, custom, seed) {                  // [x, y, z]
+  if (pattern === "custom") return (custom || []).map(s => [s[0], s[1], s.length > 2 ? s[2] : p.z0]);
+  const L = p.L, m = d.rc, a = p.a, out = [], c0 = L / 2, depths = levelDepths(p);
   if (pattern === "hex" || pattern === "square") {
-    const dy = pattern === "hex" ? a * Math.sqrt(3) / 2 : a;
+    const dy = pattern === "hex" ? a * SQRT3 / 2 : a;
     const jmax = Math.ceil((L / 2 + m) / dy) + 1, imax = Math.ceil((L / 2 + m) / a) + 1;
-    for (let j = -jmax; j <= jmax; j++) for (let i = -imax; i <= imax; i++) {
-      const x = c0 + i * a + (pattern === "hex" && (j & 1) ? a / 2 : 0), y = c0 + j * dy;
-      if (x > -m && x < L + m && y > -m && y < L + m) out.push([x, y]);
-    }
-  } else {                                                         // random: same mean density as hexagonal
-    const dens = 1 / (a * a * Math.sqrt(3) / 2), W = L + 2 * m, n = Math.round(dens * W * W), r = rng(seed);
-    for (let i = 0; i < n; i++) out.push([-m + r() * W, -m + r() * W]);
+    depths.forEach((zl, l) => {
+      const [sx, sy] = levelShift(pattern, l, a);
+      for (let j = -jmax; j <= jmax; j++) for (let i = -imax; i <= imax; i++) {
+        const x = c0 + i * a + (pattern === "hex" && (j & 1) ? a / 2 : 0) + sx, y = c0 + j * dy + sy;
+        if (x > -m && x < L + m && y > -m && y < L + m) out.push([x, y, zl]);
+      }
+    });
+  } else {                                                         // random: per depth, same mean density as hex
+    const dens = 1 / (a * a * SQRT3 / 2), W = L + 2 * m, n = Math.round(dens * W * W), r = rng(seed);
+    for (const zl of depths) for (let i = 0; i < n; i++) out.push([-m + r() * W, -m + r() * W, zl]);
   }
   return out;
 }
 function buildField(p, pattern, custom, seed) {
   const d = derived(p), f = kernel(p, d), sites = makeSites(p, d, pattern, custom, seed), cs = Math.max(d.rc, 50), grid = new Map();
   for (const s of sites) { const key = Math.floor(s[0] / cs) + "," + Math.floor(s[1] / cs); (grid.get(key) || grid.set(key, []).get(key)).push(s); }
-  const rc2 = d.rc * d.rc, z0 = p.z0;
+  const rc2 = d.rc * d.rc;
   function at(x, y, z) {
     const bx = Math.floor(x / cs), by = Math.floor(y / cs); let c = 0;
     for (let i = bx - 1; i <= bx + 1; i++) for (let j = by - 1; j <= by + 1; j++) {
       const b = grid.get(i + "," + j); if (!b) continue;
       for (const s of b) {
         const dx = x - s[0], dy = y - s[1], h2 = dx * dx + dy * dy; if (h2 > rc2) continue;
-        const r1 = Math.sqrt(h2 + (z - z0) * (z - z0)), r2 = Math.sqrt(h2 + (z + z0) * (z + z0));
+        const r1 = Math.sqrt(h2 + (z - s[2]) * (z - s[2])), r2 = Math.sqrt(h2 + (z + s[2]) * (z + s[2]));
         if (r1 < d.rc) c += f(r1);
         if (r2 < d.rc) c += f(r2);                                     // image source: no flux at z = 0
       }
@@ -256,20 +296,24 @@ function buildField(p, pattern, custom, seed) {
   }
   return { d, f, sites, at };
 }
-function latticeAt(p, d, f, pattern, a, x, y, z) {
-  const dy = pattern === "hex" ? a * Math.sqrt(3) / 2 : a, n = Math.ceil(d.rc / Math.min(a, dy)) + 1; let c = 0;
-  for (let j = -n; j <= n; j++) for (let i = -n; i <= n; i++) {
-    const sx = i * a + (pattern === "hex" && (j & 1) ? a / 2 : 0), sy = j * dy, h2 = (x - sx) ** 2 + (y - sy) ** 2;
-    if (h2 > d.rc * d.rc) continue;
-    const r1 = Math.sqrt(h2 + (z - p.z0) ** 2), r2 = Math.sqrt(h2 + (z + p.z0) ** 2);
-    if (r1 < d.rc) c += f(r1); if (r2 < d.rc) c += f(r2);
+function latticeAt(p, d, f, pattern, a, x, y, z, rcIn) {           // infinite multi-level lattice, level 0 at the origin
+  const rc = rcIn ?? d.rc, dy = pattern === "hex" ? a * SQRT3 / 2 : a, n = Math.ceil(rc / Math.min(a, dy)) + 1, rc2 = rc * rc, depths = levelDepths(p);
+  let c = 0;
+  for (let l = 0; l < depths.length; l++) {
+    const [sx, sy] = levelShift(pattern, l, a), zl = depths[l];
+    for (let j = -n; j <= n; j++) for (let i = -n; i <= n; i++) {
+      const X = i * a + (pattern === "hex" && (j & 1) ? a / 2 : 0) + sx, Y = j * dy + sy, h2 = (x - X) ** 2 + (y - Y) ** 2;
+      if (h2 > rc2) continue;
+      const r1 = Math.sqrt(h2 + (z - zl) ** 2), r2 = Math.sqrt(h2 + (z + zl) ** 2);
+      if (r1 < rc) c += f(r1); if (r2 < rc) c += f(r2);
+    }
   }
   return c;
 }
-function holePoint(pattern, a) { return pattern === "hex" ? [a / 2, a / (2 * Math.sqrt(3))] : [a / 2, a / 2]; }
-function criticalSpacing(p, pat) {
-  const d = derived(p), f = kernel(p, d);
-  const cmin = a => { const h = holePoint(pat, a); return latticeAt(p, d, f, pat, a, h[0], h[1], p.z0); };
+function holePoint(pattern, a) { return pattern === "hex" ? [a / 2, a / (2 * SQRT3)] : [a / 2, a / 2]; }
+function criticalSpacing(p, pat) {                                 // one injection plane at z0
+  const q = { ...p, levels: 1 }, d = derived(q), f = kernel(q, d);
+  const cmin = a => { const h = holePoint(pat, a); return latticeAt(q, d, f, pat, a, h[0], h[1], q.z0); };
   let lo = 5, hi = 50000;
   if (cmin(lo) < d.con) return { a: NaN, pat };
   for (let it = 0; it < 60; it++) { const mid = Math.sqrt(lo * hi); if (cmin(mid) >= d.con) lo = mid; else hi = mid; }
@@ -281,22 +325,183 @@ function singleReach(p, d, f) {
   for (let it = 0; it < 80; it++) { const m = (lo + hi) / 2; if (f(m) >= d.con) lo = m; else hi = m; }
   return lo;
 }
-const sitesPerCm2 = (pattern, a) => 1e8 / (pattern === "square" ? a * a : a * a * Math.sqrt(3) / 2);
 function fractions(vals, d) { let u = 0, w = 0, o = 0; for (const c of vals) { if (c < d.con) u++; else if (c <= d.cfib) w++; else o++; } const n = vals.length; return [u / n, w / n, o / n]; }
 function unitCellFractions(p, pat, a, nu, nz) {                    // one periodic cell over the dermis depth
-  const d = derived(p), f = kernel(p, d), dy = pat === "hex" ? a * Math.sqrt(3) / 2 : a, vals = [];
+  const d = derived(p), f = kernel(p, d), dy = pat === "hex" ? a * SQRT3 / 2 : a, vals = [];
   for (let l = 0; l < nz; l++) for (let v = 0; v < nu; v++) for (let u = 0; u < nu; u++) {
     const uu = (u + 0.5) / nu, vv = (v + 0.5) / nu, x = pat === "hex" ? uu * a + vv * a / 2 : uu * a, y = vv * dy;
     vals.push(latticeAt(p, d, f, pat, a, x, y, (l + 0.5) / nz * p.H));
   }
   return fractions(vals, d);
 }
-function volumeFractions(Fld, p, nxy, nz) {                         // the dermis in view, 0–H deep
+function volumeFractions(Fld, p, nxy, nz) {                        // the dermis in view, 0–H deep
   const vals = new Float64Array(nxy * nxy * nz); let k = 0;
   for (let l = 0; l < nz; l++) for (let j = 0; j < nxy; j++) for (let i = 0; i < nxy; i++) vals[k++] = Fld.at((i + 0.5) / nxy * p.L, (j + 0.5) / nxy * p.L, (l + 0.5) / nz * p.H);
   return fractions(vals, Fld.d);
 }
+// --- design optimiser (dermsim.optimize) ----------------------------------------
+const OPT_DEFAULTS = { a_min: 80, a_max: 2000, n_a: 14, cells_min: 1e3, cells_max: 1e6, n_cells: 13, flat_depths: 8,
+  vol_levels: [2, 3, 4, 5], vol_dz: [100, 150, 200, 300, 400, 600], vol_depths: 6, nu: 12, nz: 16, step: 10, cut_lam: 6, keep: 10 };
+const aGrid = o => Array.from({ length: o.n_a }, (_, i) => o.a_min * Math.pow(o.a_max / o.a_min, i / (o.n_a - 1)));
+const cellsGrid = o => Array.from({ length: o.n_cells }, (_, j) => o.cells_min * Math.pow(o.cells_max / o.cells_min, j / (o.n_cells - 1)));
+function geometries(p, mode, o) {                                  // [levels, dz, z0], clusters inside the dermis
+  const H = p.H, R = p.R, out = [];
+  if (mode === "flat") { for (let k = 0; k < o.flat_depths; k++) { const z0 = H * (k + 0.5) / o.flat_depths; if (z0 >= R && z0 <= H - R) out.push([1, 0, z0]); } }
+  else for (const n of o.vol_levels) for (const dz of o.vol_dz) for (let k = 0; k < o.vol_depths; k++) {
+    const z0 = H * (k + 0.5) / o.vol_depths, half = (n - 1) / 2 * dz;
+    if (z0 - half >= R && z0 + half <= H - R) out.push([n, dz, z0]);
+  }
+  return out;
+}
+function clustersApart(pattern, a, n, dz, R) {                     // clusters must not overlap
+  if (a < 2 * R) return false;
+  return n === 1 || Math.hypot(topDownSpacing(pattern, a, 2), dz) >= 2 * R;
+}
+function planePoints(pattern, a, nu) {                             // row-major over (iv, iu)
+  const dy = pattern === "hex" ? a * SQRT3 / 2 : a, X = new Float64Array(nu * nu), Y = new Float64Array(nu * nu);
+  for (let iv = 0; iv < nu; iv++) for (let iu = 0; iu < nu; iu++) {
+    const u = (iu + 0.5) / nu, v = (iv + 0.5) / nu, i = iv * nu + iu;
+    X[i] = pattern === "hex" ? u * a + v * a / 2 : u * a; Y[i] = v * dy;
+  }
+  return [X, Y];
+}
+function optTable(p, d, f, pattern, a, o) {                        // single-level base lattice vs |Δz|
+  const nu = o.nu, step = o.step, rcs = p.R + o.cut_lam * d.lam, K = Math.ceil(rcs / step), rc2 = rcs * rcs;
+  const dy = pattern === "hex" ? a * SQRT3 / 2 : a, n = Math.ceil(rcs / Math.min(a, dy)) + 1, [X, Y] = planePoints(pattern, a, nu);
+  const T = new Float64Array(nu * nu * (K + 1));
+  for (let i = 0; i < nu * nu; i++) {
+    const h2s = [];
+    for (let j = -n; j <= n; j++) for (let ii = -n; ii <= n; ii++) {
+      const sx = ii * a + (pattern === "hex" && (j & 1) ? a / 2 : 0), sy = j * dy, h2 = (X[i] - sx) ** 2 + (Y[i] - sy) ** 2;
+      if (h2 <= rc2) h2s.push(h2);
+    }
+    for (let k = 0; k <= K; k++) {
+      const t2 = (k * step) ** 2; let s = 0;
+      for (const h2 of h2s) { const r = Math.sqrt(h2 + t2); if (r < rcs) s += f(r); }
+      T[i * (K + 1) + k] = s;
+    }
+  }
+  return { T, K, step };
+}
+function interpT(tab, row, t) {
+  const kk = Math.floor(t / tab.step); if (kk >= tab.K) return 0;
+  const w = t / tab.step - kk, b = row * (tab.K + 1) + kk;
+  return tab.T[b] * (1 - w) + tab.T[b + 1] * w;
+}
+function layoutField(tab, p, pattern, n, dz, z0, o) {              // nz × nu² values, current cells per site
+  const nu = o.nu, nz = o.nz, F = new Float64Array(nz * nu * nu), depths = levelDepths({ ...p, levels: n, dz, z0 });
+  depths.forEach((zl, l) => {
+    const sh = pattern === "hex" ? (l % 3) * nu / 3 : (l % 2) * nu / 2;
+    for (let m = 0; m < nz; m++) {
+      const z = (m + 0.5) / nz * p.H, t1 = Math.abs(z - zl), t2 = z + zl;
+      for (let iv = 0; iv < nu; iv++) for (let iu = 0; iu < nu; iu++) {
+        const row = ((iv - sh + nu) % nu) * nu + ((iu - sh + nu) % nu);
+        F[m * nu * nu + iv * nu + iu] += interpT(tab, row, t1) + interpT(tab, row, t2);
+      }
+    }
+  });
+  return F;
+}
+function paretoFront(cands) {                                      // best coverage for each dose
+  const srt = [...cands].sort((x, y) => (x.cells_per_cm2 - y.cells_per_cm2) || (y.window - x.window) || (x.a - y.a) || (x.levels - y.levels) || (x.dz - y.dz) || (x.z0 - y.z0));
+  const front = []; let best = -1;
+  for (const c of srt) if (c.window > best + 1e-12) { front.push(c); best = c.window; }
+  return front;
+}
+function spreadFront(front, keep) {
+  if (front.length <= keep) return [...front];
+  const idx = [...new Set(Array.from({ length: keep }, (_, i) => Math.round(i * (front.length - 1) / (keep - 1))))].sort((x, y) => x - y);
+  return idx.map(i => front[i]);
+}
+function* optimiseSteps(p, pattern, mode, optsIn) {                // yields progress; returns the result
+  const o = { ...OPT_DEFAULTS, ...(optsIn || {}) };
+  pattern = (pattern === "hex" || pattern === "square") ? pattern : "hex";
+  const d = derived(p), f = kernel(p, d), cells = cellsGrid(o), geos = geometries(p, mode, o), as = aGrid(o), cands = [];
+  for (let ia = 0; ia < as.length; ia++) {
+    const a = as[ia], tab = optTable(p, d, f, pattern, a, o);
+    for (const [n, dz, z0] of geos) {
+      if (!clustersApart(pattern, a, n, dz, p.R)) continue;
+      const F = layoutField(tab, p, pattern, n, dz, z0, o), N = F.length;
+      for (const c of cells) {
+        const s = c / p.ncells; let under = 0, over = 0;
+        for (let i = 0; i < N; i++) { const v = F[i] * s; if (v < d.con) under++; else if (v > d.cfib) over++; }
+        cands.push({ mode, a, levels: n, dz, z0, ncells: c, below: under / N, window: (N - under - over) / N, above: over / N,
+          cells_per_cm2: sitesPerCm2(pattern, a, n) * c });
+      }
+    }
+    yield { done: ia + 1, total: as.length };
+  }
+  const front = spreadFront(paretoFront(cands), o.keep);
+  for (const sol of front) {
+    const q = { ...p, a: sol.a, levels: sol.levels, dz: sol.dz, z0: sol.z0, ncells: sol.ncells };
+    const [u, w, ov] = unitCellFractions(q, pattern, sol.a, o.nu, o.nz);
+    sol.exact = { below: u, window: w, above: ov };
+  }
+  return { mode, pattern, evaluated: cands.length, points: cands.map(c => [c.cells_per_cm2, c.window, c.above]), front };
+}
+function optimise(p, pattern, mode, opts) { const g = optimiseSteps(p, pattern, mode, opts); let r; while (!(r = g.next()).done); return r.value; }
 // <<< physics
+
+// ---------------------------------------------------------------------------
+// Background worker: the same physics block, for the design curve, the
+// coverage of the whole dermis and the optimiser. A newer request of the same
+// kind cancels an older one. Falls back to the main thread if workers fail.
+// ---------------------------------------------------------------------------
+const PHYS_SRC = ([...document.scripts].map(s => s.textContent).join("\n").match(/\/\/ >>> physics([\s\S]*?)\/\/ <<< physics/) || [])[1] || "";
+const WORKER_SRC = PHYS_SRC + `
+const latest = {};
+onmessage = e => { const m = e.data; latest[m.kind] = m.id; setTimeout(() => run(m), 0); };
+const live = m => latest[m.kind] === m.id;
+function run(m) {
+  if (!live(m)) return;
+  if (m.kind === "volume") { const F = buildField(m.p, m.pattern, m.custom, m.seed); postMessage({ kind: m.kind, id: m.id, fr: volumeFractions(F, m.p, m.nxy, m.nz) }); return; }
+  if (m.kind === "curve") {
+    let i = 0;
+    const step = () => { if (!live(m)) return;
+      const a = m.as[i]; postMessage({ kind: m.kind, id: m.id, i, a, fr: unitCellFractions(m.p, m.pat, a, m.nu, m.nz) });
+      if (++i < m.as.length) setTimeout(step, 0); };
+    step(); return;
+  }
+  if (m.kind === "optimise") {
+    const modes = m.mode === "both" ? ["flat", "volume"] : [m.mode], results = {};
+    const cur = unitCellFractions(m.p, m.pattern, m.p.a, OPT_DEFAULTS.nu, OPT_DEFAULTS.nz);
+    let mi = 0, gen = optimiseSteps(m.p, m.pattern, modes[0], m.opts);
+    const step = () => { if (!live(m)) return;
+      const r = gen.next();
+      if (!r.done) { postMessage({ kind: m.kind, id: m.id, progress: (mi + r.value.done / r.value.total) / modes.length }); setTimeout(step, 0); return; }
+      results[modes[mi]] = r.value;
+      if (++mi < modes.length) { gen = optimiseSteps(m.p, m.pattern, modes[mi], m.opts); setTimeout(step, 0); return; }
+      postMessage({ kind: m.kind, id: m.id, results, current: { window: cur[1], above: cur[2] } }); };
+    step();
+  }
+}`;
+let worker = null;
+try { worker = new Worker(URL.createObjectURL(new Blob([WORKER_SRC], { type: "text/javascript" }))); } catch (e) { worker = null; }
+const jobs = { volume: 0, curve: 0, optimise: 0 }, handlers = {};
+function ask(kind, msg, onMsg) {
+  const id = ++jobs[kind]; handlers[kind] = { id, onMsg };
+  if (worker) { worker.postMessage({ ...msg, kind, id }); return; }
+  setTimeout(() => {                                               // fallback without a worker
+    if (jobs[kind] !== id) return;
+    if (kind === "volume") onMsg({ fr: volumeFractions(buildField(msg.p, msg.pattern, msg.custom, msg.seed), msg.p, msg.nxy, msg.nz) });
+    if (kind === "curve") msg.as.forEach((a, i) => onMsg({ i, a, fr: unitCellFractions(msg.p, msg.pat, a, msg.nu, msg.nz) }));
+    if (kind === "optimise") { const results = {}; for (const md of (msg.mode === "both" ? ["flat", "volume"] : [msg.mode])) results[md] = optimise(msg.p, msg.pattern, md, msg.opts);
+      const cur = unitCellFractions(msg.p, msg.pattern, msg.p.a, OPT_DEFAULTS.nu, OPT_DEFAULTS.nz); onMsg({ results, current: { window: cur[1], above: cur[2] } }); }
+  }, 0);
+}
+if (worker) {
+  worker.onmessage = e => { const m = e.data, h = handlers[m.kind]; if (h && h.id === m.id) h.onMsg(m); };
+  worker.onerror = () => { worker = null; };
+}
+
+// ---------------------------------------------------------------------------
+// State
+// ---------------------------------------------------------------------------
+const S = { p: {}, pattern: "hex", mode: "window", edit: false, custom: [], zvLinked: true, seed: 7,
+  opt: { mode: "both", res: null, list: [], idx: -1, before: null, running: false, current: null } };
+function resetParams() { for (const d of PARAMS) S.p[d.key] = d.def; S.pattern = "hex"; S.custom = []; S.zvLinked = true; }
+resetParams();
+const geoPattern = () => S.pattern === "square" ? "square" : "hex";
 
 // ---------------------------------------------------------------------------
 // Colours and drawing
@@ -306,23 +511,28 @@ const VIR = ["#440154", "#482878", "#3e4989", "#31688e", "#26828e", "#1f9e89", "
 function mix(a, b, t) { t = Math.min(1, Math.max(0, t)); return [a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t, a[2] + (b[2] - a[2]) * t]; }
 function ramp(stops, t) { t = Math.min(1, Math.max(0, t)) * (stops.length - 1); const i = Math.min(stops.length - 2, Math.floor(t)); return mix(stops[i], stops[i + 1], t - i); }
 const UNDER = [hex("#F4F0EA"), hex("#BFCBD1")], IN = [hex("#A8D9DC"), hex("#2A6F75")], OVER = [hex("#E89A84"), hex("#8E3A25")];
+// injection depths: Paul Tol's bright scheme, shallow → deep
+const LEVEL_COL = ["#66CCEE", "#4477AA", "#AA3377", "#CCBB44", "#228833"];
 function colour(c, d) {
   if (S.mode === "log") { const lo = Math.log10(d.con / 100), hi = Math.log10(d.cfib * 10); return ramp(VIR, (Math.log10(Math.max(c, 1e-30)) - lo) / (hi - lo)); }
   if (c < d.con) return mix(UNDER[0], UNDER[1], 1 + Math.log10(Math.max(c, 1e-30) / d.con) / 2);
   if (c <= d.cfib) return mix(IN[0], IN[1], Math.log10(c / d.con) / Math.max(1e-9, Math.log10(d.cfib / d.con)));
   return mix(OVER[0], OVER[1], Math.log10(c / d.cfib));
 }
-const mapC = $("map"), secC = $("sec"), chartC = $("chart");
+const state = (c, d) => c < d.con ? 0 : c <= d.cfib ? 1 : 2;
+const ks = c => c.width / Math.max(1, c.clientWidth || c.width);    // canvas pixels per screen pixel
+const font = (c, px) => `${Math.round(px * ks(c))}px system-ui, sans-serif`;
+const mapC = $("map"), secC = $("sec"), chartC = $("chart"), optC = $("optPlot");
 let F = null, lastMapGrid = null;
-function drawGrid(ctx, W, H, nx, ny, vals, d) {
+function drawGrid(ctx, x0, y0, W, H, nx, ny, vals, d, alpha = 1) {
   const img = new ImageData(nx, ny);
   for (let i = 0; i < nx * ny; i++) { const c = colour(vals[i], d); img.data[4 * i] = c[0]; img.data[4 * i + 1] = c[1]; img.data[4 * i + 2] = c[2]; img.data[4 * i + 3] = 255; }
   const off = document.createElement("canvas"); off.width = nx; off.height = ny; off.getContext("2d").putImageData(img, 0, 0);
-  ctx.imageSmoothingEnabled = true; ctx.drawImage(off, 0, 0, W, H);
+  ctx.save(); ctx.globalAlpha = alpha; ctx.imageSmoothingEnabled = true; ctx.drawImage(off, x0, y0, W, H); ctx.restore();
 }
-function contour(ctx, nx, ny, vals, level, sx, sy, style, dash) {   // marching squares on cell centres
+function contour(ctx, x0, y0, nx, ny, vals, level, sx, sy, style, dash) {   // marching squares on cell centres
   ctx.save(); ctx.strokeStyle = style; ctx.lineWidth = 2; ctx.setLineDash(dash || []); ctx.beginPath();
-  const v = (i, j) => vals[j * nx + i], P = (i, j) => [(i + 0.5) * sx, (j + 0.5) * sy];
+  const v = (i, j) => vals[j * nx + i], P = (i, j) => [x0 + (i + 0.5) * sx, y0 + (j + 0.5) * sy];
   for (let j = 0; j < ny - 1; j++) for (let i = 0; i < nx - 1; i++) {
     const a = v(i, j), b = v(i + 1, j), c = v(i + 1, j + 1), e = v(i, j + 1), pts = [];
     const edge = (p1, p2, v1, v2) => { const t = (level - v1) / (v2 - v1); pts.push([p1[0] + (p2[0] - p1[0]) * t, p1[1] + (p2[1] - p1[1]) * t]); };
@@ -334,102 +544,252 @@ function contour(ctx, nx, ny, vals, level, sx, sy, style, dash) {   // marching 
   }
   ctx.stroke(); ctx.restore();
 }
-function scaleBar(ctx, W, H, L) {
+function scaleBar(ctx, xr, yb, W, L) {
   const len = [100, 200, 250, 500, 1000, 2000, 5000].find(v => v >= L / 6) || 5000, px = len / L * W;
-  ctx.fillStyle = "rgba(255,255,255,.85)"; ctx.fillRect(W - px - 26, H - 34, px + 16, 24);
-  ctx.fillStyle = "#1B2A33"; ctx.fillRect(W - px - 18, H - 18, px, 4);
-  ctx.font = "13px system-ui"; ctx.fillText(len >= 1000 ? len / 1000 + " mm" : len + " µm", W - px - 18, H - 22);
+  const kk = ks(ctx.canvas); ctx.fillStyle = "rgba(255,255,255,.85)"; ctx.fillRect(xr - px - 26, yb - 14 - 22 * kk, px + 16, 10 + 22 * kk);
+  ctx.fillStyle = "#1B2A33"; ctx.fillRect(xr - px - 18, yb - 18, px, 4);
+  const k = ks(ctx.canvas); ctx.font = font(ctx.canvas, 12); ctx.fillText(len >= 1000 ? len / 1000 + " mm" : len + " µm", xr - px - 18, yb - 8 - 16 * k);
 }
+function levelIndex(z) { const ds = levelDepths(S.p); let bi = 0; ds.forEach((v, i) => { if (Math.abs(v - z) < Math.abs(ds[bi] - z)) bi = i; }); return bi; }
 function drawMap(n) {
   const p = S.p, d = F.d, ctx = mapC.getContext("2d"), W = mapC.width, H = mapC.height, L = p.L, vals = new Float64Array(n * n);
   for (let j = 0; j < n; j++) for (let i = 0; i < n; i++) vals[j * n + i] = F.at((i + 0.5) / n * L, (j + 0.5) / n * L, p.zv);
   lastMapGrid = { n, vals };
-  drawGrid(ctx, W, H, n, n, vals, d);
-  contour(ctx, n, n, vals, d.con, W / n, H / n, S.mode === "log" ? "#ffffff" : "#1B2A33", [6, 4]);
-  contour(ctx, n, n, vals, d.cfib, W / n, H / n, "#E8590C", []);
-  const k = W / L;
-  for (const s of F.sites) {
-    if (s[0] < -p.R || s[0] > L + p.R || s[1] < -p.R || s[1] > L + p.R) continue;
-    ctx.beginPath(); ctx.arc(s[0] * k, s[1] * k, Math.max(3, p.R * k), 0, 2 * Math.PI); ctx.lineWidth = 2; ctx.setLineDash([]); ctx.strokeStyle = "rgba(255,255,255,.9)"; ctx.stroke();
-    ctx.beginPath(); ctx.arc(s[0] * k, s[1] * k, 3, 0, 2 * Math.PI); ctx.fillStyle = "#1B2A33"; ctx.fill();
+  drawGrid(ctx, 0, 0, W, H, n, n, vals, d);
+  contour(ctx, 0, 0, n, n, vals, d.con, W / n, H / n, S.mode === "log" ? "#ffffff" : "#1B2A33", [6, 4]);
+  contour(ctx, 0, 0, n, n, vals, d.cfib, W / n, H / n, "#E8590C", []);
+  const k = W / L, multi = S.pattern === "custom" ? new Set(S.custom.map(s => Math.round(s[2] ?? p.z0))).size > 1 : nLevels(p) > 1;
+  // sites at other depths first (faint, dashed), then those cut by the slice (solid)
+  const near = s => Math.abs(s[2] - p.zv) <= p.R;
+  for (const pass of [0, 1]) for (const s of F.sites) {
+    if (s[0] < -p.R || s[0] > L + p.R || s[1] < -p.R || s[1] > L + p.R || near(s) !== !!pass) continue;
+    const x = s[0] * k, y = s[1] * k, r = Math.max(3, p.R * k), col = multi ? LEVEL_COL[(S.pattern === "custom" ? 0 : levelIndex(s[2])) % LEVEL_COL.length] : "#1B2A33";
+    ctx.save(); ctx.globalAlpha = pass ? 1 : 0.55; ctx.setLineDash(pass ? [] : [4, 3]);
+    ctx.beginPath(); ctx.arc(x, y, r, 0, 2 * Math.PI); ctx.lineWidth = 2; ctx.strokeStyle = "rgba(255,255,255,.95)"; ctx.stroke();
+    ctx.setLineDash([]); ctx.beginPath(); ctx.arc(x, y, pass ? 4 : 3, 0, 2 * Math.PI); ctx.fillStyle = col; ctx.fill();
+    ctx.lineWidth = 1; ctx.strokeStyle = "#fff"; ctx.stroke(); ctx.restore();
   }
   const yl = p.ys / 100 * L * k; ctx.setLineDash([4, 6]); ctx.strokeStyle = "rgba(27,42,51,.7)"; ctx.lineWidth = 1.5;
   ctx.beginPath(); ctx.moveTo(0, yl); ctx.lineTo(W, yl); ctx.stroke(); ctx.setLineDash([]);
-  scaleBar(ctx, W, H, L);
+  scaleBar(ctx, W, H, W, L);
 }
+
+// Schematic cross-section: epidermis and hypodermis (not modelled) around the
+// modelled dermis; collagen fibres and host fibroblasts drawn schematically,
+// each cell coloured by the window state of the signal where it sits.
+const SEC = { top: 34, bottom: 40 };
+let fibreCache = null;
 function drawSection(nx) {
   const p = S.p, d = F.d, ctx = secC.getContext("2d"), L = p.L, Hd = p.H, W = secC.width;
-  const Hc = Math.round(W * Math.min(0.9, Math.max(0.25, Hd / L))); if (secC.height !== Hc) secC.height = Hc;
-  const nz = Math.max(30, Math.round(nx * Hc / W)), vals = new Float64Array(nx * nz), y = p.ys / 100 * L;
-  for (let j = 0; j < nz; j++) for (let i = 0; i < nx; i++) vals[j * nx + i] = F.at((i + 0.5) / nx * L, y, (j + 0.5) / nz * Hd);
-  drawGrid(ctx, W, Hc, nx, nz, vals, d);
-  contour(ctx, nx, nz, vals, d.con, W / nx, Hc / nz, S.mode === "log" ? "#ffffff" : "#1B2A33", [6, 4]);
-  contour(ctx, nx, nz, vals, d.cfib, W / nx, Hc / nz, "#E8590C", []);
-  const kz = Hc / Hd, kx = W / L;
-  ctx.fillStyle = "#1B2A33"; ctx.fillRect(0, 0, W, 3);
-  ctx.font = "12.5px system-ui"; ctx.fillStyle = "rgba(255,255,255,.85)"; ctx.fillRect(4, 6, 252, 18);
-  ctx.fillStyle = "#1B2A33"; ctx.fillText("dermal–epidermal junction (no flux)", 8, 19);
-  ctx.setLineDash([3, 5]); ctx.strokeStyle = "rgba(27,42,51,.55)"; ctx.beginPath(); ctx.moveTo(0, p.zv * kz); ctx.lineTo(W, p.zv * kz); ctx.stroke(); ctx.setLineDash([]);
-  for (const s of F.sites) if (Math.abs(s[1] - y) <= p.R && s[0] > -p.R && s[0] < L + p.R) {
-    const rr = Math.sqrt(Math.max(0, p.R * p.R - (s[1] - y) ** 2));
-    ctx.beginPath(); ctx.ellipse(s[0] * kx, p.z0 * kz, Math.max(2, rr * kx), Math.max(2, rr * kz), 0, 0, 2 * Math.PI); ctx.strokeStyle = "rgba(255,255,255,.9)"; ctx.lineWidth = 2; ctx.stroke();
+  const Hc = Math.round(W * Math.min(0.75, Math.max(0.25, Hd / L))), T = SEC.top, B = SEC.bottom, Htot = T + Hc + B;
+  if (secC.height !== Htot) secC.height = Htot;
+  const kx = W / L, kz = Hc / Hd, y = p.ys / 100 * L;
+  ctx.clearRect(0, 0, W, Htot);
+  // epidermis band with rete ridges
+  ctx.fillStyle = "#D7A086"; ctx.beginPath(); ctx.moveTo(0, 0); ctx.lineTo(W, 0);
+  for (let x = W; x >= 0; x -= 6) ctx.lineTo(x, T - 3 + 3 * Math.sin(x / 11)); ctx.closePath(); ctx.fill();
+  ctx.fillStyle = "#B97C63"; ctx.fillRect(0, 0, W, 4);
+  // dermis tissue: papillary (lighter) and reticular, fibres
+  const zp = Math.min(0.1 * Hd, 200);
+  ctx.fillStyle = "#EBD2C1"; ctx.fillRect(0, T, W, Hc);
+  ctx.fillStyle = "#F3E1D5"; ctx.fillRect(0, T, W, zp * kz);
+  const fk = W + "|" + Hc + "|" + T;
+  if (!fibreCache || fibreCache.k !== fk) {
+    const r = rng(11), lines = [];
+    for (let i = 0; i < Math.round(Hc / 14); i++) {
+      const y0 = T + zp * kz + 6 + r() * (Hc - zp * kz - 10), amp = 2 + r() * 5, per = 60 + r() * 110, ph = r() * 200, w = 3 + r() * 5, pts = [];
+      for (let x = -10; x <= W + 10; x += 10) pts.push([x, y0 + amp * Math.sin((x + ph) / per * 2 * Math.PI)]);
+      lines.push({ pts, w });
+    }
+    fibreCache = { k: fk, lines };
   }
-  $("secCap").innerHTML = `Cross-section at y = ${fmt(y)} µm, depth 0–${fmt(Hd)} µm (vertical scale ${(kz / kx).toFixed(2)}× the horizontal). Dotted line: depth of the en-face map. <a href="#help/start/read" data-help="start/read">How to read it</a>`;
+  ctx.save(); ctx.strokeStyle = "#DDBCA7"; ctx.globalAlpha = .9; ctx.lineCap = "round";
+  for (const ln of fibreCache.lines) { ctx.lineWidth = ln.w; ctx.beginPath(); ln.pts.forEach(([x, yy], i) => i ? ctx.lineTo(x, yy) : ctx.moveTo(x, yy)); ctx.stroke(); }
+  ctx.restore();
+  // hypodermis band with fat lobules
+  ctx.fillStyle = "#F4E7CC"; ctx.fillRect(0, T + Hc, W, B);
+  ctx.save(); ctx.strokeStyle = "#E4CFA3"; ctx.fillStyle = "#F8EEDA"; ctx.lineWidth = 2;
+  for (let x = 14, row = 0; x < W + 20; x += 34, row++) { ctx.beginPath(); ctx.arc(x, T + Hc + 12 + (row % 2) * 12, 13, 0, 2 * Math.PI); ctx.fill(); ctx.stroke(); }
+  ctx.restore();
+  // signal over the dermis
+  const nz = Math.max(30, Math.round(nx * Hc / W)), vals = new Float64Array(nx * nz);
+  for (let j = 0; j < nz; j++) for (let i = 0; i < nx; i++) vals[j * nx + i] = F.at((i + 0.5) / nx * L, y, (j + 0.5) / nz * Hd);
+  drawGrid(ctx, 0, T, W, Hc, nx, nz, vals, d, S.mode === "log" ? 0.8 : 0.62);
+  contour(ctx, 0, T, nx, nz, vals, d.con, W / nx, Hc / nz, S.mode === "log" ? "#ffffff" : "#1B2A33", [6, 4]);
+  contour(ctx, 0, T, nx, nz, vals, d.cfib, W / nx, Hc / nz, "#E8590C", []);
+  // host fibroblasts (representative), coloured by state where they sit
+  const r = rng(23), CELL = ["#7B868D", "#1F6E74", "#B8442A"], gap = 17;
+  ctx.save(); ctx.lineWidth = 1; ctx.strokeStyle = "rgba(255,255,255,.9)";
+  for (let gy = T + 8; gy < T + Hc - 4; gy += gap) for (let gx = 6; gx < W - 4; gx += gap) {
+    const cx = gx + (r() - .5) * gap * .8, cy = gy + (r() - .5) * gap * .8, ang = (r() - .5) * 1.1, keep = r();
+    const z = (cy - T) / kz, x = cx / kx;
+    if (keep < 0.15) continue;
+    if (F.sites.some(s => Math.abs(s[1] - y) <= p.R && Math.hypot(s[0] - x, s[2] - z) < p.R * 1.05)) continue;
+    const st = state(F.at(x, y, z), d);
+    ctx.beginPath(); ctx.ellipse(cx, cy, 5.5, 2, ang, 0, 2 * Math.PI); ctx.fillStyle = CELL[st]; ctx.fill(); ctx.stroke();
+  }
+  ctx.restore();
+  // implant clusters: cut by the section (solid, with cells) and nearby (faint)
+  const multi = nLevels(p) > 1 && S.pattern !== "custom";
+  for (const s of F.sites) {
+    const off = Math.abs(s[1] - y), x = s[0] * kx, z = T + s[2] * kz;
+    if (s[0] < -p.R || s[0] > L + p.R) continue;
+    if (off <= p.R) {
+      const rr = Math.sqrt(Math.max(0, p.R * p.R - off * off)), rx = Math.max(3, rr * kx), rz = Math.max(3, rr * kz);
+      ctx.beginPath(); ctx.ellipse(x, z, rx, rz, 0, 0, 2 * Math.PI); ctx.fillStyle = "rgba(31,90,96,.35)"; ctx.fill();
+      ctx.lineWidth = 2; ctx.strokeStyle = multi ? LEVEL_COL[levelIndex(s[2]) % LEVEL_COL.length] : "#fff"; ctx.stroke();
+      ctx.fillStyle = "#1F5A60";
+      for (let q = 0; q < 7; q++) { const t = q / 7 * 2 * Math.PI, f0 = q ? 0.55 : 0; ctx.beginPath(); ctx.arc(x + Math.cos(t) * rx * f0, z + Math.sin(t) * rz * f0, Math.max(1.5, Math.min(rx, rz) * 0.18), 0, 2 * Math.PI); ctx.fill(); }
+    } else if (off <= Math.max(p.a / 2, p.R * 2)) {
+      ctx.save(); ctx.globalAlpha = .45; ctx.setLineDash([3, 3]); ctx.beginPath(); ctx.ellipse(x, z, Math.max(3, p.R * kx), Math.max(3, p.R * kz), 0, 0, 2 * Math.PI);
+      ctx.lineWidth = 1.5; ctx.strokeStyle = "#1B2A33"; ctx.stroke(); ctx.restore();
+    }
+  }
+  // lines and labels
+  ctx.fillStyle = "#1B2A33"; ctx.fillRect(0, T - 1, W, 2);
+  ctx.setLineDash([3, 5]); ctx.strokeStyle = "rgba(27,42,51,.55)"; ctx.beginPath(); ctx.moveTo(0, T + p.zv * kz); ctx.lineTo(W, T + p.zv * kz); ctx.stroke(); ctx.setLineDash([]);
+  const k = ks(secC); ctx.font = font(secC, 11);
+  const label = (txt, x0, y0) => { const w = ctx.measureText(txt).width; ctx.fillStyle = "rgba(255,255,255,.82)"; ctx.fillRect(x0 - 3, y0 - 11 * k, w + 6, 14 * k); ctx.fillStyle = "#1B2A33"; ctx.fillText(txt, x0, y0); };
+  label("epidermis (not modelled)", 6, Math.min(T - 6, 4 + 11 * k));
+  label("papillary dermis", 6, T + Math.max(14, zp * kz * 0.6));
+  label("reticular dermis", 6, T + zp * kz + 22);
+  label("hypodermis (not modelled)", 6, T + Hc + 25);
+  levelDepths(p).forEach((zl, i) => { const yy = T + zl * kz, txt = fmt(zl) + " µm"; ctx.fillStyle = multi ? LEVEL_COL[i % LEVEL_COL.length] : "#1B2A33"; ctx.fillRect(W - 8, yy - 1, 8, 2); label(txt, W - 14 - ctx.measureText(txt).width, yy + 4 * k); });
+  $("secCap").innerHTML = `Cross-section at y = ${fmt(y)} µm through 0–${fmt(Hd)} µm of dermis (vertical scale ${(kz / kx).toFixed(2)}× the horizontal). Cells are drawn every ~${fmt(gap / kx)} µm and coloured by the signal where they sit; layer boundaries, fibres and the bands above and below are schematic. <a href="#help/start/cross" data-help="start/cross">More</a>`;
 }
 
 // ---------------------------------------------------------------------------
-// Metrics and the design curve
+// Metrics, design curve, optimiser views
 // ---------------------------------------------------------------------------
 const bar = fr => `<div class="bar">${fr.map((f, i) => `<div style="width:${(100 * f).toFixed(2)}%;background:${["#BFCBD1", "#2A6F75", "#A9472F"][i]}"></div>`).join("")}</div>`;
 let volCache = null;
-function drawMetrics(final) {
-  const p = S.p, d = F.d, plane = fractions(lastMapGrid.vals, d);
-  if (final) volCache = volumeFractions(F, S.p, 36, 40);
-  const spc = S.pattern === "custom" ? S.custom.length / (p.L * p.L / 1e8) : sitesPerCm2(S.pattern === "square" ? "square" : "hex", p.a);
-  const crit = (S.pattern === "hex" || S.pattern === "square") ? criticalSpacing(p, S.pattern === "square" ? "square" : "hex") : null, reach = singleReach(p, d, F.f);
-  const pct = x => (100 * x).toFixed(1) + " %", hl = t => ` <a class="hl" href="#help/metrics/${t}" data-help="metrics/${t}">ⓘ</a>`;
+const pct = x => (100 * x).toFixed(1) + " %";
+function drawMetrics() {
+  const p = S.p, d = F.d, plane = fractions(lastMapGrid.vals, d), nl = nLevels(p), pat = geoPattern();
+  const spc = S.pattern === "custom" ? S.custom.length / (p.L * p.L / 1e8) : sitesPerCm2(pat, p.a, nl);
+  const crit = (S.pattern === "hex" || S.pattern === "square") ? criticalSpacing(p, pat) : null, reach = singleReach(p, d, F.f);
+  const hl = t => ` <a class="hl" href="#help/metrics/${t}" data-help="metrics/${t}">ⓘ</a>`;
+  const depths = S.pattern === "custom" ? "custom" : levelDepths(p).map(fmt).join(" · ") + " µm";
   const rows = [
     ["Dermis in window (whole depth)" + hl("coverage"), volCache ? `<b>${pct(volCache[1])}</b>` : "…"],
     ["… below threshold / above ceiling", volCache ? `${pct(volCache[0])} / ${pct(volCache[2])}` : "…"],
     ["Slice in window (at " + fmt(p.zv) + " µm)", pct(plane[1])],
+    ["Injection depths" + hl("depths"), depths],
+    ["Spacing seen from above", S.pattern === "custom" ? "–" : fmt(topDownSpacing(pat, p.a, nl)) + " µm"],
     ["Sites per cm²" + hl("dose"), fmt(spc)],
     ["Cells per cm²", fmt(spc * p.ncells)],
     ["Reach of one site (to aged-cell threshold)" + hl("reach"), fmt(reach) + " µm"],
-    ["Largest spacing with no gap in the injection plane" + hl("critical"), crit ? (isNaN(crit.a) ? "none (threshold not reached)" : fmt(crit.a) + " µm → " + fmt(sitesPerCm2(crit.pat, crit.a)) + " sites/cm²") : "lattice patterns only"]
+    ["Largest gap-free spacing, one plane" + hl("critical"), crit ? (isNaN(crit.a) ? "none (threshold not reached)" : fmt(crit.a) + " µm") : "lattice patterns only"]
   ];
-  $("metrics").innerHTML = (volCache ? bar(volCache) : "") +
+  if (S.pattern === "hex" || S.pattern === "square") if (!clustersApart(pat, p.a, nl, p.dz, p.R))
+    rows.unshift([`<b style="color:var(--terra)">⚠ Clusters overlap</b>` + hl("overlap"), `<span style="color:var(--terra)">spacing &lt; 2R</span>`]);
+  $("metrics").innerHTML = (volCache ? bar(volCache) : `<div class="bar"></div>`) +
     `<div class="note" style="margin-bottom:6px">grey: below the aged-cell threshold · teal: in the window · orange: above the fibrotic ceiling</div>` +
     rows.map(r => `<div class="metric"><span>${r[0]}</span><span class="v">${r[1]}</span></div>`).join("") +
     `<div class="derived">Per site ${fmt(d.Q)} molecules/s. Decay rate k = D/λ² = ${fmt(d.k)} s⁻¹ (half-life ${fmt(d.thalf / 60)} min). Thresholds: aged cells ${fmt(p.con * p.sage)} ng/mL (${fmt(p.con * p.sage * 1000 / p.mw)} pM), ceiling ${fmt(p.cfib)} ng/mL.</div>`;
 }
-let chartJob = 0;
+function requestVolume() {
+  ask("volume", { p: { ...S.p }, pattern: S.pattern, custom: S.custom, seed: S.seed, nxy: 36, nz: 40 }, m => { volCache = m.fr; drawMetrics(); });
+}
+const CURVE = { N: 22, nu: 12, nz: 16 };
+let curve = { as: [], res: [] };
 function drawChart() {
-  const job = ++chartJob, p = { ...S.p }, pat = S.pattern === "square" ? "square" : "hex", ctx = chartC.getContext("2d");
+  const ctx = chartC.getContext("2d");
   if (S.pattern === "custom") { ctx.clearRect(0, 0, chartC.width, chartC.height); $("chartCap").textContent = "The design curve needs a lattice pattern (hexagonal, square or random)."; return; }
-  const as = [], res = [], N = 22, nu = 12, nz = 16;
-  for (let i = 0; i < N; i++) as.push(80 * Math.pow(3000 / 80, i / (N - 1)));
-  let i = 0;
-  (function step() {
-    if (job !== chartJob) return;
-    res.push(unitCellFractions(p, pat, as[i], nu, nz)); i++;
-    plotChart(as.slice(0, i), res, p, pat);
-    if (i < N) setTimeout(step, 0);
-  })();
+  const p = { ...S.p }, pat = geoPattern(), as = Array.from({ length: CURVE.N }, (_, i) => 80 * Math.pow(3000 / 80, i / (CURVE.N - 1)));
+  curve = { as, res: new Array(as.length).fill(null), p, pat };
+  plotChart();
+  ask("curve", { p, pat, as, nu: CURVE.nu, nz: CURVE.nz }, m => { curve.res[m.i] = m.fr; plotChart(); });
 }
-function plotChart(as, res, p, pat) {
-  const ctx = chartC.getContext("2d"), W = chartC.width, H = chartC.height, l = 56, r = 14, t = 14, b = 46;
-  ctx.clearRect(0, 0, W, H); ctx.font = "13px system-ui";
+function plotChart() {
+  const k = ks(chartC), ctx = chartC.getContext("2d"), W = chartC.width, H = chartC.height, l = 46 * k, r = 12 * k, t = 26 * k, b = 40 * k, { as, res, p, pat } = curve;
+  ctx.clearRect(0, 0, W, H); ctx.font = font(chartC, 11); ctx.lineWidth = k;
   const x = a => l + (Math.log(a / 80) / Math.log(3000 / 80)) * (W - l - r), y = v => t + (1 - v) * (H - t - b);
-  ctx.strokeStyle = "#D9D2C7"; ctx.fillStyle = "#44525A"; ctx.lineWidth = 1;
-  for (const v of [0, .25, .5, .75, 1]) { ctx.beginPath(); ctx.moveTo(l, y(v)); ctx.lineTo(W - r, y(v)); ctx.stroke(); ctx.fillText((v * 100) + "%", 8, y(v) + 4); }
-  for (const a of [100, 200, 500, 1000, 2000]) { ctx.beginPath(); ctx.moveTo(x(a), t); ctx.lineTo(x(a), H - b); ctx.stroke(); ctx.fillText(a >= 1000 ? a / 1000 + " mm" : a + " µm", x(a) - 16, H - b + 18); }
-  ctx.fillText("site spacing (" + (pat === "hex" ? "hexagonal" : "square") + " lattice), log scale", l, H - 8);
-  const lines = [[0, "#8FA0A8", "below threshold"], [1, "#2A6F75", "in window"], [2, "#A9472F", "above ceiling"]];
-  for (const [k, col] of lines) { ctx.strokeStyle = col; ctx.lineWidth = k === 1 ? 3.5 : 2.5; ctx.beginPath(); as.forEach((a, i) => { const X = x(a), Y = y(res[i][k]); i ? ctx.lineTo(X, Y) : ctx.moveTo(X, Y); }); ctx.stroke(); }
-  ctx.lineWidth = 1; ctx.strokeStyle = "#1B2A33"; ctx.setLineDash([4, 4]); ctx.beginPath(); ctx.moveTo(x(p.a), t); ctx.lineTo(x(p.a), H - b); ctx.stroke(); ctx.setLineDash([]);
-  let lx = l + 8; for (const [, col, name] of lines) { ctx.fillStyle = col; ctx.fillRect(lx, t + 4, 12, 12); ctx.fillStyle = "#1B2A33"; ctx.fillText(name, lx + 16, t + 15); lx += ctx.measureText(name).width + 34; }
-  $("chartCap").textContent = "Share of the dermis (0–" + fmt(p.H) + " µm deep) below the aged-cell threshold, inside the window and above the fibrotic ceiling, for the current parameters. Dashed: current spacing." + (S.pattern === "random" ? " Random pattern: shown for the hexagonal lattice of the same density." : "");
+  ctx.strokeStyle = "#E3DED6"; ctx.fillStyle = "#44525A";
+  for (const v of [0, .25, .5, .75, 1]) { ctx.beginPath(); ctx.moveTo(l, y(v)); ctx.lineTo(W - r, y(v)); ctx.stroke(); ctx.textAlign = "right"; ctx.fillText((v * 100) + "%", l - 5 * k, y(v) + 4 * k); }
+  ctx.textAlign = "center";
+  for (const a of [100, 200, 500, 1000, 2000]) { ctx.beginPath(); ctx.moveTo(x(a), t); ctx.lineTo(x(a), H - b); ctx.stroke(); ctx.fillText(a >= 1000 ? a / 1000 + " mm" : a + " µm", x(a), H - b + 15 * k); }
+  ctx.textAlign = "left"; ctx.fillText("spacing per depth (" + (pat === "hex" ? "hexagonal" : "square") + "), log scale", l, H - 6 * k);
+  const lines = [[0, "#8FA0A8", "below"], [1, "#2A6F75", "in window"], [2, "#A9472F", "above"]];
+  for (const [kk, col] of lines) {
+    ctx.strokeStyle = col; ctx.lineWidth = (kk === 1 ? 2.5 : 1.8) * k; ctx.beginPath(); let started = false;
+    as.forEach((a, i) => { if (!res[i]) return; const X = x(a), Y = y(res[i][kk]); started ? ctx.lineTo(X, Y) : ctx.moveTo(X, Y); started = true; }); ctx.stroke();
+  }
+  ctx.lineWidth = k; ctx.strokeStyle = "#1B2A33"; ctx.setLineDash([4 * k, 4 * k]); ctx.beginPath(); ctx.moveTo(x(p.a), t); ctx.lineTo(x(p.a), H - b); ctx.stroke(); ctx.setLineDash([]);
+  let lx = l; for (const [, col, name] of lines) { ctx.fillStyle = col; ctx.fillRect(lx, 7 * k, 10 * k, 10 * k); ctx.fillStyle = "#1B2A33"; ctx.fillText(name, lx + 14 * k, 16 * k); lx += ctx.measureText(name).width + 26 * k; }
+  const done = res.filter(Boolean).length;
+  $("chartCap").textContent = (done < as.length ? `Computing… ${done}/${as.length}. ` : "") + "Share of the dermis (0–" + fmt(p.H) + " µm deep) below the aged-cell threshold, inside the window and above the fibrotic ceiling as the spacing varies, with all other values as set" + (nLevels(p) > 1 ? ` (${nLevels(p)} depths)` : "") + ". Dashed: current spacing." + (S.pattern === "random" ? " Random pattern: shown for the hexagonal lattice of the same density." : "");
 }
+
+// Optimiser panel: run, plot all designs and the fronts, cycle through solutions.
+function runOptimiser() {
+  const o = S.opt; o.running = true; o.res = null; o.list = []; o.idx = -1; o.before = { p: { ...S.p }, pattern: S.pattern, custom: S.custom.map(s => s.slice()), zvLinked: S.zvLinked };
+  $("optRun").disabled = true; $("optProg").hidden = false; $("optProg").firstChild.style.width = "0%";
+  $("optSol").innerHTML = `<div class="note">Searching…</div>`; plotOpt();
+  ask("optimise", { p: { ...S.p }, pattern: geoPattern(), mode: o.mode }, m => {
+    if (m.progress !== undefined) { $("optProg").firstChild.style.width = (100 * m.progress).toFixed(0) + "%"; return; }
+    o.running = false; $("optRun").disabled = false; $("optProg").hidden = true;
+    o.res = m.results; o.current = { ...m.current, cells: sitesPerCm2(geoPattern(), o.before.p.a, nLevels(o.before.p)) * o.before.p.ncells };
+    o.list = Object.values(m.results).flatMap(r => r.front.map(s => ({ ...s, pattern: r.pattern }))).sort((x, y) => x.cells_per_cm2 - y.cells_per_cm2 || x.exact.window - y.exact.window);
+    let bi = 0; o.list.forEach((s, i) => { if (s.exact.window > o.list[bi].exact.window) bi = i; });
+    o.idx = o.list.length ? bi : -1; plotOpt(); drawSolution(false);
+  });
+}
+function applySolution(s) {
+  S.pattern = s.pattern; S.p.a = s.a; S.p.levels = s.levels; if (s.levels > 1) S.p.dz = s.dz; S.p.z0 = s.z0; S.p.ncells = s.ncells;
+  S.zvLinked = true; S.p.zv = S.p.z0; schedule(false);
+}
+function drawSolution(apply = true) {
+  const o = S.opt, s = o.list[o.idx];
+  if (!s) { $("optSol").innerHTML = `<div class="note">No design reached the window. Check the thresholds and the secretion.</div>`; return; }
+  if (apply) applySolution(s);
+  const depths = levelDepths({ ...S.p, levels: s.levels, dz: s.dz, z0: s.z0 }).map(fmt).join(" · ");
+  $("optSol").innerHTML = `<div class="soln"><div class="head"><button id="optPrev" title="Previous solution (lower dose)" ${o.idx ? "" : "disabled"}>◀</button><span class="nav">${o.idx + 1} / ${o.list.length}</span><button id="optNext" title="Next solution (higher dose)" ${o.idx < o.list.length - 1 ? "" : "disabled"}>▶</button><span class="chip ${s.mode}">${s.mode}</span><span class="sp" style="flex:1"></span><button id="optApply" title="Show this design in the maps">Show</button></div>
+    <div><span class="big">${pct(s.exact.window)}</span> of the dermis in the window · ${pct(s.exact.above)} above the ceiling</div>
+    <div class="row"><span>${fmt(s.cells_per_cm2)} cells/cm²</span><span>${fmt(sitesPerCm2(s.pattern, s.a, s.levels))} sites/cm²</span><span>${fmt(s.ncells)} cells/site</span></div>
+    <div class="row"><span>spacing ${fmt(s.a)} µm${s.levels > 1 ? ` (${fmt(topDownSpacing(s.pattern, s.a, s.levels))} µm seen from above)` : ""}</span><span>depth${s.levels > 1 ? "s" : ""} ${depths} µm</span></div>
+    <div style="margin-top:6px"><button id="optBack" title="Restore the values you had before searching">Back to my design</button></div></div>`;
+  $("optPrev").onclick = () => { o.idx--; plotOpt(); drawSolution(); };
+  $("optNext").onclick = () => { o.idx++; plotOpt(); drawSolution(); };
+  $("optApply").onclick = () => applySolution(s);
+  $("optBack").onclick = () => { const b = o.before; Object.assign(S.p, b.p); S.pattern = b.pattern; S.custom = b.custom.map(x => x.slice()); S.zvLinked = b.zvLinked; schedule(false); };
+}
+let optGeom = null;
+function plotOpt() {
+  const k = ks(optC), ctx = optC.getContext("2d"), W = optC.width, H = optC.height, l = 46 * k, r = 12 * k, t = 26 * k, b = 40 * k, o = S.opt;
+  ctx.clearRect(0, 0, W, H); ctx.font = font(optC, 11);
+  const pts = o.res ? Object.values(o.res).flatMap(rr => rr.points.map(q => [q[0], q[1], rr.mode])) : [];
+  const xs = pts.map(q => q[0]).filter(v => v > 0);
+  const x0 = xs.length ? Math.log10(Math.min(...xs)) : 5, x1 = xs.length ? Math.log10(Math.max(...xs)) : 9;
+  const X = v => l + (Math.log10(Math.max(v, 1e-9)) - x0) / Math.max(1e-9, x1 - x0) * (W - l - r), Y = v => t + (1 - v) * (H - t - b);
+  optGeom = { X, Y };
+  ctx.strokeStyle = "#E3DED6"; ctx.fillStyle = "#44525A"; ctx.lineWidth = k;
+  for (const v of [0, .25, .5, .75, 1]) { ctx.beginPath(); ctx.moveTo(l, Y(v)); ctx.lineTo(W - r, Y(v)); ctx.stroke(); ctx.textAlign = "right"; ctx.fillText((v * 100) + "%", l - 5 * k, Y(v) + 4 * k); }
+  ctx.textAlign = "center";
+  for (let e = Math.ceil(x0); e <= Math.floor(x1); e++) { const xx = X(10 ** e); ctx.beginPath(); ctx.moveTo(xx, t); ctx.lineTo(xx, H - b); ctx.stroke(); ctx.fillText("10" + String(e).replace(/\d/g, c => "⁰¹²³⁴⁵⁶⁷⁸⁹"[c]), xx, H - b + 15 * k); }
+  ctx.textAlign = "left"; ctx.fillText("cells per cm² (log scale) → dose", l, H - 6 * k);
+  const col = { flat: "#2A6F75", volume: "#A9472F" };
+  if (!o.res) { ctx.fillStyle = "#8A949A"; ctx.textAlign = "center"; ctx.fillText(o.running ? "searching…" : "press Find designs", (l + W - r) / 2, (t + H - b) / 2); ctx.textAlign = "left"; return; }
+  ctx.globalAlpha = .16; for (const [cx, w, md] of pts) { ctx.fillStyle = col[md]; ctx.fillRect(X(cx) - 1.5 * k, Y(w) - 1.5 * k, 3 * k, 3 * k); } ctx.globalAlpha = 1;
+  for (const [md, rr] of Object.entries(o.res)) {
+    ctx.strokeStyle = col[md]; ctx.lineWidth = 2 * k; ctx.beginPath(); rr.front.forEach((s, i) => { const xx = X(s.cells_per_cm2), yy = Y(s.exact.window); i ? ctx.lineTo(xx, yy) : ctx.moveTo(xx, yy); }); ctx.stroke();
+    for (const s of rr.front) { ctx.beginPath(); ctx.arc(X(s.cells_per_cm2), Y(s.exact.window), 3.5 * k, 0, 2 * Math.PI); ctx.fillStyle = col[md]; ctx.fill(); ctx.strokeStyle = "#fff"; ctx.lineWidth = k; ctx.stroke(); }
+  }
+  const dm = 6 * k;
+  if (o.current) { const xx = X(o.current.cells), yy = Y(o.current.window); ctx.fillStyle = "#1B2A33"; ctx.beginPath(); ctx.moveTo(xx, yy - dm); ctx.lineTo(xx + dm, yy); ctx.lineTo(xx, yy + dm); ctx.lineTo(xx - dm, yy); ctx.closePath(); ctx.fill(); }
+  const s = o.list[o.idx]; if (s) { ctx.beginPath(); ctx.arc(X(s.cells_per_cm2), Y(s.exact.window), 8 * k, 0, 2 * Math.PI); ctx.strokeStyle = "#1B2A33"; ctx.lineWidth = 2 * k; ctx.stroke(); }
+  let lx = l; for (const [txt, c] of [["flat", col.flat], ["volume", col.volume], ["◆ your design", "#1B2A33"]]) {
+    if (!txt.startsWith("◆") && !o.res[txt]) continue;
+    ctx.fillStyle = c; if (!txt.startsWith("◆")) ctx.fillRect(lx, 7 * k, 10 * k, 10 * k); ctx.fillStyle = "#1B2A33"; ctx.fillText(txt, lx + (txt.startsWith("◆") ? 0 : 14 * k), 16 * k); lx += ctx.measureText(txt).width + 26 * k; }
+}
+optC.addEventListener("click", e => {
+  const o = S.opt; if (!o.list.length || !optGeom) return;
+  const rc = optC.getBoundingClientRect(), mx = (e.clientX - rc.left) / rc.width * optC.width, my = (e.clientY - rc.top) / rc.height * optC.height;
+  let bi = -1, bd = 14 * ks(optC); o.list.forEach((s, i) => { const dd = Math.hypot(optGeom.X(s.cells_per_cm2) - mx, optGeom.Y(s.exact.window) - my); if (dd < bd) { bd = dd; bi = i; } });
+  if (bi >= 0) { o.idx = bi; plotOpt(); drawSolution(); }
+});
+document.querySelectorAll("[data-om]").forEach(b => b.addEventListener("click", () => { S.opt.mode = b.dataset.om; document.querySelectorAll("[data-om]").forEach(x => x.classList.toggle("on", x === b)); }));
+$("optRun").addEventListener("click", runOptimiser);
 
 // ---------------------------------------------------------------------------
 // Controls
@@ -452,18 +812,20 @@ function buildControls() {
   const groups = [...new Set(PARAMS.map(p => p.group))];
   $("left").innerHTML = groups.map(g => `<div class="panel"><h2>${g} <a class="hl" href="#help/start/defaults" data-help="start/defaults" title="Help: defaults and resetting">ⓘ</a></h2>` + PARAMS.filter(p => p.group === g).map(def => {
     const min = def.log ? 0 : def.min, max = def.log ? 1000 : def.max, step = def.log ? 1 : (def.step || 1);
-    const pct = (toSlider(def, def.def) - min) / (max - min) * 100, dtxt = esc(fmt(def.def) + " " + def.unit);
-    return `<div class="prow"><div class="lab"><span>${def.label}</span>${badge(def)}<span class="val" id="v_${def.key}" title="Default: ${dtxt}"></span><button class="rst" id="r_${def.key}" data-key="${def.key}" title="Back to the default, ${dtxt} (or double-click the slider)" aria-label="Reset ${esc(def.label)} to its default, ${dtxt}" hidden>↺</button></div>
-      <div class="track"><input type="range" id="s_${def.key}" min="${min}" max="${max}" step="${step}" aria-label="${esc(def.label)}" title="Double-click: back to the default, ${dtxt}"><span class="dtick" style="left:calc(${pct.toFixed(2)}% + ${(8 - 16 * pct / 100).toFixed(1)}px)" aria-hidden="true"></span></div></div>`;
+    const pctd = (toSlider(def, def.def) - min) / (max - min) * 100, dtxt = esc(fmt(def.def) + " " + def.unit);
+    return `<div class="prow" id="row_${def.key}"><div class="lab"><span>${def.label}</span>${badge(def)}<span class="val" id="v_${def.key}" title="Default: ${dtxt}"></span><button class="rst" id="r_${def.key}" data-key="${def.key}" title="Back to the default, ${dtxt} (or double-click the slider)" aria-label="Reset ${esc(def.label)} to its default, ${dtxt}" hidden>↺</button></div>
+      <div class="track"><input type="range" id="s_${def.key}" min="${min}" max="${max}" step="${step}" aria-label="${esc(def.label)}" title="Double-click: back to the default, ${dtxt}"><span class="dtick" style="left:calc(${pctd.toFixed(2)}% + ${(8 - 16 * pctd / 100).toFixed(1)}px)" aria-hidden="true"></span></div></div>`;
   }).join("") + (g === "Signal" ? `<div class="derived" id="lamBox"></div>` : "") + `</div>`).join("");
-  for (const def of PARAMS) $("s_" + def.key).addEventListener("input", e => {
-    S.p[def.key] = fromSlider(def, +e.target.value);
-    if (def.key === "z0" && S.zvLinked) S.p.zv = S.p.z0;
-    if (def.key === "zv") S.zvLinked = false;
-    if (def.key === "H") { S.p.z0 = Math.min(S.p.z0, S.p.H - 20); S.p.zv = Math.min(S.p.zv, S.p.H); }
-    schedule(true);
-  });
-  for (const def of PARAMS) $("s_" + def.key).addEventListener("dblclick", () => resetParam(def.key));
+  for (const def of PARAMS) {
+    $("s_" + def.key).addEventListener("input", e => {
+      S.p[def.key] = fromSlider(def, +e.target.value);
+      if (def.key === "z0" && S.zvLinked) S.p.zv = S.p.z0;
+      if (def.key === "zv") S.zvLinked = false;
+      if (def.key === "H") { S.p.z0 = Math.min(S.p.z0, S.p.H - 20); S.p.zv = Math.min(S.p.zv, S.p.H); }
+      schedule(true);
+    });
+    $("s_" + def.key).addEventListener("dblclick", () => resetParam(def.key));
+  }
   $("left").addEventListener("click", e => { const b = e.target.closest("button.rst"); if (b) resetParam(b.dataset.key); });
 }
 const isDefault = key => Math.abs(S.p[key] - PDEF[key].def) <= 1e-9 * Math.max(1, Math.abs(PDEF[key].def));
@@ -482,6 +844,7 @@ function syncControls() {
     $("v_" + def.key).classList.toggle("changed", !same);
     $("r_" + def.key).hidden = same;
   }
+  $("row_dz").classList.toggle("off", nLevels(S.p) < 2 || S.pattern === "custom");
   $("lamBox").innerHTML = `Reference ranges for λ: 80–120 µm measured for cytokines in tissue (${cite("oyleryaniv2017niches")}), about 250 µm for a single cell (${cite("francis1997distances")}). <a href="#help/model/lambda" data-help="model/lambda">More</a>`;
   $("pattern").value = S.pattern;
   $("editBtn").classList.toggle("on", S.edit); mapC.classList.toggle("editing", S.edit);
@@ -489,25 +852,26 @@ function syncControls() {
   $("presetYoung").classList.toggle("on", S.p.sage === 1); $("presetAged").classList.toggle("on", S.p.sage === 3);
 }
 function drawLegend() {
-  const p = S.p;
-  if (S.mode === "window") {
-    $("legend").innerHTML = `<span><span class="sw" style="background:#BFCBD1"></span>below aged-cell threshold (&lt; ${fmt(p.con * p.sage)} ng/mL)</span>
+  const p = S.p, nl = nLevels(p);
+  const winLegend = `<span><span class="sw" style="background:#BFCBD1"></span>below aged-cell threshold (&lt; ${fmt(p.con * p.sage)} ng/mL)</span>
       <span><span class="sw" style="background:#2A6F75"></span>in the window</span>
       <span><span class="sw" style="background:#A9472F"></span>above fibrotic ceiling (&gt; ${fmt(p.cfib)} ng/mL)</span>`;
-  } else {
-    const g = VIR.map((c, i) => `rgb(${c}) ${i / (VIR.length - 1) * 100}%`).join(",");
-    $("legend").innerHTML = `<span>${fmt(p.con * p.sage / 100)} ng/mL</span><span class="sw" style="width:180px;background:linear-gradient(90deg,${g})"></span><span>${fmt(p.cfib * 10)} ng/mL</span><span>· dashed white: aged-cell threshold · orange: fibrotic ceiling</span>`;
-  }
-  $("mapCap").textContent = `En-face map at ${fmt(p.zv)} µm below the dermal–epidermal junction, ${fmt(p.L / 1000)} × ${fmt(p.L / 1000)} mm. Circles: implant sites (cluster radius ${fmt(p.R)} µm, depth ${fmt(p.z0)} µm). Dashed line: cross-section.` +
-    (S.pattern === "custom" ? " Custom layout: only the sites shown count." : " The lattice continues beyond the view.");
+  const g = VIR.map((c, i) => `rgb(${c}) ${i / (VIR.length - 1) * 100}%`).join(",");
+  const logLegend = `<span>${fmt(p.con * p.sage / 100)} ng/mL</span><span class="sw" style="width:160px;background:linear-gradient(90deg,${g})"></span><span>${fmt(p.cfib * 10)} ng/mL</span><span>· dashed: aged-cell threshold · orange: ceiling</span>`;
+  const depthLegend = nl > 1 && S.pattern !== "custom" ? `<span>depths:</span>` + levelDepths(p).map((z, i) => `<span><span class="dot" style="background:${LEVEL_COL[i % LEVEL_COL.length]}"></span>${fmt(z)} µm</span>`).join("") : "";
+  $("legend").innerHTML = (S.mode === "window" ? winLegend : logLegend) + depthLegend;
+  $("secLegend").innerHTML = `<span>host cells:</span><span><span class="dot" style="background:#7B868D"></span>not reached</span><span><span class="dot" style="background:#1F6E74"></span>activated (in window)</span><span><span class="dot" style="background:#B8442A"></span>above ceiling</span>`;
+  $("mapCap").textContent = `En-face map at ${fmt(p.zv)} µm below the dermal–epidermal junction, ${fmt(p.L / 1000)} × ${fmt(p.L / 1000)} mm. Circles: implant sites (cluster radius ${fmt(p.R)} µm); solid where the slice cuts them, dashed at other depths. Dashed line: cross-section.` +
+    (S.pattern === "custom" ? " Custom layout: only the sites shown count; new sites go to the slice depth." : " The lattice continues beyond the view.");
 }
+
 let pending = null, fineTimer = null;
 function schedule(coarse) {
   if (pending) cancelAnimationFrame(pending);
   pending = requestAnimationFrame(() => { pending = null; render(coarse ? 90 : 170, false); });
-  clearTimeout(fineTimer); fineTimer = setTimeout(() => { render(170, true); drawChart(); }, coarse ? 260 : 0);
+  clearTimeout(fineTimer); fineTimer = setTimeout(() => { render(170, true); requestVolume(); drawChart(); }, coarse ? 260 : 0);
 }
-function render(n, final) { F = buildField(S.p, S.pattern, S.custom, S.seed); syncControls(); drawLegend(); drawMap(n); drawSection(n); drawMetrics(final); if (final) syncUrl(); }
+function render(n, final) { F = buildField(S.p, S.pattern, S.custom, S.seed); syncControls(); drawLegend(); drawMap(n); drawSection(n); drawMetrics(); if (final) syncUrl(); }
 
 // ---------------------------------------------------------------------------
 // The address holds the configuration: every value that differs from its
@@ -519,10 +883,10 @@ function render(n, final) { F = buildField(S.p, S.pattern, S.custom, S.seed); sy
 const sig4 = v => +(+v).toPrecision(4);
 function stateQuery() {
   const q = new URLSearchParams();
-  for (const def of PARAMS) if (Math.abs(S.p[def.key] - def.def) > 1e-9 * Math.max(1, Math.abs(def.def))) q.set(def.key, sig4(S.p[def.key]));
+  for (const def of PARAMS) if (!isDefault(def.key)) q.set(def.key, sig4(S.p[def.key]));
   if (S.pattern !== "hex") q.set("pattern", S.pattern);
-  if (S.mode !== "window") q.set("show", S.mode === "log" ? "concentration" : S.mode);
-  if (S.pattern === "custom") q.set("sites", S.custom.map(s => Math.round(s[0]) + "," + Math.round(s[1])).join(";"));
+  if (S.mode !== "window") q.set("show", "concentration");
+  if (S.pattern === "custom") q.set("sites", S.custom.map(s => [s[0], s[1], s[2] ?? S.p.z0].map(Math.round).join(",")).join(";"));
   return q.toString().replace(/%2C/g, ",").replace(/%3B/g, ";");
 }
 function syncUrl() {
@@ -531,15 +895,12 @@ function syncUrl() {
 }
 function readUrlState() {
   const q = new URLSearchParams(location.search);
-  for (const def of PARAMS) if (q.has(def.key)) {
-    const v = parseFloat(q.get(def.key));
-    if (isFinite(v)) S.p[def.key] = Math.min(def.max, Math.max(def.min, v));
-  }
+  for (const def of PARAMS) if (q.has(def.key)) { const v = parseFloat(q.get(def.key)); if (isFinite(v)) S.p[def.key] = Math.min(def.max, Math.max(def.min, v)); }
   if (q.has("zv")) S.zvLinked = false;
   const pat = q.get("pattern"); if (["hex", "square", "random", "custom"].includes(pat)) S.pattern = pat;
   if (q.get("show") === "concentration") S.mode = "log";
   if (S.pattern === "custom") {
-    S.custom = (q.get("sites") || "").split(";").map(t => t.split(",").map(Number)).filter(s => s.length === 2 && s.every(isFinite));
+    S.custom = (q.get("sites") || "").split(";").map(t => t.split(",").map(Number)).filter(s => (s.length === 2 || s.length === 3) && s.every(isFinite));
     if (!S.custom.length) S.pattern = "hex";
   }
 }
@@ -552,15 +913,15 @@ $("linkbtn").addEventListener("click", () => {
 
 let drag = null;
 function canvasPt(e) { const r = mapC.getBoundingClientRect(); return [(e.clientX - r.left) / r.width * S.p.L, (e.clientY - r.top) / r.height * S.p.L]; }
-function toCustom() { if (S.pattern !== "custom") { S.custom = F.sites.filter(s => s[0] >= 0 && s[0] <= S.p.L && s[1] >= 0 && s[1] <= S.p.L).map(s => [s[0], s[1]]); S.pattern = "custom"; } }
+function toCustom() { if (S.pattern !== "custom") { S.custom = F.sites.filter(s => s[0] >= 0 && s[0] <= S.p.L && s[1] >= 0 && s[1] <= S.p.L).map(s => [s[0], s[1], s[2]]); S.pattern = "custom"; } }
 mapC.addEventListener("pointerdown", e => {
   if (!S.edit) return;
   const [x, y] = canvasPt(e), tol = Math.max(S.p.R, S.p.L / 60); toCustom();
-  let best = -1, bd = Infinity; S.custom.forEach((s, i) => { const dd = Math.hypot(s[0] - x, s[1] - y); if (dd < bd) { bd = dd; best = i; } });
+  let best = -1, bd = Infinity; S.custom.forEach((s, i) => { const dd = Math.hypot(s[0] - x, s[1] - y) + Math.abs((s[2] ?? S.p.z0) - S.p.zv) * 0.25; if (dd < bd) { bd = dd; best = i; } });
   if (best >= 0 && bd <= tol) { if (e.shiftKey) { S.custom.splice(best, 1); schedule(false); return; } drag = best; mapC.setPointerCapture(e.pointerId); }
-  else { S.custom.push([x, y]); schedule(false); }
+  else { S.custom.push([x, y, S.p.zv]); schedule(false); }
 });
-mapC.addEventListener("pointermove", e => { if (drag === null) return; const [x, y] = canvasPt(e); S.custom[drag] = [x, y]; schedule(true); });
+mapC.addEventListener("pointermove", e => { if (drag === null) return; const [x, y] = canvasPt(e); S.custom[drag] = [x, y, S.custom[drag][2] ?? S.p.z0]; schedule(true); });
 mapC.addEventListener("pointerup", () => { if (drag !== null) { drag = null; schedule(false); } });
 $("pattern").addEventListener("change", e => { S.pattern = e.target.value; if (S.pattern === "custom" && !S.custom.length) { S.pattern = "hex"; F = buildField(S.p, S.pattern, S.custom, S.seed); toCustom(); } schedule(false); });
 $("editBtn").addEventListener("click", () => { S.edit = !S.edit; schedule(false); });
@@ -579,16 +940,18 @@ const n = (path, unit) => `<span data-n="${path}"></span>${unit ? " " + unit : "
 const HELP = [
   { topic: "start", title: "Quick start", entries: [
     ["what", "What this shows", () => `<p>The viewer asks how densely rejuvenated fibroblasts must be implanted into aged dermis so that the signals they secrete reach the surrounding aged cells <b>inside a window</b>: above the concentration that activates aged cells, below the one that risks fibrotic activation.</p>
-      <p>The large map is a horizontal slice through the dermis at the slice depth; the strip below it is a vertical cross-section. The panel on the right reports how much of the dermis lies below, inside and above the window, and how that changes with the spacing of the implant sites.</p>
-      <p>It builds on the group's implantation of mechanically reprogrammed fibroblasts into aged skin models (${cite("roy2024implanting")}). This prototype is the minimal model (M1); see <a href="#help/limits/list" data-help="limits/list">Limitations</a>.</p>`],
-    ["read", "Reading the maps", () => `<p><b>Window</b> colours: grey below the aged-cell threshold, teal inside the window (darker = closer to the ceiling), orange above the fibrotic ceiling. <b>Concentration</b> colours the signal on a log scale (dark blue low, yellow high); the dashed white line is the aged-cell threshold and the orange line the fibrotic ceiling.</p>
-      <p>White circles are implant sites, drawn with the cluster radius. The dashed line on the map marks where the cross-section cuts. In the cross-section the top edge is the dermal–epidermal junction; the dotted line is the depth of the map.</p>`],
-    ["edit", "Editing implant sites", () => `<p>Press <b>Edit sites</b>, then click the map to add a site, drag a site to move it, and shift-click a site to remove it. Editing turns the pattern into <i>custom</i>: from then on only the sites in view count (a lattice continues beyond the view, a custom layout does not). Choose a lattice again under <i>Pattern</i> to go back.</p>`],
+      <p>The large map is a horizontal slice through the dermis at the slice depth; the strip below it is a schematic cross-section through the skin. The panels on the right report how much of the dermis lies below, inside and above the window, search for the best layouts (<b>Optimise</b>), and show how coverage changes with the spacing of the sites.</p>
+      <p>It builds on the group's implantation of mechanically reprogrammed fibroblasts into aged skin models (${cite("roy2024implanting")}). See <a href="#help/limits/list" data-help="limits/list">Limitations</a>.</p>`],
+    ["read", "Reading the maps", () => `<p><b>Window</b> colours: grey below the aged-cell threshold, teal inside the window (darker = closer to the ceiling), orange above the fibrotic ceiling. <b>Concentration</b> colours the signal on a log scale (dark blue low, yellow high); the dashed line is the aged-cell threshold and the orange line the fibrotic ceiling.</p>
+      <p>On the map, circles are implant sites drawn with the cluster radius: solid where the slice cuts them, dashed for sites at other depths. With several injection depths the centre dot gives the depth (legend under the map). The dashed horizontal line marks the cross-section.</p>`],
+    ["cross", "The cross-section", () => `<p>The strip below the map is a vertical cut through the skin along the dashed line. Between the dermal–epidermal junction (top line) and the dermis thickness the signal is shown as on the map, slightly transparent, with the threshold lines. On top of it, representative <b>host fibroblasts</b> (about every ${n("gap")} µm, not to density) are coloured by the signal where they sit: grey not reached, teal activated, orange above the ceiling. Implant clusters cut by the section are drawn with their cells; nearby ones as dashed outlines. Depth marks on the right give the injection depths.</p>
+      <p>The epidermis and the hypodermis, the papillary / reticular boundary and the fibres are schematic: the model treats the dermis as homogeneous, with no flux through the junction. Layers enter the model in milestone M3.</p>`],
+    ["edit", "Editing implant sites", () => `<p>Press <b>Edit sites</b>, then click the map to add a site <b>at the slice depth</b>, drag a site to move it, and shift-click a site to remove it. Editing turns the pattern into <i>custom</i>: from then on only the sites in view count, and each keeps its own depth (move the slice depth to place sites at other depths). Choose a lattice again under <i>Pattern</i> to go back.</p>`],
     ["presets", "Young and aged tissue", () => `<p><b>Young tissue</b> sets the aged-cell threshold factor s_age to 1; <b>Aged tissue</b> sets it to 3. That aged cells respond blunted or divergently is sourced (${cite("liao2026chromatin")}); the factor 3 is a placeholder. Both presets keep all other values.</p>
       <p>Ageing could also change the decay length λ, but in which direction is open: aged dermis has fewer cells (${cite("arnalforne2024dermis")}), and fewer consuming cells lengthen the range (${cite("oyleryaniv2017niches")}), while binding to the matrix shortens it. The presets therefore leave λ alone.</p>`],
     ["defaults", "Defaults and resetting", () => `<p>Each slider has a small grey tick at its <b>default</b>. When a value differs from its default it turns <span style="color:var(--teal);font-weight:600">teal</span> and a <b>↺</b> appears next to it: click it, or double-click the slider, to put that value back. Hovering a value shows its default. <b>Reset</b> at the top puts all values back at once. Defaults and their sources are listed under <a href="#help/params" data-help="params">Parameters</a>.</p>`],
-    ["share", "Sharing a view", () => `<p>The address in your browser always holds the current view: every value that differs from its default (all sliders), the pattern, the colouring and, for a custom layout, the position of every site. <b>Copy link</b> copies it; whoever opens the link sees the same view. A link to a help entry (e.g. <code>#help/model/window</code>) can be added at the end and opens that entry.</p>
-      <p>Address parameters: ${PARAMS.map(p => `<code>${p.key}</code>`).join(", ")} (each in the unit of its slider), <code>pattern</code> (hex, square, random, custom), <code>show=concentration</code>, and <code>sites=x,y;x,y;…</code> in µm for custom layouts. Values outside a slider's range are clamped to it.</p>`],
+    ["share", "Sharing a view", () => `<p>The address in your browser always holds the current view: every value that differs from its default (all sliders), the pattern, the colouring and, for a custom layout, the position and depth of every site. <b>Copy link</b> copies it; whoever opens the link sees the same view. A link to a help entry (e.g. <code>#help/model/window</code>) can be added at the end and opens that entry.</p>
+      <p>Address parameters: ${PARAMS.map(p => `<code>${p.key}</code>`).join(", ")} (each in the unit of its slider), <code>pattern</code> (hex, square, random, custom), <code>show=concentration</code>, and <code>sites=x,y,z;…</code> in µm for custom layouts. Values outside a slider's range are clamped to it.</p>`],
     ["status", "What the badges mean", () => `<p>Every value carries a badge; click it for its entry under <a href="#help/params" data-help="params">Parameters</a>.</p>
       <table><tr><td><span class="badge b-src">source</span></td><td>the default is a published value, checked against the source (abstract or full text) and listed under <a href="#help/refs" data-help="refs">References</a></td></tr>
       <tr><td><span class="badge b-ana">analogue</span></td><td>published value measured in a related system (e.g. other cytokines); used until a value for this system exists</td></tr>
@@ -599,6 +962,11 @@ const HELP = [
     ["equation", "Equation and solution", () => `<p>Each site is a sphere of radius R holding the implanted cells, which secrete one signal at a constant rate Q (cells per site × secretion per cell). The signal diffuses through homogeneous dermis (coefficient D) and is removed at the rate k = D/λ² (uptake, matrix capture and degradation together). At steady state:</p>
       <p><code>D ∇²c − k c + s = 0</code>, with source density <code>s = Q / (4/3 π R³)</code> inside the sphere.</p>
       <p>Outside: <code>c(r) = (s/k)·[x cosh x − sinh x]·e^(−r/λ)/(r/λ)</code>; inside: <code>c(r) = (s/k)·[1 − (1+x)·e^(−x)·sinh(r/λ)/(r/λ)]</code>, with x = R/λ. For R → 0 this is the point source <code>Q/(4πDr)·e^(−r/λ)</code>. The fields of all sites add up.</p>`],
+    ["depths", "Several injection depths", () => `<p>With <b>Injection depths</b> above 1, the sites form a stack of lattices: each depth has the same spacing a, the middle depth is the <i>injection depth</i>, and neighbouring depths are <i>Spacing between depths</i> apart. Each depth is shifted sideways against the one above (hexagonal: by a triangle centre, repeating every three depths; square: by half a diagonal, every two). Seen from above the sites then lie closer together — a/√3 for hexagonal, a/√2 for square — while in three dimensions they keep their distance, so the stack fills the volume of the dermis instead of a single plane.</p>
+      <p>All depths are kept inside the dermis. Sites per cm² count all depths. On the map the centre dot of each site gives its depth; the cross-section shows the depths on the right.</p>`],
+    ["signal", "Which signal", () => `<p><b>Working signal: ${esc(SIGNAL.name)}</b> (${esc(SIGNAL.status)}). ${renderNote(SIGNAL.note)}</p>
+      <p>The three TGF-β isoforms act through the same receptors; adult skin expresses β1, β2 and β3 transcripts at about 1:5:3 (${cite("quan2002uv")}). In fibroblasts, TGF-β1 activated signalling more potently than TGF-β3, which was rather inhibitory in scar-derived fibroblasts (${cite("urban2023isoforms")}). TGF-β1 may mediate fibrosis in adult wounds, TGF-β3 reduced scarring (${cite("lichtman2016isoforms")}); TGF-β3 (avotermin) improved scars in a phase II trial (${cite("mccollum2011avotermin")}), while a phase III trial (NCT00742443, completed 2011) has posted no results.</p>
+      <p>For the model the isoforms differ only in their thresholds and secretion rates, which are placeholders for all of them; diffusion and decay are treated alike. Several signals at once (for example an activating and a fibrotic one) are planned for milestone M5.</p>`],
     ["lambda", "Decay length λ", () => `<p>λ is how far the signal carries; it sets how far apart sites can be. It is the viewer's parameter because the measured ranges and the chemistry disagree:</p>
       <ul><li>Diffusion in dermis (${n("D.def", "µm²/s")}, ${cite("romgens2015diffusion")}) with clearance from tissue at a half-life of 22 h (${cite("sprugel1987kinetics")}) would give λ ≈ 1.6 mm (our calculation).</li>
       <li>Measured in dense tissue, cytokines act over 80–120 µm, because consuming cells take them up; the range scales with the density of consuming cells (${cite("oyleryaniv2017niches")}).</li>
@@ -606,39 +974,42 @@ const HELP = [
       <li>Small molecules in dermis decay over 210–920 µm, removed by capillaries (${cite("kretsos2008dermis")}).</li>
       <li>Radiation bystander effects in 3D human tissue reached 1 mm (${cite("belyakov2005skin")}), through signals not yet identified.</li></ul>
       <p>The default, ${n("lam.def", "µm")}, is the upper end of the cytokine measurement: an <span class="badge b-ana">analogue</span> until λ is measured for the rejuvenated cells' signals.</p>`],
-    ["signal", "Which signal", () => `<p><b>Working signal: ${esc(SIGNAL.name)}</b> (${esc(SIGNAL.status)}). ${renderNote(SIGNAL.note)}</p>
-      <p>The three TGF-β isoforms act through the same receptors; adult skin expresses β1, β2 and β3 transcripts at about 1:5:3 (${cite("quan2002uv")}). In fibroblasts, TGF-β1 activated signalling more potently than TGF-β3, which was rather inhibitory in scar-derived fibroblasts (${cite("urban2023isoforms")}). TGF-β1 may mediate fibrosis in adult wounds, TGF-β3 reduced scarring (${cite("lichtman2016isoforms")}); TGF-β3 (avotermin) improved scars in a phase II trial (${cite("mccollum2011avotermin")}), while a phase III trial (NCT00742443, completed 2011) has posted no results.</p>
-      <p>For the model the isoforms differ only in their thresholds and secretion rates, which are placeholders for all of them; diffusion and decay are treated alike. Several signals at once (for example an activating and a fibrotic one) are planned for milestone M5.</p>`],
     ["window", "The therapeutic window", () => `<p>Aged host cells are counted as activated above <code>c_on × s_age</code> and at risk of fibrotic activation above <code>c_fib</code>. The upper side is not hypothetical: the group notes that matrix deposition by implanted cells could also indicate fibrotic activation (${cite("roy2024implanting")}).</p>
       <p><b>The thresholds are open.</b> Our literature search (November 2026) found no verified activation threshold or fibrotic ceiling for TGF-β1 or TGF-β3 in dermal fibroblasts, so both are placeholders. The 10 ng/mL often used in experiments is a stimulation dose, not a threshold (${cite("liao2026chromatin")}). Windows with a lower and an upper side are documented for other signals: CCN2 stimulates collagen gene expression below 50 ng/mL and inhibits it above (${cite("nakerakanti2011ccn2")}); for VEGF the local amount secreted, not the total dose, decides between normal and aberrant vessels (${cite("ozawa2004vegf")}). TGF-β1 is also the minority isoform in adult skin (${cite("quan2002uv")}), and TGF-β3 improved scars in a phase II trial (${cite("mccollum2011avotermin")}).</p>`],
     ["boundary", "Boundaries", () => `<p>The dermal–epidermal junction is treated as impermeable: every site has a mirror image above it, which makes the flux through the junction zero. The deep side of the dermis is open (the signal may leave). Measured diffusion is slowest at the junction (${cite("wei2018microneedle")}).</p>`],
-    ["scaling", "Design scaling", () => `<p>Beyond about one λ from a site the signal falls off exponentially. Doubling the cells per site then adds only about half a λ of reach (0.46 λ at 1.7 λ, tending to 0.69 λ), so adding sites helps more than adding cells per site. One injection plane covers a band of the dermis around its depth; covering the whole depth needs several depths (a later milestone).</p>`],
-    ["check", "How the numbers are checked", () => `<p>The solution is exact for the model. The page was checked against it: the concentration is continuous at the surface of the cluster, far from a site it matches the point source to machine precision, and finite differences of the computed field satisfy the equation to about 10⁻⁶ inside and outside the cluster. The reference implementation is a Python pipeline; shared test cases will keep the two in step.</p>`]
+    ["scaling", "Design scaling", () => `<p>Beyond about one λ from a site the signal falls off exponentially. Doubling the cells per site then adds only about half a λ of reach (0.46 λ at 1.7 λ, tending to 0.69 λ), so adding sites helps more than adding cells per site. One injection plane covers a band of the dermis around its depth; several injection depths cover the volume.</p>`],
+    ["check", "How the numbers are checked", () => `<p>The solution is exact for the model. The reference implementation is a Python pipeline (<code>dermsim</code>); a finite-volume solution of the same problem agrees with it within 0.1 %, and the physics of this page reproduces the Python results on shared test cases (relative differences below 10⁻¹³), checked automatically on every change.</p>`]
   ]},
   { topic: "params", title: "Parameters", entries: [
     ...PARAMS.map(def => [def.key, def.label, () => `<p>${badge(def)} Default <b>${fmt(def.def)} ${def.unit}</b>; slider ${fmt(def.min)}–${fmt(def.max)} ${def.unit}${def.log ? " (log scale)" : ""}.</p><p>${def.note()}</p>`]),
-    ["pattern", "Implant pattern", () => `<p><span class="badge b-des">design</span> <b>Hexagonal</b> and <b>square</b> lattices continue beyond the view. <b>Random</b> places sites at random with the same mean density as the hexagonal lattice. <b>Custom</b> uses the sites you place (see <a href="#help/start/edit" data-help="start/edit">Editing implant sites</a>).</p>`]
+    ["pattern", "Implant pattern", () => `<p><span class="badge b-des">design</span> <b>Hexagonal</b> and <b>square</b> lattices continue beyond the view. <b>Random</b> places sites at random with the same mean density as the hexagonal lattice, separately at each depth. <b>Custom</b> uses the sites you place (see <a href="#help/start/edit" data-help="start/edit">Editing implant sites</a>).</p>`]
   ]},
   { topic: "metrics", title: "Coverage and design", entries: [
-    ["coverage", "Coverage", () => `<p><b>Dermis in window</b> is the share of the whole dermis (0 to the dermis thickness, across the view) inside the window, sampled on a 36 × 36 × 40 grid; the bar shows below / inside / above. <b>Slice in window</b> is the same for the en-face map only.</p>`],
-    ["dose", "Sites and cells per cm²", () => `<p>Sites per cm² follow from the spacing (hexagonal: 1 / (a²·√3/2), square: 1 / a²); cells per cm² multiply by the cells per site. For a sense of scale: a fibroblast cell therapy for acne scars injected 2 mL of 10–20 million cells per mL per session (${cite("munavalli2013azficel")}); the group's protocol used 40,000 cells per site (${cite("roy2024implanting")}).</p>`],
+    ["coverage", "Coverage", () => `<p><b>Dermis in window</b> is the share of the whole dermis (0 to the dermis thickness, across the view) inside the window, sampled on a 36 × 36 × 40 grid in the background; the bar shows below / inside / above. <b>Slice in window</b> is the same for the en-face map only.</p>`],
+    ["optimise", "Optimising the design", () => `<p><b>Find designs</b> searches the layouts that put the most dermis inside the window, keeping your tissue and signal values (D, λ, secretion, thresholds, cluster radius, dermis thickness) and the pattern (hexagonal or square). <b>Flat</b> varies the spacing, the depth and the cells per site; <b>Volume</b> also the number of depths (2–5) and the spacing between them; <b>Both</b> runs the two.</p>
+      <p>The plot shows every design evaluated (faint dots): share of the dermis in the window against the dose in cells per cm². The line through the larger dots is the <b>front</b>: for each dose the best coverage found. The diamond is your design. Use ◀ ▶ (or click a point) to <b>cycle through the solutions</b> along the front, from low to high dose; each is shown in the maps at once. <b>Back to my design</b> restores what you had.</p>
+      <p>How: about 14 spacings from 80 µm to 2 mm, 13 doses from 10³ to 10⁶ cells per site, 8 depths (flat) or 2–5 depths with 6 spacings and 6 middle depths (volume), all with every cluster inside the dermis and no two clusters overlapping; each design is scored on one periodic cell (12 × 12 × 16 points). For speed the field of each spacing is tabulated once and reused; the solutions shown are then re-evaluated exactly. The search runs in the background and takes a few seconds.</p>
+      <p>The optimum depends on placeholder values (secretion, thresholds): read it as a demonstration of the trade-offs until those are measured.</p>`],
+    ["depths", "Injection depths and spacing seen from above", () => `<p>The depths of the injection levels and the nearest distance between sites seen from above (all depths projected). See <a href="#help/model/depths" data-help="model/depths">Several injection depths</a>.</p>`],
+    ["dose", "Sites and cells per cm²", () => `<p>Sites per cm² follow from the spacing (hexagonal: 1 / (a²·√3/2), square: 1 / a²) times the number of depths; cells per cm² multiply by the cells per site. For scale: a fibroblast cell therapy for acne scars injected 2 mL of 10–20 million cells per mL per session (${cite("munavalli2013azficel")}); the group's protocol used 40,000 cells per site (${cite("roy2024implanting")}).</p>`],
+    ["overlap", "Overlapping clusters", () => `<p>Each implant site is a sphere of radius R. Two sites closer than 2R would overlap, which implanted cells cannot do, so the model is no longer meaningful there. This happens when the spacing per depth is below 2R, or when sites on neighbouring depths (offset sideways by the spacing seen from above and vertically by the spacing between depths) are closer than 2R. The optimiser only proposes layouts without overlap.</p>`],
     ["reach", "Reach of one site", () => `<p>Distance from the centre of a single site at which the signal falls to the aged-cell threshold (no neighbours, no mirror image).</p>`],
-    ["critical", "Largest gap-free spacing", () => `<p>The largest lattice spacing at which the least-covered point of the injection plane (the centre of a triangle or square of sites) still reaches the aged-cell threshold. It says nothing about other depths or about the ceiling.</p>`],
-    ["curve", "Design curve", () => `<p>For the current parameters, the share of the dermis below, inside and above the window as the spacing varies from 80 µm to 3 mm, computed on one periodic cell of the lattice. The dashed line marks the current spacing. Too sparse leaves cells below threshold; with many cells per site, too dense can push tissue above the ceiling.</p>`]
+    ["critical", "Largest gap-free spacing", () => `<p>For a single injection plane at the injection depth: the largest lattice spacing at which the least-covered point of the plane (the centre of a triangle or square of sites) still reaches the aged-cell threshold. It says nothing about other depths or about the ceiling.</p>`],
+    ["curve", "Design curve", () => `<p>For the current values, the share of the dermis below, inside and above the window as the spacing (per depth) varies from 80 µm to 3 mm, computed on one periodic cell of the lattice in the background. The dashed line marks the current spacing. Too sparse leaves cells below threshold; with many cells per site, too dense can push tissue above the ceiling.</p>`]
   ]},
   { topic: "limits", title: "Limitations", entries: [
     ["list", "Limitations of this prototype", () => `<ul><li>Steady state. Implant survival and the decline of matrix deposition after 2–3 cell divisions (${cite("roy2024implanting")}) are not modelled yet.</li>
-      <li>Homogeneous dermis: no papillary / reticular layers, no heterogeneity, no senescent cells or SASP.</li>
+      <li>Homogeneous dermis: no papillary / reticular layers in the model (the cross-section draws them schematically), no heterogeneity, no senescent cells or SASP.</li>
       <li>Uptake, capture and degradation are lumped into one linear decay; no saturation.</li>
       <li>One signal; no relay by host cells that start secreting in turn.</li>
-      <li>Values marked <span class="badge b-ph">placeholder</span> are not from checked sources: secretion per cell, thresholds, cluster radius, molecular weight. Do not read numbers off this prototype as predictions.</li></ul>`],
-    ["roadmap", "Roadmap", () => `<p>M2 response and window with uptake and implant survival · M3 dermal layers and injection depth · M4 heterogeneity and senescence · M5 several signals · M6 calibration against distance-resolved measurements.</p>`]
+      <li>Values marked <span class="badge b-ph">placeholder</span> are not from checked sources: secretion per cell, thresholds, cluster radius, molecular weight. Do not read numbers off this prototype — including the optimiser's — as predictions.</li></ul>`],
+    ["roadmap", "Roadmap", () => `<p>M2 response and window with uptake and implant survival, design optimiser (first version here) · M3 dermal layers and injection depth · M4 heterogeneity and senescence · M5 several signals · M6 calibration against distance-resolved measurements.</p>`]
   ]},
   { topic: "refs", title: "References", entries: () => Object.keys(SOURCES).sort((a, b) => SOURCES[a].short.localeCompare(SOURCES[b].short)).map(k =>
-    [k, SOURCES[k].short, () => `<p>${esc(SOURCES[k].cite)} <a href="${link(SOURCES[k])}" target="_blank" rel="noopener">${SOURCES[k].doi ? "doi:" + SOURCES[k].doi : "PMID " + SOURCES[k].pmid}</a></p><p class="dim">Used for: ${esc(SOURCES[k].what)} <i>Checked against the ${SOURCES[k].checked}.</i></p>`]) },
+    [k, SOURCES[k].short, () => `<p>${esc(SOURCES[k].cite)} <a href="${link(SOURCES[k])}" target="_blank" rel="noopener">${SOURCES[k].doi ? "doi:" + SOURCES[k].doi : SOURCES[k].pmid ? "PMID " + SOURCES[k].pmid : "link"}</a></p><p class="dim">Used for: ${esc(SOURCES[k].what)} <i>Checked against the ${esc(SOURCES[k].checked)}.</i></p>`]) },
   { topic: "changelog", title: "Changelog", entries: [["loading", "Changelog", () => `<p class="dim">Loading CHANGELOG.md…</p>`]] },
   { topic: "about", title: "About", entries: [
-    ["project", "The project", () => `<p>Master thesis project of Bernhard Buss, supervised by Nicholas Lawler, in the group of Prof. G.V. Shivashankar (ETH Zurich / Paul Scherrer Institute). The reference model is a Python pipeline in a private repository; this page is a single HTML file without a server or dependencies.</p>`],
+    ["project", "The project", () => `<p>Master thesis of Bernhard Buss, supervised by Nicholas Lawler, in the group of Prof. G.V. Shivashankar (ETH Zurich / Paul Scherrer Institute). The reference model is a Python pipeline in a private repository; this page is a single HTML file without a server or dependencies.</p>`],
     ["privacy", "Data and privacy", () => `<p>The page carries published values only and runs entirely in your browser; nothing you enter leaves it. It asks search engines not to index it (<code>noindex</code>).</p>`],
     ["version", "Version", () => `<p>Version ${VERSION}. See the <a href="#help/changelog" data-help="changelog">changelog</a>.</p>`]
   ]}
@@ -655,7 +1026,8 @@ function buildHelp() {
   fillHelpNumbers();
 }
 function fillHelpNumbers() {
-  for (const el of document.querySelectorAll("[data-n]")) { const [k, f] = el.dataset.n.split("."); const def = PDEF[k]; el.textContent = def ? fmt(f === "def" ? def.def : S.p[k]) : "?"; }
+  const extra = { gap: () => fmt(17 / (secC.width / S.p.L)) };
+  for (const el of document.querySelectorAll("[data-n]")) { const [k, f] = el.dataset.n.split("."); const def = PDEF[k]; el.textContent = extra[k] ? extra[k]() : def ? fmt(f === "def" ? def.def : S.p[k]) : "?"; }
 }
 const topics = () => [...help.querySelectorAll("section[data-topic]")];
 function helpNav(active) {
@@ -669,7 +1041,7 @@ function openHelp(target = "") {
   let [topic, entry] = String(target).split("/");
   if (!help.querySelector(`section[data-topic="${topic}"]`)) { topic = store.get(HELP_TOPIC_KEY); entry = null; }
   if (!help.querySelector(`section[data-topic="${topic}"]`)) topic = "start";
-  $("hsearch").value = ""; $("hresults").hidden = true;
+  $("hsearch").value = ""; $("hresults").hidden = true; fillHelpNumbers();
   for (const sec of topics()) sec.hidden = sec.dataset.topic !== topic;
   helpNav(topic); store.set(HELP_TOPIC_KEY, topic);
   if (topic === "changelog") { loadChangelog(); store.set(SEEN_KEY, VERSION); $("vernew").hidden = true; }
@@ -741,14 +1113,16 @@ window.addEventListener("hashchange", openFromHash);
 window.__drv = {
   version: VERSION,
   params: () => ({ ...S.p, pattern: S.pattern }),
-  set(obj) { for (const [k, v] of Object.entries(obj)) { if (k === "pattern") S.pattern = v; else if (k in S.p) S.p[k] = v; } if ("z0" in obj && !("zv" in obj)) S.p.zv = S.p.z0; render(170, true); return this.params(); },
+  set(obj) { for (const [k, v] of Object.entries(obj)) { if (k === "pattern") S.pattern = v; else if (k in S.p) S.p[k] = v; } if ("z0" in obj && !("zv" in obj)) S.p.zv = S.p.z0; render(170, true); requestVolume(); drawChart(); return this.params(); },
   derived: () => derived(S.p),
   sites: () => F.sites.map(s => s.slice()),
   field: (x, y, z) => F.at(x, y, z),                              // molecules/µm³
   fieldNgml: (x, y, z) => F.at(x, y, z) / derived(S.p).perNgml,    // ng/mL
   kernel: r => kernel(S.p, derived(S.p))(r),
-  criticalSpacing: () => criticalSpacing(S.p, S.pattern === "square" ? "square" : "hex"),
+  criticalSpacing: () => criticalSpacing(S.p, geoPattern()),
   metrics: () => ({ plane: fractions(lastMapGrid.vals, F.d), volume: volumeFractions(F, S.p, 36, 40) }),
+  optimise: (mode = "flat", opts) => optimise({ ...S.p }, geoPattern(), mode, opts),
+  runOptimiser, opt: () => S.opt, worker: () => !!worker, curve: () => curve,
   stateQuery, syncUrl, readUrlState, resetParam, isDefault,
   openHelp, closeHelp, helpTargets: () => [...document.querySelectorAll("[data-help]")].map(a => a.dataset.help)
 };
@@ -760,6 +1134,7 @@ readUrlState();
 buildControls();
 buildHelp();
 schedule(false);
+plotOpt();
 openFromHash();
 </script>
 </body>

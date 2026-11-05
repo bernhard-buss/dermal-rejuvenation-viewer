@@ -1,9 +1,10 @@
 # Dermal Implant Density Viewer — notes for Claude Code
 
 - The whole tool is `index.html` (HTML + CSS + JS, no build step, no dependencies,
-  no CDN). GitHub Pages serves `main` directly at
-  https://bernhard-buss.github.io/dermal-rejuvenation-viewer/ — every push to
-  `main` is live within about a minute, so keep `main` working.
+  no CDN) plus the generated `data/`. GitHub Pages is deployed by the workflow
+  `.github/workflows/ci.yml` (Pages source "GitHub Actions"): every push to `main`
+  runs `tests/page.mjs` and `tests/parity.mjs` and deploys only if both pass, about
+  a minute later. Keep `main` working.
 - **Not indexed.** `<meta name="robots" content="noindex, nofollow">` must stay in
   the `<head>`. Do not add a `robots.txt` that blocks the page (crawlers would
   then never see the `noindex`).
@@ -21,7 +22,11 @@
   `{help:topic/entry|text}`, rendered by `renderNote()`.
 - **Physics = the Python model.** The block between `// >>> physics` and
   `// <<< physics` holds pure functions (no DOM, no state) mirroring
-  `dermsim.model`. Change both together, re-export, and run
+  `dermsim.model` (multi-depth lattices: `levelDepths`, `levelShift`) and
+  `dermsim.optimize` (`optimiseSteps`, `clustersApart`, table look-up). The same
+  block runs in a background Web Worker built from its text (`WORKER_SRC`) for
+  the design curve, the coverage of the whole dermis and the optimiser; `ask()`
+  cancels stale requests of the same kind and falls back to the main thread. Change both together, re-export, and run
   `node tests/parity.mjs` (golden cases, relative tolerance 1e-9) and
   `node tests/page.mjs` (script compiles, noindex, parameters, changelog entry).
   CI runs both on every push.
@@ -52,7 +57,10 @@
   in the address after each final render, keeping a `#help…` part;
   `readUrlState()` reads it once at load and clamps to the slider ranges. A new
   control must be added to all three and to the help entry `start/share`.
-- Physics (M1): uniform sphere of radius R per site, `k = D/λ²`, exact
+- Canvases are drawn at about twice their displayed size; use `ks(canvas)` /
+  `font(canvas, px)` for text, line widths and markers so they read the same at
+  any width.
+- Physics: uniform sphere of radius R per site, `k = D/λ²`, exact
   steady-state solution inside and outside the sphere, image source at z = 0
   (no flux), superposition with a cutoff at `R + 9.2 λ`; sites are bucketed by
   that cutoff. Units µm, s, molecules; shown in ng/mL via the molecular weight.

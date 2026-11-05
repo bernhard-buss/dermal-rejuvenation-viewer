@@ -1,15 +1,26 @@
-name: CI
+name: CI and Pages
 
-# Checks on every push and pull request:
-#   - the page script compiles and the page keeps its noindex tag
-#   - the viewer's physics reproduces the golden cases of the Python reference
-#     implementation (data/golden.json, exported by `python -m dermsim export-viewer`)
+# On every push and pull request:
+#   - the page script compiles, the page keeps its noindex tag, every parameter
+#     and citation resolves, and the changelog has an entry for VERSION
+#   - the viewer's physics and optimiser reproduce the golden cases of the Python
+#     reference implementation (data/golden.json from `python -m dermsim export-viewer`)
+# On main, only if both pass: deploy the site to GitHub Pages.
 
 on:
   push:
     branches: [main]
   pull_request:
   workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   check:
@@ -23,3 +34,21 @@ jobs:
         run: node tests/page.mjs
       - name: Parity with the Python model
         run: node tests/parity.mjs
+
+  deploy:
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+    needs: check
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - uses: actions/configure-pages@v6.0.0
+      - name: Site files only
+        run: mkdir _site && cp -r index.html CHANGELOG.md README.md LICENSE .nojekyll data _site/
+      - uses: actions/upload-pages-artifact@v5.0.0
+        with:
+          path: _site
+      - id: deployment
+        uses: actions/deploy-pages@v5.0.1

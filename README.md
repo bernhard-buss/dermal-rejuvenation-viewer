@@ -20,8 +20,16 @@ models: Roy B, Pekec T, Yuan L, Shivashankar GV. *Aging Cell* 2024;23:e14032,
   impermeable dermal–epidermal junction). The solution is exact for this model.
 - Shows an en-face map and a cross-section, coloured by window or by
   concentration, for hexagonal, square, random or hand-placed sites.
+- Several injection depths: stacked lattices, shifted sideways against each
+  other, so that seen from above the sites are closer while in depth they keep
+  their distance.
 - Reports the share of the dermis inside the window, sites and cells per cm²,
   the reach of one site, the largest gap-free spacing and a design curve.
+- **Optimise**: searches flat and multi-depth layouts for the most dermis inside
+  the window, plots every design against the dose with the best-coverage front,
+  and lets you cycle through the solutions in the maps.
+- Schematic cross-section through the skin with the host fibroblasts coloured
+  by the signal where they sit.
 
 ## Where the numbers come from
 
@@ -49,7 +57,7 @@ anyone who has the address.
 
 ## Status
 
-Prototype (milestone M1), not peer-reviewed. Do not read numbers off it as
+Prototype (milestones M1–M2), not peer-reviewed. Do not read numbers off it as
 predictions. The reference implementation of the model, the parameter table
 and the claims register live in a private repository.
 
