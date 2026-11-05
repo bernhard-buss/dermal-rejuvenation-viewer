@@ -1,0 +1,790 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Not for search engines: the page stays out of search results (see README). -->
+<meta name="robots" content="noindex, nofollow">
+<title>Dermal Implant Density Viewer</title>
+<style>
+:root{--ink:#1B2A33;--paper:#F7F4EF;--card:#EDE6DC;--rule:#D9D2C7;--teal:#2A6F75;--teal-l:#7FC4C9;
+--terra:#A9472F;--terra-l:#E89A84;--soft:#44525A;--amber:#8A5A0E;--amber-bg:#FFF6E3}
+*{box-sizing:border-box}
+body{margin:0;font:14px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;color:var(--ink);background:var(--paper)}
+header{display:flex;align-items:center;gap:12px;padding:10px 18px;background:var(--ink);color:var(--paper);flex-wrap:wrap}
+header h1{font-size:17px;margin:0;font-weight:600}
+header .sub{font-size:12.5px;color:#BFCBD0}
+header .sp{flex:1}
+.verchip{color:var(--teal-l);font-size:12px;text-decoration:none;border:1px solid #4A5A63;border-radius:999px;padding:1px 8px}
+.verchip:hover{border-color:var(--teal-l)}
+#vernew{background:var(--terra-l);color:var(--ink);border-radius:999px;padding:0 5px;margin-left:4px;font-size:10.5px}
+button,select{font:inherit;border:1px solid var(--rule);background:#fff;border-radius:6px;padding:3px 9px;cursor:pointer;color:var(--ink)}
+header button{background:transparent;color:var(--paper);border-color:#4A5A63}
+header button:hover{border-color:var(--teal-l)}
+button.on{background:var(--teal);color:#fff;border-color:var(--teal)}
+header button.on{background:var(--teal);border-color:var(--teal)}
+a.hl{color:var(--teal);text-decoration:none;font-size:13px;margin-left:2px;cursor:help}
+header a.hl{color:var(--teal-l)}
+a.hl:hover{text-decoration:underline}
+.banner{background:var(--amber-bg);border-bottom:1px solid #EAD7AE;padding:6px 18px;font-size:13px;color:#5B420F}
+main{display:grid;grid-template-columns:340px minmax(440px,1fr) 340px;gap:14px;padding:14px;align-items:start}
+@media (max-width:1180px){main{grid-template-columns:1fr}}
+.panel{background:#fff;border:1px solid var(--rule);border-radius:10px;padding:12px 14px;margin-bottom:14px}
+.panel h2{font-size:12px;text-transform:uppercase;letter-spacing:.07em;color:var(--teal);margin:2px 0 6px;display:flex;gap:4px;align-items:center}
+.prow{margin:9px 0 4px}
+.prow .lab{display:flex;align-items:center;gap:5px;font-size:13px}
+.prow .val{margin-left:auto;font-variant-numeric:tabular-nums;font-weight:600;white-space:nowrap}
+.prow input[type=range]{width:100%;accent-color:var(--teal);margin:3px 0 0}
+.badge{font-size:10.5px;padding:0 6px;border-radius:999px;border:1px solid;cursor:pointer;text-decoration:none;white-space:nowrap;line-height:16px}
+.b-src{color:var(--teal);border-color:var(--teal)}
+.b-ana{color:var(--teal);border-color:var(--teal);border-style:dashed}
+.b-ph{color:var(--amber);border-color:#D9A74A;background:var(--amber-bg)}
+.b-des{color:var(--soft);border-color:#B8C0C4}
+.derived{font-size:12.5px;color:var(--soft);background:var(--paper);border-radius:6px;padding:6px 8px;margin-top:8px}
+.derived b{color:var(--ink)}
+.toolbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:8px;font-size:13px}
+.toolbar .sp{flex:1}
+.stage canvas{display:block;width:100%;border-radius:8px;background:#E8E3DA;touch-action:none}
+#map.editing{cursor:crosshair}
+.cap{font-size:12.5px;color:var(--soft);margin:6px 2px 10px}
+.legend{display:flex;flex-wrap:wrap;gap:12px;align-items:center;font-size:12.5px;margin:6px 2px}
+.sw{display:inline-block;width:14px;height:14px;border-radius:3px;vertical-align:-2px;margin-right:4px;border:1px solid rgba(0,0,0,.15)}
+.metric{display:flex;justify-content:space-between;gap:8px;padding:4px 0;border-bottom:1px solid #F0ECE5;font-size:13.5px}
+.metric:last-child{border-bottom:0}
+.metric .v{font-weight:600;font-variant-numeric:tabular-nums;text-align:right}
+.bar{display:flex;height:12px;border-radius:6px;overflow:hidden;margin:6px 0 2px;border:1px solid var(--rule)}
+.note{font-size:12.5px;color:var(--soft)}
+a{color:var(--teal)}
+footer{padding:4px 18px 18px;font-size:12px;color:var(--soft)}
+/* help */
+dialog#help{width:min(1000px,94vw);height:min(760px,88vh);border:1px solid var(--rule);border-radius:12px;padding:0}
+dialog#help::backdrop{background:rgba(27,42,51,.35)}
+.hwrap{display:flex;flex-direction:column;height:100%}
+.hbar{display:flex;gap:10px;align-items:center;padding:10px 14px;background:var(--ink);color:var(--paper)}
+.hbar input{flex:1;max-width:360px;font:inherit;border-radius:6px;border:1px solid #4A5A63;padding:4px 8px}
+.hbar .sp{flex:1}
+.hkeys{font-size:12px;color:#BFCBD0}
+kbd{border:1px solid #6A7A83;border-radius:4px;padding:0 4px;font-size:11px}
+.hbody{display:flex;flex:1;min-height:0}
+.hnav{width:220px;border-right:1px solid var(--rule);overflow:auto;padding:8px 0;background:var(--paper)}
+.hnav button{display:block;width:100%;text-align:left;border:0;border-radius:0;background:transparent;padding:6px 14px;font-weight:600}
+.hnav button.active{color:var(--teal)}
+.hnav a{display:block;padding:3px 14px 3px 26px;font-size:13px;text-decoration:none;color:var(--soft)}
+.hnav a:hover{color:var(--teal)}
+.hcontent{flex:1;overflow:auto;padding:4px 22px 22px}
+.hcontent h2{font-size:18px;margin:14px 0 4px}
+.hcontent h3{font-size:15px;margin:16px 0 4px}
+.hcontent article{padding:2px 0 6px;border-bottom:1px solid #F0ECE5}
+.hcontent article.flash{animation:flash 1.6s ease-out}
+@keyframes flash{0%{background:#DDF0F1}100%{background:transparent}}
+.hcontent table{border-collapse:collapse;font-size:13px;margin:6px 0}
+.hcontent td,.hcontent th{border-bottom:1px solid #EEE8DF;padding:4px 6px;text-align:left;vertical-align:top}
+.hcontent code{background:var(--paper);padding:0 4px;border-radius:4px}
+a.cite{text-decoration:none;border-bottom:1px dotted var(--teal)}
+.hit{display:block;padding:8px 0;border-bottom:1px solid #F0ECE5;color:var(--ink);text-decoration:none}
+.hit small{color:var(--soft);margin-left:8px}
+.hit mark{background:#DDF0F1}
+.dim{color:var(--soft)}
+ol.refs li{margin:6px 0}
+</style>
+</head>
+<body>
+<header>
+  <h1>Dermal Implant Density Viewer</h1>
+  <span class="sub">How densely must rejuvenated fibroblasts be implanted for their signals to reach aged dermis?</span>
+  <a class="verchip" href="#help/changelog" data-help="changelog" title="Version: open the changelog"><span id="ver"></span><span id="vernew" hidden>new</span></a>
+  <span class="sp"></span>
+  <button id="presetYoung" title="Young host tissue: threshold factor 1">Young tissue</button>
+  <button id="presetAged" title="Aged host tissue: threshold factor raised (placeholder value)">Aged tissue</button><a class="hl" href="#help/start/presets" data-help="start/presets" title="Help: young and aged tissue">ⓘ</a>
+  <button id="reset" title="Back to the default values">Reset</button>
+  <span><button id="linkbtn" title="Copy a link that reproduces everything shown: all values, pattern, colouring and your own sites">Copy link</button><a class="hl" href="#help/start/share" data-help="start/share" title="Help: sharing a view">ⓘ</a></span>
+  <button id="helpbtn" data-help="" title="Help (press ?)">Help</button>
+</header>
+<div class="banner">Prototype (M1 minimal model). Values marked <span class="badge b-ph" data-help="start/status">placeholder</span> have no checked source yet, so results that depend on them are illustrative only. <a href="#help/model/window" data-help="model/window">Why the thresholds are open</a>.</div>
+<main>
+  <section id="left"></section>
+  <section class="stage">
+    <div class="panel">
+      <div class="toolbar">
+        <span>Show</span>
+        <button id="mWindow" class="on" title="Colour by below / inside / above the window">Window</button>
+        <button id="mLog" title="Colour by concentration, log scale">Concentration</button><a class="hl" href="#help/start/read" data-help="start/read" title="Help: reading the maps">ⓘ</a>
+        <span class="sp"></span>
+        <label>Pattern <select id="pattern">
+          <option value="hex">hexagonal</option><option value="square">square</option>
+          <option value="random">random</option><option value="custom">custom</option></select></label><a class="hl" href="#help/params/pattern" data-help="params/pattern" title="Help: implant patterns">ⓘ</a>
+        <button id="editBtn" title="Click to add a site, drag to move, shift-click to remove">Edit sites</button><a class="hl" href="#help/start/edit" data-help="start/edit" title="Help: editing sites">ⓘ</a>
+      </div>
+      <canvas id="map" width="720" height="720" aria-label="En-face map of the signal at the slice depth"></canvas>
+      <div class="legend" id="legend"></div>
+      <div class="cap" id="mapCap"></div>
+      <canvas id="sec" width="720" height="360" aria-label="Cross-section through the dermis"></canvas>
+      <div class="cap" id="secCap"></div>
+    </div>
+  </section>
+  <section id="right">
+    <div class="panel"><h2>Coverage <a class="hl" href="#help/metrics/coverage" data-help="metrics/coverage" title="Help: coverage">ⓘ</a></h2><div id="metrics"></div></div>
+    <div class="panel"><h2>Design curve <a class="hl" href="#help/metrics/curve" data-help="metrics/curve" title="Help: design curve">ⓘ</a></h2>
+      <canvas id="chart" width="620" height="380" aria-label="Share of dermis below, inside and above the window against site spacing"></canvas>
+      <div class="cap" id="chartCap"></div></div>
+    <div class="panel"><h2>Read me first</h2><div class="note">Each implant site is a sphere of cells secreting one signal into homogeneous dermis, at steady state; the signal decays over the length λ. The goal is as much of the dermis as possible <b>inside the window</b>, between the activation threshold of the aged cells and the fibrotic ceiling. Every value has a badge saying where it comes from; click it, or any ⓘ, for the details and the references. <a href="#help/start/what" data-help="start/what">Quick start</a>.</div></div>
+  </section>
+</main>
+<footer>Bernhard Buss and Nicholas Lawler, Shivashankar group (ETH Zurich / PSI). Builds on Roy et al., <i>Aging Cell</i> 2024 (<a href="https://doi.org/10.1111/acel.14032" target="_blank" rel="noopener">doi:10.1111/acel.14032</a>). Prototype, not peer-reviewed. Runs entirely in your browser; nothing is uploaded. <a href="#help/refs" data-help="refs">References</a> · <a href="#help/about" data-help="about">About</a></footer>
+
+<dialog id="help" aria-labelledby="helptitle">
+  <div class="hwrap">
+    <div class="hbar">
+      <strong id="helptitle">Help</strong>
+      <input type="search" id="hsearch" placeholder="Search the help…" aria-label="Search the help">
+      <span class="sp"></span>
+      <span class="hkeys"><kbd>?</kbd> opens · <kbd>Esc</kbd> closes</span>
+      <button id="hclose" aria-label="Close help">Close</button>
+    </div>
+    <div class="hbody">
+      <nav class="hnav" id="hnav" aria-label="Help topics"></nav>
+      <div class="hcontent" id="hcontent"><div id="hresults" hidden></div><div id="htopics"></div></div>
+    </div>
+  </div>
+</dialog>
+
+<script>
+"use strict";
+const VERSION = "0.1.0";
+const NA = 6.02214076e23;
+const $ = id => document.getElementById(id);
+function esc(s) { return String(s).replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); }
+
+// ---------------------------------------------------------------------------
+// References. Each "what" is worded as checked in the private repository's
+// docs/claims.md; "checked" says against what (abstract or full text).
+// Published sources only; nothing here is unpublished lab data.
+// ---------------------------------------------------------------------------
+const SOURCES = {
+  arnalforne2024dermis: { short: "Arnal-Forné et al. 2024", cite: "Arnal-Forné M, et al. Changes in human skin composition due to intrinsic aging: a histologic and morphometric study. Histochem Cell Biol. 2024;162:259–271.", doi: "10.1007/s00418-024-02305-w", checked: "abstract",
+    what: "With intrinsic ageing the papillary (not the reticular) dermis becomes thicker; total cellularity and vascularisation fall in both." },
+  belyakov2005skin: { short: "Belyakov et al. 2005", cite: "Belyakov OV, et al. Biological effects in unirradiated human tissue induced by radiation damage up to 1 mm away. Proc Natl Acad Sci USA. 2005;102:14203–14208.", doi: "10.1073/pnas.0505020102", checked: "abstract",
+    what: "In a 3D normal human tissue model, unirradiated cells up to 1 mm from irradiated cells showed more micronuclei (1.7-fold) and apoptosis (2.8-fold)." },
+  mccollum2011avotermin: { short: "McCollum et al. 2011", cite: "McCollum PT, Bush JA, James G, et al. Randomized phase II clinical trial of avotermin versus placebo for scar improvement. Br J Surg. 2011;98:925–934.", doi: "10.1002/bjs.7438", checked: "abstract",
+    what: "TGF-β3 (avotermin) 500 ng per 100 µL per linear cm of wound margin improved scar appearance (phase II, n = 156)." },
+  francis1997distances: { short: "Francis & Palsson 1997", cite: "Francis K, Palsson BO. Effective intercellular communication distances are determined by the relative time constants for cyto/chemokine secretion and diffusion. Proc Natl Acad Sci USA. 1997;94:12258–12262.", doi: "10.1073/pnas.94.23.12258", checked: "abstract",
+    what: "A single cell communicates by a soluble signal within a domain of about 250 µm, within 10–30 min; one dimensionless group governs it." },
+  kretsos2008dermis: { short: "Kretsos et al. 2008", cite: "Kretsos K, et al. Partitioning, diffusivity and clearance of skin permeants in mammalian dermis. Int J Pharm. 2008;346:64–79.", doi: "10.1016/j.ijpharm.2007.06.020", checked: "abstract",
+    what: "Decay lengths of topically applied small permeants in dermis 210–920 µm (capillary clearance 0.9–14 × 10⁻⁴ s⁻¹)." },
+  liao2026chromatin: { short: "Liao et al. 2026", cite: "Liao Y, Yuan L, Sornapudi TR, Land M, Gupta R, Shivashankar GV. Chromatin accessibility regulates age-dependent nuclear mechanotransduction. Proc Natl Acad Sci USA. 2026;123:e2522217123.", doi: "10.1073/pnas.2522217123", checked: "abstract and full text",
+    what: "Young dermal fibroblasts respond synergistically to tension plus TGF-β; in aged cells the response is blunted or divergent, in line with chromatin accessibility. Cells were stimulated with 10 ng/mL TGF-β (a dose, not a threshold)." },
+  miller2003density: { short: "Miller et al. 2003", cite: "Miller CC, et al. Validation of a morphometric method for evaluating fibroblast numbers in normal and pathologic tissues. Exp Dermatol. 2003;12:403–411.", doi: "10.1034/j.1600-0625.2003.00023.x", checked: "abstract",
+    what: "Mid-dermis fibroblast counts of 2100–4100 per mm³ in normal donors." },
+  munavalli2013azficel: { short: "Munavalli et al. 2013", cite: "Munavalli GS, Smith S, Maslowski JM, Weiss RA. Successful treatment of depressed, distensible acne scars using autologous fibroblasts: a multi-site, prospective, double blind, placebo-controlled clinical trial. Dermatol Surg. 2013;39:1226–1236.", doi: "10.1111/dsu.12204", checked: "abstract",
+    what: "Three intradermal sessions, 14 days apart, of 2 mL autologous fibroblast suspension at 10–20 million cells per mL (n = 99)." },
+  nakerakanti2011ccn2: { short: "Nakerakanti et al. 2011", cite: "Nakerakanti SS, et al. CCN2 is required for the TGF-β induced activation of Smad1–Erk1/2 signaling network. PLoS One. 2011;6:e21911.", doi: "10.1371/journal.pone.0021911", checked: "abstract",
+    what: "CCN2/CTGF stimulated collagen gene expression below 50 ng/mL and inhibited it at higher doses: a window with a lower and an upper side." },
+  oyleryaniv2017niches: { short: "Oyler-Yaniv et al. 2017", cite: "Oyler-Yaniv A, et al. A tunable diffusion-consumption mechanism of cytokine propagation enables plasticity in cell-to-cell communication in the immune system. Immunity. 2017;46:609–620.", doi: "10.1016/j.immuni.2017.03.011", checked: "abstract",
+    what: "Cytokine diffusion and consumption make niches with sharp boundaries whose size scales with the density of consuming cells; in vivo interactions over 80–120 µm." },
+  ozawa2004vegf: { short: "Ozawa et al. 2004", cite: "Ozawa CR, et al. Microenvironmental VEGF concentration, not total dose, determines a threshold between normal and aberrant angiogenesis. J Clin Invest. 2004;113:516–527.", doi: "10.1172/JCI18420", checked: "abstract",
+    what: "The local amount of VEGF secreted, not the total dose, decides between normal and aberrant angiogenesis." },
+  quan2002uv: { short: "Quan et al. 2002", cite: "Quan T, et al. Ultraviolet irradiation alters transforming growth factor β/Smad pathway in human skin in vivo. J Invest Dermatol. 2002;119:499–506.", doi: "10.1046/j.1523-1747.2002.01834.x", checked: "abstract",
+    what: "Sun-protected adult human skin expresses TGF-β1, β2 and β3 transcripts in a ratio of 1:5:3." },
+  romgens2015diffusion: { short: "Römgens et al. 2015", cite: "Römgens AM, Bader DL, Bouwstra JA, Baaijens FPT, Oomens CWJ. Diffusion profile of macromolecules within and between human skin layers for (trans)dermal drug delivery. J Mech Behav Biomed Mater. 2015;50:215–222.", doi: "10.1016/j.jmbbm.2015.06.019", checked: "abstract",
+    what: "FRAP in human skin: median dermal diffusion coefficient 23 µm²/s for 40 kDa dextran (9 µm²/s for 500 kDa), with only marginal differences between papillary and reticular dermis." },
+  roy2024implanting: { short: "Roy et al. 2024", cite: "Roy B, Pekec T, Yuan L, Shivashankar GV. Implanting mechanically reprogrammed fibroblasts for aged tissue regeneration and wound healing. Aging Cell. 2024;23:e14032.", doi: "10.1111/acel.14032", checked: "full text",
+    what: "Spheroids equivalent to 40,000 cells in 50 µL per implantation site, 2–3 sites per reconstructed aged skin model, within the 2-mm-deep dermis, analysed after 10 days. Matrix deposition of the implanted cells declined after 2–3 divisions; the authors note it could also indicate fibrotic activation." },
+  sprugel1987kinetics: { short: "Sprugel et al. 1987", cite: "Sprugel KH, et al. Effects of growth factors in vivo. I. Cell ingrowth into porous subcutaneous chambers. Am J Pathol. 1987;129:601–613.", pmid: "3501246", checked: "abstract",
+    what: "¹²⁵I-TGF-β was cleared from subcutaneous collagen chambers in rats with an initial-phase half-life of 22 h." },
+  wei2018microneedle: { short: "Wei et al. 2018", cite: "Wei JCJ, et al. Space- and time-resolved investigation on diffusion kinetics of human skin following macromolecule delivery by microneedle arrays. Sci Rep. 2018;8:17759.", doi: "10.1038/s41598-018-36009-8", checked: "abstract",
+    what: "Ex vivo human skin, 70–2000 kDa dextrans: dermal diffusivities 1–20 µm²/s, lowest at the dermal–epidermal junction (0.7–3 µm²/s)." }
+};
+const link = s => s.doi ? `https://doi.org/${s.doi}` : `https://pubmed.ncbi.nlm.nih.gov/${s.pmid}/`;
+const cite = key => SOURCES[key] ? `<a class="cite" href="#help/refs/${key}" data-help="refs/${key}">${esc(SOURCES[key].short)}</a>`
+  : (console.warn("missing source", key), `<b style="color:#A9472F">[missing source: ${esc(key)}]</b>`);
+
+// ---------------------------------------------------------------------------
+// Parameters. status: "src" sourced value · "ana" value measured in an analogous
+// system · "ph" placeholder (no checked source yet) · "des" design choice or view.
+// ---------------------------------------------------------------------------
+const PARAMS = [
+  { group: "Signal", key: "D", label: "Diffusion coefficient D", unit: "µm²/s", def: 23, min: 1, max: 100, log: true, status: "src", src: ["romgens2015diffusion", "wei2018microneedle"],
+    note: () => `Measured in human dermis for a 40 kDa tracer (${cite("romgens2015diffusion")}); other tracers gave 1–20 µm²/s (${cite("wei2018microneedle")}). TGF-β1 is smaller than 40 kDa, so the default is likely conservative.` },
+  { group: "Signal", key: "lam", label: "Effective decay length λ", unit: "µm", def: 120, min: 20, max: 3000, log: true, status: "ana", src: ["oyleryaniv2017niches", "francis1997distances"],
+    note: () => `How far the signal carries before uptake, capture and degradation remove it. Default: the upper end of 80–120 µm measured for cytokines in dense tissue in vivo (${cite("oyleryaniv2017niches")}), an analogous system, not TGF-β itself. A single cell communicates within about 250 µm (${cite("francis1997distances")}). Diffusion and chemical clearance alone would give about 1.6 mm (our calculation from ${cite("romgens2015diffusion")} and ${cite("sprugel1987kinetics")}). See <a href="#help/model/lambda" data-help="model/lambda">Decay length λ</a>.` },
+  { group: "Signal", key: "sec", label: "Active secretion per cell", unit: "pg/10⁶ cells/day", def: 25, min: 0.1, max: 10000, log: true, status: "ph",
+    note: () => `Secretion of the active (signalling) form by one implanted cell. No checked value for TGF-β1 per fibroblast was found; this is the most important missing parameter, and the threshold can be expressed in the same unit (${cite("ozawa2004vegf")}).` },
+  { group: "Signal", key: "mw", label: "Molecular weight", unit: "kDa", def: 25, min: 5, max: 100, log: false, step: 1, status: "ph",
+    note: () => "Only converts between ng/mL, pM and molecules. Placeholder (mature TGF-β1 dimer assumed) until sourced." },
+  { group: "Thresholds", key: "con", label: "Activation threshold c_on (young cells)", unit: "ng/mL", def: 0.1, min: 0.001, max: 10, log: true, status: "ph",
+    note: () => `Concentration at which young fibroblasts respond. No verified TGF-β1 value for dermal fibroblasts was found; to be measured. See <a href="#help/model/window" data-help="model/window">The therapeutic window</a>.` },
+  { group: "Thresholds", key: "sage", label: "Aged-cell threshold factor s_age", unit: "×", def: 1, min: 1, max: 20, log: true, status: "ph", src: ["liao2026chromatin"],
+    note: () => `Aged cells respond blunted or divergently (${cite("liao2026chromatin")}): the direction is sourced, the size of the factor is a placeholder. The aged-cell threshold is c_on × s_age.` },
+  { group: "Thresholds", key: "cfib", label: "Fibrotic ceiling c_fib", unit: "ng/mL", def: 2, min: 0.01, max: 100, log: true, status: "ph",
+    note: () => `Above this, myofibroblast or fibrotic activation is expected. No verified TGF-β1 value for dermal fibroblasts was found. Windows with an upper side are documented for other signals, e.g. CCN2 (${cite("nakerakanti2011ccn2")}).` },
+  { group: "Implants", key: "a", label: "Site spacing", unit: "µm", def: 400, min: 80, max: 3000, log: true, status: "des",
+    note: () => "Distance between neighbouring sites of the lattice (random pattern: same mean density as the hexagonal lattice)." },
+  { group: "Implants", key: "ncells", label: "Cells per site", unit: "cells", def: 40000, min: 1000, max: 1000000, log: true, status: "src", src: ["roy2024implanting"],
+    note: () => `Default: the group's protocol, spheroids equivalent to 40,000 cells per site (${cite("roy2024implanting")}).` },
+  { group: "Implants", key: "R", label: "Cluster radius", unit: "µm", def: 150, min: 5, max: 600, log: true, status: "ph",
+    note: () => "Radius of the sphere of implanted cells. Placeholder geometry; implanted cells also spread over days." },
+  { group: "Implants", key: "z0", label: "Injection depth (below the junction)", unit: "µm", def: 500, min: 20, max: 1980, log: false, step: 10, status: "des",
+    note: () => `Design choice. The group implanted within the 2-mm-deep dermis of the skin model (${cite("roy2024implanting")}).` },
+  { group: "Tissue", key: "H", label: "Dermis thickness (model)", unit: "µm", def: 2000, min: 500, max: 4000, log: false, step: 50, status: "src", src: ["roy2024implanting"],
+    note: () => `Default: the 2-mm-deep dermal region of the reconstructed skin model (${cite("roy2024implanting")}).` },
+  { group: "View", key: "L", label: "Field of view", unit: "µm", def: 4000, min: 1000, max: 12000, log: true, status: "des", note: () => "Width of the en-face map." },
+  { group: "View", key: "zv", label: "Slice depth (en-face map)", unit: "µm", def: 500, min: 0, max: 4000, log: false, step: 10, status: "des",
+    note: () => "Depth of the en-face map below the dermal–epidermal junction. Follows the injection depth until you move it." },
+  { group: "View", key: "ys", label: "Cross-section position", unit: "% of view", def: 50, min: 0, max: 100, log: false, step: 1, status: "des",
+    note: () => "Where the cross-section cuts the en-face map (dashed line)." }
+];
+const PDEF = Object.fromEntries(PARAMS.map(p => [p.key, p]));
+const STATUS = { src: ["b-src", "source"], ana: ["b-ana", "analogue"], ph: ["b-ph", "placeholder"], des: ["b-des", "design"] };
+
+// ---------------------------------------------------------------------------
+// State
+// ---------------------------------------------------------------------------
+const S = { p: {}, pattern: "hex", mode: "window", edit: false, custom: [], zvLinked: true, seed: 7 };
+function resetParams() { for (const d of PARAMS) S.p[d.key] = d.def; S.pattern = "hex"; S.custom = []; S.zvLinked = true; }
+resetParams();
+
+// ---------------------------------------------------------------------------
+// Physics (M1): steady state, homogeneous dermis, linear decay, uniform
+// spherical source per site, no-flux dermal–epidermal junction (image source).
+//   D ∇²c − k c + s = 0,  s = s0 inside a sphere of radius R,  k = D/λ²
+//   outside: c = (s0/k) [x cosh x − sinh x] e^{−r/λ}/(r/λ),  x = R/λ
+//   inside:  c = (s0/k) [1 − (1+x) e^{−x} sinh(r/λ)/(r/λ)]
+//   R → 0: point source q/(4πDr) e^{−r/λ}.
+// Units: µm, s, molecules; concentrations shown in ng/mL.
+// ---------------------------------------------------------------------------
+function derived(p) {
+  const kap = 1 / p.lam, k = p.D * kap * kap;                      // 1/µm, 1/s
+  const qcell = p.sec * 1e-12 / (p.mw * 1000) * NA / 1e6 / 86400;  // molecules/cell/s
+  const Q = qcell * p.ncells;                                      // molecules/s per site
+  const perNgml = (1000 / p.mw) * 1e-12 * NA / 1e15;               // molecules/µm³ per ng/mL
+  return { k, kap, lam: p.lam, thalf: Math.LN2 / k, qcell, Q, perNgml,
+    con: p.con * p.sage * perNgml, cfib: p.cfib * perNgml, rc: p.R + 9.2 * p.lam };
+}
+function kernel(p, d) {
+  const kap = d.kap, R = p.R, x = kap * R;
+  if (x < 1e-3) { const A = d.Q / (4 * Math.PI * p.D); return r => A * Math.exp(-kap * Math.max(r, 0.5)) / Math.max(r, 0.5); }
+  const s0 = d.Q / (4 / 3 * Math.PI * R * R * R), pref = s0 / d.k, a = (1 + x) * Math.exp(-x);
+  return r => {
+    const kr = kap * r;
+    if (r >= R) return pref * 0.5 * ((x - 1) * Math.exp(-kap * (r - R)) + (x + 1) * Math.exp(-kap * (r + R))) / kr;
+    return pref * (1 - a * (kr < 1e-6 ? 1 : Math.sinh(kr) / kr));
+  };
+}
+function rng(seed) { return () => { seed |= 0; seed = seed + 0x6D2B79F5 | 0; let t = Math.imul(seed ^ seed >>> 15, 1 | seed); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+function makeSites(p, d, pattern) {
+  if (pattern === "custom") return S.custom.map(s => [s[0], s[1]]);
+  const L = p.L, m = d.rc, a = p.a, out = [], c0 = L / 2;
+  if (pattern === "hex" || pattern === "square") {
+    const dy = pattern === "hex" ? a * Math.sqrt(3) / 2 : a;
+    const jmax = Math.ceil((L / 2 + m) / dy) + 1, imax = Math.ceil((L / 2 + m) / a) + 1;
+    for (let j = -jmax; j <= jmax; j++) for (let i = -imax; i <= imax; i++) {
+      const x = c0 + i * a + (pattern === "hex" && (j & 1) ? a / 2 : 0), y = c0 + j * dy;
+      if (x > -m && x < L + m && y > -m && y < L + m) out.push([x, y]);
+    }
+  } else {
+    const dens = 1 / (a * a * Math.sqrt(3) / 2), W = L + 2 * m, n = Math.round(dens * W * W), r = rng(S.seed);
+    for (let i = 0; i < n; i++) out.push([-m + r() * W, -m + r() * W]);
+  }
+  return out;
+}
+function buildField(p) {
+  const d = derived(p), f = kernel(p, d), sites = makeSites(p, d, S.pattern), cs = Math.max(d.rc, 50), grid = new Map();
+  for (const s of sites) { const key = Math.floor(s[0] / cs) + "," + Math.floor(s[1] / cs); (grid.get(key) || grid.set(key, []).get(key)).push(s); }
+  const rc2 = d.rc * d.rc, z0 = p.z0;
+  function at(x, y, z) {
+    const bx = Math.floor(x / cs), by = Math.floor(y / cs); let c = 0;
+    for (let i = bx - 1; i <= bx + 1; i++) for (let j = by - 1; j <= by + 1; j++) {
+      const b = grid.get(i + "," + j); if (!b) continue;
+      for (const s of b) {
+        const dx = x - s[0], dy = y - s[1], h2 = dx * dx + dy * dy; if (h2 > rc2) continue;
+        const r1 = Math.sqrt(h2 + (z - z0) * (z - z0)), r2 = Math.sqrt(h2 + (z + z0) * (z + z0));
+        if (r1 < d.rc) c += f(r1);
+        if (r2 < d.rc) c += f(r2);                                     // image source: no flux at z = 0
+      }
+    }
+    return c;
+  }
+  return { d, f, sites, at };
+}
+function latticeAt(p, d, f, pattern, a, x, y, z) {
+  const dy = pattern === "hex" ? a * Math.sqrt(3) / 2 : a, n = Math.ceil(d.rc / Math.min(a, dy)) + 1; let c = 0;
+  for (let j = -n; j <= n; j++) for (let i = -n; i <= n; i++) {
+    const sx = i * a + (pattern === "hex" && (j & 1) ? a / 2 : 0), sy = j * dy, h2 = (x - sx) ** 2 + (y - sy) ** 2;
+    if (h2 > d.rc * d.rc) continue;
+    const r1 = Math.sqrt(h2 + (z - p.z0) ** 2), r2 = Math.sqrt(h2 + (z + p.z0) ** 2);
+    if (r1 < d.rc) c += f(r1); if (r2 < d.rc) c += f(r2);
+  }
+  return c;
+}
+function holePoint(pattern, a) { return pattern === "hex" ? [a / 2, a / (2 * Math.sqrt(3))] : [a / 2, a / 2]; }
+function criticalSpacing(p) {
+  const pat = S.pattern === "square" ? "square" : "hex", d = derived(p), f = kernel(p, d);
+  const cmin = a => { const h = holePoint(pat, a); return latticeAt(p, d, f, pat, a, h[0], h[1], p.z0); };
+  let lo = 5, hi = 50000;
+  if (cmin(lo) < d.con) return { a: NaN, pat };
+  for (let it = 0; it < 60; it++) { const mid = Math.sqrt(lo * hi); if (cmin(mid) >= d.con) lo = mid; else hi = mid; }
+  return { a: lo, pat };
+}
+function singleReach(p, d, f) {
+  if (f(0) < d.con) return 0;
+  let lo = 0, hi = p.R + 60 * d.lam;
+  for (let it = 0; it < 80; it++) { const m = (lo + hi) / 2; if (f(m) >= d.con) lo = m; else hi = m; }
+  return lo;
+}
+const sitesPerCm2 = (pattern, a) => 1e8 / (pattern === "square" ? a * a : a * a * Math.sqrt(3) / 2);
+
+// ---------------------------------------------------------------------------
+// Colours and drawing
+// ---------------------------------------------------------------------------
+const hex = h => [parseInt(h.slice(1, 3), 16), parseInt(h.slice(3, 5), 16), parseInt(h.slice(5, 7), 16)];
+const VIR = ["#440154", "#482878", "#3e4989", "#31688e", "#26828e", "#1f9e89", "#35b779", "#6ece58", "#fde725"].map(hex);
+function mix(a, b, t) { t = Math.min(1, Math.max(0, t)); return [a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t, a[2] + (b[2] - a[2]) * t]; }
+function ramp(stops, t) { t = Math.min(1, Math.max(0, t)) * (stops.length - 1); const i = Math.min(stops.length - 2, Math.floor(t)); return mix(stops[i], stops[i + 1], t - i); }
+const UNDER = [hex("#F4F0EA"), hex("#BFCBD1")], IN = [hex("#A8D9DC"), hex("#2A6F75")], OVER = [hex("#E89A84"), hex("#8E3A25")];
+function colour(c, d) {
+  if (S.mode === "log") { const lo = Math.log10(d.con / 100), hi = Math.log10(d.cfib * 10); return ramp(VIR, (Math.log10(Math.max(c, 1e-30)) - lo) / (hi - lo)); }
+  if (c < d.con) return mix(UNDER[0], UNDER[1], 1 + Math.log10(Math.max(c, 1e-30) / d.con) / 2);
+  if (c <= d.cfib) return mix(IN[0], IN[1], Math.log10(c / d.con) / Math.max(1e-9, Math.log10(d.cfib / d.con)));
+  return mix(OVER[0], OVER[1], Math.log10(c / d.cfib));
+}
+const mapC = $("map"), secC = $("sec"), chartC = $("chart");
+let F = null, lastMapGrid = null;
+function drawGrid(ctx, W, H, nx, ny, vals, d) {
+  const img = new ImageData(nx, ny);
+  for (let i = 0; i < nx * ny; i++) { const c = colour(vals[i], d); img.data[4 * i] = c[0]; img.data[4 * i + 1] = c[1]; img.data[4 * i + 2] = c[2]; img.data[4 * i + 3] = 255; }
+  const off = document.createElement("canvas"); off.width = nx; off.height = ny; off.getContext("2d").putImageData(img, 0, 0);
+  ctx.imageSmoothingEnabled = true; ctx.drawImage(off, 0, 0, W, H);
+}
+function contour(ctx, nx, ny, vals, level, sx, sy, style, dash) {   // marching squares on cell centres
+  ctx.save(); ctx.strokeStyle = style; ctx.lineWidth = 2; ctx.setLineDash(dash || []); ctx.beginPath();
+  const v = (i, j) => vals[j * nx + i], P = (i, j) => [(i + 0.5) * sx, (j + 0.5) * sy];
+  for (let j = 0; j < ny - 1; j++) for (let i = 0; i < nx - 1; i++) {
+    const a = v(i, j), b = v(i + 1, j), c = v(i + 1, j + 1), e = v(i, j + 1), pts = [];
+    const edge = (p1, p2, v1, v2) => { const t = (level - v1) / (v2 - v1); pts.push([p1[0] + (p2[0] - p1[0]) * t, p1[1] + (p2[1] - p1[1]) * t]); };
+    if ((a < level) !== (b < level)) edge(P(i, j), P(i + 1, j), a, b);
+    if ((b < level) !== (c < level)) edge(P(i + 1, j), P(i + 1, j + 1), b, c);
+    if ((c < level) !== (e < level)) edge(P(i + 1, j + 1), P(i, j + 1), c, e);
+    if ((e < level) !== (a < level)) edge(P(i, j + 1), P(i, j), e, a);
+    for (let k = 0; k + 1 < pts.length; k += 2) { ctx.moveTo(pts[k][0], pts[k][1]); ctx.lineTo(pts[k + 1][0], pts[k + 1][1]); }
+  }
+  ctx.stroke(); ctx.restore();
+}
+function scaleBar(ctx, W, H, L) {
+  const len = [100, 200, 250, 500, 1000, 2000, 5000].find(v => v >= L / 6) || 5000, px = len / L * W;
+  ctx.fillStyle = "rgba(255,255,255,.85)"; ctx.fillRect(W - px - 26, H - 34, px + 16, 24);
+  ctx.fillStyle = "#1B2A33"; ctx.fillRect(W - px - 18, H - 18, px, 4);
+  ctx.font = "13px system-ui"; ctx.fillText(len >= 1000 ? len / 1000 + " mm" : len + " µm", W - px - 18, H - 22);
+}
+function drawMap(n) {
+  const p = S.p, d = F.d, ctx = mapC.getContext("2d"), W = mapC.width, H = mapC.height, L = p.L, vals = new Float64Array(n * n);
+  for (let j = 0; j < n; j++) for (let i = 0; i < n; i++) vals[j * n + i] = F.at((i + 0.5) / n * L, (j + 0.5) / n * L, p.zv);
+  lastMapGrid = { n, vals };
+  drawGrid(ctx, W, H, n, n, vals, d);
+  contour(ctx, n, n, vals, d.con, W / n, H / n, S.mode === "log" ? "#ffffff" : "#1B2A33", [6, 4]);
+  contour(ctx, n, n, vals, d.cfib, W / n, H / n, "#E8590C", []);
+  const k = W / L;
+  for (const s of F.sites) {
+    if (s[0] < -p.R || s[0] > L + p.R || s[1] < -p.R || s[1] > L + p.R) continue;
+    ctx.beginPath(); ctx.arc(s[0] * k, s[1] * k, Math.max(3, p.R * k), 0, 2 * Math.PI); ctx.lineWidth = 2; ctx.setLineDash([]); ctx.strokeStyle = "rgba(255,255,255,.9)"; ctx.stroke();
+    ctx.beginPath(); ctx.arc(s[0] * k, s[1] * k, 3, 0, 2 * Math.PI); ctx.fillStyle = "#1B2A33"; ctx.fill();
+  }
+  const yl = p.ys / 100 * L * k; ctx.setLineDash([4, 6]); ctx.strokeStyle = "rgba(27,42,51,.7)"; ctx.lineWidth = 1.5;
+  ctx.beginPath(); ctx.moveTo(0, yl); ctx.lineTo(W, yl); ctx.stroke(); ctx.setLineDash([]);
+  scaleBar(ctx, W, H, L);
+}
+function drawSection(nx) {
+  const p = S.p, d = F.d, ctx = secC.getContext("2d"), L = p.L, Hd = p.H, W = secC.width;
+  const Hc = Math.round(W * Math.min(0.9, Math.max(0.25, Hd / L))); if (secC.height !== Hc) secC.height = Hc;
+  const nz = Math.max(30, Math.round(nx * Hc / W)), vals = new Float64Array(nx * nz), y = p.ys / 100 * L;
+  for (let j = 0; j < nz; j++) for (let i = 0; i < nx; i++) vals[j * nx + i] = F.at((i + 0.5) / nx * L, y, (j + 0.5) / nz * Hd);
+  drawGrid(ctx, W, Hc, nx, nz, vals, d);
+  contour(ctx, nx, nz, vals, d.con, W / nx, Hc / nz, S.mode === "log" ? "#ffffff" : "#1B2A33", [6, 4]);
+  contour(ctx, nx, nz, vals, d.cfib, W / nx, Hc / nz, "#E8590C", []);
+  const kz = Hc / Hd, kx = W / L;
+  ctx.fillStyle = "#1B2A33"; ctx.fillRect(0, 0, W, 3);
+  ctx.font = "12.5px system-ui"; ctx.fillStyle = "rgba(255,255,255,.85)"; ctx.fillRect(4, 6, 252, 18);
+  ctx.fillStyle = "#1B2A33"; ctx.fillText("dermal–epidermal junction (no flux)", 8, 19);
+  ctx.setLineDash([3, 5]); ctx.strokeStyle = "rgba(27,42,51,.55)"; ctx.beginPath(); ctx.moveTo(0, p.zv * kz); ctx.lineTo(W, p.zv * kz); ctx.stroke(); ctx.setLineDash([]);
+  for (const s of F.sites) if (Math.abs(s[1] - y) <= p.R && s[0] > -p.R && s[0] < L + p.R) {
+    const rr = Math.sqrt(Math.max(0, p.R * p.R - (s[1] - y) ** 2));
+    ctx.beginPath(); ctx.ellipse(s[0] * kx, p.z0 * kz, Math.max(2, rr * kx), Math.max(2, rr * kz), 0, 0, 2 * Math.PI); ctx.strokeStyle = "rgba(255,255,255,.9)"; ctx.lineWidth = 2; ctx.stroke();
+  }
+  $("secCap").innerHTML = `Cross-section at y = ${fmt(y)} µm, depth 0–${fmt(Hd)} µm (vertical scale ${(kz / kx).toFixed(2)}× the horizontal). Dotted line: depth of the en-face map. <a href="#help/start/read" data-help="start/read">How to read it</a>`;
+}
+
+// ---------------------------------------------------------------------------
+// Metrics and the design curve
+// ---------------------------------------------------------------------------
+function fractions(vals, d) { let u = 0, w = 0, o = 0; for (const c of vals) { if (c < d.con) u++; else if (c <= d.cfib) w++; else o++; } const n = vals.length; return [u / n, w / n, o / n]; }
+function volumeFractions(nxy, nz) {
+  const p = S.p, vals = new Float64Array(nxy * nxy * nz); let k = 0;
+  for (let l = 0; l < nz; l++) for (let j = 0; j < nxy; j++) for (let i = 0; i < nxy; i++) vals[k++] = F.at((i + 0.5) / nxy * p.L, (j + 0.5) / nxy * p.L, (l + 0.5) / nz * p.H);
+  return fractions(vals, F.d);
+}
+const bar = fr => `<div class="bar">${fr.map((f, i) => `<div style="width:${(100 * f).toFixed(2)}%;background:${["#BFCBD1", "#2A6F75", "#A9472F"][i]}"></div>`).join("")}</div>`;
+let volCache = null;
+function drawMetrics(final) {
+  const p = S.p, d = F.d, plane = fractions(lastMapGrid.vals, d);
+  if (final) volCache = volumeFractions(36, 40);
+  const spc = S.pattern === "custom" ? S.custom.length / (p.L * p.L / 1e8) : sitesPerCm2(S.pattern === "square" ? "square" : "hex", p.a);
+  const crit = (S.pattern === "hex" || S.pattern === "square") ? criticalSpacing(p) : null, reach = singleReach(p, d, F.f);
+  const pct = x => (100 * x).toFixed(1) + " %", hl = t => ` <a class="hl" href="#help/metrics/${t}" data-help="metrics/${t}">ⓘ</a>`;
+  const rows = [
+    ["Dermis in window (whole depth)" + hl("coverage"), volCache ? `<b>${pct(volCache[1])}</b>` : "…"],
+    ["… below threshold / above ceiling", volCache ? `${pct(volCache[0])} / ${pct(volCache[2])}` : "…"],
+    ["Slice in window (at " + fmt(p.zv) + " µm)", pct(plane[1])],
+    ["Sites per cm²" + hl("dose"), fmt(spc)],
+    ["Cells per cm²", fmt(spc * p.ncells)],
+    ["Reach of one site (to aged-cell threshold)" + hl("reach"), fmt(reach) + " µm"],
+    ["Largest spacing with no gap in the injection plane" + hl("critical"), crit ? (isNaN(crit.a) ? "none (threshold not reached)" : fmt(crit.a) + " µm → " + fmt(sitesPerCm2(crit.pat, crit.a)) + " sites/cm²") : "lattice patterns only"]
+  ];
+  $("metrics").innerHTML = (volCache ? bar(volCache) : "") +
+    `<div class="note" style="margin-bottom:6px">grey: below the aged-cell threshold · teal: in the window · orange: above the fibrotic ceiling</div>` +
+    rows.map(r => `<div class="metric"><span>${r[0]}</span><span class="v">${r[1]}</span></div>`).join("") +
+    `<div class="derived">Per site ${fmt(d.Q)} molecules/s. Decay rate k = D/λ² = ${fmt(d.k)} s⁻¹ (half-life ${fmt(d.thalf / 60)} min). Thresholds: aged cells ${fmt(p.con * p.sage)} ng/mL (${fmt(p.con * p.sage * 1000 / p.mw)} pM), ceiling ${fmt(p.cfib)} ng/mL.</div>`;
+}
+let chartJob = 0;
+function drawChart() {
+  const job = ++chartJob, p = { ...S.p }, pat = S.pattern === "square" ? "square" : "hex", ctx = chartC.getContext("2d");
+  if (S.pattern === "custom") { ctx.clearRect(0, 0, chartC.width, chartC.height); $("chartCap").textContent = "The design curve needs a lattice pattern (hexagonal, square or random)."; return; }
+  const d = derived(p), f = kernel(p, d), as = [], res = [], N = 22, nu = 12, nz = 16;
+  for (let i = 0; i < N; i++) as.push(80 * Math.pow(3000 / 80, i / (N - 1)));
+  let i = 0;
+  (function step() {
+    if (job !== chartJob) return;
+    const a = as[i], dy = pat === "hex" ? a * Math.sqrt(3) / 2 : a, vals = [];
+    for (let l = 0; l < nz; l++) for (let v = 0; v < nu; v++) for (let u = 0; u < nu; u++) {
+      const uu = (u + 0.5) / nu, vv = (v + 0.5) / nu, x = pat === "hex" ? uu * a + vv * a / 2 : uu * a, y = vv * dy;
+      vals.push(latticeAt(p, d, f, pat, a, x, y, (l + 0.5) / nz * p.H));
+    }
+    res.push(fractions(vals, d)); i++;
+    plotChart(as.slice(0, i), res, p, pat);
+    if (i < N) setTimeout(step, 0);
+  })();
+}
+function plotChart(as, res, p, pat) {
+  const ctx = chartC.getContext("2d"), W = chartC.width, H = chartC.height, l = 56, r = 14, t = 14, b = 46;
+  ctx.clearRect(0, 0, W, H); ctx.font = "13px system-ui";
+  const x = a => l + (Math.log(a / 80) / Math.log(3000 / 80)) * (W - l - r), y = v => t + (1 - v) * (H - t - b);
+  ctx.strokeStyle = "#D9D2C7"; ctx.fillStyle = "#44525A"; ctx.lineWidth = 1;
+  for (const v of [0, .25, .5, .75, 1]) { ctx.beginPath(); ctx.moveTo(l, y(v)); ctx.lineTo(W - r, y(v)); ctx.stroke(); ctx.fillText((v * 100) + "%", 8, y(v) + 4); }
+  for (const a of [100, 200, 500, 1000, 2000]) { ctx.beginPath(); ctx.moveTo(x(a), t); ctx.lineTo(x(a), H - b); ctx.stroke(); ctx.fillText(a >= 1000 ? a / 1000 + " mm" : a + " µm", x(a) - 16, H - b + 18); }
+  ctx.fillText("site spacing (" + (pat === "hex" ? "hexagonal" : "square") + " lattice), log scale", l, H - 8);
+  const lines = [[0, "#8FA0A8", "below threshold"], [1, "#2A6F75", "in window"], [2, "#A9472F", "above ceiling"]];
+  for (const [k, col] of lines) { ctx.strokeStyle = col; ctx.lineWidth = k === 1 ? 3.5 : 2.5; ctx.beginPath(); as.forEach((a, i) => { const X = x(a), Y = y(res[i][k]); i ? ctx.lineTo(X, Y) : ctx.moveTo(X, Y); }); ctx.stroke(); }
+  ctx.lineWidth = 1; ctx.strokeStyle = "#1B2A33"; ctx.setLineDash([4, 4]); ctx.beginPath(); ctx.moveTo(x(p.a), t); ctx.lineTo(x(p.a), H - b); ctx.stroke(); ctx.setLineDash([]);
+  let lx = l + 8; for (const [, col, name] of lines) { ctx.fillStyle = col; ctx.fillRect(lx, t + 4, 12, 12); ctx.fillStyle = "#1B2A33"; ctx.fillText(name, lx + 16, t + 15); lx += ctx.measureText(name).width + 34; }
+  $("chartCap").textContent = "Share of the dermis (0–" + fmt(p.H) + " µm deep) below the aged-cell threshold, inside the window and above the fibrotic ceiling, for the current parameters. Dashed: current spacing." + (S.pattern === "random" ? " Random pattern: shown for the hexagonal lattice of the same density." : "");
+}
+
+// ---------------------------------------------------------------------------
+// Controls
+// ---------------------------------------------------------------------------
+function fmt(v) {
+  if (!isFinite(v)) return "–";
+  const a = Math.abs(v);
+  if (a >= 1e5) return v.toExponential(2).replace("e+", "×10^");
+  if (a >= 1000) return Math.round(v).toLocaleString("en-US").replace(/,/g, " ");
+  if (a >= 100) return v.toFixed(0);
+  if (a >= 10) return v.toFixed(1);
+  if (a === 0) return "0";
+  if (a >= 0.01) return v.toPrecision(2);
+  return v.toExponential(1);
+}
+const badge = def => `<a class="badge ${STATUS[def.status][0]}" href="#help/params/${def.key}" data-help="params/${def.key}" title="Where this value comes from">${STATUS[def.status][1]}</a>`;
+const toSlider = (def, v) => def.log ? Math.log(v / def.min) / Math.log(def.max / def.min) * 1000 : v;
+const fromSlider = (def, s) => def.log ? def.min * Math.pow(def.max / def.min, s / 1000) : +s;
+function buildControls() {
+  const groups = [...new Set(PARAMS.map(p => p.group))];
+  $("left").innerHTML = groups.map(g => `<div class="panel"><h2>${g}</h2>` + PARAMS.filter(p => p.group === g).map(def => {
+    const min = def.log ? 0 : def.min, max = def.log ? 1000 : def.max, step = def.log ? 1 : (def.step || 1);
+    return `<div class="prow"><div class="lab"><span>${def.label}</span>${badge(def)}<span class="val" id="v_${def.key}"></span></div>
+      <input type="range" id="s_${def.key}" min="${min}" max="${max}" step="${step}" aria-label="${esc(def.label)}"></div>`;
+  }).join("") + (g === "Signal" ? `<div class="derived" id="lamBox"></div>` : "") + `</div>`).join("");
+  for (const def of PARAMS) $("s_" + def.key).addEventListener("input", e => {
+    S.p[def.key] = fromSlider(def, +e.target.value);
+    if (def.key === "z0" && S.zvLinked) S.p.zv = S.p.z0;
+    if (def.key === "zv") S.zvLinked = false;
+    if (def.key === "H") { S.p.z0 = Math.min(S.p.z0, S.p.H - 20); S.p.zv = Math.min(S.p.zv, S.p.H); }
+    schedule(true);
+  });
+}
+function syncControls() {
+  for (const def of PARAMS) { $("s_" + def.key).value = toSlider(def, S.p[def.key]); $("v_" + def.key).textContent = fmt(S.p[def.key]) + " " + def.unit; }
+  $("lamBox").innerHTML = `Reference ranges for λ: 80–120 µm measured for cytokines in tissue (${cite("oyleryaniv2017niches")}), about 250 µm for a single cell (${cite("francis1997distances")}). <a href="#help/model/lambda" data-help="model/lambda">More</a>`;
+  $("pattern").value = S.pattern;
+  $("editBtn").classList.toggle("on", S.edit); mapC.classList.toggle("editing", S.edit);
+  $("mWindow").classList.toggle("on", S.mode === "window"); $("mLog").classList.toggle("on", S.mode === "log");
+  $("presetYoung").classList.toggle("on", S.p.sage === 1); $("presetAged").classList.toggle("on", S.p.sage === 3);
+}
+function drawLegend() {
+  const p = S.p;
+  if (S.mode === "window") {
+    $("legend").innerHTML = `<span><span class="sw" style="background:#BFCBD1"></span>below aged-cell threshold (&lt; ${fmt(p.con * p.sage)} ng/mL)</span>
+      <span><span class="sw" style="background:#2A6F75"></span>in the window</span>
+      <span><span class="sw" style="background:#A9472F"></span>above fibrotic ceiling (&gt; ${fmt(p.cfib)} ng/mL)</span>`;
+  } else {
+    const g = VIR.map((c, i) => `rgb(${c}) ${i / (VIR.length - 1) * 100}%`).join(",");
+    $("legend").innerHTML = `<span>${fmt(p.con * p.sage / 100)} ng/mL</span><span class="sw" style="width:180px;background:linear-gradient(90deg,${g})"></span><span>${fmt(p.cfib * 10)} ng/mL</span><span>· dashed white: aged-cell threshold · orange: fibrotic ceiling</span>`;
+  }
+  $("mapCap").textContent = `En-face map at ${fmt(p.zv)} µm below the dermal–epidermal junction, ${fmt(p.L / 1000)} × ${fmt(p.L / 1000)} mm. Circles: implant sites (cluster radius ${fmt(p.R)} µm, depth ${fmt(p.z0)} µm). Dashed line: cross-section.` +
+    (S.pattern === "custom" ? " Custom layout: only the sites shown count." : " The lattice continues beyond the view.");
+}
+let pending = null, fineTimer = null;
+function schedule(coarse) {
+  if (pending) cancelAnimationFrame(pending);
+  pending = requestAnimationFrame(() => { pending = null; render(coarse ? 90 : 170, false); });
+  clearTimeout(fineTimer); fineTimer = setTimeout(() => { render(170, true); drawChart(); }, coarse ? 260 : 0);
+}
+function render(n, final) { F = buildField(S.p); syncControls(); drawLegend(); drawMap(n); drawSection(n); drawMetrics(final); if (final) syncUrl(); }
+
+// ---------------------------------------------------------------------------
+// The address holds the configuration: every value that differs from its
+// default, the pattern, the colouring and hand-placed sites. stateQuery()
+// writes it, syncUrl() puts it in the address (keeping a #help… part),
+// readUrlState() applies it once at load. A new control goes in all three and
+// in the help entry start/share.
+// ---------------------------------------------------------------------------
+const sig4 = v => +(+v).toPrecision(4);
+function stateQuery() {
+  const q = new URLSearchParams();
+  for (const def of PARAMS) if (Math.abs(S.p[def.key] - def.def) > 1e-9 * Math.max(1, Math.abs(def.def))) q.set(def.key, sig4(S.p[def.key]));
+  if (S.pattern !== "hex") q.set("pattern", S.pattern);
+  if (S.mode !== "window") q.set("show", S.mode === "log" ? "concentration" : S.mode);
+  if (S.pattern === "custom") q.set("sites", S.custom.map(s => Math.round(s[0]) + "," + Math.round(s[1])).join(";"));
+  return q.toString().replace(/%2C/g, ",").replace(/%3B/g, ";");
+}
+function syncUrl() {
+  const qs = stateQuery(), url = location.pathname + (qs ? "?" + qs : "") + (location.hash.startsWith("#help") ? location.hash : "");
+  if (url !== location.pathname + location.search + location.hash) history.replaceState(null, "", url);
+}
+function readUrlState() {
+  const q = new URLSearchParams(location.search);
+  for (const def of PARAMS) if (q.has(def.key)) {
+    const v = parseFloat(q.get(def.key));
+    if (isFinite(v)) S.p[def.key] = Math.min(def.max, Math.max(def.min, v));
+  }
+  if (q.has("zv")) S.zvLinked = false;
+  const pat = q.get("pattern"); if (["hex", "square", "random", "custom"].includes(pat)) S.pattern = pat;
+  if (q.get("show") === "concentration") S.mode = "log";
+  if (S.pattern === "custom") {
+    S.custom = (q.get("sites") || "").split(";").map(t => t.split(",").map(Number)).filter(s => s.length === 2 && s.every(isFinite));
+    if (!S.custom.length) S.pattern = "hex";
+  }
+}
+$("linkbtn").addEventListener("click", () => {
+  syncUrl();
+  const url = location.origin + location.pathname + location.search, b = $("linkbtn");
+  const done = ok => { b.textContent = ok ? "Link copied" : "Copy failed"; setTimeout(() => b.textContent = "Copy link", 1600); };
+  (navigator.clipboard ? navigator.clipboard.writeText(url) : Promise.reject()).then(() => done(true), () => { prompt("Copy this link:", url); done(true); });
+});
+
+let drag = null;
+function canvasPt(e) { const r = mapC.getBoundingClientRect(); return [(e.clientX - r.left) / r.width * S.p.L, (e.clientY - r.top) / r.height * S.p.L]; }
+function toCustom() { if (S.pattern !== "custom") { S.custom = F.sites.filter(s => s[0] >= 0 && s[0] <= S.p.L && s[1] >= 0 && s[1] <= S.p.L).map(s => [s[0], s[1]]); S.pattern = "custom"; } }
+mapC.addEventListener("pointerdown", e => {
+  if (!S.edit) return;
+  const [x, y] = canvasPt(e), tol = Math.max(S.p.R, S.p.L / 60); toCustom();
+  let best = -1, bd = Infinity; S.custom.forEach((s, i) => { const dd = Math.hypot(s[0] - x, s[1] - y); if (dd < bd) { bd = dd; best = i; } });
+  if (best >= 0 && bd <= tol) { if (e.shiftKey) { S.custom.splice(best, 1); schedule(false); return; } drag = best; mapC.setPointerCapture(e.pointerId); }
+  else { S.custom.push([x, y]); schedule(false); }
+});
+mapC.addEventListener("pointermove", e => { if (drag === null) return; const [x, y] = canvasPt(e); S.custom[drag] = [x, y]; schedule(true); });
+mapC.addEventListener("pointerup", () => { if (drag !== null) { drag = null; schedule(false); } });
+$("pattern").addEventListener("change", e => { S.pattern = e.target.value; if (S.pattern === "custom" && !S.custom.length) { S.pattern = "hex"; F = buildField(S.p); toCustom(); } schedule(false); });
+$("editBtn").addEventListener("click", () => { S.edit = !S.edit; schedule(false); });
+$("mWindow").addEventListener("click", () => { S.mode = "window"; schedule(false); });
+$("mLog").addEventListener("click", () => { S.mode = "log"; schedule(false); });
+$("presetYoung").addEventListener("click", () => { S.p.sage = 1; schedule(false); });
+$("presetAged").addEventListener("click", () => { S.p.sage = 3; schedule(false); });
+$("reset").addEventListener("click", () => { resetParams(); schedule(false); });
+
+// ---------------------------------------------------------------------------
+// Help: topics → entries, ⓘ links (data-help="topic/entry"), deep links
+// (#help/topic/entry), search, references, changelog from CHANGELOG.md.
+// Every feature has an entry here and an ⓘ on its control.
+// ---------------------------------------------------------------------------
+const n = (path, unit) => `<span data-n="${path}"></span>${unit ? " " + unit : ""}`;   // numbers from the data
+const HELP = [
+  { topic: "start", title: "Quick start", entries: [
+    ["what", "What this shows", () => `<p>The viewer asks how densely rejuvenated fibroblasts must be implanted into aged dermis so that the signals they secrete reach the surrounding aged cells <b>inside a window</b>: above the concentration that activates aged cells, below the one that risks fibrotic activation.</p>
+      <p>The large map is a horizontal slice through the dermis at the slice depth; the strip below it is a vertical cross-section. The panel on the right reports how much of the dermis lies below, inside and above the window, and how that changes with the spacing of the implant sites.</p>
+      <p>It builds on the group's implantation of mechanically reprogrammed fibroblasts into aged skin models (${cite("roy2024implanting")}). This prototype is the minimal model (M1); see <a href="#help/limits/list" data-help="limits/list">Limitations</a>.</p>`],
+    ["read", "Reading the maps", () => `<p><b>Window</b> colours: grey below the aged-cell threshold, teal inside the window (darker = closer to the ceiling), orange above the fibrotic ceiling. <b>Concentration</b> colours the signal on a log scale (dark blue low, yellow high); the dashed white line is the aged-cell threshold and the orange line the fibrotic ceiling.</p>
+      <p>White circles are implant sites, drawn with the cluster radius. The dashed line on the map marks where the cross-section cuts. In the cross-section the top edge is the dermal–epidermal junction; the dotted line is the depth of the map.</p>`],
+    ["edit", "Editing implant sites", () => `<p>Press <b>Edit sites</b>, then click the map to add a site, drag a site to move it, and shift-click a site to remove it. Editing turns the pattern into <i>custom</i>: from then on only the sites in view count (a lattice continues beyond the view, a custom layout does not). Choose a lattice again under <i>Pattern</i> to go back.</p>`],
+    ["presets", "Young and aged tissue", () => `<p><b>Young tissue</b> sets the aged-cell threshold factor s_age to 1; <b>Aged tissue</b> sets it to 3. That aged cells respond blunted or divergently is sourced (${cite("liao2026chromatin")}); the factor 3 is a placeholder. Both presets keep all other values.</p>
+      <p>Ageing could also change the decay length λ, but in which direction is open: aged dermis has fewer cells (${cite("arnalforne2024dermis")}), and fewer consuming cells lengthen the range (${cite("oyleryaniv2017niches")}), while binding to the matrix shortens it. The presets therefore leave λ alone.</p>`],
+    ["share", "Sharing a view", () => `<p>The address in your browser always holds the current view: every value that differs from its default (all sliders), the pattern, the colouring and, for a custom layout, the position of every site. <b>Copy link</b> copies it; whoever opens the link sees the same view. A link to a help entry (e.g. <code>#help/model/window</code>) can be added at the end and opens that entry.</p>
+      <p>Address parameters: ${PARAMS.map(p => `<code>${p.key}</code>`).join(", ")} (each in the unit of its slider), <code>pattern</code> (hex, square, random, custom), <code>show=concentration</code>, and <code>sites=x,y;x,y;…</code> in µm for custom layouts. Values outside a slider's range are clamped to it.</p>`],
+    ["status", "What the badges mean", () => `<p>Every value carries a badge; click it for its entry under <a href="#help/params" data-help="params">Parameters</a>.</p>
+      <table><tr><td><span class="badge b-src">source</span></td><td>the default is a published value, checked against the source (abstract or full text) and listed under <a href="#help/refs" data-help="refs">References</a></td></tr>
+      <tr><td><span class="badge b-ana">analogue</span></td><td>published value measured in a related system (e.g. other cytokines); used until a value for this system exists</td></tr>
+      <tr><td><span class="badge b-ph">placeholder</span></td><td>no checked source yet; results that depend on it are illustrative only</td></tr>
+      <tr><td><span class="badge b-des">design</span></td><td>a choice (implant layout, depth) or a view setting; needs no source</td></tr></table>`]
+  ]},
+  { topic: "model", title: "Model", entries: [
+    ["equation", "Equation and solution", () => `<p>Each site is a sphere of radius R holding the implanted cells, which secrete one signal at a constant rate Q (cells per site × secretion per cell). The signal diffuses through homogeneous dermis (coefficient D) and is removed at the rate k = D/λ² (uptake, matrix capture and degradation together). At steady state:</p>
+      <p><code>D ∇²c − k c + s = 0</code>, with source density <code>s = Q / (4/3 π R³)</code> inside the sphere.</p>
+      <p>Outside: <code>c(r) = (s/k)·[x cosh x − sinh x]·e^(−r/λ)/(r/λ)</code>; inside: <code>c(r) = (s/k)·[1 − (1+x)·e^(−x)·sinh(r/λ)/(r/λ)]</code>, with x = R/λ. For R → 0 this is the point source <code>Q/(4πDr)·e^(−r/λ)</code>. The fields of all sites add up.</p>`],
+    ["lambda", "Decay length λ", () => `<p>λ is how far the signal carries; it sets how far apart sites can be. It is the viewer's parameter because the measured ranges and the chemistry disagree:</p>
+      <ul><li>Diffusion in dermis (${n("D.def", "µm²/s")}, ${cite("romgens2015diffusion")}) with clearance from tissue at a half-life of 22 h (${cite("sprugel1987kinetics")}) would give λ ≈ 1.6 mm (our calculation).</li>
+      <li>Measured in dense tissue, cytokines act over 80–120 µm, because consuming cells take them up; the range scales with the density of consuming cells (${cite("oyleryaniv2017niches")}).</li>
+      <li>A single cell communicates within a domain of about 250 µm (${cite("francis1997distances")}).</li>
+      <li>Small molecules in dermis decay over 210–920 µm, removed by capillaries (${cite("kretsos2008dermis")}).</li>
+      <li>Radiation bystander effects in 3D human tissue reached 1 mm (${cite("belyakov2005skin")}), through signals not yet identified.</li></ul>
+      <p>The default, ${n("lam.def", "µm")}, is the upper end of the cytokine measurement: an <span class="badge b-ana">analogue</span> until λ is measured for the rejuvenated cells' signals.</p>`],
+    ["window", "The therapeutic window", () => `<p>Aged host cells are counted as activated above <code>c_on × s_age</code> and at risk of fibrotic activation above <code>c_fib</code>. The upper side is not hypothetical: the group notes that matrix deposition by implanted cells could also indicate fibrotic activation (${cite("roy2024implanting")}).</p>
+      <p><b>The thresholds are open.</b> Our literature search (November 2026) found no verified activation threshold or fibrotic ceiling for TGF-β1 in dermal fibroblasts, so both are placeholders. The 10 ng/mL often used in experiments is a stimulation dose, not a threshold (${cite("liao2026chromatin")}). Windows with a lower and an upper side are documented for other signals: CCN2 stimulates collagen gene expression below 50 ng/mL and inhibits it above (${cite("nakerakanti2011ccn2")}); for VEGF the local amount secreted, not the total dose, decides between normal and aberrant vessels (${cite("ozawa2004vegf")}). TGF-β1 is also the minority isoform in adult skin (${cite("quan2002uv")}), and TGF-β3 improved scars in a phase II trial (${cite("mccollum2011avotermin")}).</p>`],
+    ["boundary", "Boundaries", () => `<p>The dermal–epidermal junction is treated as impermeable: every site has a mirror image above it, which makes the flux through the junction zero. The deep side of the dermis is open (the signal may leave). Measured diffusion is slowest at the junction (${cite("wei2018microneedle")}).</p>`],
+    ["scaling", "Design scaling", () => `<p>Beyond about one λ from a site the signal falls off exponentially. Doubling the cells per site then adds only about half a λ of reach (0.46 λ at 1.7 λ, tending to 0.69 λ), so adding sites helps more than adding cells per site. One injection plane covers a band of the dermis around its depth; covering the whole depth needs several depths (a later milestone).</p>`],
+    ["check", "How the numbers are checked", () => `<p>The solution is exact for the model. The page was checked against it: the concentration is continuous at the surface of the cluster, far from a site it matches the point source to machine precision, and finite differences of the computed field satisfy the equation to about 10⁻⁶ inside and outside the cluster. The reference implementation is a Python pipeline; shared test cases will keep the two in step.</p>`]
+  ]},
+  { topic: "params", title: "Parameters", entries: [
+    ...PARAMS.map(def => [def.key, def.label, () => `<p>${badge(def)} Default <b>${fmt(def.def)} ${def.unit}</b>; slider ${fmt(def.min)}–${fmt(def.max)} ${def.unit}${def.log ? " (log scale)" : ""}.</p><p>${def.note()}</p>`]),
+    ["pattern", "Implant pattern", () => `<p><span class="badge b-des">design</span> <b>Hexagonal</b> and <b>square</b> lattices continue beyond the view. <b>Random</b> places sites at random with the same mean density as the hexagonal lattice. <b>Custom</b> uses the sites you place (see <a href="#help/start/edit" data-help="start/edit">Editing implant sites</a>).</p>`]
+  ]},
+  { topic: "metrics", title: "Coverage and design", entries: [
+    ["coverage", "Coverage", () => `<p><b>Dermis in window</b> is the share of the whole dermis (0 to the dermis thickness, across the view) inside the window, sampled on a 36 × 36 × 40 grid; the bar shows below / inside / above. <b>Slice in window</b> is the same for the en-face map only.</p>`],
+    ["dose", "Sites and cells per cm²", () => `<p>Sites per cm² follow from the spacing (hexagonal: 1 / (a²·√3/2), square: 1 / a²); cells per cm² multiply by the cells per site. For a sense of scale: a fibroblast cell therapy for acne scars injected 2 mL of 10–20 million cells per mL per session (${cite("munavalli2013azficel")}); the group's protocol used 40,000 cells per site (${cite("roy2024implanting")}).</p>`],
+    ["reach", "Reach of one site", () => `<p>Distance from the centre of a single site at which the signal falls to the aged-cell threshold (no neighbours, no mirror image).</p>`],
+    ["critical", "Largest gap-free spacing", () => `<p>The largest lattice spacing at which the least-covered point of the injection plane (the centre of a triangle or square of sites) still reaches the aged-cell threshold. It says nothing about other depths or about the ceiling.</p>`],
+    ["curve", "Design curve", () => `<p>For the current parameters, the share of the dermis below, inside and above the window as the spacing varies from 80 µm to 3 mm, computed on one periodic cell of the lattice. The dashed line marks the current spacing. Too sparse leaves cells below threshold; with many cells per site, too dense can push tissue above the ceiling.</p>`]
+  ]},
+  { topic: "limits", title: "Limitations", entries: [
+    ["list", "Limitations of this prototype", () => `<ul><li>Steady state. Implant survival and the decline of matrix deposition after 2–3 cell divisions (${cite("roy2024implanting")}) are not modelled yet.</li>
+      <li>Homogeneous dermis: no papillary / reticular layers, no heterogeneity, no senescent cells or SASP.</li>
+      <li>Uptake, capture and degradation are lumped into one linear decay; no saturation.</li>
+      <li>One signal; no relay by host cells that start secreting in turn.</li>
+      <li>Values marked <span class="badge b-ph">placeholder</span> are not from checked sources: secretion per cell, thresholds, cluster radius, molecular weight. Do not read numbers off this prototype as predictions.</li></ul>`],
+    ["roadmap", "Roadmap", () => `<p>M2 response and window with uptake and implant survival · M3 dermal layers and injection depth · M4 heterogeneity and senescence · M5 several signals · M6 calibration against distance-resolved measurements.</p>`]
+  ]},
+  { topic: "refs", title: "References", entries: () => Object.keys(SOURCES).sort((a, b) => SOURCES[a].short.localeCompare(SOURCES[b].short)).map(k =>
+    [k, SOURCES[k].short, () => `<p>${esc(SOURCES[k].cite)} <a href="${link(SOURCES[k])}" target="_blank" rel="noopener">${SOURCES[k].doi ? "doi:" + SOURCES[k].doi : "PMID " + SOURCES[k].pmid}</a></p><p class="dim">Used for: ${esc(SOURCES[k].what)} <i>Checked against the ${SOURCES[k].checked}.</i></p>`]) },
+  { topic: "changelog", title: "Changelog", entries: [["loading", "Changelog", () => `<p class="dim">Loading CHANGELOG.md…</p>`]] },
+  { topic: "about", title: "About", entries: [
+    ["project", "The project", () => `<p>Master thesis project in the Shivashankar group (ETH Zurich / Paul Scherrer Institute) by Bernhard Buss and Nicholas Lawler. The reference model is a Python pipeline in a private repository; this page is a single HTML file without a server or dependencies.</p>`],
+    ["privacy", "Data and privacy", () => `<p>The page carries published values only and runs entirely in your browser; nothing you enter leaves it. It asks search engines not to index it (<code>noindex</code>).</p>`],
+    ["version", "Version", () => `<p>Version ${VERSION}. See the <a href="#help/changelog" data-help="changelog">changelog</a>.</p>`]
+  ]}
+];
+const help = $("help"), HELP_TOPIC_KEY = "drv_help_topic", SEEN_KEY = "drv_seen_version";
+const store = { get: k => { try { return localStorage.getItem(k); } catch (e) { return null; } }, set: (k, v) => { try { localStorage.setItem(k, v); } catch (e) {} } };
+const entryId = (t, e) => `h-${t}-${e}`;
+function buildHelp() {
+  $("htopics").innerHTML = HELP.map(t => {
+    const entries = typeof t.entries === "function" ? t.entries() : t.entries;
+    return `<section data-topic="${t.topic}" data-title="${esc(t.title)}" hidden><h2>${esc(t.title)}</h2>` +
+      entries.map(([e, title, body]) => `<article data-entry="${e}" id="${entryId(t.topic, e)}"><h3>${esc(title)}</h3>${body()}</article>`).join("") + `</section>`;
+  }).join("");
+  fillHelpNumbers();
+}
+function fillHelpNumbers() {
+  for (const el of document.querySelectorAll("[data-n]")) { const [k, f] = el.dataset.n.split("."); const def = PDEF[k]; el.textContent = def ? fmt(f === "def" ? def.def : S.p[k]) : "?"; }
+}
+const topics = () => [...help.querySelectorAll("section[data-topic]")];
+function helpNav(active) {
+  $("hnav").innerHTML = topics().map(sec => {
+    const t = sec.dataset.topic, on = t === active;
+    return `<button data-topic="${t}" class="${on ? "active" : ""}">${esc(sec.dataset.title)}</button>` +
+      (on ? [...sec.querySelectorAll("article[data-entry]")].map(a => `<a href="#help/${t}/${a.dataset.entry}" data-help="${t}/${a.dataset.entry}">${esc(a.querySelector("h3").textContent)}</a>`).join("") : "");
+  }).join("");
+}
+function openHelp(target = "") {
+  let [topic, entry] = String(target).split("/");
+  if (!help.querySelector(`section[data-topic="${topic}"]`)) { topic = store.get(HELP_TOPIC_KEY); entry = null; }
+  if (!help.querySelector(`section[data-topic="${topic}"]`)) topic = "start";
+  $("hsearch").value = ""; $("hresults").hidden = true;
+  for (const sec of topics()) sec.hidden = sec.dataset.topic !== topic;
+  helpNav(topic); store.set(HELP_TOPIC_KEY, topic);
+  if (topic === "changelog") { loadChangelog(); store.set(SEEN_KEY, VERSION); $("vernew").hidden = true; }
+  if (!help.open) help.showModal();
+  const art = entry && document.getElementById(entryId(topic, entry));
+  if (art) { art.scrollIntoView({ block: "start" }); art.classList.remove("flash"); void art.offsetWidth; art.classList.add("flash"); }
+  else $("hcontent").scrollTop = 0;
+  history.replaceState(null, "", "#help/" + topic + (art ? "/" + entry : ""));
+}
+function helpSearch(q) {
+  const res = $("hresults"); q = q.trim().toLowerCase();
+  const active = (help.querySelector(".hnav .active") || {}).dataset?.topic;
+  if (q.length < 2) { res.hidden = true; for (const sec of topics()) sec.hidden = sec.dataset.topic !== active; return; }
+  const hits = [];
+  for (const sec of topics()) for (const a of sec.querySelectorAll("article[data-entry]")) {
+    const text = a.textContent.replace(/\s+/g, " "), i = text.toLowerCase().indexOf(q); if (i < 0) continue;
+    const from = Math.max(0, i - 60), snip = esc(text.slice(from, i)) + "<mark>" + esc(text.slice(i, i + q.length)) + "</mark>" + esc(text.slice(i + q.length, i + q.length + 90));
+    hits.push(`<a class="hit" href="#help/${sec.dataset.topic}/${a.dataset.entry}" data-help="${sec.dataset.topic}/${a.dataset.entry}"><b>${esc(a.querySelector("h3").textContent)}</b><small>${esc(sec.dataset.title)}</small><br>${from ? "…" : ""}${snip}…</a>`);
+  }
+  for (const sec of topics()) sec.hidden = true;
+  res.hidden = false;
+  res.innerHTML = `<h2>${hits.length} ${hits.length === 1 ? "entry" : "entries"} for “${esc(q)}”</h2>` + (hits.join("") || `<p class="dim">Nothing found. Try a shorter word.</p>`);
+}
+// CHANGELOG.md is the one place the history is written; the page renders it.
+function mdInline(t) { return esc(t).replace(/`([^`]+)`/g, "<code>$1</code>").replace(/\*\*([^*]+)\*\*/g, "<b>$1</b>").replace(/\*([^*]+)\*/g, "<i>$1</i>").replace(/\[([^\]]+)\]\((https?:[^)\s]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>'); }
+function renderChangelog(md) {
+  const out = []; let para = [], list = [], open = false;
+  const flush = () => { if (para.length) { out.push(`<p>${mdInline(para.join(" "))}</p>`); para = []; } if (list.length) { out.push("<ul>" + list.map(x => `<li>${mdInline(x)}</li>`).join("") + "</ul>"); list = []; } };
+  for (const line of md.split(/\r?\n/)) {
+    let m;
+    if ((m = line.match(/^## +(.*)$/))) { flush(); if (open) out.push("</article>"); const ver = m[1].split(/[\s—-]/)[0];
+      out.push(`<article data-entry="${esc(ver)}" id="${entryId("changelog", esc(ver))}"><h3>${mdInline(m[1])}${ver === VERSION ? ' <span class="dim">· this version</span>' : ""}</h3>`); open = true; }
+    else if (/^# /.test(line)) flush();
+    else if ((m = line.match(/^[-*] +(.*)$/))) { if (para.length) flush(); list.push(m[1]); }
+    else if (/^\s+\S/.test(line) && list.length) list[list.length - 1] += " " + line.trim();
+    else if (line.trim() === "") flush();
+    else para.push(line.trim());
+  }
+  flush(); if (open) out.push("</article>");
+  return out.join("");
+}
+let changelogLoaded = false;
+function loadChangelog() {
+  if (changelogLoaded) return; changelogLoaded = true;
+  const sec = help.querySelector('section[data-topic="changelog"]');
+  fetch("CHANGELOG.md", { cache: "no-store" }).then(r => r.ok ? r.text() : Promise.reject(r.status))
+    .then(md => { sec.innerHTML = "<h2>Changelog</h2>" + renderChangelog(md); helpNav("changelog"); })
+    .catch(() => { sec.innerHTML = `<h2>Changelog</h2><article data-entry="offline" id="${entryId("changelog", "offline")}"><h3>Not available</h3><p class="dim">CHANGELOG.md could not be loaded (opened as a local file?). It is in the repository next to this page.</p></article>`; changelogLoaded = false; });
+}
+document.addEventListener("click", e => {
+  const a = e.target.closest("[data-help]"); if (!a) return;
+  e.preventDefault(); openHelp(a.dataset.help);
+});
+$("hnav").addEventListener("click", e => { const b = e.target.closest("button[data-topic]"); if (b) openHelp(b.dataset.topic); });
+$("hsearch").addEventListener("input", e => helpSearch(e.target.value));
+const clearHelpHash = () => { if (location.hash.startsWith("#help")) history.replaceState(null, "", location.pathname + location.search); };
+function closeHelp() { if (help.open) help.close(); clearHelpHash(); }
+$("hclose").addEventListener("click", closeHelp);
+help.addEventListener("click", e => { if (e.target === help) closeHelp(); });
+help.addEventListener("close", clearHelpHash);
+help.addEventListener("cancel", clearHelpHash);   // Esc
+document.addEventListener("keydown", e => {
+  if (e.key === "?" && !help.open && !/INPUT|SELECT|TEXTAREA/.test(document.activeElement.tagName)) { e.preventDefault(); openHelp(""); }
+});
+function openFromHash() { const m = location.hash.match(/^#help(?:\/(.*))?$/); if (m) openHelp(m[1] || ""); }
+window.addEventListener("hashchange", openFromHash);
+
+// Test hook for driving the page from a browser pane or a test script.
+window.__drv = {
+  version: VERSION,
+  params: () => ({ ...S.p, pattern: S.pattern }),
+  set(obj) { for (const [k, v] of Object.entries(obj)) { if (k === "pattern") S.pattern = v; else if (k in S.p) S.p[k] = v; } if ("z0" in obj && !("zv" in obj)) S.p.zv = S.p.z0; render(170, true); return this.params(); },
+  derived: () => derived(S.p),
+  sites: () => F.sites.map(s => s.slice()),
+  field: (x, y, z) => F.at(x, y, z),                              // molecules/µm³
+  fieldNgml: (x, y, z) => F.at(x, y, z) / derived(S.p).perNgml,    // ng/mL
+  kernel: r => kernel(S.p, derived(S.p))(r),
+  criticalSpacing: () => criticalSpacing(S.p),
+  metrics: () => ({ plane: fractions(lastMapGrid.vals, F.d), volume: volumeFractions(36, 40) }),
+  stateQuery, syncUrl, readUrlState,
+  openHelp, closeHelp, helpTargets: () => [...document.querySelectorAll("[data-help]")].map(a => a.dataset.help)
+};
+
+$("ver").textContent = "v" + VERSION;
+if (store.get(SEEN_KEY) !== VERSION) $("vernew").hidden = false;
+readUrlState();
+buildControls();
+buildHelp();
+schedule(false);
+openFromHash();
+</script>
+</body>
+</html>
