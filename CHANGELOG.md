@@ -2,6 +2,10 @@
 
 Newest version first. Each entry says what you can do or see differently.
 
+## 0.3.0 — 2026-11-05
+
+- Every slider shows its **default** as a small grey tick. A value that differs from its default turns teal and gets a **↺** that puts it back (double-clicking the slider does the same); hovering a value shows its default.
+
 ## 0.2.0 — 2026-11-05
 
 - The header shows the **working signal**, TGF-β3; a new help entry, *Which signal*, explains the TGF-β isoforms and why TGF-β3 was chosen for now.

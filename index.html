@@ -35,6 +35,11 @@ main{display:grid;grid-template-columns:340px minmax(440px,1fr) 340px;gap:14px;p
 .prow .lab{display:flex;align-items:center;gap:5px;font-size:13px}
 .prow .val{margin-left:auto;font-variant-numeric:tabular-nums;font-weight:600;white-space:nowrap}
 .prow input[type=range]{width:100%;accent-color:var(--teal);margin:3px 0 0}
+.track{position:relative}
+.dtick{position:absolute;top:50%;width:2px;height:13px;margin-left:-1px;transform:translateY(-40%);background:#5E6A70;opacity:.75;border-radius:1px;pointer-events:none;z-index:2}
+.val.changed{color:var(--teal)}
+.rst{border:0;background:none;color:var(--teal);font-size:14px;line-height:1;padding:0 1px;cursor:pointer;margin-left:-2px}
+.rst:hover{color:var(--terra)}
 .badge{font-size:10.5px;padding:0 6px;border-radius:999px;border:1px solid;cursor:pointer;text-decoration:none;white-space:nowrap;line-height:16px}
 .b-src{color:var(--teal);border-color:var(--teal)}
 .b-ana{color:var(--teal);border-color:var(--teal);border-style:dashed}
@@ -152,7 +157,7 @@ ol.refs li{margin:6px 0}
 <script src="data/parameters.js"></script>
 <script>
 "use strict";
-const VERSION = "0.2.0";
+const VERSION = "0.3.0";
 const $ = id => document.getElementById(id);
 function esc(s) { return String(s).replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); }
 
@@ -445,10 +450,11 @@ const toSlider = (def, v) => def.log ? Math.log(v / def.min) / Math.log(def.max 
 const fromSlider = (def, s) => def.log ? def.min * Math.pow(def.max / def.min, s / 1000) : +s;
 function buildControls() {
   const groups = [...new Set(PARAMS.map(p => p.group))];
-  $("left").innerHTML = groups.map(g => `<div class="panel"><h2>${g}</h2>` + PARAMS.filter(p => p.group === g).map(def => {
+  $("left").innerHTML = groups.map(g => `<div class="panel"><h2>${g} <a class="hl" href="#help/start/defaults" data-help="start/defaults" title="Help: defaults and resetting">ⓘ</a></h2>` + PARAMS.filter(p => p.group === g).map(def => {
     const min = def.log ? 0 : def.min, max = def.log ? 1000 : def.max, step = def.log ? 1 : (def.step || 1);
-    return `<div class="prow"><div class="lab"><span>${def.label}</span>${badge(def)}<span class="val" id="v_${def.key}"></span></div>
-      <input type="range" id="s_${def.key}" min="${min}" max="${max}" step="${step}" aria-label="${esc(def.label)}"></div>`;
+    const pct = (toSlider(def, def.def) - min) / (max - min) * 100, dtxt = esc(fmt(def.def) + " " + def.unit);
+    return `<div class="prow"><div class="lab"><span>${def.label}</span>${badge(def)}<span class="val" id="v_${def.key}" title="Default: ${dtxt}"></span><button class="rst" id="r_${def.key}" data-key="${def.key}" title="Back to the default, ${dtxt} (or double-click the slider)" aria-label="Reset ${esc(def.label)} to its default, ${dtxt}" hidden>↺</button></div>
+      <div class="track"><input type="range" id="s_${def.key}" min="${min}" max="${max}" step="${step}" aria-label="${esc(def.label)}" title="Double-click: back to the default, ${dtxt}"><span class="dtick" style="left:calc(${pct.toFixed(2)}% + ${(8 - 16 * pct / 100).toFixed(1)}px)" aria-hidden="true"></span></div></div>`;
   }).join("") + (g === "Signal" ? `<div class="derived" id="lamBox"></div>` : "") + `</div>`).join("");
   for (const def of PARAMS) $("s_" + def.key).addEventListener("input", e => {
     S.p[def.key] = fromSlider(def, +e.target.value);
@@ -457,9 +463,25 @@ function buildControls() {
     if (def.key === "H") { S.p.z0 = Math.min(S.p.z0, S.p.H - 20); S.p.zv = Math.min(S.p.zv, S.p.H); }
     schedule(true);
   });
+  for (const def of PARAMS) $("s_" + def.key).addEventListener("dblclick", () => resetParam(def.key));
+  $("left").addEventListener("click", e => { const b = e.target.closest("button.rst"); if (b) resetParam(b.dataset.key); });
+}
+const isDefault = key => Math.abs(S.p[key] - PDEF[key].def) <= 1e-9 * Math.max(1, Math.abs(PDEF[key].def));
+function resetParam(key) {                                         // one slider back to its default
+  S.p[key] = PDEF[key].def;
+  if (key === "zv") { S.zvLinked = true; S.p.zv = Math.min(S.p.z0, S.p.H); }
+  if (key === "z0" && S.zvLinked) S.p.zv = S.p.z0;
+  if (key === "H") { S.p.z0 = Math.min(S.p.z0, S.p.H - 20); S.p.zv = Math.min(S.p.zv, S.p.H); }
+  schedule(false);
 }
 function syncControls() {
-  for (const def of PARAMS) { $("s_" + def.key).value = toSlider(def, S.p[def.key]); $("v_" + def.key).textContent = fmt(S.p[def.key]) + " " + def.unit; }
+  for (const def of PARAMS) {
+    const same = isDefault(def.key);
+    $("s_" + def.key).value = toSlider(def, S.p[def.key]);
+    $("v_" + def.key).textContent = fmt(S.p[def.key]) + " " + def.unit;
+    $("v_" + def.key).classList.toggle("changed", !same);
+    $("r_" + def.key).hidden = same;
+  }
   $("lamBox").innerHTML = `Reference ranges for λ: 80–120 µm measured for cytokines in tissue (${cite("oyleryaniv2017niches")}), about 250 µm for a single cell (${cite("francis1997distances")}). <a href="#help/model/lambda" data-help="model/lambda">More</a>`;
   $("pattern").value = S.pattern;
   $("editBtn").classList.toggle("on", S.edit); mapC.classList.toggle("editing", S.edit);
@@ -564,6 +586,7 @@ const HELP = [
     ["edit", "Editing implant sites", () => `<p>Press <b>Edit sites</b>, then click the map to add a site, drag a site to move it, and shift-click a site to remove it. Editing turns the pattern into <i>custom</i>: from then on only the sites in view count (a lattice continues beyond the view, a custom layout does not). Choose a lattice again under <i>Pattern</i> to go back.</p>`],
     ["presets", "Young and aged tissue", () => `<p><b>Young tissue</b> sets the aged-cell threshold factor s_age to 1; <b>Aged tissue</b> sets it to 3. That aged cells respond blunted or divergently is sourced (${cite("liao2026chromatin")}); the factor 3 is a placeholder. Both presets keep all other values.</p>
       <p>Ageing could also change the decay length λ, but in which direction is open: aged dermis has fewer cells (${cite("arnalforne2024dermis")}), and fewer consuming cells lengthen the range (${cite("oyleryaniv2017niches")}), while binding to the matrix shortens it. The presets therefore leave λ alone.</p>`],
+    ["defaults", "Defaults and resetting", () => `<p>Each slider has a small grey tick at its <b>default</b>. When a value differs from its default it turns <span style="color:var(--teal);font-weight:600">teal</span> and a <b>↺</b> appears next to it: click it, or double-click the slider, to put that value back. Hovering a value shows its default. <b>Reset</b> at the top puts all values back at once. Defaults and their sources are listed under <a href="#help/params" data-help="params">Parameters</a>.</p>`],
     ["share", "Sharing a view", () => `<p>The address in your browser always holds the current view: every value that differs from its default (all sliders), the pattern, the colouring and, for a custom layout, the position of every site. <b>Copy link</b> copies it; whoever opens the link sees the same view. A link to a help entry (e.g. <code>#help/model/window</code>) can be added at the end and opens that entry.</p>
       <p>Address parameters: ${PARAMS.map(p => `<code>${p.key}</code>`).join(", ")} (each in the unit of its slider), <code>pattern</code> (hex, square, random, custom), <code>show=concentration</code>, and <code>sites=x,y;x,y;…</code> in µm for custom layouts. Values outside a slider's range are clamped to it.</p>`],
     ["status", "What the badges mean", () => `<p>Every value carries a badge; click it for its entry under <a href="#help/params" data-help="params">Parameters</a>.</p>
@@ -726,7 +749,7 @@ window.__drv = {
   kernel: r => kernel(S.p, derived(S.p))(r),
   criticalSpacing: () => criticalSpacing(S.p, S.pattern === "square" ? "square" : "hex"),
   metrics: () => ({ plane: fractions(lastMapGrid.vals, F.d), volume: volumeFractions(F, S.p, 36, 40) }),
-  stateQuery, syncUrl, readUrlState,
+  stateQuery, syncUrl, readUrlState, resetParam, isDefault,
   openHelp, closeHelp, helpTargets: () => [...document.querySelectorAll("[data-help]")].map(a => a.dataset.help)
 };
 
