@@ -78,6 +78,20 @@
   build, so a file can never put an unchecked source on screen. A new parameter
   needs nothing extra; a new non-numeric control goes into the `design:` block
   and into `params.design()` on the Python side.
+- **The control panel is five numbered steps** from the parameter file's `groups`
+  (`key`, `step`, `title`, `note`). Values marked `primary: true` open with their
+  step; the rest fold behind *more* (open folds remembered in `localStorage`,
+  `drv_open_steps`). `syncFolds()` opens any step holding a folded value that is off
+  its default, so a shared link never hides what it changed. A new parameter goes
+  into a group in `config/parameters.yaml`; nothing here needs to change.
+- **Numbers in prose are computed, not typed.** Help text and the *Read me first*
+  panel use `data-n` spans filled by `fillHelpNumbers()` (parameter values, and
+  extras such as the dose gap from `defaultGap()`). Never type a model output into
+  prose: it goes stale the next time a default moves (it did, twice, on 2026-11-06).
+- **`tests/page.mjs` only checks that the script compiles.** It does not run it, so a
+  reference to a `const` before its declaration (temporal dead zone) passes the test
+  and blanks the page. After any change to top-level code, load the page and check
+  the console.
 - **The address holds the configuration.** `stateQuery()` writes every value that
   differs from its default (keys = `PARAMS` keys, slider units), `pattern`,
   `show=concentration|response`, `scaffold=patch` and `sites=x,y;…` (µm, custom

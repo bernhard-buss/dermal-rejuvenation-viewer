@@ -8,250 +8,43 @@ window.DRV_PARAMS = {
   "status": "working choice",
   "note": "Working signal since 2026-11-05: anti-scarring in a phase II trial ({cite:mccollum2011avotermin}) and less activating than TGF-β1 in fibroblasts ({cite:urban2023isoforms}). The model is signal-agnostic; the choice is confirmed with the group's secretome and RNA-seq data."
  },
+ "groups": [
+  {
+   "key": "tissue",
+   "step": 1,
+   "title": "Whose skin",
+   "note": "The dermis you are injecting into. Mostly measured — the badge on each value says how well."
+  },
+  {
+   "key": "signal",
+   "step": 2,
+   "title": "What the cells make",
+   "note": "What the implanted cells secrete and what it takes to answer it. This is where the answer is decided, and where the uncertainty is."
+  },
+  {
+   "key": "design",
+   "step": 3,
+   "title": "How you inject",
+   "note": "Your design: where the sites go and how much goes into each."
+  },
+  {
+   "key": "device",
+   "step": 4,
+   "title": "The device",
+   "note": "Only for the injection scaffold: what the needle array would look like."
+  },
+  {
+   "key": "view",
+   "step": 5,
+   "title": "What you look at",
+   "note": "Where and when you are looking. Changes nothing about the design."
+  }
+ ],
  "parameters": [
   {
-   "key": "D",
-   "group": "Signal",
-   "label": "Diffusion coefficient D",
-   "unit": "µm²/s",
-   "value": 23,
-   "min": 1,
-   "max": 100,
-   "log": true,
-   "status": "src",
-   "sources": [
-    "romgens2015diffusion",
-    "wei2018microneedle"
-   ],
-   "note": "Measured in human dermis for a 40 kDa tracer ({cite:romgens2015diffusion}); other tracers gave 1–20 µm²/s ({cite:wei2018microneedle}). TGF-β dimers are smaller than 40 kDa, so the default is likely conservative."
-  },
-  {
-   "key": "lam",
-   "group": "Signal",
-   "label": "Effective decay length λ",
-   "unit": "µm",
-   "value": 120,
-   "min": 20,
-   "max": 3000,
-   "log": true,
-   "status": "ana",
-   "sources": [
-    "oyleryaniv2017niches",
-    "francis1997distances"
-   ],
-   "note": "How far the signal carries before uptake, capture and degradation remove it. Default: the upper end of 80–120 µm measured for cytokines in dense tissue in vivo ({cite:oyleryaniv2017niches}), an analogous system, not TGF-β itself. A single cell communicates within about 250 µm ({cite:francis1997distances}). Diffusion and chemical clearance alone would give about 1.6 mm (our calculation from {cite:romgens2015diffusion} and {cite:sprugel1987kinetics}). See {help:model/lambda|Decay length λ}."
-  },
-  {
-   "key": "sec",
-   "group": "Signal",
-   "label": "Active secretion per cell",
-   "unit": "pg/10⁶ cells/day",
-   "value": 8,
-   "min": 0.01,
-   "max": 100000,
-   "log": true,
-   "status": "ana",
-   "sources": [
-    "klingberg2014prestress",
-    "kelley1993autoinduction",
-    "ghahary1998igf1"
-   ],
-   "note": "Secretion of the **active** (signalling) form by one implanted cell — fibroblasts release TGF-β almost entirely as a latent complex, so this is a small fraction of what an ELISA of conditioned medium measures. Built from two checked steps. *Total:* ≈ 0.4 ng/10⁶ cells/day — ≤ 15 pg/10⁶ cells/h uninduced in human fetal lung fibroblasts ({cite:kelley1993autoinduction}), and 4.8 ± 0.8 pg/10⁴ cells in human dermal fibroblast medium by ELISA ({cite:ghahary1998igf1}), whose collection interval is not in the abstract, so 0.16–0.48 ng/day. *Active share:* ≤ 2 % at baseline in primary human dermal fibroblasts, 11 % once they contract and 36 % in dermal myofibroblasts ({cite:klingberg2014prestress}). 0.4 ng/day × 2 % ≈ 8 pg/10⁶ cells/day; a contractile implanted cell would give about 40. Nothing is known about rejuvenated cells ({cite:hanasono2003fibroblasts} has the right design for dermal fibroblasts but no numbers in its abstract). A threshold can be expressed in the same unit ({cite:ozawa2004vegf})."
-  },
-  {
-   "key": "mw",
-   "group": "Signal",
-   "label": "Molecular weight",
-   "unit": "kDa",
-   "value": 25,
-   "min": 5,
-   "max": 100,
-   "log": false,
-   "step": 1,
-   "status": "ph",
-   "sources": [],
-   "note": "Only converts between ng/mL, pM and molecules. Placeholder (mature TGF-β dimer assumed) until sourced."
-  },
-  {
-   "key": "con",
-   "group": "Thresholds",
-   "label": "Activation threshold c_on (young cells)",
-   "unit": "ng/mL",
-   "value": 1,
-   "min": 0.001,
-   "max": 50,
-   "log": true,
-   "status": "ana",
-   "sources": [
-    "dilger2025concentration",
-    "serpero2006polyp"
-   ],
-   "note": "Concentration at which young fibroblasts respond, and the EC50 of the graded response. Default: 1 ng/mL, which induced SMAD2 phosphorylation and α-SMA protein in primary human knee fibroblasts ({cite:dilger2025concentration}) and raised proliferation of nasal-polyp fibroblasts ({cite:serpero2006polyp}) — both analogues, not dermal cells, and a lowest effective dose rather than a fitted EC50. See {help:model/window|The therapeutic window}."
-  },
-  {
-   "key": "sage",
-   "group": "Thresholds",
-   "label": "Aged-cell threshold factor s_age",
-   "unit": "×",
-   "value": 1,
-   "min": 1,
-   "max": 20,
-   "log": true,
-   "status": "ph",
-   "sources": [
-    "liao2026chromatin"
-   ],
-   "note": "Aged cells respond blunted or divergently ({cite:liao2026chromatin}): the direction is sourced, the size of the factor is a placeholder. The aged-cell threshold is c_on × s_age."
-  },
-  {
-   "key": "cfib",
-   "group": "Thresholds",
-   "label": "Fibrotic ceiling c_fib",
-   "unit": "ng/mL",
-   "value": 10,
-   "min": 0.01,
-   "max": 200,
-   "log": true,
-   "status": "ana",
-   "sources": [
-    "serpero2006polyp",
-    "dilger2025concentration"
-   ],
-   "note": "Above this, conversion to myofibroblasts is expected. Default: 10 ng/mL, the lower of the two doses (10 and 20 ng/mL) that raised α-SMA in nasal-polyp fibroblasts while 1 ng/mL did not ({cite:serpero2006polyp}). Collagen deposition itself showed no upper limit from 0.5 to 40 ng/mL ({cite:dilger2025concentration}), so this ceiling is the myofibroblast switch, not a loss of effect. Analogues, not dermal cells. Windows with an upper side are documented for other signals, e.g. CCN2 ({cite:nakerakanti2011ccn2})."
-  },
-  {
-   "key": "hill",
-   "group": "Response",
-   "label": "Hill exponent n",
-   "unit": "–",
-   "value": 1,
-   "min": 0.5,
-   "max": 4,
-   "log": false,
-   "step": 0.1,
-   "status": "ph",
-   "sources": [
-    "zi2011dynamics"
-   ],
-   "note": "Steepness of the graded dose response R(c) = cⁿ / (EC50ⁿ + cⁿ), with EC50 = the aged-cell threshold, so the response is half-maximal there. No fitted Hill exponent for TGF-β on fibroblasts was found; 1 (no cooperativity) is the neutral placeholder. Short-term SMAD2 phosphorylation is graded while the long-term response is switch-like ({cite:zi2011dynamics}), so n > 1 is likely for a late readout — the direction is sourced, the number is not. See {help:model/response|Graded response}."
-  },
-  {
-   "key": "tday",
-   "group": "Response",
-   "label": "Time after implantation",
-   "unit": "days",
-   "value": 0,
-   "min": 0,
-   "max": 180,
-   "log": false,
-   "step": 1,
-   "status": "des",
-   "sources": [],
-   "note": "Everything shown is the steady state of the implant as it is on this day: the source per site is scaled by the surviving fraction S(t) = 2^(−t/t½). 0 is the fresh implant. See {help:model/time|Time after implantation}."
-  },
-  {
-   "key": "a",
-   "group": "Implants",
-   "label": "Site spacing",
-   "unit": "µm",
-   "value": 400,
-   "min": 80,
-   "max": 3000,
-   "log": true,
-   "status": "des",
-   "sources": [],
-   "note": "Distance between neighbouring sites of the lattice (random pattern: same mean density as the hexagonal lattice)."
-  },
-  {
-   "key": "ncells",
-   "group": "Implants",
-   "label": "Cells per site",
-   "unit": "cells",
-   "value": 40000,
-   "min": 1000,
-   "max": 1000000,
-   "log": true,
-   "status": "src",
-   "sources": [
-    "roy2024implanting"
-   ],
-   "note": "Default: the group's protocol, spheroids equivalent to 40,000 cells per site ({cite:roy2024implanting})."
-  },
-  {
-   "key": "R",
-   "group": "Implants",
-   "label": "Cluster radius",
-   "unit": "µm",
-   "value": 150,
-   "min": 5,
-   "max": 600,
-   "log": true,
-   "status": "ph",
-   "sources": [],
-   "note": "Radius of the sphere of implanted cells. Placeholder geometry; implanted cells also spread over days."
-  },
-  {
-   "key": "tsurv",
-   "group": "Implants",
-   "label": "Implant half-life t½",
-   "unit": "days",
-   "value": 10,
-   "min": 0.5,
-   "max": 180,
-   "log": true,
-   "status": "ph",
-   "sources": [
-    "hebda1999transplanted",
-    "farrokhi2022rejection",
-    "petrof2013erosions"
-   ],
-   "note": "Time over which half of the signalling implanted cells are lost or stop secreting. No measured half-life was found, only brackets: labelled fibroblasts injected into rabbit dermis were still detectable at 56 days, with a rise and fall in the first 28 days ({cite:hebda1999transplanted}); allogeneic fibroblasts were rejected within a week in immunocompetent mice ({cite:farrokhi2022rejection}); in patients the healing effect of one injection was gone after 28 days ({cite:petrof2013erosions}). The group analysed its implants after 10 days and saw matrix deposition decline after 2–3 divisions ({cite:roy2024implanting}). Placeholder inside those brackets; it scales the whole time course."
-  },
-  {
-   "key": "levels",
-   "group": "Implants",
-   "label": "Injection depths (levels)",
-   "unit": "levels",
-   "value": 1,
-   "min": 1,
-   "max": 5,
-   "log": false,
-   "step": 1,
-   "status": "des",
-   "sources": [],
-   "note": "Number of injection depths. With more than one, each depth is a lattice of the same spacing, shifted sideways against its neighbours, so that seen from above the sites are closer together while in depth they keep their distance. See {help:model/depths|Several injection depths}."
-  },
-  {
-   "key": "dz",
-   "group": "Implants",
-   "label": "Spacing between depths",
-   "unit": "µm",
-   "value": 300,
-   "min": 50,
-   "max": 1000,
-   "log": false,
-   "step": 10,
-   "status": "des",
-   "sources": [],
-   "note": "Vertical distance between neighbouring injection depths (used with more than one depth). All depths are kept inside the dermis."
-  },
-  {
-   "key": "z0",
-   "group": "Implants",
-   "label": "Injection depth (middle level)",
-   "unit": "µm",
-   "value": 500,
-   "min": 20,
-   "max": 1980,
-   "log": false,
-   "step": 10,
-   "status": "des",
-   "sources": [],
-   "note": "Design choice: depth of the middle injection level below the dermal–epidermal junction. The group implanted within the 2-mm-deep dermis of the skin model ({cite:roy2024implanting})."
-  },
-  {
    "key": "H",
-   "group": "Tissue",
+   "group": "tissue",
+   "primary": true,
    "label": "Dermis thickness (model)",
    "unit": "µm",
    "value": 2000,
@@ -266,102 +59,38 @@ window.DRV_PARAMS = {
    "note": "Default: the 2-mm-deep dermal region of the reconstructed skin model ({cite:roy2024implanting}). Human dermis is thicker at most trunk sites — papillary plus reticular comes to 2.7 mm periumbilical in donors over 55 ({cite:arnalforne2024dermis}) and 2.4–2.9 mm on abdomen and back by 50 MHz ultrasound ({cite:wang2025ultrasound}) — so raise it for an in vivo design."
   },
   {
+   "key": "sage",
+   "group": "tissue",
+   "primary": true,
+   "label": "Aged-cell threshold factor s_age",
+   "unit": "×",
+   "value": 1,
+   "min": 1,
+   "max": 20,
+   "log": true,
+   "status": "ph",
+   "sources": [
+    "liao2026chromatin"
+   ],
+   "note": "Aged cells respond blunted or divergently ({cite:liao2026chromatin}): the direction is sourced, the size of the factor is a placeholder. The aged-cell threshold is c_on × s_age."
+  },
+  {
    "key": "layers",
-   "group": "Tissue",
-   "label": "Depth-dependent tissue",
+   "group": "tissue",
+   "label": "Depth-dependent dermis",
    "unit": "0 / 1",
-   "value": 0,
+   "value": 1,
    "min": 0,
    "max": 1,
    "log": false,
    "step": 1,
    "status": "des",
    "sources": [],
-   "note": "Off: one diffusion coefficient and one decay length through the whole dermis (the model up to M2). On: diffusion is slower near the dermal–epidermal junction and clearance follows the local fibroblast density, so λ varies with depth. See {help:model/layers|A dermis with depth}."
-  },
-  {
-   "key": "ddej",
-   "group": "Tissue",
-   "label": "Diffusion at the junction",
-   "unit": "µm²/s",
-   "value": 2,
-   "min": 0.1,
-   "max": 30,
-   "log": true,
-   "status": "src",
-   "sources": [
-    "wei2018microneedle"
-   ],
-   "note": "Diffusion is slowest right under the epidermis: 0.7–3 µm²/s at the dermal–epidermal junction against 1–20 µm²/s deeper in the dermis ({cite:wei2018microneedle}). What happens deeper is contested: one study found papillary and reticular dermis to differ only marginally ({cite:romgens2015diffusion}), two others a rise of about an order of magnitude towards the reticular dermis ({cite:wei2018microneedle}, {cite:raphael2013depth}). The model follows the first and puts the whole depth dependence of D into this junction zone, which is the conservative choice."
-  },
-  {
-   "key": "tdej",
-   "group": "Tissue",
-   "label": "Depth of the slow zone",
-   "unit": "µm",
-   "value": 100,
-   "min": 10,
-   "max": 600,
-   "log": true,
-   "status": "ph",
-   "sources": [
-    "wei2018microneedle"
-   ],
-   "note": "Over this depth D rises from its junction value to the bulk value, D(z) = D − (D − D_junction)·e^(−z/this). That diffusion is slowest at the junction is measured ({cite:wei2018microneedle}); how thick the zone is was not found, so the depth itself is a placeholder."
-  },
-  {
-   "key": "hpap",
-   "group": "Tissue",
-   "label": "Papillary dermis thickness",
-   "unit": "µm",
-   "value": 101,
-   "min": 20,
-   "max": 400,
-   "log": false,
-   "step": 1,
-   "status": "src",
-   "sources": [
-    "arnalforne2024dermis",
-    "hachmo2021papillary"
-   ],
-   "note": "Depth of the papillary dermis, the denser-celled upper layer. Default: 101.2 ± 21.4 µm, measured on photoprotected periumbilical skin of donors aged 55 and over — the age group this project is about; the same study gives 71–77 µm below 55 and a reticular dermis of 2.6–3.8 mm ({cite:arnalforne2024dermis}). Post- auricular skin of men around 68 gave 133 ± 22 µm ({cite:hachmo2021papillary}). The papillary dermis is thus a few per cent of the dermis, not the 20 % that ultrasound reviews assume."
-  },
-  {
-   "key": "rpap",
-   "group": "Tissue",
-   "label": "Papillary cell density",
-   "unit": "× reticular",
-   "value": 11,
-   "min": 1,
-   "max": 20,
-   "log": false,
-   "step": 0.5,
-   "status": "ana",
-   "sources": [
-    "arnalforne2024dermis",
-    "miller2003density",
-    "oyleryaniv2017niches"
-   ],
-   "note": "How many times more cells the papillary dermis holds than the reticular. It matters because uptake by cells, not chemistry, is what removes the signal: niche size scales with the density of consuming cells ({cite:oyleryaniv2017niches}). Default: 2714 ± 451 against 247 ± 86 cells/mm² of section in donors aged 55 and over ({cite:arnalforne2024dermis}), a ratio of 11. Two caveats: those are *all* nuclei, not fibroblasts only, and they are per mm² of a section, so the ratio carries over to a volume density only if the section thickness is the same for both layers. For scale, mid-dermis holds 2100–4100 fibroblasts/mm³ in young donors ({cite:miller2003density})."
-  },
-  {
-   "key": "thalfc",
-   "group": "Tissue",
-   "label": "Chemical half-life in tissue",
-   "unit": "h",
-   "value": 22,
-   "min": 0.1,
-   "max": 200,
-   "log": true,
-   "status": "src",
-   "sources": [
-    "sprugel1987kinetics"
-   ],
-   "note": "Half-life of the signal where no cell takes it up; 22 h for ¹²⁵I-TGF-β in subcutaneous collagen chambers ({cite:sprugel1987kinetics}). With the decay length λ it splits the decay into a chemical part and an uptake part — for the default values more than 99 % is uptake — and only the uptake part follows the cell density with depth. See {help:model/layers|A dermis with depth}."
+   "note": "On (the default): diffusion is slower near the dermal–epidermal junction and clearance follows the local fibroblast density, so λ varies with depth — the measured picture. Off: one diffusion coefficient and one decay length through the whole dermis, the simpler model used up to M2, kept for comparison and because it is what the analytic check is done against. See {help:model/layers|A dermis with depth}."
   },
   {
    "key": "hep",
-   "group": "Tissue",
+   "group": "tissue",
    "label": "Epidermis thickness",
    "unit": "µm",
    "value": 75,
@@ -378,25 +107,307 @@ window.DRV_PARAMS = {
    "note": "Used by the injection scaffold: the model measures depth below the dermal–epidermal junction, a needle from the skin surface. Default: 75 µm, the dorsal forearm of 71 volunteers (stratum corneum 18.3 ± 4.9 µm plus cellular epidermis 56.6 ± 11.5 µm, {cite:sandbymoller2003epidermis}). The face is thinner, 29.6–62.6 µm across 39 subunits ({cite:chopra2015face}); the abdomen measures 110 ± 18 µm by ultrasound ({cite:wang2025ultrasound}). Body site explains most of the variation, so set it for the intended site. See {help:scaffold/needles|Needle lengths}."
   },
   {
-   "key": "pen",
-   "group": "Scaffold",
-   "label": "Penetration of needle length",
-   "unit": "×",
-   "value": 0.8,
-   "min": 0.3,
-   "max": 1,
+   "key": "hpap",
+   "group": "tissue",
+   "label": "Papillary dermis thickness",
+   "unit": "µm",
+   "value": 101,
+   "min": 20,
+   "max": 400,
    "log": false,
-   "step": 0.05,
+   "step": 1,
+   "status": "src",
+   "sources": [
+    "arnalforne2024dermis",
+    "hachmo2021papillary"
+   ],
+   "note": "Depth of the papillary dermis, the denser-celled upper layer. Default: 101.2 ± 21.4 µm, measured on photoprotected periumbilical skin of donors aged 55 and over — the age group this project is about; the same study gives 71–77 µm below 55 and a reticular dermis of 2.6–3.8 mm ({cite:arnalforne2024dermis}). Post- auricular skin of men around 68 gave 133 ± 22 µm ({cite:hachmo2021papillary}). The papillary dermis is thus a few per cent of the dermis, not the 20 % that ultrasound reviews assume."
+  },
+  {
+   "key": "rpap",
+   "group": "tissue",
+   "label": "Papillary cell density",
+   "unit": "× reticular",
+   "value": 11,
+   "min": 1,
+   "max": 20,
+   "log": false,
+   "step": 0.5,
    "status": "ana",
    "sources": [
-    "cordeiro2020templates",
-    "donnelly2010geometry"
+    "arnalforne2024dermis",
+    "miller2003density",
+    "oyleryaniv2017niches"
    ],
-   "note": "A needle does not enter the skin to its full length, because the skin is pressed in with it, so the needle has to be longer than the target depth: length = (epidermis + depth) / this factor. Default 0.8: sharp conical and pyramidal arrays inserted to 64–90 % of needle height ({cite:cordeiro2020templates}); 600 µm needles reached 330 µm at 4.4 N and 520 µm at 16.4 N per array ({cite:donnelly2010geometry}) — so it depends on the application force, and both are polymeric arrays in skin models, not hollow needles in human dermis."
+   "note": "How many times more cells the papillary dermis holds than the reticular. It matters because uptake by cells, not chemistry, is what removes the signal: niche size scales with the density of consuming cells ({cite:oyleryaniv2017niches}). Default: 2714 ± 451 against 247 ± 86 cells/mm² of section in donors aged 55 and over ({cite:arnalforne2024dermis}), a ratio of 11. Two caveats: those are *all* nuclei, not fibroblasts only, and they are per mm² of a section, so the ratio carries over to a volume density only if the section thickness is the same for both layers. For scale, mid-dermis holds 2100–4100 fibroblasts/mm³ in young donors ({cite:miller2003density})."
+  },
+  {
+   "key": "ddej",
+   "group": "tissue",
+   "label": "Diffusion at the junction",
+   "unit": "µm²/s",
+   "value": 2,
+   "min": 0.1,
+   "max": 30,
+   "log": true,
+   "status": "src",
+   "sources": [
+    "wei2018microneedle"
+   ],
+   "note": "Diffusion is slowest right under the epidermis: 0.7–3 µm²/s at the dermal–epidermal junction against 1–20 µm²/s deeper in the dermis ({cite:wei2018microneedle}). What happens deeper is contested: one study found papillary and reticular dermis to differ only marginally ({cite:romgens2015diffusion}), two others a rise of about an order of magnitude towards the reticular dermis ({cite:wei2018microneedle}, {cite:raphael2013depth}). The model follows the first and puts the whole depth dependence of D into this junction zone, which is the conservative choice."
+  },
+  {
+   "key": "tdej",
+   "group": "tissue",
+   "label": "Depth of the slow zone",
+   "unit": "µm",
+   "value": 100,
+   "min": 10,
+   "max": 600,
+   "log": true,
+   "status": "ph",
+   "sources": [
+    "wei2018microneedle"
+   ],
+   "note": "Over this depth D rises from its junction value to the bulk value, D(z) = D − (D − D_junction)·e^(−z/this). That diffusion is slowest at the junction is measured ({cite:wei2018microneedle}); how thick the zone is was not found, so the depth itself is a placeholder."
+  },
+  {
+   "key": "sec",
+   "group": "signal",
+   "primary": true,
+   "label": "Active secretion per cell",
+   "unit": "pg/10⁶ cells/day",
+   "value": 8,
+   "min": 0.01,
+   "max": 100000,
+   "log": true,
+   "status": "ana",
+   "sources": [
+    "klingberg2014prestress",
+    "kelley1993autoinduction",
+    "ghahary1998igf1"
+   ],
+   "note": "Secretion of the **active** (signalling) form by one implanted cell — fibroblasts release TGF-β almost entirely as a latent complex, so this is a small fraction of what an ELISA of conditioned medium measures. Built from two checked steps. *Total:* ≈ 0.4 ng/10⁶ cells/day — ≤ 15 pg/10⁶ cells/h uninduced in human fetal lung fibroblasts ({cite:kelley1993autoinduction}), and 4.8 ± 0.8 pg/10⁴ cells in human dermal fibroblast medium by ELISA ({cite:ghahary1998igf1}), whose collection interval is not in the abstract, so 0.16–0.48 ng/day. *Active share:* ≤ 2 % at baseline in primary human dermal fibroblasts, 11 % once they contract and 36 % in dermal myofibroblasts ({cite:klingberg2014prestress}). 0.4 ng/day × 2 % ≈ 8 pg/10⁶ cells/day; a contractile implanted cell would give about 40. Nothing is known about rejuvenated cells ({cite:hanasono2003fibroblasts} has the right design for dermal fibroblasts but no numbers in its abstract). A threshold can be expressed in the same unit ({cite:ozawa2004vegf})."
+  },
+  {
+   "key": "con",
+   "group": "signal",
+   "primary": true,
+   "label": "Activation threshold c_on (young cells)",
+   "unit": "ng/mL",
+   "value": 1,
+   "min": 0.001,
+   "max": 50,
+   "log": true,
+   "status": "ana",
+   "sources": [
+    "dilger2025concentration",
+    "serpero2006polyp"
+   ],
+   "note": "Concentration at which young fibroblasts respond, and the EC50 of the graded response. Default: 1 ng/mL, which induced SMAD2 phosphorylation and α-SMA protein in primary human knee fibroblasts ({cite:dilger2025concentration}) and raised proliferation of nasal-polyp fibroblasts ({cite:serpero2006polyp}) — both analogues, not dermal cells, and a lowest effective dose rather than a fitted EC50. See {help:model/window|The therapeutic window}."
+  },
+  {
+   "key": "cfib",
+   "group": "signal",
+   "primary": true,
+   "label": "Fibrotic ceiling c_fib",
+   "unit": "ng/mL",
+   "value": 10,
+   "min": 0.01,
+   "max": 200,
+   "log": true,
+   "status": "ana",
+   "sources": [
+    "serpero2006polyp",
+    "dilger2025concentration"
+   ],
+   "note": "Above this, conversion to myofibroblasts is expected. Default: 10 ng/mL, the lower of the two doses (10 and 20 ng/mL) that raised α-SMA in nasal-polyp fibroblasts while 1 ng/mL did not ({cite:serpero2006polyp}). Collagen deposition itself showed no upper limit from 0.5 to 40 ng/mL ({cite:dilger2025concentration}), so this ceiling is the myofibroblast switch, not a loss of effect. Analogues, not dermal cells. Windows with an upper side are documented for other signals, e.g. CCN2 ({cite:nakerakanti2011ccn2})."
+  },
+  {
+   "key": "lam",
+   "group": "signal",
+   "primary": true,
+   "label": "Effective decay length λ",
+   "unit": "µm",
+   "value": 120,
+   "min": 20,
+   "max": 3000,
+   "log": true,
+   "status": "ana",
+   "sources": [
+    "oyleryaniv2017niches",
+    "francis1997distances"
+   ],
+   "note": "How far the signal carries before uptake, capture and degradation remove it. Default: the upper end of 80–120 µm measured for cytokines in dense tissue in vivo ({cite:oyleryaniv2017niches}), an analogous system, not TGF-β itself. A single cell communicates within about 250 µm ({cite:francis1997distances}). Diffusion and chemical clearance alone would give about 1.6 mm (our calculation from {cite:romgens2015diffusion} and {cite:sprugel1987kinetics}). See {help:model/lambda|Decay length λ}."
+  },
+  {
+   "key": "D",
+   "group": "signal",
+   "label": "Diffusion coefficient D",
+   "unit": "µm²/s",
+   "value": 23,
+   "min": 1,
+   "max": 100,
+   "log": true,
+   "status": "src",
+   "sources": [
+    "romgens2015diffusion",
+    "wei2018microneedle"
+   ],
+   "note": "Measured in human dermis for a 40 kDa tracer ({cite:romgens2015diffusion}); other tracers gave 1–20 µm²/s ({cite:wei2018microneedle}). TGF-β dimers are smaller than 40 kDa, so the default is likely conservative."
+  },
+  {
+   "key": "hill",
+   "group": "signal",
+   "label": "Hill exponent n",
+   "unit": "–",
+   "value": 1,
+   "min": 0.5,
+   "max": 4,
+   "log": false,
+   "step": 0.1,
+   "status": "ph",
+   "sources": [
+    "zi2011dynamics"
+   ],
+   "note": "Steepness of the graded dose response R(c) = cⁿ / (EC50ⁿ + cⁿ), with EC50 = the aged-cell threshold, so the response is half-maximal there. No fitted Hill exponent for TGF-β on fibroblasts was found; 1 (no cooperativity) is the neutral placeholder. Short-term SMAD2 phosphorylation is graded while the long-term response is switch-like ({cite:zi2011dynamics}), so n > 1 is likely for a late readout — the direction is sourced, the number is not. See {help:model/response|Graded response}."
+  },
+  {
+   "key": "tsurv",
+   "group": "signal",
+   "label": "Implant half-life t½",
+   "unit": "days",
+   "value": 10,
+   "min": 0.5,
+   "max": 180,
+   "log": true,
+   "status": "ph",
+   "sources": [
+    "hebda1999transplanted",
+    "farrokhi2022rejection",
+    "petrof2013erosions"
+   ],
+   "note": "Time over which half of the signalling implanted cells are lost or stop secreting. No measured half-life was found, only brackets: labelled fibroblasts injected into rabbit dermis were still detectable at 56 days, with a rise and fall in the first 28 days ({cite:hebda1999transplanted}); allogeneic fibroblasts were rejected within a week in immunocompetent mice ({cite:farrokhi2022rejection}); in patients the healing effect of one injection was gone after 28 days ({cite:petrof2013erosions}). The group analysed its implants after 10 days and saw matrix deposition decline after 2–3 divisions ({cite:roy2024implanting}). Placeholder inside those brackets; it scales the whole time course."
+  },
+  {
+   "key": "thalfc",
+   "group": "signal",
+   "label": "Chemical half-life in tissue",
+   "unit": "h",
+   "value": 22,
+   "min": 0.1,
+   "max": 200,
+   "log": true,
+   "status": "src",
+   "sources": [
+    "sprugel1987kinetics"
+   ],
+   "note": "Half-life of the signal where no cell takes it up; 22 h for ¹²⁵I-TGF-β in subcutaneous collagen chambers ({cite:sprugel1987kinetics}). With the decay length λ it splits the decay into a chemical part and an uptake part — for the default values more than 99 % is uptake — and only the uptake part follows the cell density with depth. See {help:model/layers|A dermis with depth}."
+  },
+  {
+   "key": "mw",
+   "group": "signal",
+   "label": "Molecular weight",
+   "unit": "kDa",
+   "value": 25,
+   "min": 5,
+   "max": 100,
+   "log": false,
+   "step": 1,
+   "status": "ph",
+   "sources": [],
+   "note": "Only converts between ng/mL, pM and molecules. Placeholder (mature TGF-β dimer assumed) until sourced."
+  },
+  {
+   "key": "a",
+   "group": "design",
+   "primary": true,
+   "label": "Site spacing",
+   "unit": "µm",
+   "value": 400,
+   "min": 80,
+   "max": 3000,
+   "log": true,
+   "status": "des",
+   "sources": [],
+   "note": "Distance between neighbouring sites of the lattice (random pattern: same mean density as the hexagonal lattice)."
+  },
+  {
+   "key": "ncells",
+   "group": "design",
+   "primary": true,
+   "label": "Cells per site",
+   "unit": "cells",
+   "value": 40000,
+   "min": 1000,
+   "max": 1000000,
+   "log": true,
+   "status": "src",
+   "sources": [
+    "roy2024implanting"
+   ],
+   "note": "Default: the group's protocol, spheroids equivalent to 40,000 cells per site ({cite:roy2024implanting})."
+  },
+  {
+   "key": "z0",
+   "group": "design",
+   "primary": true,
+   "label": "Injection depth (middle level)",
+   "unit": "µm",
+   "value": 500,
+   "min": 20,
+   "max": 1980,
+   "log": false,
+   "step": 10,
+   "status": "des",
+   "sources": [],
+   "note": "Design choice: depth of the middle injection level below the dermal–epidermal junction. The group implanted within the 2-mm-deep dermis of the skin model ({cite:roy2024implanting})."
+  },
+  {
+   "key": "levels",
+   "group": "design",
+   "primary": true,
+   "label": "Injection depths (levels)",
+   "unit": "levels",
+   "value": 1,
+   "min": 1,
+   "max": 5,
+   "log": false,
+   "step": 1,
+   "status": "des",
+   "sources": [],
+   "note": "Number of injection depths. With more than one, each depth is a lattice of the same spacing, shifted sideways against its neighbours, so that seen from above the sites are closer together while in depth they keep their distance. See {help:model/depths|Several injection depths}."
+  },
+  {
+   "key": "dz",
+   "group": "design",
+   "label": "Spacing between depths",
+   "unit": "µm",
+   "value": 300,
+   "min": 50,
+   "max": 1000,
+   "log": false,
+   "step": 10,
+   "status": "des",
+   "sources": [],
+   "note": "Vertical distance between neighbouring injection depths (used with more than one depth). All depths are kept inside the dermis."
+  },
+  {
+   "key": "R",
+   "group": "design",
+   "label": "Cluster radius",
+   "unit": "µm",
+   "value": 150,
+   "min": 5,
+   "max": 600,
+   "log": true,
+   "status": "ph",
+   "sources": [],
+   "note": "Radius of the sphere of implanted cells. Placeholder geometry; implanted cells also spread over days."
   },
   {
    "key": "dneedle",
-   "group": "Scaffold",
+   "group": "device",
    "label": "Needle outer diameter",
    "unit": "µm",
    "value": 100,
@@ -412,8 +423,25 @@ window.DRV_PARAMS = {
    "note": "Outer diameter of one needle at the skin surface, drawn in the layout and written into the specification. Design choice, not a model value: reported hollow needles carry a 10–40 µm cannula ({cite:burton2011hmts}) and solid tips of 5–37 µm needed 20–167 mN to insert, rising with tip diameter ({cite:romgens2014tip}). See {help:scaffold/spec|What the fabricator gets}."
   },
   {
+   "key": "pen",
+   "group": "device",
+   "label": "Penetration of needle length",
+   "unit": "×",
+   "value": 0.8,
+   "min": 0.3,
+   "max": 1,
+   "log": false,
+   "step": 0.05,
+   "status": "ana",
+   "sources": [
+    "cordeiro2020templates",
+    "donnelly2010geometry"
+   ],
+   "note": "A needle does not enter the skin to its full length, because the skin is pressed in with it, so the needle has to be longer than the target depth: length = (epidermis + depth) / this factor. Default 0.8: sharp conical and pyramidal arrays inserted to 64–90 % of needle height ({cite:cordeiro2020templates}); 600 µm needles reached 330 µm at 4.4 N and 520 µm at 16.4 N per array ({cite:donnelly2010geometry}) — so it depends on the application force, and both are polymeric arrays in skin models, not hollow needles in human dermis."
+  },
+  {
    "key": "patch",
-   "group": "Scaffold",
+   "group": "device",
    "label": "Scaffold patch size",
    "unit": "mm",
    "value": 5,
@@ -428,21 +456,24 @@ window.DRV_PARAMS = {
    "note": "Edge length of the square patch of skin the scaffold covers. Decides how many needles the array has; the layout itself is the periodic tile repeated over this area. For scale, a reported hollow-microneedle device is 1.27 cm² with 18 needles ({cite:burton2011hmts})."
   },
   {
-   "key": "L",
-   "group": "View",
-   "label": "Field of view",
-   "unit": "µm",
-   "value": 4000,
-   "min": 1000,
-   "max": 12000,
-   "log": true,
+   "key": "tday",
+   "group": "view",
+   "primary": true,
+   "label": "Time after implantation",
+   "unit": "days",
+   "value": 0,
+   "min": 0,
+   "max": 180,
+   "log": false,
+   "step": 1,
    "status": "des",
    "sources": [],
-   "note": "Width of the en-face map."
+   "note": "Everything shown is the steady state of the implant as it is on this day: the source per site is scaled by the surviving fraction S(t) = 2^(−t/t½). 0 is the fresh implant. See {help:model/time|Time after implantation}."
   },
   {
    "key": "zv",
-   "group": "View",
+   "group": "view",
+   "primary": true,
    "label": "Slice depth (en-face map)",
    "unit": "µm",
    "value": 500,
@@ -456,7 +487,7 @@ window.DRV_PARAMS = {
   },
   {
    "key": "ys",
-   "group": "View",
+   "group": "view",
    "label": "Cross-section position",
    "unit": "% of view",
    "value": 50,
@@ -467,6 +498,19 @@ window.DRV_PARAMS = {
    "status": "des",
    "sources": [],
    "note": "Where the cross-section cuts the en-face map (dashed line)."
+  },
+  {
+   "key": "L",
+   "group": "view",
+   "label": "Field of view",
+   "unit": "µm",
+   "value": 4000,
+   "min": 1000,
+   "max": 12000,
+   "log": true,
+   "status": "des",
+   "sources": [],
+   "note": "Width of the en-face map."
   }
  ],
  "sources": {

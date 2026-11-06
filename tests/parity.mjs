@@ -80,6 +80,8 @@ if (golden.optimise) {
   for (const [mode, want] of Object.entries(g.modes)) {
     const got = api.optimise(g.params, g.pattern, mode, g.opts);
     close(`optimise ${mode} evaluated`, got.evaluated, want.evaluated, 0);
+    close(`optimise ${mode} λ nodes`, got.lam_nodes.length, want.lam_nodes.length, 0);
+    want.lam_nodes.forEach((v, i) => close(`optimise ${mode} λ node ${i}`, got.lam_nodes[i], v, 1e-12));
     if (got.front.length !== want.front.length) { fails++; console.error(`✗ optimise ${mode}: front has ${got.front.length} solutions, want ${want.front.length}`); continue; }
     want.front.forEach((w, i) => {
       const s = got.front[i];

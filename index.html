@@ -44,6 +44,13 @@ main{display:grid;grid-template-columns:340px minmax(440px,1fr) 360px;gap:14px;p
 .rst{border:0;background:none;color:var(--teal);font-size:14px;line-height:1;padding:0 1px;cursor:pointer;margin-left:-2px}
 .rst:hover{color:var(--terra)}
 .prow.off{opacity:.45}
+.panel.step h2{display:flex;align-items:center;gap:8px}
+.panel.step h2 .num{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:50%;background:var(--teal);color:#fff;font-size:12px;font-weight:600;flex:none}
+.stepnote{margin:-2px 0 10px}
+.foldbtn{margin-top:4px;font-size:12px;padding:3px 8px;color:var(--muted);border-color:transparent;background:transparent}
+.foldbtn:hover{border-color:var(--line);color:var(--ink)}
+.foldbtn.on{color:var(--teal)}
+.fold[hidden]{display:none}
 .panel.off{display:none}
 button.warn{color:var(--terra);border-color:var(--terra)}
 .badge{font-size:10.5px;padding:0 6px;border-radius:999px;border:1px solid;cursor:pointer;text-decoration:none;white-space:nowrap;line-height:16px}
@@ -183,7 +190,7 @@ a.cite{text-decoration:none;border-bottom:1px dotted var(--teal)}
     <div class="panel"><h2>Design curve <a class="hl" href="#help/metrics/curve" data-help="metrics/curve" title="Help: design curve">ⓘ</a></h2>
       <canvas id="chart" width="660" height="380" aria-label="Share of dermis below, inside and above the window against site spacing"></canvas>
       <div class="cap" id="chartCap"></div></div>
-    <div class="panel"><h2>Read me first</h2><div class="note"><b>With every value taken from a published source, the dose does not add up:</b> 40,000 implanted cells secreting the measured amount of <i>active</i> TGF-β peak at about 0.06 ng/mL, some 17× below the concentration that activates a fibroblast, and 32× below it at the least-covered point of the default lattice. That is this model's first real prediction, and the reason to measure rather than assume. <a href="#help/model/dose" data-help="model/dose">What would close the gap</a>.<br><br>Each implant site is a sphere of cells secreting one signal into dermis, at steady state; the signal decays over the length λ. The goal is as much of the dermis as possible <b>inside the window</b>, between the activation threshold of the aged cells and the fibrotic ceiling. Use several <b>injection depths</b> to fill the volume, or let <b>Optimise</b> search for you. Every value has a badge saying where it comes from; click it, or any ⓘ, for details and references. <a href="#help/start/what" data-help="start/what">Quick start</a>.</div></div>
+    <div class="panel"><h2>Read me first</h2><div class="note"><b>With every value taken from a published source, the dose does not add up:</b> 40,000 implanted cells secreting the measured amount of <i>active</i> TGF-β peak at about <span data-n="gapPeak"></span> ng/mL, some <span data-n="gapCentre"></span>× below the concentration that activates a fibroblast, and <span data-n="gapWorst"></span>× below it at the least-covered point of the default lattice. That is this model's first real prediction, and the reason to measure rather than assume. <a href="#help/model/dose" data-help="model/dose">What would close the gap</a>.<br><br>Each implant site is a sphere of cells secreting one signal into dermis, at steady state; the signal decays over the length λ. The goal is as much of the dermis as possible <b>inside the window</b>, between the activation threshold of the aged cells and the fibrotic ceiling. Use several <b>injection depths</b> to fill the volume, or let <b>Optimise</b> search for you. Every value has a badge saying where it comes from; click it, or any ⓘ, for details and references. <a href="#help/start/what" data-help="start/what">Quick start</a>.</div></div>
   </section>
 </main>
 <footer>Bernhard Buss (master thesis), supervised by Nicholas Lawler; group of Prof. G.V. Shivashankar (ETH Zurich / PSI). Builds on Roy et al., <i>Aging Cell</i> 2024 (<a href="https://doi.org/10.1111/acel.14032" target="_blank" rel="noopener">doi:10.1111/acel.14032</a>). Prototype, not peer-reviewed. Runs entirely in your browser; nothing is uploaded. <a href="#help/refs" data-help="refs">References</a> · <a href="#help/about" data-help="about">About</a></footer>
@@ -207,7 +214,7 @@ a.cite{text-decoration:none;border-bottom:1px dotted var(--teal)}
 <script src="data/parameters.js"></script>
 <script>
 "use strict";
-const VERSION = "0.6.0";
+const VERSION = "0.7.0";
 const $ = id => document.getElementById(id);
 function esc(s) { return String(s).replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); }
 
@@ -560,18 +567,51 @@ function spreadFront(front, keep) {
   const idx = [...new Set(Array.from({ length: keep }, (_, i) => Math.round(i * (front.length - 1) / (keep - 1))))].sort((x, y) => x - y);
   return idx.map(i => front[i]);
 }
+// Each candidate is scored with its own effective medium (a layered dermis gives
+// shallow layouts a shorter λ). Tables are built at a few λ nodes ≤ 15 % apart and
+// each candidate's field is blended between the two around its λ, geometrically in
+// 1/λ; D is a prefactor (field ∝ 1/D at fixed λ). Uniform dermis: one node.
+function medium(p, n, dz, z0) { const d = derived({ ...p, levels: n, dz, z0 }); return [d.D, d.lam]; }
+function lamNodes(lo, hi, ratio = 1.15) {
+  if (hi <= lo * (1 + 1e-9)) return [lo];
+  const n = Math.ceil(Math.log(hi / lo) / Math.log(ratio)) + 1;
+  return Array.from({ length: n }, (_, i) => lo * (hi / lo) ** (i / (n - 1)));
+}
+function blendFields(F0, F1, w) {
+  if (w <= 0) return F0;
+  if (w >= 1) return F1;
+  const out = new Float64Array(F0.length);
+  for (let i = 0; i < F0.length; i++) {
+    const a = F0[i], b = F1[i];
+    out[i] = (a > 0 && b > 0) ? Math.exp((1 - w) * Math.log(a) + w * Math.log(b)) : (1 - w) * a + w * b;
+  }
+  return out;
+}
 function* optimiseSteps(p, pattern, mode, optsIn) {                // yields progress; returns the result
   const o = { ...OPT_DEFAULTS, ...(optsIn || {}) };
   pattern = (pattern === "hex" || pattern === "square") ? pattern : "hex";
-  const d = derived(p), f = kernel(p, d), cells = cellsGrid(o), geos = geometries(p, mode, o), as = aGrid(o), cands = [];
+  const d = derived(p), cells = cellsGrid(o), geos = geometries(p, mode, o), as = aGrid(o), cands = [];
+  const media = new Map(geos.map(g => [g.join("|"), medium(p, ...g)]));
+  const lams = geos.length ? [...media.values()].map(m => m[1]) : [d.lam];
+  const nodes = lamNodes(Math.min(...lams), Math.max(...lams)), Dref = d.D;
+  const nodeD = nodes.map(lam => ({ ...d, D: Dref, lam, kap: 1 / lam, k: Dref / (lam * lam), thalf: Math.LN2 * lam * lam / Dref, rc: p.R + 9.2 * lam }));
+  const nodeF = nodeD.map(nd => kernel(p, nd));
   for (let ia = 0; ia < as.length; ia++) {
-    const a = as[ia], tab = optTable(p, d, f, pattern, a, o);
+    const a = as[ia], tabs = nodeD.map((nd, j) => optTable(p, nd, nodeF[j], pattern, a, o));
     for (const [n, dz, z0] of geos) {
       if (!clustersApart(pattern, a, n, dz, p.R)) continue;
-      const F = layoutField(tab, p, pattern, n, dz, z0, o), N = F.length;
+      const [Dg, lamG] = media.get([n, dz, z0].join("|"));
+      let F;
+      if (nodes.length === 1) F = layoutField(tabs[0], p, pattern, n, dz, z0, o);
+      else {
+        const i = Math.max(0, Math.min(nodes.length - 2, nodes.filter(x => x <= lamG).length - 1));
+        const w = (1 / lamG - 1 / nodes[i]) / (1 / nodes[i + 1] - 1 / nodes[i]);
+        F = blendFields(layoutField(tabs[i], p, pattern, n, dz, z0, o), layoutField(tabs[i + 1], p, pattern, n, dz, z0, o), w);
+      }
+      const sD = Dref / Dg, N = F.length;
       for (const c of cells) {
         const s = c / p.ncells; let under = 0, over = 0;
-        for (let i = 0; i < N; i++) { const v = F[i] * s; if (v < d.con) under++; else if (v > d.cfib) over++; }
+        for (let i = 0; i < N; i++) { const v = (F[i] * sD) * s; if (v < d.con) under++; else if (v > d.cfib) over++; }
         cands.push({ mode, a, levels: n, dz, z0, ncells: c, below: under / N, window: (N - under - over) / N, above: over / N,
           cells_per_cm2: sitesPerCm2(pattern, a, n) * c });
       }
@@ -584,12 +624,10 @@ function* optimiseSteps(p, pattern, mode, optsIn) {                // yields pro
     const [u, w, ov] = unitCellFractions(q, pattern, sol.a, o.nu, o.nz);
     sol.exact = { below: u, window: w, above: ov };
   }
-  return { mode, pattern, evaluated: cands.length, points: cands.map(c => [c.cells_per_cm2, c.window, c.above]), front };
+  return { mode, pattern, evaluated: cands.length, lam_nodes: nodes, points: cands.map(c => [c.cells_per_cm2, c.window, c.above]), front };
 }
 function optimise(p, pattern, mode, opts) { const g = optimiseSteps(p, pattern, mode, opts); let r; while (!(r = g.next()).done); return r.value; }
-// A layered dermis enters the search only through the effective medium of the design
-// it starts from: the kernel is built once, so candidates at other depths are scored
-// with that same λ. Mirrors the note in dermsim.optimize.
+
 // <<< physics
 
 // ---------------------------------------------------------------------------
@@ -924,7 +962,7 @@ function plotChart() {
 function syncOptNote() {
   const on = !!Math.round(S.p.layers), el = $("optLayerNote");
   el.hidden = !on;
-  if (on) el.innerHTML = `The dermis is depth-dependent, so the search scores every candidate with the effective λ of <b>your current design</b> (${fmt(derived(S.p).lam)} µm), even the ones at other depths. <a href="#help/model/layers" data-help="model/layers">Why</a>`;
+  if (on) el.innerHTML = `The dermis is depth-dependent, so each candidate is scored with the decay length its own depths see — shallow layouts a shorter one. This makes the search about three times slower. <a href="#help/metrics/optimise" data-help="metrics/optimise">How</a>`;
 }
 function runOptimiser() {
   const o = S.opt; o.running = true; o.res = null; o.list = []; o.idx = -1; o.before = { p: { ...S.p }, pattern: S.pattern, custom: S.custom.map(s => s.slice()), zvLinked: S.zvLinked };
@@ -1234,14 +1272,35 @@ function fmt(v) {
 const badge = def => `<a class="badge ${STATUS[def.status][0]}" href="#help/params/${def.key}" data-help="params/${def.key}" title="Where this value comes from">${STATUS[def.status][1]}</a>`;
 const toSlider = (def, v) => def.log ? Math.log(v / def.min) / Math.log(def.max / def.min) * 1000 : v;
 const fromSlider = (def, s) => def.log ? def.min * Math.pow(def.max / def.min, s / 1000) : +s;
-function buildControls() {
-  const groups = [...new Set(PARAMS.map(p => p.group))];
-  $("left").innerHTML = groups.map(g => `<div class="panel"><h2>${g} <a class="hl" href="#help/start/defaults" data-help="start/defaults" title="Help: defaults and resetting">ⓘ</a></h2>` + PARAMS.filter(p => p.group === g).map(def => {
-    const min = def.log ? 0 : def.min, max = def.log ? 1000 : def.max, step = def.log ? 1 : (def.step || 1);
-    const pctd = (toSlider(def, def.def) - min) / (max - min) * 100, dtxt = esc(fmt(def.def) + " " + def.unit);
-    return `<div class="prow" id="row_${def.key}"><div class="lab"><span>${def.label}</span>${badge(def)}<span class="val" id="v_${def.key}" title="Default: ${dtxt}"></span><button class="rst" id="r_${def.key}" data-key="${def.key}" title="Back to the default, ${dtxt} (or double-click the slider)" aria-label="Reset ${esc(def.label)} to its default, ${dtxt}" hidden>↺</button></div>
+// ---------------------------------------------------------------------------
+// The control panel reads top down as five numbered steps (the `groups` of the
+// parameter file). Each step opens with the values marked `primary` there and
+// folds the rest away behind "N more", so 13 sliders are on screen instead of
+// 30 — and a fold opens itself when something inside it is off its default, so
+// a shared link never hides a value it changed.
+// ---------------------------------------------------------------------------
+const FOLD_KEY = "drv_open_steps";
+const GROUPS = (DP.groups || []).filter(g => PARAMS.some(p => p.group === g.key));
+let openSteps = new Set();                                          // filled in buildControls, once `store` exists
+const slider = def => {
+  const min = def.log ? 0 : def.min, max = def.log ? 1000 : def.max, step = def.log ? 1 : (def.step || 1);
+  const pctd = (toSlider(def, def.def) - min) / (max - min) * 100, dtxt = esc(fmt(def.def) + " " + def.unit);
+  return `<div class="prow" id="row_${def.key}"><div class="lab"><span>${def.label}</span>${badge(def)}<span class="val" id="v_${def.key}" title="Default: ${dtxt}"></span><button class="rst" id="r_${def.key}" data-key="${def.key}" title="Back to the default, ${dtxt} (or double-click the slider)" aria-label="Reset ${esc(def.label)} to its default, ${dtxt}" hidden>↺</button></div>
       <div class="track"><input type="range" id="s_${def.key}" min="${min}" max="${max}" step="${step}" aria-label="${esc(def.label)}" title="Double-click: back to the default, ${dtxt}"><span class="dtick" style="left:calc(${pctd.toFixed(2)}% + ${(8 - 16 * pctd / 100).toFixed(1)}px)" aria-hidden="true"></span></div></div>`;
-  }).join("") + (g === "Signal" ? `<div class="derived" id="lamBox"></div>` : "") + `</div>`).join("");
+};
+function buildControls() {
+  openSteps = new Set((store.get(FOLD_KEY) || "").split(",").filter(Boolean));
+  $("left").innerHTML = GROUPS.map(g => {
+    const mine = PARAMS.filter(p => p.group === g.key);
+    const open = mine.filter(p => p.primary), rest = mine.filter(p => !p.primary);
+    return `<div class="panel step" id="step_${g.key}">
+      <h2><span class="num">${g.step}</span>${esc(g.title)} <a class="hl" href="#help/start/steps" data-help="start/steps" title="Help: the five steps">ⓘ</a></h2>
+      <div class="note stepnote">${renderNote(g.note)}</div>
+      ${open.map(slider).join("")}
+      ${rest.length ? `<div class="fold" id="fold_${g.key}" hidden>${rest.map(slider).join("")}</div>
+      <button class="foldbtn" id="foldbtn_${g.key}" data-step="${g.key}" aria-expanded="false" aria-controls="fold_${g.key}"></button>` : ""}
+      ${g.key === "signal" ? `<div class="derived" id="lamBox"></div>` : ""}</div>`;
+  }).join("");
   for (const def of PARAMS) {
     $("s_" + def.key).addEventListener("input", e => {
       S.p[def.key] = fromSlider(def, +e.target.value);
@@ -1252,7 +1311,31 @@ function buildControls() {
     });
     $("s_" + def.key).addEventListener("dblclick", () => resetParam(def.key));
   }
-  $("left").addEventListener("click", e => { const b = e.target.closest("button.rst"); if (b) resetParam(b.dataset.key); });
+  $("left").addEventListener("click", e => {
+    const b = e.target.closest("button.rst");
+    if (b) { resetParam(b.dataset.key); return; }
+    const fb = e.target.closest("button.foldbtn");
+    if (!fb) return;
+    const k = fb.dataset.step;
+    openSteps.has(k) ? openSteps.delete(k) : openSteps.add(k);
+    store.set(FOLD_KEY, [...openSteps].join(","));
+    syncFolds();
+  });
+  syncFolds();
+}
+function syncFolds() {
+  for (const g of GROUPS) {
+    const btn = $("foldbtn_" + g.key);
+    if (!btn) continue;
+    const rest = PARAMS.filter(p => p.group === g.key && !p.primary);
+    const changed = rest.filter(p => !isDefault(p.key)).length;
+    const shown = openSteps.has(g.key) || changed > 0;       // never hide a value that was moved
+    $("fold_" + g.key).hidden = !shown;
+    btn.setAttribute("aria-expanded", shown ? "true" : "false");
+    btn.classList.toggle("on", shown);
+    btn.textContent = shown ? `▴ fewer` : `▾ ${rest.length} more` + (changed ? "" : "");
+    btn.title = shown ? "Fold these away" : `Show the other ${rest.length} values of this step`;
+  }
 }
 const isDefault = key => Math.abs(S.p[key] - PDEF[key].def) <= 1e-9 * Math.max(1, Math.abs(PDEF[key].def));
 function resetParam(key) {                                         // one slider back to its default
@@ -1523,6 +1606,10 @@ const HELP = [
     ["edit", "Editing implant sites", () => `<p>Press <b>Edit sites</b>, then click the map to add a site <b>at the slice depth</b>, drag a site to move it, and shift-click a site to remove it. Editing turns the pattern into <i>custom</i>: from then on only the sites in view count, and each keeps its own depth (move the slice depth to place sites at other depths). Choose a lattice again under <i>Pattern</i> to go back.</p>`],
     ["presets", "Young and aged tissue", () => `<p><b>Young tissue</b> sets the aged-cell threshold factor s_age to 1; <b>Aged tissue</b> sets it to 3. That aged cells respond blunted or divergently is sourced (${cite("liao2026chromatin")}); the factor 3 is a placeholder. Both presets keep all other values.</p>
       <p>Ageing could also change the decay length λ, but in which direction is open: aged dermis has fewer cells (${cite("arnalforne2024dermis")}), and fewer consuming cells lengthen the range (${cite("oyleryaniv2017niches")}), while binding to the matrix shortens it. The presets therefore leave λ alone.</p>`],
+    ["steps", "The five steps", () => `<p>The controls on the left read top down as five steps, in the order you would actually decide them:</p>
+      <ol>${(DP.groups || []).map(g => `<li><b>${esc(g.title)}</b> — ${renderNote(g.note)}</li>`).join("")}</ol>
+      <p>Each step opens with the few values that usually matter and folds the rest away behind <b>▾ n more</b>; the fold remembers itself. A folded value that is <i>not</i> at its default never stays hidden — the step opens itself — so a link someone shares with you cannot hide what it changed.</p>
+      <p>Steps 1 and 2 are mostly the world as measured, and the badge on each value says how well it is known. Steps 3 and 4 are yours to choose. Step 5 changes nothing about the design, only what you are looking at.</p>`],
     ["defaults", "Defaults and resetting", () => `<p>Each slider has a small grey tick at its <b>default</b>. When a value differs from its default it turns <span style="color:var(--teal);font-weight:600">teal</span> and a <b>↺</b> appears next to it: click it, or double-click the slider, to put that value back. Hovering a value shows its default. <b>Reset</b> at the top puts all values back at once. Defaults and their sources are listed under <a href="#help/params" data-help="params">Parameters</a>.</p>`],
     ["yaml", "Saving and loading the parameter file", () => `<p><b>Save YAML</b> downloads everything on screen as a complete <code>parameters.yaml</code>: every value as it stands, with its label, unit, range, status, sources and note, plus a <code>design:</code> block holding the pattern, the colouring and any hand-placed sites. It is the same file the pipeline reads, so</p>
       <p style="text-align:center"><code>python -m dermsim run --params my-design.yaml</code></p>
@@ -1553,20 +1640,20 @@ const HELP = [
       <li>Radiation bystander effects in 3D human tissue reached 1 mm (${cite("belyakov2005skin")}), through signals not yet identified.</li></ul>
       <p>The default, ${n("lam.def", "µm")}, is the upper end of the cytokine measurement: an <span class="badge b-ana">analogue</span> until λ is measured for the rejuvenated cells' signals.</p>`],
     ["window", "The therapeutic window", () => `<p>Aged host cells are counted as activated above <code>c_on × s_age</code> and at risk of fibrotic activation above <code>c_fib</code>. The upper side is not hypothetical: the group notes that matrix deposition by implanted cells could also indicate fibrotic activation (${cite("roy2024implanting")}).</p>
-      <p><b>The thresholds are open.</b> Our literature search (November 2026) found no verified activation threshold or fibrotic ceiling for TGF-β1 or TGF-β3 in dermal fibroblasts, so both are placeholders. The 10 ng/mL often used in experiments is a stimulation dose, not a threshold (${cite("liao2026chromatin")}). Windows with a lower and an upper side are documented for other signals: CCN2 stimulates collagen gene expression below 50 ng/mL and inhibits it above (${cite("nakerakanti2011ccn2")}); for VEGF the local amount secreted, not the total dose, decides between normal and aberrant vessels (${cite("ozawa2004vegf")}). TGF-β1 is also the minority isoform in adult skin (${cite("quan2002uv")}), and TGF-β3 improved scars in a phase II trial (${cite("mccollum2011avotermin")}).</p>`],
+      <p><b>Where the values come from.</b> No activation threshold or fibrotic ceiling has been measured in <i>dermal</i> fibroblasts, so both are <span class="badge b-ana">analogues</span> from related cells. The threshold, ${n("con.def", "ng/mL")}, is the dose that induced SMAD2 phosphorylation and α-SMA protein in primary human knee fibroblasts (${cite("dilger2025concentration")}). The ceiling, ${n("cfib.def", "ng/mL")}, is the lower of the two doses that raised α-SMA in nasal-polyp fibroblasts (${cite("serpero2006polyp")}); collagen deposition itself showed no upper limit up to 40 ng/mL (${cite("dilger2025concentration")}), so the ceiling here is the switch to myofibroblasts, not a loss of effect. The 10 ng/mL often used in experiments is a stimulation dose, not a threshold (${cite("liao2026chromatin")}). Windows with a lower and an upper side are documented for other signals too: CCN2 stimulates collagen gene expression below 50 ng/mL and inhibits it above (${cite("nakerakanti2011ccn2")}).</p>`],
     ["boundary", "Boundaries", () => `<p>The dermal–epidermal junction is treated as impermeable: every site has a mirror image above it, which makes the flux through the junction zero. The deep side of the dermis is open (the signal may leave). Measured diffusion is slowest at the junction (${cite("wei2018microneedle")}).</p>`],
     ["dose", "Does the dose add up?", () => `<p>No — and that is the most useful thing this model currently says.</p>
       <p>Every value in the chain is now taken from a source. Fibroblasts release TGF-β almost entirely as a <b>latent</b> complex: active TGF-β1 is ≤ 2 % of the total at baseline in primary human dermal fibroblasts, 11 % once the cells contract and 36 % in dermal myofibroblasts (${cite("klingberg2014prestress")}). Total secretion by unstimulated fibroblasts is about 0.4 ng per 10⁶ cells per day (${cite("kelley1993autoinduction")}, ${cite("ghahary1998igf1")}). So an implanted cell releases roughly <b>8 pg of active signal per 10⁶ cells per day</b>.</p>
-      <p>Put ${n("ncells.def")} cells on a site and the concentration peaks at about <b>0.06 ng/mL</b> at the centre of the cluster, against the <b>1 ng/mL</b> that induced SMAD2 phosphorylation and α-SMA in fibroblasts (${cite("dilger2025concentration")}). That is <b>17× short at the centre</b> and <b>32× short at the least-covered point</b> of the default lattice.</p>
+      <p>Put ${n("ncells.def")} cells on a site and the concentration peaks at about <b>${n("gapPeak", "ng/mL")}</b> at the centre of the cluster, against the <b>1 ng/mL</b> that induced SMAD2 phosphorylation and α-SMA in fibroblasts (${cite("dilger2025concentration")}). That is <b>${n("gapCentre")}× short at the centre</b> and <b>${n("gapWorst")}× short at the least-covered point</b> of the default lattice.</p>
       <h4>What would close it</h4>
       <ul><li><b>Contractile implanted cells</b> — 11 % active instead of 2 %: <b>5.5×</b> (${cite("klingberg2014prestress")}). The group's cells are mechanically reprogrammed, so this is not far-fetched.</li>
       <li><b>Auto-induced secretion</b> — TGF-β induces its own production, 90 instead of 15 pg per 10⁶ cells per hour: <b>6×</b> (${cite("kelley1993autoinduction")}).</li>
       <li><b>More cells per site</b> — up to <b>25×</b> at the top of the slider.</li></ul>
-      <p>One of these is not enough; two together are. But <b>dose alone cannot do it</b>: ask <i>Optimise</i> and it reaches 72 % of the dermis only at 4.6 × 10⁹ cells per cm², against 2 mL of 10–20 million cells per mL per session in clinical fibroblast therapy (${cite("munavalli2013azficel")}).</p>
+      <p>One of these is not enough; two together are. But <b>dose alone cannot do it</b>: ask <i>Optimise</i> and it reaches most of the dermis only at several billion cells per cm², against 2 mL of 10–20 million cells per mL per session in clinical fibroblast therapy (${cite("munavalli2013azficel")}).</p>
       <h4>So what should be measured</h4>
       <p>The gap has to be closed by <b>what the rejuvenated cells actually secrete</b> and by <b>where the threshold for the response you care about really lies</b> — the 1 ng/mL above is for α-SMA and pSMAD2 in knee fibroblasts, a pro-fibrotic readout, not for gentle rejuvenation of aged dermal cells. Both are measurable, and the model says they decide the answer. Move the <i>Active secretion per cell</i> and <i>Activation threshold</i> sliders to see how little it takes.</p>
       <p>It is also possible that the signal is not soluble TGF-β at all — extracellular vesicles, direct contact or a mechanical relay would each change the picture, and none of them is in this model.</p>`],
-    ["layers", "A dermis with depth", () => `<p>Up to here the dermis was one slab: one diffusion coefficient and one decay length everywhere. <b>Depth-dependent tissue</b> switches on two measured depth dependences.</p>
+    ["layers", "A dermis with depth", () => `<p>The model's default dermis has depth: two measured depth dependences change how far the signal carries. The simpler model it replaced — one diffusion coefficient and one decay length everywhere — is still there: <b>Depth-dependent dermis</b>, under <i>more</i> in step 1, switches it back.</p>
       <p><b>Diffusion is slowest right under the epidermis.</b> Dermal diffusivities of 1–20 µm²/s were measured for dextrans, the lowest (0.7–3 µm²/s) at the dermal–epidermal junction (${cite("wei2018microneedle")}), while papillary and reticular dermis differ only marginally deeper down (${cite("romgens2015diffusion")}). So D rises from its junction value to the bulk value over the <i>depth of the slow zone</i>. How thick that zone is was not found, so that depth is a <span class="badge b-ph">placeholder</span>.</p>
       <p><b>Clearance follows the cells that consume the signal.</b> Cytokine niche size scales with the density of consuming cells (${cite("oyleryaniv2017niches")}), so the uptake part of the decay follows the local fibroblast density, which is higher in the papillary dermis. The split between uptake and chemistry is not a free choice: the chemical rate comes from the measured half-life of TGF-β in tissue (${cite("sprugel1987kinetics")}), and for the default values it is <b>${n("cellshare")} %</b> uptake — nearly all of it. The profile keeps the same average clearance as the slab, so λ still sets the overall scale.</p>
       <p>Together these make λ short near the junction and full-length deeper down; the curve on the right of the cross-section shows it.</p>
@@ -1599,7 +1686,7 @@ const HELP = [
       <p>The plot shows every design evaluated (faint dots): share of the dermis in the window against the dose in cells per cm². The line through the larger dots is the <b>front</b>: for each dose the best coverage found. The diamond is your design. Use ◀ ▶ (or click a point) to <b>cycle through the solutions</b> along the front, from low to high dose; each is shown in the maps at once. <b>Back to my design</b> restores what you had.</p>
       <p>How: about 14 spacings from 80 µm to 2 mm, 13 doses from 10³ to 10⁶ cells per site, 8 depths (flat) or 2–5 depths with 6 spacings and 6 middle depths (volume), all with every cluster inside the dermis and no two clusters overlapping; each design is scored on one periodic cell (12 × 12 × 16 points). For speed the field of each spacing is tabulated once and reused; the solutions shown are then re-evaluated exactly. The search runs in the background and takes a few seconds.</p>
       <p>The optimum depends on values measured in other tissues or still placeholders (secretion, thresholds, implant half-life): read it as a demonstration of the trade-offs until those are measured.</p>
-      <p>With <b>Depth-dependent tissue</b> on, the search scores every candidate with the effective λ of the design it started from, because its speed comes from tabulating the field of each spacing once. Candidates at very different depths are therefore judged with a slightly wrong λ; the panel says which λ was used. See <a href="#help/model/layers" data-help="model/layers">A dermis with depth</a>.</p>`],
+      <p>With the depth-dependent dermis (the default), each candidate is scored with the effective decay length <i>its own</i> injection depths see, so a shallow layout is judged with the shorter λ it really meets. To keep that fast, the field tables are built at a few decay lengths at most 15 % apart and each candidate is blended between the two around its own; the solutions shown are then re-evaluated exactly, and the two agree to within a few tenths of a per cent of the dermis. See <a href="#help/model/layers" data-help="model/layers">A dermis with depth</a>.</p>`],
     ["depths", "Injection depths and spacing seen from above", () => `<p>The depths of the injection levels and the nearest distance between sites seen from above (all depths projected). See <a href="#help/model/depths" data-help="model/depths">Several injection depths</a>.</p>`],
     ["dose", "Sites and cells per cm²", () => `<p>Sites per cm² follow from the spacing (hexagonal: 1 / (a²·√3/2), square: 1 / a²) times the number of depths; cells per cm² multiply by the cells per site. For scale: a fibroblast cell therapy for acne scars injected 2 mL of 10–20 million cells per mL per session (${cite("munavalli2013azficel")}); the group's protocol used 40,000 cells per site (${cite("roy2024implanting")}).</p>`],
     ["overlap", "Overlapping clusters", () => `<p>Each implant site is a sphere of radius R. Two sites closer than 2R would overlap, which implanted cells cannot do, so the model is no longer meaningful there. This happens when the spacing per depth is below 2R, or when sites on neighbouring depths (offset sideways by the spacing seen from above and vertically by the spacing between depths) are closer than 2R. The optimiser only proposes layouts without overlap.</p>`],
@@ -1657,8 +1744,15 @@ function buildHelp() {
   }).join("");
   fillHelpNumbers();
 }
+// The dose gap at the default values (claim R20): computed, so it moves with the parameter file.
+function defaultGap() {
+  const p = Object.fromEntries(PARAMS.map(d => [d.key, d.def])), d = derived(p), f = kernel(p, d), h = holePoint("hex", p.a);
+  return { peak: f(0) / d.perNgml, centre: d.con / f(0), worst: d.con / latticeAt(p, d, f, "hex", p.a, h[0], h[1], p.z0) };
+}
 function fillHelpNumbers() {
-  const extra = { gap: () => fmt(17 / (secC.width / S.p.L)), cellshare: () => (100 * cellularShare(S.p)).toFixed(1) };
+  const g = defaultGap();
+  const extra = { gap: () => fmt(17 / (secC.width / S.p.L)), cellshare: () => (100 * cellularShare(S.p)).toFixed(1),
+    gapPeak: () => g.peak.toFixed(2), gapCentre: () => g.centre.toFixed(0), gapWorst: () => g.worst.toFixed(0) };
   for (const el of document.querySelectorAll("[data-n]")) { const [k, f] = el.dataset.n.split("."); const def = PDEF[k]; el.textContent = extra[k] ? extra[k]() : def ? fmt(f === "def" ? def.def : S.p[k]) : "?"; }
 }
 const topics = () => [...help.querySelectorAll("section[data-topic]")];
@@ -1770,6 +1864,7 @@ if (store.get(SEEN_KEY) !== VERSION) $("vernew").hidden = false;
 readUrlState();
 buildControls();
 buildHelp();
+fillHelpNumbers();
 schedule(false);
 plotOpt();
 openFromHash();

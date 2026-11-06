@@ -2,6 +2,13 @@
 
 Newest version first. Each entry says what you can do or see differently.
 
+## 0.7.0 — 2026-11-06
+
+- **Five numbered steps.** The controls now read top down in the order you would decide them: *1 Whose skin*, *2 What the cells make*, *3 How you inject*, *4 The device*, *5 What you look at*. Each step opens with the two to four values that usually matter — 12 sliders instead of 30 — and folds the rest behind *more*. A folded value you or a shared link has moved never stays hidden: its step opens itself.
+- **The depth-dependent dermis is now the default.** Slower diffusion under the junction and clearance following the cell density are on from the start; the simpler uniform dermis is one switch away, under *more* in step 1. Every number on the page moves a little: the default design now falls about 15× short of the activation threshold at a cluster centre (17× with the uniform dermis).
+- **Optimise scores every layout with the decay length it really sees.** With a depth-dependent dermis a shallow layout meets a shorter λ than a deep one, and the search now accounts for that instead of judging all candidates by your current design's λ. It agrees with the exact re-evaluation of the solutions shown, and takes about three times as long.
+- The dose numbers in *Read me first* and in the help are now computed from the model instead of typed, so they follow the parameter file.
+
 ## 0.6.0 — 2026-11-06
 
 - **The dose does not add up — and that is the result.** The secretion per cell is now built from checked sources in two steps: fibroblasts release TGF-β almost entirely latent (active is ≤ 2 % of the total at baseline in human dermal fibroblasts, 11 % when they contract), and the total is about 0.4 ng per 10⁶ cells per day. That leaves ~8 pg of *active* signal per 10⁶ cells per day, 45× less than the figure used before, and the default design now peaks 17× below the activation threshold. The panel says how far short you are, and a new help entry sets out the three sourced mechanisms that would close the gap — and why injecting more cells alone cannot.
