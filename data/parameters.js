@@ -263,7 +263,7 @@ window.DRV_PARAMS = {
    "sources": [
     "roy2024implanting"
    ],
-   "note": "Default: the 2-mm-deep dermal region of the reconstructed skin model ({cite:roy2024implanting})."
+   "note": "Default: the 2-mm-deep dermal region of the reconstructed skin model ({cite:roy2024implanting}). Human dermis is thicker at most trunk sites — papillary plus reticular comes to 2.7 mm periumbilical in donors over 55 ({cite:arnalforne2024dermis}) and 2.4–2.9 mm on abdomen and back by 50 MHz ultrasound ({cite:wang2025ultrasound}) — so raise it for an in vivo design."
   },
   {
    "key": "layers",
@@ -292,7 +292,7 @@ window.DRV_PARAMS = {
    "sources": [
     "wei2018microneedle"
    ],
-   "note": "Diffusion is slowest right under the epidermis: 0.7–3 µm²/s at the dermal–epidermal junction against 1–20 µm²/s deeper in the dermis ({cite:wei2018microneedle}). Deeper down, papillary and reticular dermis differ only marginally ({cite:romgens2015diffusion}), so the model puts the whole depth dependence of D into this junction zone."
+   "note": "Diffusion is slowest right under the epidermis: 0.7–3 µm²/s at the dermal–epidermal junction against 1–20 µm²/s deeper in the dermis ({cite:wei2018microneedle}). What happens deeper is contested: one study found papillary and reticular dermis to differ only marginally ({cite:romgens2015diffusion}), two others a rise of about an order of magnitude towards the reticular dermis ({cite:wei2018microneedle}, {cite:raphael2013depth}). The model follows the first and puts the whole depth dependence of D into this junction zone, which is the conservative choice."
   },
   {
    "key": "tdej",
@@ -314,33 +314,35 @@ window.DRV_PARAMS = {
    "group": "Tissue",
    "label": "Papillary dermis thickness",
    "unit": "µm",
-   "value": 200,
+   "value": 101,
    "min": 20,
-   "max": 800,
+   "max": 400,
    "log": false,
-   "step": 10,
-   "status": "ph",
+   "step": 1,
+   "status": "src",
    "sources": [
-    "arnalforne2024dermis"
+    "arnalforne2024dermis",
+    "hachmo2021papillary"
    ],
-   "note": "Depth of the papillary dermis, the denser-celled upper layer. Its thickness rises with intrinsic ageing while the reticular dermis does not ({cite:arnalforne2024dermis}); no checked thickness in µm was found, so the value is a placeholder."
+   "note": "Depth of the papillary dermis, the denser-celled upper layer. Default: 101.2 ± 21.4 µm, measured on photoprotected periumbilical skin of donors aged 55 and over — the age group this project is about; the same study gives 71–77 µm below 55 and a reticular dermis of 2.6–3.8 mm ({cite:arnalforne2024dermis}). Post- auricular skin of men around 68 gave 133 ± 22 µm ({cite:hachmo2021papillary}). The papillary dermis is thus a few per cent of the dermis, not the 20 % that ultrasound reviews assume."
   },
   {
    "key": "rpap",
    "group": "Tissue",
    "label": "Papillary cell density",
    "unit": "× reticular",
-   "value": 2,
+   "value": 11,
    "min": 1,
-   "max": 6,
+   "max": 20,
    "log": false,
-   "step": 0.1,
-   "status": "ph",
+   "step": 0.5,
+   "status": "ana",
    "sources": [
+    "arnalforne2024dermis",
     "miller2003density",
     "oyleryaniv2017niches"
    ],
-   "note": "How many times more fibroblasts the papillary dermis holds than the reticular. It matters because uptake by cells, not chemistry, is what removes the signal: niche size scales with the density of consuming cells ({cite:oyleryaniv2017niches}). The scale is sourced — 2100–4100 cells/mm³ in mid-dermis ({cite:miller2003density}) — the ratio is not."
+   "note": "How many times more cells the papillary dermis holds than the reticular. It matters because uptake by cells, not chemistry, is what removes the signal: niche size scales with the density of consuming cells ({cite:oyleryaniv2017niches}). Default: 2714 ± 451 against 247 ± 86 cells/mm² of section in donors aged 55 and over ({cite:arnalforne2024dermis}), a ratio of 11. Two caveats: those are *all* nuclei, not fibroblasts only, and they are per mm² of a section, so the ratio carries over to a volume density only if the section thickness is the same for both layers. For scale, mid-dermis holds 2100–4100 fibroblasts/mm³ in young donors ({cite:miller2003density})."
   },
   {
    "key": "thalfc",
@@ -482,6 +484,13 @@ window.DRV_PARAMS = {
    "checked": "abstract",
    "what": "In a 3D normal human tissue model, unirradiated cells up to 1 mm from irradiated cells showed more micronuclei (1.7-fold) and apoptosis (2.8-fold)."
   },
+  "braverman1997microcirculation": {
+   "short": "Braverman 1997",
+   "cite": "Braverman IM. The Cutaneous Microcirculation: Ultrastructure and Microanatomical Organization. Microcirculation. 1997;4:329–340.",
+   "doi": "10.3109/10739689709146797",
+   "checked": "abstract",
+   "what": "The cutaneous microcirculation is two horizontal plexuses, one 1–1.5 mm below the skin surface and the other at the dermal–subcutaneous junction, connected by ascending arterioles and descending venules."
+  },
   "burton2011hmts": {
    "short": "Burton et al. 2011",
    "cite": "Burton SA, Ng CY, Simmers R, et al.. Rapid Intradermal Delivery of Liquid Formulations Using a Hollow Microstructured Array. Pharmaceutical Research. 2011;28:31–40.",
@@ -545,6 +554,13 @@ window.DRV_PARAMS = {
    "checked": "abstract",
    "what": "Hollow microneedles 500 µm long injected lidocaine into the forearm of 15 participants and produced dermal anaesthesia equivalent to a 26-gauge intradermal needle."
   },
+  "hachmo2021papillary": {
+   "short": "Hachmo et al. 2021",
+   "cite": "Hachmo Y, Hadanny A, Mendelovic S, et al.. The effect of hyperbaric oxygen therapy on the pathophysiology of skin aging: a prospective clinical trial. Aging. 2021;13:24500–24510.",
+   "doi": "10.18632/aging.203701",
+   "checked": "full text",
+   "what": "Papillary dermis thickness measured on trichrome-stained punch biopsies of post-auricular skin in 13 healthy men aged 68.1 ± 2.5 y was 133.22 ± 22.42 µm at baseline (N = 11), with an epidermis of 55.88 ± 9.19 µm."
+  },
   "hanasono2003fibroblasts": {
    "short": "Hanasono et al. 2003",
    "cite": "Hanasono MM, Kita M, Mikulec AA, et al.. Autocrine Growth Factor Production by Fetal, Keloid, and Normal Dermal Fibroblasts. Archives of Facial Plastic Surgery. 2003;5:26–30.",
@@ -607,6 +623,13 @@ window.DRV_PARAMS = {
    "doi": "10.1088/0960-1317/12/5/312",
    "checked": "abstract",
    "what": "A constant-volume-injection coating gave SU-8 50 films up to 1.5 mm thick in a single coating, measured at 494.32 ± 17.13 µm for a nominal 500 µm film (n = 7), uniform to better than 3.1 % over 10 × 10 cm²."
+  },
+  "marcosgarces2014collagen": {
+   "short": "Marcos‐Garcés et al. 2014",
+   "cite": "Marcos‐Garcés V, Molina Aguilar P, Bea Serrano C, et al.. Age‐related dermal collagen changes during development, maturation and ageing – a morphometric and comparative study. Journal of Anatomy. 2014;225:98–108.",
+   "doi": "10.1111/joa.12186",
+   "checked": "abstract",
+   "what": "In 45 human skin samples the width of the papillary dermis increased significantly with age, and the area occupied by collagen and the thickness of collagen bundles both fell with age in the papillary dermis; no absolute values are in the abstract."
   },
   "martanto2006microinfusion": {
    "short": "Martanto et al. 2006",
@@ -684,6 +707,13 @@ window.DRV_PARAMS = {
    "doi": "10.1046/j.1523-1747.2002.01834.x",
    "checked": "abstract",
    "what": "Sun-protected adult human skin expresses TGF-β1, β2 and β3 transcripts in a ratio of 1:5:3."
+  },
+  "raphael2013depth": {
+   "short": "Raphael et al. 2013",
+   "cite": "Raphael AP, Meliga SC, Chen X, et al.. Depth-resolved characterization of diffusion properties within and across minimally-perturbed skin layers. Journal of Controlled Release. 2013;166:87–94.",
+   "doi": "10.1016/j.jconrel.2012.12.010",
+   "checked": "abstract",
+   "what": "Diffusivity of 70 kDa and 2 MDa rhodamine-dextrans in mouse skin in vivo was low in the epidermis and increased by about an order of magnitude through the dermis, which the authors attribute to pores enlarging from papillary to reticular dermis."
   },
   "roh2022heights": {
    "short": "Roh et al. 2022",
