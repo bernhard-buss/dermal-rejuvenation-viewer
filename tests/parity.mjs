@@ -10,7 +10,8 @@ const block = html.match(/\/\/ >>> physics([\s\S]*?)\/\/ <<< physics/);
 if (!block) { console.error("physics block not found in index.html"); process.exit(1); }
 const api = new Function(`"use strict";${block[1]}
   return { derived, kernel, buildField, latticeAt, holePoint, criticalSpacing, singleReach, sitesPerCm2, fractions, unitCellFractions, volumeFractions, levelDepths, nLevels, optimise,
-    survival, hill, timeAbove, windowTimes, median, exposure, scaffoldPlan, scaffoldPositions };`)();
+    survival, hill, timeAbove, windowTimes, median, exposure, scaffoldPlan, scaffoldPositions,
+    tissueProfile, tissueEffective, reductionIsFaithful, cellularShare };`)();
 const golden = JSON.parse(readFileSync(new URL("../data/golden.json", import.meta.url), "utf8"));
 const rtol = golden.rtol ?? 1e-9;
 
@@ -23,7 +24,7 @@ function close(what, got, want, tol = rtol) {
   else if (!bothNaN && Number.isFinite(err)) worst = Math.max(worst, err);
 }
 
-const DMAP = { k: "k", kap: "kap", lam: "lam", thalf: "thalf", qcell: "qcell", Q: "Q", surv: "surv", Qt: "Qt", per_ngml: "perNgml", con: "con", cfib: "cfib", rc: "rc" };
+const DMAP = { k: "k", kap: "kap", lam: "lam", D: "D", thalf: "thalf", qcell: "qcell", Q: "Q", surv: "surv", Qt: "Qt", per_ngml: "perNgml", con: "con", cfib: "cfib", rc: "rc" };
 for (const c of golden.cases) {
   const p = c.params, d = api.derived(p), f = api.kernel(p, d);
   for (const [py, js] of Object.entries(DMAP)) close(`${c.name} derived.${py}`, d[js], c.derived[py]);
@@ -32,6 +33,18 @@ for (const c of golden.cases) {
   for (const [x, y, z, v] of c.field) close(`${c.name} field(${x.toFixed(0)},${y.toFixed(0)},${z.toFixed(0)})`, F.at(x, y, z), v);
   close(`${c.name} reach`, api.singleReach(p, d, f), c.reach);
   close(`${c.name} survival`, api.survival(p), c.survival, 1e-12);
+  // a dermis with depth: profiles, the effective medium and when it may be trusted
+  const te = api.tissueEffective(p), tw = c.tissue;
+  for (const k of ["D", "k", "lam", "scale"]) close(`${c.name} tissue.effective.${k}`, te[k], tw.effective[k], 1e-12);
+  close(`${c.name} tissue.cellular_share`, api.cellularShare(p), tw.cellular_share, 1e-12);
+  close(`${c.name} tissue.faithful`, api.reductionIsFaithful(p) ? 1 : 0, tw.faithful ? 1 : 0, 0);
+  const tp = api.tissueProfile(p);
+  for (const [z, D_, k_, lam_, rho_] of tw.profile) {
+    close(`${c.name} tissue.D(${z.toFixed(0)})`, tp.D(z), D_, 1e-12);
+    close(`${c.name} tissue.k(${z.toFixed(0)})`, tp.k(z), k_, 1e-12);
+    close(`${c.name} tissue.lam(${z.toFixed(0)})`, tp.lam(z), lam_, 1e-12);
+    close(`${c.name} tissue.rho(${z.toFixed(0)})`, tp.density(z), rho_, 1e-12);
+  }
   for (const [x, v] of c.hill) close(`${c.name} hill(${x})`, api.hill(x * d.con, d.con, p.hill), v, 1e-12);
   for (const [x, v] of c.time_above) close(`${c.name} timeAbove(${x})`, api.timeAbove(x * d.con, d.con, p.tsurv), v, 1e-12);
   api.levelDepths(p).forEach((z, i) => close(`${c.name} depth[${i}]`, z, c.depths[i], 1e-12));

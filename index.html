@@ -157,6 +157,7 @@ a.cite{text-decoration:none;border-bottom:1px dotted var(--teal)}
         <span class="sp"></span><button id="optRun" class="primary">Find designs</button>
       </div>
       <div class="prog" id="optProg" hidden><div></div></div>
+      <div class="note" id="optLayerNote" hidden></div>
       <canvas id="optPlot" width="660" height="400" aria-label="Designs found: share of dermis in the window against cells per cm²"></canvas>
       <div id="optSol"><div class="note">Not run yet. The search takes a few seconds and runs in the background.</div></div>
     </div>
@@ -182,7 +183,7 @@ a.cite{text-decoration:none;border-bottom:1px dotted var(--teal)}
     <div class="panel"><h2>Design curve <a class="hl" href="#help/metrics/curve" data-help="metrics/curve" title="Help: design curve">ⓘ</a></h2>
       <canvas id="chart" width="660" height="380" aria-label="Share of dermis below, inside and above the window against site spacing"></canvas>
       <div class="cap" id="chartCap"></div></div>
-    <div class="panel"><h2>Read me first</h2><div class="note">Each implant site is a sphere of cells secreting one signal into homogeneous dermis, at steady state; the signal decays over the length λ. The goal is as much of the dermis as possible <b>inside the window</b>, between the activation threshold of the aged cells and the fibrotic ceiling. Use several <b>injection depths</b> to fill the volume, or let <b>Optimise</b> search for you. Every value has a badge saying where it comes from; click it, or any ⓘ, for details and references. <a href="#help/start/what" data-help="start/what">Quick start</a>.</div></div>
+    <div class="panel"><h2>Read me first</h2><div class="note"><b>With every value taken from a published source, the dose does not add up:</b> 40,000 implanted cells secreting the measured amount of <i>active</i> TGF-β peak at about 0.06 ng/mL, some 17× below the concentration that activates a fibroblast, and 32× below it at the least-covered point of the default lattice. That is this model's first real prediction, and the reason to measure rather than assume. <a href="#help/model/dose" data-help="model/dose">What would close the gap</a>.<br><br>Each implant site is a sphere of cells secreting one signal into dermis, at steady state; the signal decays over the length λ. The goal is as much of the dermis as possible <b>inside the window</b>, between the activation threshold of the aged cells and the fibrotic ceiling. Use several <b>injection depths</b> to fill the volume, or let <b>Optimise</b> search for you. Every value has a badge saying where it comes from; click it, or any ⓘ, for details and references. <a href="#help/start/what" data-help="start/what">Quick start</a>.</div></div>
   </section>
 </main>
 <footer>Bernhard Buss (master thesis), supervised by Nicholas Lawler; group of Prof. G.V. Shivashankar (ETH Zurich / PSI). Builds on Roy et al., <i>Aging Cell</i> 2024 (<a href="https://doi.org/10.1111/acel.14032" target="_blank" rel="noopener">doi:10.1111/acel.14032</a>). Prototype, not peer-reviewed. Runs entirely in your browser; nothing is uploaded. <a href="#help/refs" data-help="refs">References</a> · <a href="#help/about" data-help="about">About</a></footer>
@@ -206,7 +207,7 @@ a.cite{text-decoration:none;border-bottom:1px dotted var(--teal)}
 <script src="data/parameters.js"></script>
 <script>
 "use strict";
-const VERSION = "0.5.0";
+const VERSION = "0.6.0";
 const $ = id => document.getElementById(id);
 function esc(s) { return String(s).replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); }
 
@@ -251,18 +252,63 @@ function survival(p) {                                             // share stil
   const t = p.tday ?? 0, th = p.tsurv ?? 0;
   return !t ? 1 : (th > 0 ? Math.pow(2, -t / th) : 0);
 }
+// --- a dermis with depth (dermsim.tissue, M3) ------------------------------------
+// Diffusion is slowest at the dermal–epidermal junction and clearance follows the
+// local fibroblast density, so λ varies with depth. The profiles are reduced to the
+// one effective D and λ the sources of a design actually see; that reduction is
+// what `derived` uses, and `reductionIsFaithful` says when it may be trusted.
+function tissueProfile(p) {
+  const kSlab = p.D / (p.lam * p.lam), kChem0 = Math.LN2 / (p.thalfc * 3600);
+  const kChem = Math.min(kChem0, kSlab), kCell = Math.max(kSlab - kChem0, 0);
+  const layered = !!Math.round(p.layers ?? 0), f = Math.min(p.hpap, p.H) / p.H;
+  const meanRho = layered ? p.rpap * f + (1 - f) : 1;
+  const dDej = Math.min(p.ddej, p.D);
+  return {
+    layered, kChem, kCell, meanRho,
+    density: z => layered ? (z < p.hpap ? p.rpap : 1) / meanRho : 1,
+    D: z => layered ? p.D - (p.D - dDej) * Math.exp(-z / Math.max(p.tdej, 1e-9)) : p.D,
+    k(z) { return layered ? kChem + kCell * this.density(z) : kChem + kCell; },
+    lam(z) { return Math.sqrt(this.D(z) / this.k(z)); }
+  };
+}
+const cellularShare = p => { const t = tissueProfile(p); const s = t.kChem + t.kCell; return s > 0 ? t.kCell / s : 0; };
+function tissueEffective(p, z0, n = 400) {
+  const pr = tissueProfile(p), lam0 = p.lam;
+  if (!pr.layered) return { D: p.D, k: p.D / (lam0 * lam0), lam: lam0, scale: 1 };
+  const zs = z0 === undefined || z0 === null ? levelDepths(p) : (Array.isArray(z0) ? z0 : [z0]);
+  let sw = 0, sD = 0, sk = 0;
+  for (let i = 0; i < n; i++) {
+    const z = i / (n - 1) * p.H;
+    let w = 0;
+    for (const s of zs) w += Math.exp(-Math.abs(z - s) / lam0) + Math.exp(-(z + s) / lam0);
+    sw += w; sD += pr.D(z) * w; sk += pr.k(z) * w;
+  }
+  const D = sD / sw, k = sk / sw, lam = Math.sqrt(D / k);
+  return { D, k, lam, scale: lam / lam0 };
+}
+// Measured, not assumed: fv.effective_error puts the error of the reduction under
+// 10 % of the activation threshold once a source sits deeper than about 3 λ, and
+// above 50 % within 1 λ of the junction, where D changes five-fold over the range
+// of the signal.
+function reductionIsFaithful(p, z0) {
+  if (!Math.round(p.layers ?? 0)) return true;
+  const zs = z0 === undefined || z0 === null ? levelDepths(p) : (Array.isArray(z0) ? z0 : [z0]);
+  return Math.min(...zs) >= 3 * tissueEffective(p, z0).lam;
+}
 function derived(p) {
-  const kap = 1 / p.lam, k = p.D * kap * kap;                      // 1/µm, 1/s
+  let D = p.D, lam = p.lam;
+  if (Math.round(p.layers ?? 0)) { const e = tissueEffective(p); D = e.D; lam = e.lam; }
+  const kap = 1 / lam, k = D * kap * kap;                          // 1/µm, 1/s
   const qcell = p.sec * 1e-12 / (p.mw * 1000) * NA_ / 1e6 / 86400; // molecules/cell/s
   const Q = qcell * p.ncells;                                      // molecules/s per site, fresh implant
   const surv = survival(p);
   const perNgml = (1000 / p.mw) * 1e-12 * NA_ / 1e15;              // molecules/µm³ per ng/mL
-  return { k, kap, lam: p.lam, thalf: Math.LN2 / k, qcell, Q, surv, Qt: Q * surv, perNgml,
-    con: p.con * p.sage * perNgml, cfib: p.cfib * perNgml, rc: p.R + 9.2 * p.lam };
+  return { k, kap, lam, D, thalf: Math.LN2 / k, qcell, Q, surv, Qt: Q * surv, perNgml,
+    con: p.con * p.sage * perNgml, cfib: p.cfib * perNgml, rc: p.R + 9.2 * lam };
 }
 function kernel(p, d) {
   const kap = d.kap, R = p.R, x = kap * R;
-  if (x < 1e-3) { const A = d.Qt / (4 * Math.PI * p.D); return r => A * Math.exp(-kap * Math.max(r, 0.5)) / Math.max(r, 0.5); }
+  if (x < 1e-3) { const A = d.Qt / (4 * Math.PI * d.D); return r => A * Math.exp(-kap * Math.max(r, 0.5)) / Math.max(r, 0.5); }
   const s0 = d.Qt / (4 / 3 * Math.PI * R * R * R), pref = s0 / d.k, a = (1 + x) * Math.exp(-x);
   return r => {
     const kr = kap * r;
@@ -541,6 +587,9 @@ function* optimiseSteps(p, pattern, mode, optsIn) {                // yields pro
   return { mode, pattern, evaluated: cands.length, points: cands.map(c => [c.cells_per_cm2, c.window, c.above]), front };
 }
 function optimise(p, pattern, mode, opts) { const g = optimiseSteps(p, pattern, mode, opts); let r; while (!(r = g.next()).done); return r.value; }
+// A layered dermis enters the search only through the effective medium of the design
+// it starts from: the kernel is built once, so candidates at other depths are scored
+// with that same λ. Mirrors the note in dermsim.optimize.
 // <<< physics
 
 // ---------------------------------------------------------------------------
@@ -695,10 +744,16 @@ function drawSection(nx) {
   ctx.fillStyle = "#D7A086"; ctx.beginPath(); ctx.moveTo(0, 0); ctx.lineTo(W, 0);
   for (let x = W; x >= 0; x -= 6) ctx.lineTo(x, T - 3 + 3 * Math.sin(x / 11)); ctx.closePath(); ctx.fill();
   ctx.fillStyle = "#B97C63"; ctx.fillRect(0, 0, W, 4);
-  // dermis tissue: papillary (lighter) and reticular, fibres
-  const zp = Math.min(0.1 * Hd, 200);
+  // dermis tissue: papillary (lighter) and reticular, fibres. With a depth-dependent
+  // dermis the boundary is the papillary thickness of the model, not a drawing.
+  const layered = !!Math.round(p.layers ?? 0);
+  const zp = layered ? Math.min(p.hpap, Hd) : Math.min(0.1 * Hd, 200);
   ctx.fillStyle = "#EBD2C1"; ctx.fillRect(0, T, W, Hc);
   ctx.fillStyle = "#F3E1D5"; ctx.fillRect(0, T, W, zp * kz);
+  if (layered) {
+    ctx.save(); ctx.setLineDash([5, 4]); ctx.strokeStyle = "#C2A991"; ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(0, T + zp * kz); ctx.lineTo(W, T + zp * kz); ctx.stroke(); ctx.restore();
+  }
   const fk = W + "|" + Hc + "|" + T;
   if (!fibreCache || fibreCache.k !== fk) {
     const r = rng(11), lines = [];
@@ -760,8 +815,28 @@ function drawSection(nx) {
   label("papillary dermis", 6, T + Math.max(14, zp * kz * 0.6));
   label("reticular dermis", 6, T + zp * kz + 22);
   label("hypodermis (not modelled)", 6, T + Hc + 25);
+  // λ against depth, drawn over the section, when the dermis has depth
+  if (layered) {
+    const pr = tissueProfile(p), eff = derived(p).lam;
+    let lmax = 0;
+    for (let j = 0; j <= 60; j++) lmax = Math.max(lmax, pr.lam(j / 60 * Hd));
+    const x0 = W - 104 * k, wpl = 74 * k;
+    ctx.save();
+    ctx.fillStyle = "rgba(255,255,255,.55)"; ctx.fillRect(x0 - 5, T, wpl + 10, Hc);
+    ctx.strokeStyle = "#8A7F70"; ctx.lineWidth = 1 * k; ctx.setLineDash([2, 3]);
+    ctx.beginPath(); ctx.moveTo(x0 + eff / lmax * wpl, T); ctx.lineTo(x0 + eff / lmax * wpl, T + Hc); ctx.stroke();
+    ctx.setLineDash([]); ctx.strokeStyle = "#2A6F75"; ctx.lineWidth = 2 * k; ctx.beginPath();
+    for (let j = 0; j <= 80; j++) { const zz = j / 80 * Hd, xx = x0 + pr.lam(zz) / lmax * wpl; j ? ctx.lineTo(xx, T + zz * kz) : ctx.moveTo(xx, T + zz * kz); }
+    ctx.stroke();
+    ctx.font = font(secC, 10); ctx.fillStyle = "#2A6F75";
+    ctx.fillText(`λ(z) 0–${fmt(lmax)}`, x0 - 4, T + 11 * k);
+    ctx.fillStyle = "#8A7F70"; ctx.fillText(`eff. ${fmt(eff)} µm`, x0 - 4, T + Hc - 4 * k);
+    ctx.restore();
+  }
   levelDepths(p).forEach((zl, i) => { const yy = T + zl * kz, txt = fmt(zl) + " µm"; ctx.fillStyle = multi ? LEVEL_COL[i % LEVEL_COL.length] : "#1B2A33"; ctx.fillRect(W - 8, yy - 1, 8, 2); label(txt, W - 14 - ctx.measureText(txt).width, yy + 4 * k); });
-  $("secCap").innerHTML = `Cross-section at y = ${fmt(y)} µm through 0–${fmt(Hd)} µm of dermis (vertical scale ${(kz / kx).toFixed(2)}× the horizontal). Cells are drawn every ~${fmt(gap / kx)} µm and coloured by the signal where they sit; layer boundaries, fibres and the bands above and below are schematic. <a href="#help/start/cross" data-help="start/cross">More</a>`;
+  $("secCap").innerHTML = `Cross-section at y = ${fmt(y)} µm through 0–${fmt(Hd)} µm of dermis (vertical scale ${(kz / kx).toFixed(2)}× the horizontal). Cells are drawn every ~${fmt(gap / kx)} µm and coloured by the signal where they sit; fibres and the bands above and below are schematic. ` +
+    (layered ? `The papillary boundary is at the modelled ${fmt(p.hpap)} µm and the curve on the right is λ against depth. ` : `Layer boundaries are schematic: switch on <b>Depth-dependent tissue</b> to model them. `) +
+    `<a href="#help/start/cross" data-help="start/cross">More</a>`;
 }
 
 // ---------------------------------------------------------------------------
@@ -792,6 +867,17 @@ function drawMetrics() {
     ["Days in the window (mean · median · longest)" + hl("intime"),
       exCache ? `${days(exCache.days_mean)} · ${days(exCache.days_median)} · ${days(exCache.days_max)}` : (S.pattern === "custom" ? "–" : "…")]
   ];
+  const peak = (S.pattern === "hex" || S.pattern === "square")
+    ? latticeAt(p, d, F.f, pat, p.a, 0, 0, levelDepths(p)[0]) : Math.max(...lastMapGrid.vals);
+  if (peak < d.con) rows.unshift([`<b>Nothing reaches the threshold</b> <a class="hl" href="#help/model/dose" data-help="model/dose" title="Help: does the dose add up?">ⓘ</a>`,
+    `<b>${(d.con / Math.max(peak, 1e-300)).toFixed(0)}× short</b> at the strongest point`]);
+  if (Math.round(p.layers)) {
+    const e = tissueEffective(p);
+    rows.splice(3, 0, [`Effective decay length (layered) <a class="hl" href="#help/model/layers" data-help="model/layers" title="Help: a dermis with depth">ⓘ</a>`,
+      `${fmt(e.lam)} µm <span class="note" style="display:inline">(${e.scale.toFixed(2)}× the slab)</span>`]);
+    if (!reductionIsFaithful(p)) rows.unshift([`<b style="color:var(--terra)">⚠ Too shallow for one effective λ</b> <a class="hl" href="#help/model/layers" data-help="model/layers" title="Help: a dermis with depth">ⓘ</a>`,
+      `<span style="color:var(--terra)">indicative only</span>`]);
+  }
   if (S.pattern === "hex" || S.pattern === "square") if (!clustersApart(pat, p.a, nl, p.dz, p.R))
     rows.unshift([`<b style="color:var(--terra)">⚠ Clusters overlap</b>` + hl("overlap"), `<span style="color:var(--terra)">spacing &lt; 2R</span>`]);
   $("metrics").innerHTML = (volCache ? bar(volCache) : `<div class="bar"></div>`) +
@@ -835,6 +921,11 @@ function plotChart() {
 }
 
 // Optimiser panel: run, plot all designs and the fronts, cycle through solutions.
+function syncOptNote() {
+  const on = !!Math.round(S.p.layers), el = $("optLayerNote");
+  el.hidden = !on;
+  if (on) el.innerHTML = `The dermis is depth-dependent, so the search scores every candidate with the effective λ of <b>your current design</b> (${fmt(derived(S.p).lam)} µm), even the ones at other depths. <a href="#help/model/layers" data-help="model/layers">Why</a>`;
+}
 function runOptimiser() {
   const o = S.opt; o.running = true; o.res = null; o.list = []; o.idx = -1; o.before = { p: { ...S.p }, pattern: S.pattern, custom: S.custom.map(s => s.slice()), zvLinked: S.zvLinked };
   $("optRun").disabled = true; $("optProg").hidden = false; $("optProg").firstChild.style.width = "0%";
@@ -1175,7 +1266,7 @@ function syncControls() {
   for (const def of PARAMS) {
     const same = isDefault(def.key);
     $("s_" + def.key).value = toSlider(def, S.p[def.key]);
-    $("v_" + def.key).textContent = fmt(S.p[def.key]) + " " + def.unit;
+    $("v_" + def.key).textContent = def.unit === "0 / 1" ? (Math.round(S.p[def.key]) ? "on" : "off") : fmt(S.p[def.key]) + " " + def.unit;
     $("v_" + def.key).classList.toggle("changed", !same);
     $("r_" + def.key).hidden = same;
   }
@@ -1186,7 +1277,9 @@ function syncControls() {
   $("mWindow").classList.toggle("on", S.mode === "window"); $("mLog").classList.toggle("on", S.mode === "log");
   $("mResp").classList.toggle("on", S.mode === "resp");
   $("scaffoldPanel").classList.toggle("off", S.pattern === "custom" || S.pattern === "random");
+  for (const key of ["ddej", "tdej", "hpap", "rpap", "thalfc"]) $("row_" + key).classList.toggle("off", !Math.round(S.p.layers));
   $("scTile").classList.toggle("on", S.scTile); $("scPatch").classList.toggle("on", !S.scTile);
+  syncOptNote();
   $("presetYoung").classList.toggle("on", S.p.sage === 1); $("presetAged").classList.toggle("on", S.p.sage === 3);
 }
 function drawLegend() {
@@ -1462,6 +1555,27 @@ const HELP = [
     ["window", "The therapeutic window", () => `<p>Aged host cells are counted as activated above <code>c_on × s_age</code> and at risk of fibrotic activation above <code>c_fib</code>. The upper side is not hypothetical: the group notes that matrix deposition by implanted cells could also indicate fibrotic activation (${cite("roy2024implanting")}).</p>
       <p><b>The thresholds are open.</b> Our literature search (November 2026) found no verified activation threshold or fibrotic ceiling for TGF-β1 or TGF-β3 in dermal fibroblasts, so both are placeholders. The 10 ng/mL often used in experiments is a stimulation dose, not a threshold (${cite("liao2026chromatin")}). Windows with a lower and an upper side are documented for other signals: CCN2 stimulates collagen gene expression below 50 ng/mL and inhibits it above (${cite("nakerakanti2011ccn2")}); for VEGF the local amount secreted, not the total dose, decides between normal and aberrant vessels (${cite("ozawa2004vegf")}). TGF-β1 is also the minority isoform in adult skin (${cite("quan2002uv")}), and TGF-β3 improved scars in a phase II trial (${cite("mccollum2011avotermin")}).</p>`],
     ["boundary", "Boundaries", () => `<p>The dermal–epidermal junction is treated as impermeable: every site has a mirror image above it, which makes the flux through the junction zero. The deep side of the dermis is open (the signal may leave). Measured diffusion is slowest at the junction (${cite("wei2018microneedle")}).</p>`],
+    ["dose", "Does the dose add up?", () => `<p>No — and that is the most useful thing this model currently says.</p>
+      <p>Every value in the chain is now taken from a source. Fibroblasts release TGF-β almost entirely as a <b>latent</b> complex: active TGF-β1 is ≤ 2 % of the total at baseline in primary human dermal fibroblasts, 11 % once the cells contract and 36 % in dermal myofibroblasts (${cite("klingberg2014prestress")}). Total secretion by unstimulated fibroblasts is about 0.4 ng per 10⁶ cells per day (${cite("kelley1993autoinduction")}, ${cite("ghahary1998igf1")}). So an implanted cell releases roughly <b>8 pg of active signal per 10⁶ cells per day</b>.</p>
+      <p>Put ${n("ncells.def")} cells on a site and the concentration peaks at about <b>0.06 ng/mL</b> at the centre of the cluster, against the <b>1 ng/mL</b> that induced SMAD2 phosphorylation and α-SMA in fibroblasts (${cite("dilger2025concentration")}). That is <b>17× short at the centre</b> and <b>32× short at the least-covered point</b> of the default lattice.</p>
+      <h4>What would close it</h4>
+      <ul><li><b>Contractile implanted cells</b> — 11 % active instead of 2 %: <b>5.5×</b> (${cite("klingberg2014prestress")}). The group's cells are mechanically reprogrammed, so this is not far-fetched.</li>
+      <li><b>Auto-induced secretion</b> — TGF-β induces its own production, 90 instead of 15 pg per 10⁶ cells per hour: <b>6×</b> (${cite("kelley1993autoinduction")}).</li>
+      <li><b>More cells per site</b> — up to <b>25×</b> at the top of the slider.</li></ul>
+      <p>One of these is not enough; two together are. But <b>dose alone cannot do it</b>: ask <i>Optimise</i> and it reaches 72 % of the dermis only at 4.6 × 10⁹ cells per cm², against 2 mL of 10–20 million cells per mL per session in clinical fibroblast therapy (${cite("munavalli2013azficel")}).</p>
+      <h4>So what should be measured</h4>
+      <p>The gap has to be closed by <b>what the rejuvenated cells actually secrete</b> and by <b>where the threshold for the response you care about really lies</b> — the 1 ng/mL above is for α-SMA and pSMAD2 in knee fibroblasts, a pro-fibrotic readout, not for gentle rejuvenation of aged dermal cells. Both are measurable, and the model says they decide the answer. Move the <i>Active secretion per cell</i> and <i>Activation threshold</i> sliders to see how little it takes.</p>
+      <p>It is also possible that the signal is not soluble TGF-β at all — extracellular vesicles, direct contact or a mechanical relay would each change the picture, and none of them is in this model.</p>`],
+    ["layers", "A dermis with depth", () => `<p>Up to here the dermis was one slab: one diffusion coefficient and one decay length everywhere. <b>Depth-dependent tissue</b> switches on two measured depth dependences.</p>
+      <p><b>Diffusion is slowest right under the epidermis.</b> Dermal diffusivities of 1–20 µm²/s were measured for dextrans, the lowest (0.7–3 µm²/s) at the dermal–epidermal junction (${cite("wei2018microneedle")}), while papillary and reticular dermis differ only marginally deeper down (${cite("romgens2015diffusion")}). So D rises from its junction value to the bulk value over the <i>depth of the slow zone</i>. How thick that zone is was not found, so that depth is a <span class="badge b-ph">placeholder</span>.</p>
+      <p><b>Clearance follows the cells that consume the signal.</b> Cytokine niche size scales with the density of consuming cells (${cite("oyleryaniv2017niches")}), so the uptake part of the decay follows the local fibroblast density, which is higher in the papillary dermis. The split between uptake and chemistry is not a free choice: the chemical rate comes from the measured half-life of TGF-β in tissue (${cite("sprugel1987kinetics")}), and for the default values it is <b>${n("cellshare")} %</b> uptake — nearly all of it. The profile keeps the same average clearance as the slab, so λ still sets the overall scale.</p>
+      <p>Together these make λ short near the junction and full-length deeper down; the curve on the right of the cross-section shows it.</p>
+      <h4>What the viewer actually computes</h4>
+      <p>The page keeps its exact homogeneous kernel and folds the layering into <b>one effective D and λ</b>, averaged over the depth range the sources of your design actually reach. The Python pipeline solves the layered problem properly with a finite-volume solver and was used to measure how far the reduction is from it:</p>
+      <ul><li>deeper than about 3 λ: within 10 % of the activation threshold — and closer than ignoring the layers altogether;</li>
+      <li>deeper than about 6 λ: within 1 %;</li>
+      <li>within 1 λ of the junction: off by more than half the threshold, because D changes five-fold over the range of the signal. The Coverage panel says so when your design is in that range.</li></ul>
+      <p>So the layered numbers here are trustworthy for ordinary injection depths and only indicative for very shallow ones; <code>python -m dermsim tissue --fv</code> prints the comparison.</p>`],
     ["response", "Graded response", () => `<p>Whether a cell is "activated" is not a switch. The <b>Response</b> colouring shows the graded response</p>
       <p style="text-align:center"><code>R(c) = cⁿ / (EC50ⁿ + cⁿ)</code></p>
       <p>with the EC50 set to the aged-cell threshold, so R = ½ exactly at the lower edge of the window, and the <b>Hill exponent n</b> saying how sharply the cells tell doses apart. n = 1 is no cooperativity; larger n makes the response more switch-like.</p>
@@ -1484,7 +1598,8 @@ const HELP = [
     ["optimise", "Optimising the design", () => `<p><b>Find designs</b> searches the layouts that put the most dermis inside the window, keeping your tissue and signal values (D, λ, secretion, thresholds, cluster radius, dermis thickness) and the pattern (hexagonal or square). <b>Flat</b> varies the spacing, the depth and the cells per site; <b>Volume</b> also the number of depths (2–5) and the spacing between them; <b>Both</b> runs the two.</p>
       <p>The plot shows every design evaluated (faint dots): share of the dermis in the window against the dose in cells per cm². The line through the larger dots is the <b>front</b>: for each dose the best coverage found. The diamond is your design. Use ◀ ▶ (or click a point) to <b>cycle through the solutions</b> along the front, from low to high dose; each is shown in the maps at once. <b>Back to my design</b> restores what you had.</p>
       <p>How: about 14 spacings from 80 µm to 2 mm, 13 doses from 10³ to 10⁶ cells per site, 8 depths (flat) or 2–5 depths with 6 spacings and 6 middle depths (volume), all with every cluster inside the dermis and no two clusters overlapping; each design is scored on one periodic cell (12 × 12 × 16 points). For speed the field of each spacing is tabulated once and reused; the solutions shown are then re-evaluated exactly. The search runs in the background and takes a few seconds.</p>
-      <p>The optimum depends on placeholder values (secretion, thresholds): read it as a demonstration of the trade-offs until those are measured.</p>`],
+      <p>The optimum depends on values measured in other tissues or still placeholders (secretion, thresholds, implant half-life): read it as a demonstration of the trade-offs until those are measured.</p>
+      <p>With <b>Depth-dependent tissue</b> on, the search scores every candidate with the effective λ of the design it started from, because its speed comes from tabulating the field of each spacing once. Candidates at very different depths are therefore judged with a slightly wrong λ; the panel says which λ was used. See <a href="#help/model/layers" data-help="model/layers">A dermis with depth</a>.</p>`],
     ["depths", "Injection depths and spacing seen from above", () => `<p>The depths of the injection levels and the nearest distance between sites seen from above (all depths projected). See <a href="#help/model/depths" data-help="model/depths">Several injection depths</a>.</p>`],
     ["dose", "Sites and cells per cm²", () => `<p>Sites per cm² follow from the spacing (hexagonal: 1 / (a²·√3/2), square: 1 / a²) times the number of depths; cells per cm² multiply by the cells per site. For scale: a fibroblast cell therapy for acne scars injected 2 mL of 10–20 million cells per mL per session (${cite("munavalli2013azficel")}); the group's protocol used 40,000 cells per site (${cite("roy2024implanting")}).</p>`],
     ["overlap", "Overlapping clusters", () => `<p>Each implant site is a sphere of radius R. Two sites closer than 2R would overlap, which implanted cells cannot do, so the model is no longer meaningful there. This happens when the spacing per depth is below 2R, or when sites on neighbouring depths (offset sideways by the spacing seen from above and vertically by the spacing between depths) are closer than 2R. The optimiser only proposes layouts without overlap.</p>`],
@@ -1543,7 +1658,7 @@ function buildHelp() {
   fillHelpNumbers();
 }
 function fillHelpNumbers() {
-  const extra = { gap: () => fmt(17 / (secC.width / S.p.L)) };
+  const extra = { gap: () => fmt(17 / (secC.width / S.p.L)), cellshare: () => (100 * cellularShare(S.p)).toFixed(1) };
   for (const el of document.querySelectorAll("[data-n]")) { const [k, f] = el.dataset.n.split("."); const def = PDEF[k]; el.textContent = extra[k] ? extra[k]() : def ? fmt(f === "def" ? def.def : S.p[k]) : "?"; }
 }
 const topics = () => [...help.querySelectorAll("section[data-topic]")];

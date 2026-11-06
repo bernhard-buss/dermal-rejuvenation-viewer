@@ -44,16 +44,17 @@
    "group": "Signal",
    "label": "Active secretion per cell",
    "unit": "pg/10⁶ cells/day",
-   "value": 360,
-   "min": 0.1,
+   "value": 8,
+   "min": 0.01,
    "max": 100000,
    "log": true,
    "status": "ana",
    "sources": [
+    "klingberg2014prestress",
     "kelley1993autoinduction",
-    "needleman1990fibroblasts"
+    "ghahary1998igf1"
    ],
-   "note": "Secretion of the signalling form by one implanted cell. Default: 15 pg/10⁶ cells/h, the upper bound for unstimulated human fetal lung fibroblasts ({cite:kelley1993autoinduction}) — an analogue, not dermal cells; the same cells reached 90 ± 7 pg/10⁶ cells/h (2160 per day) once induced. A dermal study reports 29.7 ± 5.8 pmol/10⁶ cells per 24 h ({cite:needleman1990fibroblasts}), about 2000× more in mass terms, which has to be reconciled from the full text (assay units, latent vs active). Still the model's least certain value, and nothing is known yet about rejuvenated cells. A threshold can be expressed in the same unit ({cite:ozawa2004vegf})."
+   "note": "Secretion of the **active** (signalling) form by one implanted cell — fibroblasts release TGF-β almost entirely as a latent complex, so this is a small fraction of what an ELISA of conditioned medium measures. Built from two checked steps. *Total:* ≈ 0.4 ng/10⁶ cells/day — ≤ 15 pg/10⁶ cells/h uninduced in human fetal lung fibroblasts ({cite:kelley1993autoinduction}), and 4.8 ± 0.8 pg/10⁴ cells in human dermal fibroblast medium by ELISA ({cite:ghahary1998igf1}), whose collection interval is not in the abstract, so 0.16–0.48 ng/day. *Active share:* ≤ 2 % at baseline in primary human dermal fibroblasts, 11 % once they contract and 36 % in dermal myofibroblasts ({cite:klingberg2014prestress}). 0.4 ng/day × 2 % ≈ 8 pg/10⁶ cells/day; a contractile implanted cell would give about 40. Nothing is known about rejuvenated cells ({cite:hanasono2003fibroblasts} has the right design for dermal fibroblasts but no numbers in its abstract). A threshold can be expressed in the same unit ({cite:ozawa2004vegf})."
   },
   {
    "key": "mw",
@@ -263,6 +264,98 @@
    "note": "Default: the 2-mm-deep dermal region of the reconstructed skin model ({cite:roy2024implanting})."
   },
   {
+   "key": "layers",
+   "group": "Tissue",
+   "label": "Depth-dependent tissue",
+   "unit": "0 / 1",
+   "value": 0,
+   "min": 0,
+   "max": 1,
+   "log": false,
+   "step": 1,
+   "status": "des",
+   "sources": [],
+   "note": "Off: one diffusion coefficient and one decay length through the whole dermis (the model up to M2). On: diffusion is slower near the dermal–epidermal junction and clearance follows the local fibroblast density, so λ varies with depth. See {help:model/layers|A dermis with depth}."
+  },
+  {
+   "key": "ddej",
+   "group": "Tissue",
+   "label": "Diffusion at the junction",
+   "unit": "µm²/s",
+   "value": 2,
+   "min": 0.1,
+   "max": 30,
+   "log": true,
+   "status": "src",
+   "sources": [
+    "wei2018microneedle"
+   ],
+   "note": "Diffusion is slowest right under the epidermis: 0.7–3 µm²/s at the dermal–epidermal junction against 1–20 µm²/s deeper in the dermis ({cite:wei2018microneedle}). Deeper down, papillary and reticular dermis differ only marginally ({cite:romgens2015diffusion}), so the model puts the whole depth dependence of D into this junction zone."
+  },
+  {
+   "key": "tdej",
+   "group": "Tissue",
+   "label": "Depth of the slow zone",
+   "unit": "µm",
+   "value": 100,
+   "min": 10,
+   "max": 600,
+   "log": true,
+   "status": "ph",
+   "sources": [
+    "wei2018microneedle"
+   ],
+   "note": "Over this depth D rises from its junction value to the bulk value, D(z) = D − (D − D_junction)·e^(−z/this). That diffusion is slowest at the junction is measured ({cite:wei2018microneedle}); how thick the zone is was not found, so the depth itself is a placeholder."
+  },
+  {
+   "key": "hpap",
+   "group": "Tissue",
+   "label": "Papillary dermis thickness",
+   "unit": "µm",
+   "value": 200,
+   "min": 20,
+   "max": 800,
+   "log": false,
+   "step": 10,
+   "status": "ph",
+   "sources": [
+    "arnalforne2024dermis"
+   ],
+   "note": "Depth of the papillary dermis, the denser-celled upper layer. Its thickness rises with intrinsic ageing while the reticular dermis does not ({cite:arnalforne2024dermis}); no checked thickness in µm was found, so the value is a placeholder."
+  },
+  {
+   "key": "rpap",
+   "group": "Tissue",
+   "label": "Papillary cell density",
+   "unit": "× reticular",
+   "value": 2,
+   "min": 1,
+   "max": 6,
+   "log": false,
+   "step": 0.1,
+   "status": "ph",
+   "sources": [
+    "miller2003density",
+    "oyleryaniv2017niches"
+   ],
+   "note": "How many times more fibroblasts the papillary dermis holds than the reticular. It matters because uptake by cells, not chemistry, is what removes the signal: niche size scales with the density of consuming cells ({cite:oyleryaniv2017niches}). The scale is sourced — 2100–4100 cells/mm³ in mid-dermis ({cite:miller2003density}) — the ratio is not."
+  },
+  {
+   "key": "thalfc",
+   "group": "Tissue",
+   "label": "Chemical half-life in tissue",
+   "unit": "h",
+   "value": 22,
+   "min": 0.1,
+   "max": 200,
+   "log": true,
+   "status": "src",
+   "sources": [
+    "sprugel1987kinetics"
+   ],
+   "note": "Half-life of the signal where no cell takes it up; 22 h for ¹²⁵I-TGF-β in subcutaneous collagen chambers ({cite:sprugel1987kinetics}). With the decay length λ it splits the decay into a chemical part and an uptake part — for the default values more than 99 % is uptake — and only the uptake part follows the cell density with depth. See {help:model/layers|A dermis with depth}."
+  },
+  {
    "key": "hep",
    "group": "Tissue",
    "label": "Epidermis thickness",
@@ -436,12 +529,26 @@
    "checked": "abstract",
    "what": "A single cell communicates by a soluble signal within a domain of about 250 µm, within 10–30 min; one dimensionless group governs it."
   },
+  "ghahary1998igf1": {
+   "short": "Ghahary et al. 1998",
+   "cite": "Ghahary A, Shen Q, Shen YJ, et al.. Induction of transforming growth factor β1 by insulin-like growth factor-1 in dermal fibroblasts. Journal of Cellular Physiology. 1998;174:301–309.",
+   "doi": "10.1002/(sici)1097-4652(199803)174:3<301::aid-jcp4>3.0.co;2-s",
+   "checked": "abstract",
+   "what": "A TGF-β-specific ELISA on conditioned medium of human dermal fibroblasts gave 4.8 ± 0.8 pg per 10⁴ cells untreated and 12.3 ± 1.6 pg per 10⁴ cells after IGF-1 (n = 7, P < 0.05), confirmed by a mink lung growth-inhibition assay; the collection interval is not stated in the abstract."
+  },
   "gupta2012anesthesia": {
    "short": "Gupta et al. 2012",
    "cite": "Gupta J, Denson DD, Felner EI, et al.. Rapid Local Anesthesia in Humans Using Minimally Invasive Microneedles. The Clinical Journal of Pain. 2012;28:129–135.",
    "doi": "10.1097/ajp.0b013e318225dbe9",
    "checked": "abstract",
    "what": "Hollow microneedles 500 µm long injected lidocaine into the forearm of 15 participants and produced dermal anaesthesia equivalent to a 26-gauge intradermal needle."
+  },
+  "hanasono2003fibroblasts": {
+   "short": "Hanasono et al. 2003",
+   "cite": "Hanasono MM, Kita M, Mikulec AA, et al.. Autocrine Growth Factor Production by Fetal, Keloid, and Normal Dermal Fibroblasts. Archives of Facial Plastic Surgery. 2003;5:26–30.",
+   "doi": "10.1001/archfaci.5.1.26",
+   "checked": "title and abstract",
+   "what": "Normal adult, fetal and keloid dermal fibroblasts were cultured serum-free and supernatants collected at 4, 24 and 72 h for TGF-β1 measurement; the abstract reports no numeric secretion rate."
   },
   "hebda1999transplanted": {
    "short": "Hebda & Dohar 1999",
@@ -456,6 +563,13 @@
    "doi": "10.1165/ajrcmb/8.4.417",
    "checked": "abstract",
    "what": "Human fetal lung fibroblasts (IMR90) accumulated TGF-β in conditioned medium at 90 ± 7 pg/10⁶ cells/h after a brief TGF-β1 exposure, against ≤ 15 pg/10⁶ cells/h uninduced, for up to 72 h; as little as 1 ng/mL auto-induced secretion."
+  },
+  "klingberg2014prestress": {
+   "short": "Klingberg et al. 2014",
+   "cite": "Klingberg F, Chow ML, Koehler A, et al.. Prestress in the extracellular matrix sensitizes latent TGF-β1 for activation. Journal of Cell Biology. 2014;207:283–297.",
+   "doi": "10.1083/jcb.201402006",
+   "checked": "full text",
+   "what": "In primary human dermal fibroblasts, active TGF-β1 was ≤ 2 % of total at baseline, rising to 11 % on thrombin-induced contraction and to 36 % in dermal myofibroblasts."
   },
   "kretsos2008dermis": {
    "short": "Kretsos et al. 2008",

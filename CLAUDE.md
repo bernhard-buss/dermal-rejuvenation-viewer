@@ -25,8 +25,16 @@
   `dermsim.model` (multi-depth lattices: `levelDepths`, `levelShift`;
   `survival` scales every source by the day), `dermsim.optimize`
   (`optimiseSteps`, `clustersApart`, table look-up), `dermsim.response`
-  (`hill`, `timeAbove`, `windowTimes`, `exposure`) and the geometry of
-  `dermsim.scaffold` (`scaffoldPlan`, `scaffoldPositions`). The same
+  (`hill`, `timeAbove`, `windowTimes`, `exposure`), `dermsim.tissue`
+  (`tissueProfile`, `tissueEffective`, `reductionIsFaithful`) and the geometry of
+  `dermsim.scaffold` (`scaffoldPlan`, `scaffoldPositions`).
+- **A layered dermis enters through `derived()` only.** It folds the depth
+  profiles into one effective D and λ; everything downstream is unchanged. The
+  page cannot solve the layered problem — the pipeline's finite-volume solver
+  does, and it measured where the reduction holds (within 10 % of the threshold
+  below ~3 λ, worse than half a threshold within 1 λ of the junction). Keep that
+  caveat visible: the Coverage warning and the help entry `model/layers` are part
+  of the feature, not decoration. The same
   block runs in a background Web Worker built from its text (`WORKER_SRC`) for
   the design curve, the coverage of the whole dermis and the optimiser; `ask()`
   cancels stale requests of the same kind and falls back to the main thread. Change both together, re-export, and run

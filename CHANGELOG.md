@@ -2,6 +2,15 @@
 
 Newest version first. Each entry says what you can do or see differently.
 
+## 0.6.0 — 2026-11-06
+
+- **The dose does not add up — and that is the result.** The secretion per cell is now built from checked sources in two steps: fibroblasts release TGF-β almost entirely latent (active is ≤ 2 % of the total at baseline in human dermal fibroblasts, 11 % when they contract), and the total is about 0.4 ng per 10⁶ cells per day. That leaves ~8 pg of *active* signal per 10⁶ cells per day, 45× less than the figure used before, and the default design now peaks 17× below the activation threshold. The panel says how far short you are, and a new help entry sets out the three sourced mechanisms that would close the gap — and why injecting more cells alone cannot.
+- A secretion figure that was 2000× higher has been dropped: its paper could not be read past the abstract, so its assay and units are unverified.
+
+- **A dermis with depth.** *Depth-dependent tissue* replaces the single slab: diffusion is slower near the dermal–epidermal junction, and clearance follows the local fibroblast density, which is higher in the papillary dermis. The decay length λ is then short at the top and full-length deeper down — the cross-section draws the real papillary boundary and the λ curve beside it, and Coverage reports the effective λ your design sees.
+- **And it says when not to believe it.** The page folds the depth profile into one effective λ; the pipeline solves the layered problem properly and was used to measure the difference. For ordinary injection depths the reduction is within 10 % of the activation threshold (within 1 % below six decay lengths); within one decay length of the junction it is not, and Coverage now warns that the numbers are indicative there.
+- Five new tissue values behind it, each with its source or marked as a placeholder: diffusion at the junction, the depth of the slow zone, the papillary thickness and cell density, and the chemical half-life that splits decay into uptake and chemistry — for the default values more than 99 % is uptake by cells.
+
 ## 0.5.0 — 2026-11-06
 
 - **Time after implantation.** The implant does not signal forever: a new slider shows the state on any day after implantation, with the source scaled by the surviving share of the cells (*Implant half-life*). Maps, coverage, design curve and optimiser all follow, so you can ask for a design that still works on day 14. The coverage panel reports how much of the dermis is **ever** in the window — including tissue that starts above the ceiling and drops into it as the implant decays — and for how many days.
