@@ -15,9 +15,18 @@ models: Roy B, Pekec T, Yuan L, Shivashankar GV. *Aging Cell* 2024;23:e14032,
 
 ## What it does
 
-- Models each implant site as a sphere of cells secreting one signal into
-  homogeneous dermis (steady state, linear decay over a decay length λ,
-  impermeable dermal–epidermal junction). The solution is exact for this model.
+- Models each implant site as a sphere of cells secreting one signal into the
+  dermis: steady state, linear decay over a decay length λ, impermeable
+  dermal–epidermal junction. By default the dermis has depth — slower diffusion
+  under the junction, clearance following the cell density of the papillary and
+  reticular layers — folded into one effective decay length per design; the
+  uniform dermis of the earlier versions is one switch away.
+- Five numbered steps on the left (whose skin, what the cells make, how you
+  inject, the device, what you look at), each opening with the values that
+  usually matter and folding the rest away.
+- Time after implantation (the implant decays with a half-life) and a graded
+  response of the host cells; how long each part of the dermis spends in the
+  window.
 - Shows an en-face map and a cross-section, coloured by window or by
   concentration, for hexagonal, square, random or hand-placed sites.
 - Several injection depths: stacked lattices, shifted sideways against each
@@ -28,8 +37,12 @@ models: Roy B, Pekec T, Yuan L, Shivashankar GV. *Aging Cell* 2024;23:e14032,
 - **Optimise**: searches flat and multi-depth layouts for the most dermis inside
   the window, plots every design against the dose with the best-coverage front,
   and lets you cycle through the solutions in the maps.
-- Schematic cross-section through the skin with the host fibroblasts coloured
-  by the signal where they sit.
+- A cross-section through the skin with the host fibroblasts coloured by the
+  signal where they sit, and the decay length against depth.
+- **Injection scaffold**: the design as a needle array, with a downloadable
+  hand-off pack for a fabricator (specification, DXF, SVG, needle list).
+- **Save / Load YAML**: the whole configuration as the parameter file the Python
+  pipeline reads.
 
 ## Where the numbers come from
 
@@ -42,10 +55,12 @@ Every value has a badge that opens its help entry:
 | **placeholder** | no checked source yet: results that depend on it are illustrative |
 | **design** | a choice (layout, depth) or a view setting |
 
-The literature search behind this prototype found **no verified activation
-threshold or fibrotic ceiling for TGF-β1 in dermal fibroblasts**, and no
-verified secretion rate per cell; these are placeholders until measured. The
-help lists all references (**Help → References**).
+No activation threshold, fibrotic ceiling or secretion rate has been measured
+in **dermal** fibroblasts; the viewer uses values measured in related cells,
+marked *analogue*. Taken together they say the reference implantation protocol
+falls short of activating its neighbours by more than an order of magnitude —
+see **Help → Does the dose add up?**. The help lists all references
+(**Help → References**).
 
 ## Privacy
 
@@ -57,7 +72,7 @@ anyone who has the address.
 
 ## Status
 
-Prototype (milestones M1–M2), not peer-reviewed. Do not read numbers off it as
+Prototype (milestones M1–M3), not peer-reviewed. Do not read numbers off it as
 predictions. The reference implementation of the model, the parameter table
 and the claims register live in a private repository.
 

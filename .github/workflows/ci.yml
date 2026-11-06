@@ -1,6 +1,7 @@
 name: CI and Pages
 
 # On every push and pull request:
+#   - the page script runs end to end against a stub DOM (tests/smoke.mjs)
 #   - the page script compiles, the page keeps its noindex tag, every parameter
 #     and citation resolves, and the changelog has an entry for VERSION
 #   - the viewer's physics and optimiser reproduce the golden cases of the Python
@@ -32,6 +33,8 @@ jobs:
           node-version: 22
       - name: Page checks
         run: node tests/page.mjs
+      - name: The page script runs (stub DOM)
+        run: node tests/smoke.mjs
       - name: Parity with the Python model
         run: node tests/parity.mjs
 

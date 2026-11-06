@@ -88,10 +88,12 @@
   panel use `data-n` spans filled by `fillHelpNumbers()` (parameter values, and
   extras such as the dose gap from `defaultGap()`). Never type a model output into
   prose: it goes stale the next time a default moves (it did, twice, on 2026-11-06).
-- **`tests/page.mjs` only checks that the script compiles.** It does not run it, so a
-  reference to a `const` before its declaration (temporal dead zone) passes the test
-  and blanks the page. After any change to top-level code, load the page and check
-  the console.
+- **`tests/smoke.mjs` runs the page script** end to end against a stub DOM (no
+  browser, no dependencies) and fails on any error during load, the first render or
+  the background work. `tests/page.mjs` only checks that it compiles — on 2026-11-06
+  a `const` read before its declaration blanked the page and passed that test. The
+  smoke test checks that the page runs, not that it looks right: still load it in a
+  browser after visible changes.
 - **The address holds the configuration.** `stateQuery()` writes every value that
   differs from its default (keys = `PARAMS` keys, slider units), `pattern`,
   `show=concentration|response`, `scaffold=patch` and `sites=x,y;…` (µm, custom
@@ -111,7 +113,7 @@
   `criticalSpacing()`, `metrics()`, `survival()`, `exposure()`, `scaffold()`,
   `scFiles()`, `paramsYaml()`, `applyFile()`, `readYamlish()`,
   `openHelp(target)`, `closeHelp()`, `helpTargets()`).
-- Check after changes: `node tests/page.mjs && node tests/parity.mjs`; serve the folder (`.claude/static_server.js`, port 8766),
+- Check after changes: `node tests/page.mjs && node tests/smoke.mjs && node tests/parity.mjs`; serve the folder (`.claude/static_server.js`, port 8766),
   no console errors; every `__drv.helpTargets()` resolves to a topic/entry; no
   "missing source" marker in the help; the kernel is continuous at r = R, matches
   the point source × 3(x cosh x − sinh x)/x³ far away, and finite differences
