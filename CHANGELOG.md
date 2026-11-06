@@ -2,6 +2,10 @@
 
 Newest version first. Each entry says what you can do or see differently.
 
+## 0.7.1 — 2026-11-06
+
+- Help corrected where 0.7.0 had overtaken it: the cross-section, the limitations and the roadmap no longer describe the dermis as homogeneous or list the depth-dependent dermis as future work.
+
 ## 0.7.0 — 2026-11-06
 
 - **Five numbered steps.** The controls now read top down in the order you would decide them: *1 Whose skin*, *2 What the cells make*, *3 How you inject*, *4 The device*, *5 What you look at*. Each step opens with the two to four values that usually matter — 12 sliders instead of 30 — and folds the rest behind *more*. A folded value you or a shared link has moved never stays hidden: its step opens itself.
