@@ -44,6 +44,8 @@ main{display:grid;grid-template-columns:340px minmax(440px,1fr) 360px;gap:14px;p
 .rst{border:0;background:none;color:var(--teal);font-size:14px;line-height:1;padding:0 1px;cursor:pointer;margin-left:-2px}
 .rst:hover{color:var(--terra)}
 .prow.off{opacity:.45}
+.panel.off{display:none}
+button.warn{color:var(--terra);border-color:var(--terra)}
 .badge{font-size:10.5px;padding:0 6px;border-radius:999px;border:1px solid;cursor:pointer;text-decoration:none;white-space:nowrap;line-height:16px}
 .b-src{color:var(--teal);border-color:var(--teal)}
 .b-ana{color:var(--teal);border-color:var(--teal);border-style:dashed}
@@ -121,7 +123,7 @@ a.cite{text-decoration:none;border-bottom:1px dotted var(--teal)}
   <button id="presetYoung" title="Young host tissue: threshold factor 1">Young tissue</button>
   <button id="presetAged" title="Aged host tissue: threshold factor raised (placeholder value)">Aged tissue</button><a class="hl" href="#help/start/presets" data-help="start/presets" title="Help: young and aged tissue">ⓘ</a>
   <button id="reset" title="All values back to their defaults">Reset</button>
-  <span><button id="linkbtn" title="Copy a link that reproduces everything shown: all values, pattern, colouring and your own sites">Copy link</button><a class="hl" href="#help/start/share" data-help="start/share" title="Help: sharing a view">ⓘ</a></span>
+  <span><button id="linkbtn" title="Copy a link that reproduces everything shown: all values, pattern, colouring and your own sites">Copy link</button><button id="saveYaml" title="Download everything shown as a parameters.yaml the Python pipeline can read">Save YAML</button><button id="loadYaml" title="Load a parameters.yaml saved here or from the pipeline">Load YAML</button><input type="file" id="yamlFile" accept=".yaml,.yml,.json" hidden><a class="hl" href="#help/start/yaml" data-help="start/yaml" title="Help: saving and loading the parameter file">ⓘ</a></span>
   <button id="helpbtn" data-help="" title="Help (press ?)">Help</button>
 </header>
 <div class="banner">Prototype. Values marked <span class="badge b-ph" data-help="start/status">placeholder</span> have no checked source yet, so results that depend on them are illustrative only. <a href="#help/model/window" data-help="model/window">Why the thresholds are open</a>.</div>
@@ -131,7 +133,7 @@ a.cite{text-decoration:none;border-bottom:1px dotted var(--teal)}
     <div class="panel">
       <div class="toolbar">
         <span>Show</span>
-        <span class="seg"><button id="mWindow" class="on" title="Colour by below / inside / above the window">Window</button><button id="mLog" title="Colour by concentration, log scale">Concentration</button></span><a class="hl" href="#help/start/read" data-help="start/read" title="Help: reading the maps">ⓘ</a>
+        <span class="seg"><button id="mWindow" class="on" title="Colour by below / inside / above the window">Window</button><button id="mLog" title="Colour by concentration, log scale">Concentration</button><button id="mResp" title="Colour by the graded response of the host cells (Hill)">Response</button></span><a class="hl" href="#help/start/read" data-help="start/read" title="Help: reading the maps">ⓘ</a>
         <span class="sp"></span>
         <label>Pattern <select id="pattern">
           <option value="hex">hexagonal</option><option value="square">square</option>
@@ -158,6 +160,25 @@ a.cite{text-decoration:none;border-bottom:1px dotted var(--teal)}
       <canvas id="optPlot" width="660" height="400" aria-label="Designs found: share of dermis in the window against cells per cm²"></canvas>
       <div id="optSol"><div class="note">Not run yet. The search takes a few seconds and runs in the background.</div></div>
     </div>
+    <div class="panel" id="scaffoldPanel"><h2>Injection scaffold <a class="hl" href="#help/scaffold/what" data-help="scaffold/what" title="Help: the injection scaffold">ⓘ</a></h2>
+      <div class="row">
+        <span class="seg"><button id="scTile" class="on" title="One periodic tile of the array">Tile</button><button id="scPatch" title="The whole patch of skin">Patch</button></span>
+        <span class="sp" style="flex:1"></span>
+        <button id="scPack" class="primary" title="Download all five files of the hand-off pack">Download pack</button>
+      </div>
+      <div class="row" id="scFiles">
+        <span class="note" style="margin:0">or one file:</span>
+        <button data-sc="spec.md" title="The specification to read: geometry, needles, open questions, sources">Spec</button>
+        <button data-sc="layout.dxf" title="DXF R12 in millimetres, one layer per needle length">DXF</button>
+        <button data-sc="layout.svg" title="The same drawing 1:1 in millimetres">SVG</button>
+        <button data-sc="tracks.csv" title="Every needle: position, length, deposit depths">CSV</button>
+        <button data-sc="scaffold.json" title="The same geometry for a CAD script">JSON</button>
+      </div>
+      <canvas id="scPlan" width="660" height="330" aria-label="Needle positions of the injection scaffold, seen from above"></canvas>
+      <canvas id="scSide" width="660" height="260" aria-label="Needle lengths of the injection scaffold, seen from the side"></canvas>
+      <div class="legend" id="scLegend"></div>
+      <div id="scSpec"></div>
+      <div class="cap" id="scCap"></div></div>
     <div class="panel"><h2>Design curve <a class="hl" href="#help/metrics/curve" data-help="metrics/curve" title="Help: design curve">ⓘ</a></h2>
       <canvas id="chart" width="660" height="380" aria-label="Share of dermis below, inside and above the window against site spacing"></canvas>
       <div class="cap" id="chartCap"></div></div>
@@ -185,7 +206,7 @@ a.cite{text-decoration:none;border-bottom:1px dotted var(--teal)}
 <script src="data/parameters.js"></script>
 <script>
 "use strict";
-const VERSION = "0.4.0";
+const VERSION = "0.5.0";
 const $ = id => document.getElementById(id);
 function esc(s) { return String(s).replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); }
 
@@ -206,7 +227,7 @@ const renderNote = t => esc(t).replace(/\{cite:([a-z0-9]+)\}/g, (_, k) => cite(k
   .replace(/\{help:([a-z0-9_\/-]+)\|([^}]*)\}/g, (_, h, txt) => `<a href="#help/${h}" data-help="${h}">${txt}</a>`);
 // status: "src" sourced value · "ana" analogue (published, related system) ·
 // "ph" placeholder (no checked source yet) · "des" design choice or view setting.
-const PARAMS = DP.parameters.map(q => ({ ...q, def: q.value, src: q.sources, note: () => renderNote(q.note) }));
+const PARAMS = DP.parameters.map(q => ({ ...q, def: q.value, src: q.sources, note_raw: q.note, note: () => renderNote(q.note) }));
 const PDEF = Object.fromEntries(PARAMS.map(p => [p.key, p]));
 const STATUS = { src: ["b-src", "source"], ana: ["b-ana", "analogue"], ph: ["b-ph", "placeholder"], des: ["b-des", "design"] };
 
@@ -225,19 +246,24 @@ const STATUS = { src: ["b-src", "source"], ana: ["b-ana", "analogue"], ph: ["b-p
 // dermsim.model and dermsim.optimize in Python. tests/parity.mjs runs this block
 // against data/golden.json; the page also runs it in a background worker.
 // ---------------------------------------------------------------------------
-const NA_ = 6.02214076e23, SQRT3 = Math.sqrt(3);
+const NA_ = 6.02214076e23, SQRT3 = Math.sqrt(3), LOG2 = Math.LN2;
+function survival(p) {                                             // share still signalling on day tday
+  const t = p.tday ?? 0, th = p.tsurv ?? 0;
+  return !t ? 1 : (th > 0 ? Math.pow(2, -t / th) : 0);
+}
 function derived(p) {
   const kap = 1 / p.lam, k = p.D * kap * kap;                      // 1/µm, 1/s
   const qcell = p.sec * 1e-12 / (p.mw * 1000) * NA_ / 1e6 / 86400; // molecules/cell/s
-  const Q = qcell * p.ncells;                                      // molecules/s per site
+  const Q = qcell * p.ncells;                                      // molecules/s per site, fresh implant
+  const surv = survival(p);
   const perNgml = (1000 / p.mw) * 1e-12 * NA_ / 1e15;              // molecules/µm³ per ng/mL
-  return { k, kap, lam: p.lam, thalf: Math.LN2 / k, qcell, Q, perNgml,
+  return { k, kap, lam: p.lam, thalf: Math.LN2 / k, qcell, Q, surv, Qt: Q * surv, perNgml,
     con: p.con * p.sage * perNgml, cfib: p.cfib * perNgml, rc: p.R + 9.2 * p.lam };
 }
 function kernel(p, d) {
   const kap = d.kap, R = p.R, x = kap * R;
-  if (x < 1e-3) { const A = d.Q / (4 * Math.PI * p.D); return r => A * Math.exp(-kap * Math.max(r, 0.5)) / Math.max(r, 0.5); }
-  const s0 = d.Q / (4 / 3 * Math.PI * R * R * R), pref = s0 / d.k, a = (1 + x) * Math.exp(-x);
+  if (x < 1e-3) { const A = d.Qt / (4 * Math.PI * p.D); return r => A * Math.exp(-kap * Math.max(r, 0.5)) / Math.max(r, 0.5); }
+  const s0 = d.Qt / (4 / 3 * Math.PI * R * R * R), pref = s0 / d.k, a = (1 + x) * Math.exp(-x);
   return r => {
     const kr = kap * r;
     if (r >= R) return pref * 0.5 * ((x - 1) * Math.exp(-kap * (r - R)) + (x + 1) * Math.exp(-kap * (r + R))) / kr;
@@ -338,6 +364,81 @@ function volumeFractions(Fld, p, nxy, nz) {                        // the dermis
   const vals = new Float64Array(nxy * nxy * nz); let k = 0;
   for (let l = 0; l < nz; l++) for (let j = 0; j < nxy; j++) for (let i = 0; i < nxy; i++) vals[k++] = Fld.at((i + 0.5) / nxy * p.L, (j + 0.5) / nxy * p.L, (l + 0.5) / nz * p.H);
   return fractions(vals, Fld.d);
+}
+// --- graded response, survival, time in the window (dermsim.response) -----------
+function hill(c, ec50, n) {                                        // R(c) = cⁿ/(EC50ⁿ + cⁿ)
+  if (ec50 <= 0) return 1;
+  const x = Math.pow(Math.max(c, 0) / ec50, n);
+  return x / (1 + x);
+}
+function timeAbove(c0, thr, tsurv) {                               // days while c₀·2^(−t/t½) ≥ thr
+  if (thr <= 0) return Infinity;
+  if (!(c0 > 0)) return 0;
+  return Math.max(tsurv * Math.log(c0 / thr) / LOG2, 0);
+}
+function windowTimes(c0, d, tsurv) {                               // [above threshold, above ceiling, in window]
+  const on = timeAbove(c0, d.con, tsurv), over = timeAbove(c0, d.cfib, tsurv);
+  return [on, over, Math.max(on - over, 0)];
+}
+function median(v) {
+  const s = Float64Array.from(v).sort(), m = s.length >> 1;
+  return s.length % 2 ? s[m] : (s[m - 1] + s[m]) / 2;
+}
+function quasiStatic(p, d) {                                       // the two time scales, in days
+  const fieldDays = (1 / d.k) / 86400;
+  return { field_days: fieldDays, diffusion_days: (p.a * p.a / p.D) / 86400,
+    tsurv_days: p.tsurv, ratio: p.tsurv ? fieldDays / p.tsurv : Infinity };
+}
+function exposure(p, pat, a, nu, nz) {                             // response and days in the window, one lattice cell
+  const q = { ...p, tday: 0 }, d0 = derived(q), f0 = kernel(q, d0), d = derived(p);
+  const dy = pat === "hex" ? a * SQRT3 / 2 : a, tw = new Float64Array(nu * nu * nz);
+  let act = 0, ever = 0, sum = 0, max = 0, k = 0;
+  for (let l = 0; l < nz; l++) for (let v = 0; v < nu; v++) for (let u = 0; u < nu; u++) {
+    const uu = (u + 0.5) / nu, vv = (v + 0.5) / nu, x = pat === "hex" ? uu * a + vv * a / 2 : uu * a;
+    const c0 = latticeAt(q, d0, f0, pat, a, x, vv * dy, (l + 0.5) / nz * p.H);
+    const t = windowTimes(c0, d0, p.tsurv)[2];
+    tw[k++] = t; sum += t; if (t > 0) ever++; if (t > max) max = t;
+    act += hill(c0 * d.surv, d.con, p.hill);
+  }
+  return { activation: act / tw.length, ever: ever / tw.length, days_mean: sum / tw.length,
+    days_median: median(tw), days_max: max };
+}
+// --- the injection scaffold: needle tracks of a design (dermsim.scaffold) -------
+const SCAFFOLD_MAX_DRAW = 6000;
+function scaffoldPlan(p, pattern) {
+  pattern = pattern === "square" ? "square" : "hex";
+  const a = p.a, n = nLevels(p), depths = levelDepths(p), perCell = pattern === "hex" ? 3 : 2;
+  const a1 = [a, 0], a2 = pattern === "hex" ? [a / 2, a * SQRT3 / 2] : [0, a];
+  const cellArea = pattern === "hex" ? a * a * SQRT3 / 2 : a * a, tracks = [];
+  for (let t = 0; t < Math.min(n, perCell); t++) {
+    const u = t / perCell, zs = [];
+    for (let l = 0; l < n; l++) if (l % perCell === t) zs.push(depths[l]);
+    zs.sort((x, y) => x - y);
+    tracks.push({ u, v: u, x: u * a1[0] + u * a2[0], y: u * a1[1] + u * a2[1],
+      deposits: zs, length: (p.hep + zs[zs.length - 1]) / p.pen, cells: p.ncells * zs.length });
+  }
+  const patch = p.patch * 1000;
+  const pl = { pattern, a, levels: n, depths, tracks, tracks_per_cell: tracks.length, deposits_per_cell: n,
+    a1, a2, cell_area: cellArea, tracks_per_cm2: tracks.length / cellArea * 1e8,
+    deposits_per_cm2: sitesPerCm2(pattern, a, n), pitch: topDownSpacing(pattern, a, tracks.length),
+    wall_gap: topDownSpacing(pattern, a, tracks.length) - p.dneedle, diameter: p.dneedle,
+    lengths: [...new Set(tracks.map(t => t.length))].sort((x, y) => x - y),
+    patch_um: patch, cells_nx: Math.max(1, Math.floor(patch / a1[0])), cells_ny: Math.max(1, Math.floor(patch / a2[1])),
+    cells_per_needle: p.ncells * n / tracks.length };
+  pl.needles = scaffoldPositions(pl).length;
+  pl.drawable = pl.needles <= SCAFFOLD_MAX_DRAW;
+  return pl;
+}
+function scaffoldPositions(pl) {
+  const out = [];
+  for (let j = 0; j < pl.cells_ny; j++) for (let i = 0; i < pl.cells_nx; i++) {
+    const ox = i * pl.a1[0] + j * pl.a2[0], oy = i * pl.a1[1] + j * pl.a2[1];
+    for (const t of pl.tracks) {
+      const x = ox + t.x, y = oy + t.y;
+      if (x >= 0 && x <= pl.patch_um && y >= 0 && y <= pl.patch_um) out.push({ x, y, length: t.length, deposits: t.deposits });
+    }
+  }
+  return out;
 }
 // --- design optimiser (dermsim.optimize) ----------------------------------------
 const OPT_DEFAULTS = { a_min: 80, a_max: 2000, n_a: 14, cells_min: 1e3, cells_max: 1e6, n_cells: 13, flat_depths: 8,
@@ -454,7 +555,9 @@ onmessage = e => { const m = e.data; latest[m.kind] = m.id; setTimeout(() => run
 const live = m => latest[m.kind] === m.id;
 function run(m) {
   if (!live(m)) return;
-  if (m.kind === "volume") { const F = buildField(m.p, m.pattern, m.custom, m.seed); postMessage({ kind: m.kind, id: m.id, fr: volumeFractions(F, m.p, m.nxy, m.nz) }); return; }
+  if (m.kind === "volume") { const F = buildField(m.p, m.pattern, m.custom, m.seed);
+    postMessage({ kind: m.kind, id: m.id, fr: volumeFractions(F, m.p, m.nxy, m.nz),
+      ex: m.pat ? exposure(m.p, m.pat, m.p.a, 12, 16) : null }); return; }
   if (m.kind === "curve") {
     let i = 0;
     const step = () => { if (!live(m)) return;
@@ -483,7 +586,8 @@ function ask(kind, msg, onMsg) {
   if (worker) { worker.postMessage({ ...msg, kind, id }); return; }
   setTimeout(() => {                                               // fallback without a worker
     if (jobs[kind] !== id) return;
-    if (kind === "volume") onMsg({ fr: volumeFractions(buildField(msg.p, msg.pattern, msg.custom, msg.seed), msg.p, msg.nxy, msg.nz) });
+    if (kind === "volume") onMsg({ fr: volumeFractions(buildField(msg.p, msg.pattern, msg.custom, msg.seed), msg.p, msg.nxy, msg.nz),
+      ex: msg.pat ? exposure(msg.p, msg.pat, msg.p.a, 12, 16) : null });
     if (kind === "curve") msg.as.forEach((a, i) => onMsg({ i, a, fr: unitCellFractions(msg.p, msg.pat, a, msg.nu, msg.nz) }));
     if (kind === "optimise") { const results = {}; for (const md of (msg.mode === "both" ? ["flat", "volume"] : [msg.mode])) results[md] = optimise(msg.p, msg.pattern, md, msg.opts);
       const cur = unitCellFractions(msg.p, msg.pattern, msg.p.a, OPT_DEFAULTS.nu, OPT_DEFAULTS.nz); onMsg({ results, current: { window: cur[1], above: cur[2] } }); }
@@ -497,7 +601,7 @@ if (worker) {
 // ---------------------------------------------------------------------------
 // State
 // ---------------------------------------------------------------------------
-const S = { p: {}, pattern: "hex", mode: "window", edit: false, custom: [], zvLinked: true, seed: 7,
+const S = { p: {}, pattern: "hex", mode: "window", edit: false, custom: [], zvLinked: true, seed: 7, scTile: true,
   opt: { mode: "both", res: null, list: [], idx: -1, before: null, running: false, current: null } };
 function resetParams() { for (const d of PARAMS) S.p[d.key] = d.def; S.pattern = "hex"; S.custom = []; S.zvLinked = true; }
 resetParams();
@@ -513,7 +617,9 @@ function ramp(stops, t) { t = Math.min(1, Math.max(0, t)) * (stops.length - 1); 
 const UNDER = [hex("#F4F0EA"), hex("#BFCBD1")], IN = [hex("#A8D9DC"), hex("#2A6F75")], OVER = [hex("#E89A84"), hex("#8E3A25")];
 // injection depths: Paul Tol's bright scheme, shallow → deep
 const LEVEL_COL = ["#66CCEE", "#4477AA", "#AA3377", "#CCBB44", "#228833"];
+const RESP = [hex("#F7F4EF"), hex("#9FC9C2"), hex("#1F6E74"), hex("#123C45")];
 function colour(c, d) {
+  if (S.mode === "resp") return ramp(RESP, hill(c, d.con, S.p.hill));
   if (S.mode === "log") { const lo = Math.log10(d.con / 100), hi = Math.log10(d.cfib * 10); return ramp(VIR, (Math.log10(Math.max(c, 1e-30)) - lo) / (hi - lo)); }
   if (c < d.con) return mix(UNDER[0], UNDER[1], 1 + Math.log10(Math.max(c, 1e-30) / d.con) / 2);
   if (c <= d.cfib) return mix(IN[0], IN[1], Math.log10(c / d.con) / Math.max(1e-9, Math.log10(d.cfib / d.con)));
@@ -556,7 +662,7 @@ function drawMap(n) {
   for (let j = 0; j < n; j++) for (let i = 0; i < n; i++) vals[j * n + i] = F.at((i + 0.5) / n * L, (j + 0.5) / n * L, p.zv);
   lastMapGrid = { n, vals };
   drawGrid(ctx, 0, 0, W, H, n, n, vals, d);
-  contour(ctx, 0, 0, n, n, vals, d.con, W / n, H / n, S.mode === "log" ? "#ffffff" : "#1B2A33", [6, 4]);
+  contour(ctx, 0, 0, n, n, vals, d.con, W / n, H / n, S.mode === "window" ? "#1B2A33" : "#ffffff", [6, 4]);
   contour(ctx, 0, 0, n, n, vals, d.cfib, W / n, H / n, "#E8590C", []);
   const k = W / L, multi = S.pattern === "custom" ? new Set(S.custom.map(s => Math.round(s[2] ?? p.z0))).size > 1 : nLevels(p) > 1;
   // sites at other depths first (faint, dashed), then those cut by the slice (solid)
@@ -662,8 +768,9 @@ function drawSection(nx) {
 // Metrics, design curve, optimiser views
 // ---------------------------------------------------------------------------
 const bar = fr => `<div class="bar">${fr.map((f, i) => `<div style="width:${(100 * f).toFixed(2)}%;background:${["#BFCBD1", "#2A6F75", "#A9472F"][i]}"></div>`).join("")}</div>`;
-let volCache = null;
+let volCache = null, exCache = null;
 const pct = x => (100 * x).toFixed(1) + " %";
+const days = x => !isFinite(x) ? "–" : x >= 10 ? x.toFixed(0) + " d" : x >= 1 ? x.toFixed(1) + " d" : x > 0 ? (24 * x).toFixed(0) + " h" : "0";
 function drawMetrics() {
   const p = S.p, d = F.d, plane = fractions(lastMapGrid.vals, d), nl = nLevels(p), pat = geoPattern();
   const spc = S.pattern === "custom" ? S.custom.length / (p.L * p.L / 1e8) : sitesPerCm2(pat, p.a, nl);
@@ -679,17 +786,23 @@ function drawMetrics() {
     ["Sites per cm²" + hl("dose"), fmt(spc)],
     ["Cells per cm²", fmt(spc * p.ncells)],
     ["Reach of one site (to aged-cell threshold)" + hl("reach"), fmt(reach) + " µm"],
-    ["Largest gap-free spacing, one plane" + hl("critical"), crit ? (isNaN(crit.a) ? "none (threshold not reached)" : fmt(crit.a) + " µm") : "lattice patterns only"]
+    ["Largest gap-free spacing, one plane" + hl("critical"), crit ? (isNaN(crit.a) ? "none (threshold not reached)" : fmt(crit.a) + " µm") : "lattice patterns only"],
+    ["Mean response of the host cells" + hl("response"), exCache ? pct(exCache.activation) : (S.pattern === "custom" ? "lattice patterns only" : "…")],
+    ["Dermis ever in the window" + hl("intime"), exCache ? pct(exCache.ever) : (S.pattern === "custom" ? "–" : "…")],
+    ["Days in the window (mean · median · longest)" + hl("intime"),
+      exCache ? `${days(exCache.days_mean)} · ${days(exCache.days_median)} · ${days(exCache.days_max)}` : (S.pattern === "custom" ? "–" : "…")]
   ];
   if (S.pattern === "hex" || S.pattern === "square") if (!clustersApart(pat, p.a, nl, p.dz, p.R))
     rows.unshift([`<b style="color:var(--terra)">⚠ Clusters overlap</b>` + hl("overlap"), `<span style="color:var(--terra)">spacing &lt; 2R</span>`]);
   $("metrics").innerHTML = (volCache ? bar(volCache) : `<div class="bar"></div>`) +
     `<div class="note" style="margin-bottom:6px">grey: below the aged-cell threshold · teal: in the window · orange: above the fibrotic ceiling</div>` +
     rows.map(r => `<div class="metric"><span>${r[0]}</span><span class="v">${r[1]}</span></div>`).join("") +
-    `<div class="derived">Per site ${fmt(d.Q)} molecules/s. Decay rate k = D/λ² = ${fmt(d.k)} s⁻¹ (half-life ${fmt(d.thalf / 60)} min). Thresholds: aged cells ${fmt(p.con * p.sage)} ng/mL (${fmt(p.con * p.sage * 1000 / p.mw)} pM), ceiling ${fmt(p.cfib)} ng/mL.</div>`;
+    `<div class="derived">Per site ${fmt(d.Qt)} molecules/s${d.surv < 1 ? ` on day ${fmt(p.tday)} (${pct(d.surv)} of ${fmt(d.Q)} fresh)` : ""}. Decay rate k = D/λ² = ${fmt(d.k)} s⁻¹ (half-life ${fmt(d.thalf / 60)} min). Thresholds: aged cells ${fmt(p.con * p.sage)} ng/mL (${fmt(p.con * p.sage * 1000 / p.mw)} pM), ceiling ${fmt(p.cfib)} ng/mL.</div>`;
 }
 function requestVolume() {
-  ask("volume", { p: { ...S.p }, pattern: S.pattern, custom: S.custom, seed: S.seed, nxy: 36, nz: 40 }, m => { volCache = m.fr; drawMetrics(); });
+  const pat = (S.pattern === "hex" || S.pattern === "square") ? S.pattern : null;
+  ask("volume", { p: { ...S.p }, pattern: S.pattern, pat, custom: S.custom, seed: S.seed, nxy: 36, nz: 40 },
+    m => { volCache = m.fr; exCache = m.ex; drawMetrics(); });
 }
 const CURVE = { N: 22, nu: 12, nz: 16 };
 let curve = { as: [], res: [] };
@@ -794,6 +907,228 @@ $("optRun").addEventListener("click", runOptimiser);
 // ---------------------------------------------------------------------------
 // Controls
 // ---------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
+// The injection scaffold: the same design seen as a device. The plan view shows
+// where the needles meet the skin (one periodic tile or the whole patch), the
+// elevation shows how long each needle is and where it releases. The five files
+// of the hand-off pack are written here, byte for byte as `dermsim scaffold
+// --out` writes them, so the fabricator gets the same thing either way.
+// ---------------------------------------------------------------------------
+const scC = $("scPlan"), scSideC = $("scSide");
+const layerName = L => `NEEDLE_L${String(Math.round(L)).padStart(4, "0")}UM`;
+const SC_COLS = ["#4477AA", "#CC6677", "#228833", "#CCBB44", "#AA3377"];
+const scColour = (pl, L) => SC_COLS[Math.max(0, pl.lengths.indexOf(L)) % SC_COLS.length];
+
+function scaffoldView() {
+  if (S.pattern !== "hex" && S.pattern !== "square") return;
+  const p = S.p, pl = scaffoldPlan(p, S.pattern), tile = S.scTile || !pl.drawable;
+  const pts = tile ? pl.tracks.map(t => ({ x: t.x, y: t.y, length: t.length, deposits: t.deposits })) : scaffoldPositions(pl);
+  // --- plan view
+  const ctx = scC.getContext("2d"), W = scC.width, H = scC.height, m = 34 * ks(scC);
+  // frame: the patch, or the tile's own bounding box (tracks and both step vectors)
+  let lo = [0, 0], hi = [pl.patch_um, pl.patch_um];
+  if (tile) {
+    const xs = [0, pl.a1[0], pl.a2[0], pl.a1[0] + pl.a2[0], ...pts.map(q => q.x)];
+    const ys = [0, pl.a1[1], pl.a2[1], pl.a1[1] + pl.a2[1], ...pts.map(q => q.y)];
+    const pad = Math.max(...xs, ...ys) * 0.09 + pl.diameter;
+    lo = [Math.min(...xs) - pad, Math.min(...ys) - pad]; hi = [Math.max(...xs) + pad, Math.max(...ys) + pad];
+  }
+  const span = Math.max(hi[0] - lo[0], hi[1] - lo[1]);
+  const k = Math.min(W - 2 * m, H - 2 * m) / span, box = span * k;
+  const x0 = (W - box) / 2, y0 = (H - box) / 2;
+  const X = u => x0 + (u - lo[0] - (hi[0] - lo[0] - span) / 2) * k;
+  const Y = v => y0 + box - (v - lo[1] - (hi[1] - lo[1] - span) / 2) * k;
+  ctx.clearRect(0, 0, W, H);
+  ctx.fillStyle = "#FBF9F6"; ctx.fillRect(x0, y0, box, box);
+  ctx.strokeStyle = "#D7D0C6"; ctx.lineWidth = ks(scC); ctx.strokeRect(x0, y0, box, box);
+  if (tile) {                                                       // the two step vectors
+    ctx.save(); ctx.setLineDash([5 * ks(scC), 4 * ks(scC)]); ctx.strokeStyle = "#8A8178"; ctx.lineWidth = 1.5 * ks(scC);
+    for (const v of [pl.a1, pl.a2]) { ctx.beginPath(); ctx.moveTo(X(0), Y(0)); ctx.lineTo(X(v[0]), Y(v[1])); ctx.stroke(); }
+    ctx.restore();
+    ctx.font = font(scC, 10); ctx.fillStyle = "#5C564E";
+    ctx.fillText(`a₁ = ${fmt(pl.a1[0] / 1000)} mm`, X(pl.a1[0]) + 4 * ks(scC), Y(pl.a1[1]) - 4 * ks(scC));
+    ctx.fillText(`a₂ = ${fmt(Math.hypot(pl.a2[0], pl.a2[1]) / 1000)} mm`, X(pl.a2[0]) + 4 * ks(scC), Y(pl.a2[1]) - 4 * ks(scC));
+  }
+  const r = Math.max(2 * ks(scC), pl.diameter / 2 * k);
+  for (const q of pts) {
+    ctx.beginPath(); ctx.arc(X(q.x), Y(q.y), r, 0, 2 * Math.PI);
+    ctx.fillStyle = "#fff"; ctx.fill();
+    ctx.lineWidth = Math.max(1, r / 3); ctx.strokeStyle = scColour(pl, q.length); ctx.stroke();
+    if (q.deposits.length > 1) { ctx.beginPath(); ctx.arc(X(q.x), Y(q.y), r / 2.2, 0, 2 * Math.PI); ctx.fillStyle = scColour(pl, q.length); ctx.fill(); }
+  }
+  ctx.font = font(scC, 11); ctx.fillStyle = "#5C564E";
+  ctx.fillText(tile ? "one tile, step and repeat" : `${pl.needles} needles on ${fmt(p.patch)} × ${fmt(p.patch)} mm`, x0, y0 + box + 15 * ks(scC));
+  scaleBar(ctx, x0 + box, y0 + box, box, span);
+  // --- elevation
+  const c2 = scSideC.getContext("2d"), W2 = scSideC.width, H2 = scSideC.height, m2 = 30 * ks(scSideC);
+  const zmax = Math.max(p.H, ...pl.tracks.map(t => t.length * p.pen)) * 1.05;
+  const kz = (H2 - 2 * m2) / zmax, zy = z => m2 + (z + p.hep) * kz;
+  c2.clearRect(0, 0, W2, H2);
+  c2.fillStyle = "#F6E7DA"; c2.fillRect(m2, m2, W2 - 2 * m2, p.hep * kz);                 // epidermis
+  c2.fillStyle = "#FBF4EC"; c2.fillRect(m2, zy(0), W2 - 2 * m2, p.H * kz);                // dermis
+  c2.strokeStyle = "#C9BFB2"; c2.lineWidth = ks(scSideC);
+  c2.beginPath(); c2.moveTo(m2, zy(0)); c2.lineTo(W2 - m2, zy(0)); c2.stroke();
+  c2.font = font(scSideC, 10); c2.fillStyle = "#8A7F70";
+  c2.fillText("skin surface", m2 + 4 * ks(scSideC), m2 - 4 * ks(scSideC));
+  c2.fillText(`dermal–epidermal junction (epidermis ${fmt(p.hep)} µm)`, m2 + 4 * ks(scSideC), zy(0) - 4 * ks(scSideC));
+  c2.fillText(`dermis ${fmt(p.H)} µm`, m2 + 4 * ks(scSideC), zy(p.H) - 4 * ks(scSideC));
+  const n = pl.tracks.length, slot = (W2 - 2 * m2) / (n + 1);
+  pl.tracks.forEach((t, i) => {
+    const x = m2 + slot * (i + 1), half = Math.max(2 * ks(scSideC), pl.diameter / 2 * kz * 4), tipY = m2 + t.length * p.pen * kz;
+    c2.beginPath(); c2.moveTo(x - half, m2); c2.lineTo(x + half, m2); c2.lineTo(x, tipY); c2.closePath();
+    c2.fillStyle = scColour(pl, t.length) + "33"; c2.fill();
+    c2.strokeStyle = scColour(pl, t.length); c2.lineWidth = 1.5 * ks(scSideC); c2.stroke();
+    for (const z of t.deposits) {
+      c2.beginPath(); c2.arc(x, zy(z), 3.5 * ks(scSideC), 0, 2 * Math.PI);
+      c2.fillStyle = scColour(pl, t.length); c2.fill();
+      c2.strokeStyle = "#fff"; c2.lineWidth = ks(scSideC); c2.stroke();
+    }
+    c2.font = font(scSideC, 10); c2.fillStyle = "#3A342C"; c2.textAlign = "center";
+    c2.fillText(`${fmt(t.length)} µm`, x, tipY + 14 * ks(scSideC));
+    c2.textAlign = "left";
+  });
+  $("scLegend").innerHTML = pl.lengths.map(L => `<span><span class="dot" style="background:${scColour(pl, L)}"></span>${fmt(L)} µm needle</span>`).join("") +
+    `<span>· dots: where it releases · needles enter ${pct(p.pen)} of their length</span>`;
+  const rows = [
+    ["Needles per tile", `${pl.tracks_per_cell} (for ${pl.deposits_per_cell} injection depth${pl.deposits_per_cell > 1 ? "s" : ""})`],
+    ["Needle pitch at the surface", `${fmt(pl.pitch)} µm`],
+    ["Clear gap between needle walls", `${fmt(pl.wall_gap)} µm`],
+    ["Needle lengths", pl.lengths.map(L => fmt(L)).join(" · ") + " µm"],
+    ["Needles per cm²", fmt(pl.tracks_per_cm2)],
+    ["Needles on the patch", `${pl.needles} on ${fmt(p.patch)} × ${fmt(p.patch)} mm`]
+  ];
+  $("scSpec").innerHTML = rows.map(q => `<div class="metric"><span>${q[0]}</span><span class="v">${q[1]}</span></div>`).join("") +
+    (pl.wall_gap <= 0 ? `<div class="note" style="color:var(--terra)"><b>⚠ The needles overlap</b> at the surface: the outer diameter is not smaller than the pitch. Widen the spacing or thin the needle.</div>` : "") +
+    (!pl.drawable ? `<div class="note">The patch holds more than ${SCAFFOLD_MAX_DRAW} needles, so the drawings carry one tile and its step vectors instead of the whole array.</div>` : "");
+  $("scCap").textContent = `Above: where the needles meet the skin, to scale. Below: how long each needle is and at which depths it releases — ` +
+    `lengths and depths to scale, needle width exaggerated. The depths come from the model; the needle diameter, the penetration factor ` +
+    `and the patch are design choices — the specification says which is which.`;
+}
+
+// --- the five files of the hand-off pack (dermsim.scaffold) ---------------------
+const SC_QUESTIONS = [
+  pl => `Can needles of ${pl.lengths.length} different lengths (${f0(Math.min(...pl.lengths))}–${f0(Math.max(...pl.lengths))} µm) sit on one master, or should the array be split into one master per length?`,
+  pl => `Is the aspect ratio of ${f0(Math.max(...pl.lengths))} µm length to ${f0(pl.diameter)} µm outer diameter achievable in the intended material, and at what wall thickness for a hollow needle?`,
+  pl => `Needles are ${f0(pl.pitch)} µm apart at the surface, ${f0(pl.wall_gap)} µm clear between their walls: enough for demoulding and for the skin to be penetrated rather than pushed in?`,
+  pl => `How is one deposit (${f0(S.p.ncells)} cells; ${f1(S.p.ncells / 40000 * 50)} µL at the group's cell density) metered, and can a needle deposit at ${Math.max(...pl.tracks.map(t => t.deposits.length))} depth(s) while it is withdrawn?`,
+  pl => `What tolerance on needle length is achievable? The depth spacing of the design is ${f0(pl.levels > 1 ? S.p.dz : 0)} µm.`
+];
+const SC_FAB = [
+  ["Needles of several heights in one master is reported: up to six SU-8 layers, coated and exposed one after another but developed in one step, reached 500 µm overall with a 10 µm minimum lateral feature.", ["mata2006multilayer"]],
+  ["Height can also be set by the mask itself: with inclined and rotated UV exposure of a negative epoxy resist, needle height follows the radius of the mask circle and the inclination angle, and 330–900 µm needles at a 1200 µm pitch were made from the same mask, with 12 µm tip radii. In silicon, one mask plus two etch steps gave 68.5–246.4 µm heights and aspect ratios to about 25.", ["takahashi2016exposure", "roh2022heights"]],
+  ["Our tallest needles are within reported SU-8 thicknesses: 1.5 mm in a single coating (494.32 ± 17.13 µm measured for a nominal 500 µm film, uniform to 3.1 % over 10 × 10 cm²), and aspect ratios to 40:1 at 1–1.5 mm thickness.", ["lin2002ultrathick", "williams2004postbake"]],
+  ["Needle lengths of this order do reach the dermis: hollow arrays pierced human skin at 550, 700 and 900 µm but not at 300 µm; 500 µm hollow needles produced dermal anaesthesia in people; single hollow needles inserted 720–1080 µm into cadaver skin infused 15–96 µL/h.", ["verbaan2007arrays", "gupta2012anesthesia", "martanto2006microinfusion"]],
+  ["Depth is not the needle length: sharp arrays inserted to 64–90 % of their height, and 600 µm needles reached 330 µm at 4.4 N per array against 520 µm at 16.4 N — which is why the lengths above are divided by the penetration factor, and why the application force has to be specified with the part.", ["cordeiro2020templates", "donnelly2010geometry"]]
+];
+const scRef = k => { const s = SOURCES[k]; if (!s) return k; const u = link(s); return u ? `[${s.short}](${u})` : s.short; };
+const f4 = v => v.toFixed(4), f1 = v => v.toFixed(1), f0 = v => Math.round(v).toFixed(0), f3 = v => v.toFixed(3);
+
+function scTracksCsv(pl) {
+  const rows = ["id,x_mm,y_mm,needle_length_um,deposits,deposit_depths_um"];
+  scaffoldPositions(pl).forEach((q, i) => rows.push(`${i + 1},${f4(q.x / 1000)},${f4(q.y / 1000)},${f1(q.length)},${q.deposits.length},"${q.deposits.map(f0).join(" ")}"`));
+  return rows.join("\n") + "\n";
+}
+function scDxf(pl) {
+  const circle = (x, y, r, L) => `0\nCIRCLE\n8\n${L}\n10\n${f4(x)}\n20\n${f4(y)}\n30\n0.0\n40\n${f4(r)}\n`;
+  const line = (x1, y1, x2, y2, L) => `0\nLINE\n8\n${L}\n10\n${f4(x1)}\n20\n${f4(y1)}\n30\n0.0\n11\n${f4(x2)}\n21\n${f4(y2)}\n31\n0.0\n`;
+  let s = "0\nSECTION\n2\nHEADER\n9\n$INSUNITS\n70\n4\n9\n$MEASUREMENT\n70\n1\n0\nENDSEC\n0\nSECTION\n2\nENTITIES\n";
+  const r = pl.diameter / 2000;
+  if (!pl.drawable) {
+    for (const t of pl.tracks) s += circle(t.x / 1000, t.y / 1000, r, layerName(t.length));
+    for (const v of [pl.a1, pl.a2]) s += line(0, 0, v[0] / 1000, v[1] / 1000, "TILE_STEP_VECTOR");
+  } else {
+    for (const q of scaffoldPositions(pl)) s += circle(q.x / 1000, q.y / 1000, r, layerName(q.length));
+    const e = pl.patch_um / 1000;
+    for (const [x1, y1, x2, y2] of [[0, 0, e, 0], [e, 0, e, e], [e, e, 0, e], [0, e, 0, 0]]) s += line(x1, y1, x2, y2, "PATCH_OUTLINE");
+  }
+  return s + "0\nENDSEC\n0\nEOF\n";
+}
+function scSvg(pl) {
+  const tile = !pl.drawable;
+  const e = (tile ? Math.max(pl.a1[0] + pl.a2[0], pl.a2[1]) : pl.patch_um) / 1000, r = pl.diameter / 2000, body = [];
+  if (tile) {
+    for (const v of [pl.a1, pl.a2]) body.push(`<line x1="0" y1="${f4(e)}" x2="${f4(v[0] / 1000)}" y2="${f4(e - v[1] / 1000)}" stroke="#888" stroke-width="${f4(e / 400)}" stroke-dasharray="${f4(e / 80)}"/>`);
+  } else {
+    body.push(`<rect x="0" y="0" width="${f4(e)}" height="${f4(e)}" fill="none" stroke="#888" stroke-width="${f4(e / 600)}"/>`);
+  }
+  for (const q of (tile ? pl.tracks : scaffoldPositions(pl)))
+    body.push(`<circle cx="${f4(q.x / 1000)}" cy="${f4(e - q.y / 1000)}" r="${f4(r)}" fill="none" stroke="${scColour(pl, q.length)}" stroke-width="${f4(r / 4)}"/>`);
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="${f4(e)}mm" height="${f4(e)}mm" viewBox="0 0 ${f4(e)} ${f4(e)}">\n<title>Injection scaffold layout, 1:1 in mm</title>\n${body.join("\n")}\n</svg>\n`;
+}
+function scSpecMd(pl) {
+  const p = S.p, L = ["# Injection scaffold specification", "",
+    `Generated by \`dermal-rejuvenation-viewer ${VERSION}\` from the model's injection design. All lengths in µm unless`,
+    "stated otherwise; the drawing files (`layout.dxf`, `layout.svg`) are 1:1 in **millimetres**,",
+    "with y upwards and the origin at the lower-left corner of the patch.", "",
+    "## What the device has to do", "",
+    `Deposit ${f0(p.ncells)} cells per deposit into the dermis at ${pl.deposits_per_cell} depth(s) per tile, on a ${pl.pattern} lattice, so that the signal from the`,
+    "implanted cells reaches the host cells between their activation threshold and the",
+    "fibrotic ceiling. The depths come from the model; everything else below is a design",
+    "choice open to discussion.", "",
+    "## Array geometry", "",
+    "| Quantity | Value | Where it comes from |", "|---|---|---|",
+    `| Lattice | ${pl.pattern} | design |`,
+    `| Lattice spacing a | ${f0(pl.a)} µm | design (model variable) |`,
+    `| Step vector 1 | (${f3(pl.a1[0] / 1000)}, ${f3(pl.a1[1] / 1000)}) mm | geometry |`,
+    `| Step vector 2 | (${f3(pl.a2[0] / 1000)}, ${f3(pl.a2[1] / 1000)}) mm | geometry |`,
+    `| Needles per tile | ${pl.tracks_per_cell} | geometry |`,
+    `| Needle pitch (nearest, surface) | ${f0(pl.pitch)} µm | geometry |`,
+    `| Needle outer diameter | ${f0(pl.diameter)} µm | design |`,
+    `| Clear wall-to-wall gap | ${f0(pl.wall_gap)} µm | geometry |`,
+    `| Needles per cm² | ${f0(pl.tracks_per_cm2)} | geometry |`,
+    `| Deposits per cm² | ${f0(pl.deposits_per_cm2)} | geometry |`,
+    `| Patch | ${f0(p.patch)} × ${f0(p.patch)} mm | design |`,
+    `| Needles on the patch | ${pl.needles} (${pl.cells_nx} × ${pl.cells_ny} tiles) | geometry |`,
+    `| Epidermis thickness assumed | ${f0(p.hep)} µm | tissue value |`, "",
+    "## Needles", "",
+    "Length is measured from the skin surface; depth is below the dermal–epidermal junction.",
+    "A needle with more than one deposit releases at each depth while it is withdrawn.", "",
+    "| Needle | Position in the tile (mm) | Length | Deposit depths | DXF layer |", "|---|---|---|---|---|"];
+  pl.tracks.forEach((q, i) => L.push(`| ${i + 1} | (${f3(q.x / 1000)}, ${f3(q.y / 1000)}) | ${f0(q.length)} µm | ${q.deposits.map(f0).join(", ")} µm | \`${layerName(q.length)}\` |`));
+  if (pl.levels > pl.tracks_per_cell) L.push("", `> The design has ${pl.levels} depths but only ${pl.tracks_per_cell} surface positions per tile:`,
+    "> the sideways shift repeats, so some needles deposit more than once along one track.");
+  if (pl.wall_gap <= 0) L.push("", `> **The needles overlap:** outer diameter ${f0(pl.diameter)} µm is not smaller than the`,
+    `> pitch ${f0(pl.pitch)} µm. Widen the lattice spacing or use a thinner needle.`);
+  if (!pl.drawable) L.push("", `> The patch holds ${pl.needles} needles, more than ${SCAFFOLD_MAX_DRAW}: the drawings show one tile`,
+    "> and its two step vectors instead of the whole array. Step and repeat the tile.");
+  L.push("", "## What the literature reports", "",
+    "Checked sources, to save the discussion a round: none of this is a promise that *this*",
+    "array can be built, and none of it was measured on our design.", "");
+  for (const [text, keys] of SC_FAB) L.push(`- ${text} (${keys.map(scRef).join(", ")})`);
+  L.push("", "## Files", "", "| File | What it is |", "|---|---|",
+    "| `layout.dxf` | DXF R12, millimetres, one circle per needle, one layer per needle length |",
+    "| `layout.svg` | the same drawing, 1:1 in millimetres, for review |",
+    "| `tracks.csv` | every needle: position in mm, length and deposit depths in µm |",
+    "| `scaffold.json` | the same geometry for a CAD script, with the model values behind it |",
+    "| `spec.md` | this file |", "", "## To be answered by the fabricator", "");
+  SC_QUESTIONS.forEach((q, i) => L.push(`${i + 1}. ${q(pl)}`));
+  L.push("", "## Caveats", "",
+    "- The depths come from a model whose dose values (secretion per cell, activation",
+    "  threshold, fibrotic ceiling, implant half-life) are placeholders or analogues from",
+    "  other tissues, not measured for this system. The *geometry* of the array follows from",
+    "  them, so it will move when those values are measured. Treat this specification as a",
+    "  design to cost and criticise, not as a final part drawing.",
+    "- Nothing here checks manufacturability, insertion mechanics, sterilisation or",
+    "  biocompatibility.", "");
+  return L.join("\n");
+}
+function scFiles() {
+  const pl = scaffoldPlan(S.p, S.pattern);
+  return {
+    "spec.md": [scSpecMd(pl), "text/markdown"],
+    "layout.dxf": [scDxf(pl), "application/dxf"],
+    "layout.svg": [scSvg(pl), "image/svg+xml"],
+    "tracks.csv": [scTracksCsv(pl), "text/csv"],
+    "scaffold.json": [JSON.stringify({ generator: `dermal-rejuvenation-viewer ${VERSION}`, pattern: S.pattern, plan: pl,
+      parameters: { ...S.p }, questions: SC_QUESTIONS.map(q => q(pl)) }, null, 1) + "\n", "application/json"]
+  };
+}
+function saveText(name, text, mime) {
+  const a = document.createElement("a"), url = URL.createObjectURL(new Blob([text], { type: mime }));
+  a.href = url; a.download = name; document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 2000);
+}
+
 function fmt(v) {
   if (!isFinite(v)) return "–";
   const a = Math.abs(v);
@@ -849,6 +1184,9 @@ function syncControls() {
   $("pattern").value = S.pattern;
   $("editBtn").classList.toggle("on", S.edit); mapC.classList.toggle("editing", S.edit);
   $("mWindow").classList.toggle("on", S.mode === "window"); $("mLog").classList.toggle("on", S.mode === "log");
+  $("mResp").classList.toggle("on", S.mode === "resp");
+  $("scaffoldPanel").classList.toggle("off", S.pattern === "custom" || S.pattern === "random");
+  $("scTile").classList.toggle("on", S.scTile); $("scPatch").classList.toggle("on", !S.scTile);
   $("presetYoung").classList.toggle("on", S.p.sage === 1); $("presetAged").classList.toggle("on", S.p.sage === 3);
 }
 function drawLegend() {
@@ -858,10 +1196,14 @@ function drawLegend() {
       <span><span class="sw" style="background:#A9472F"></span>above fibrotic ceiling (&gt; ${fmt(p.cfib)} ng/mL)</span>`;
   const g = VIR.map((c, i) => `rgb(${c}) ${i / (VIR.length - 1) * 100}%`).join(",");
   const logLegend = `<span>${fmt(p.con * p.sage / 100)} ng/mL</span><span class="sw" style="width:160px;background:linear-gradient(90deg,${g})"></span><span>${fmt(p.cfib * 10)} ng/mL</span><span>· dashed: aged-cell threshold · orange: ceiling</span>`;
+  const rg = RESP.map((c, i) => `rgb(${c}) ${i / (RESP.length - 1) * 100}%`).join(",");
+  const respLegend = `<span>response 0</span><span class="sw" style="width:160px;background:linear-gradient(90deg,${rg})"></span><span>1</span><span>· half at the aged-cell threshold, Hill n = ${fmt(p.hill)} · dashed: threshold · orange: ceiling</span>`;
   const depthLegend = nl > 1 && S.pattern !== "custom" ? `<span>depths:</span>` + levelDepths(p).map((z, i) => `<span><span class="dot" style="background:${LEVEL_COL[i % LEVEL_COL.length]}"></span>${fmt(z)} µm</span>`).join("") : "";
-  $("legend").innerHTML = (S.mode === "window" ? winLegend : logLegend) + depthLegend;
+  $("legend").innerHTML = (S.mode === "window" ? winLegend : S.mode === "resp" ? respLegend : logLegend) + depthLegend;
   $("secLegend").innerHTML = `<span>host cells:</span><span><span class="dot" style="background:#7B868D"></span>not reached</span><span><span class="dot" style="background:#1F6E74"></span>activated (in window)</span><span><span class="dot" style="background:#B8442A"></span>above ceiling</span>`;
-  $("mapCap").textContent = `En-face map at ${fmt(p.zv)} µm below the dermal–epidermal junction, ${fmt(p.L / 1000)} × ${fmt(p.L / 1000)} mm. Circles: implant sites (cluster radius ${fmt(p.R)} µm); solid where the slice cuts them, dashed at other depths. Dashed line: cross-section.` +
+  $("mapCap").textContent = `En-face map at ${fmt(p.zv)} µm below the dermal–epidermal junction, ${fmt(p.L / 1000)} × ${fmt(p.L / 1000)} mm` +
+    (F.d.surv < 1 ? `, on day ${fmt(p.tday)} after implantation (source at ${pct(F.d.surv)})` : "") +
+    `. Circles: implant sites (cluster radius ${fmt(p.R)} µm); solid where the slice cuts them, dashed at other depths. Dashed line: cross-section.` +
     (S.pattern === "custom" ? " Custom layout: only the sites shown count; new sites go to the slice depth." : " The lattice continues beyond the view.");
 }
 
@@ -871,7 +1213,7 @@ function schedule(coarse) {
   pending = requestAnimationFrame(() => { pending = null; render(coarse ? 90 : 170, false); });
   clearTimeout(fineTimer); fineTimer = setTimeout(() => { render(170, true); requestVolume(); drawChart(); }, coarse ? 260 : 0);
 }
-function render(n, final) { F = buildField(S.p, S.pattern, S.custom, S.seed); syncControls(); drawLegend(); drawMap(n); drawSection(n); drawMetrics(); if (final) syncUrl(); }
+function render(n, final) { F = buildField(S.p, S.pattern, S.custom, S.seed); syncControls(); drawLegend(); drawMap(n); drawSection(n); drawMetrics(); if (final) { syncUrl(); scaffoldView(); } }
 
 // ---------------------------------------------------------------------------
 // The address holds the configuration: every value that differs from its
@@ -885,7 +1227,8 @@ function stateQuery() {
   const q = new URLSearchParams();
   for (const def of PARAMS) if (!isDefault(def.key)) q.set(def.key, sig4(S.p[def.key]));
   if (S.pattern !== "hex") q.set("pattern", S.pattern);
-  if (S.mode !== "window") q.set("show", "concentration");
+  if (S.mode !== "window") q.set("show", S.mode === "resp" ? "response" : "concentration");
+  if (!S.scTile) q.set("scaffold", "patch");
   if (S.pattern === "custom") q.set("sites", S.custom.map(s => [s[0], s[1], s[2] ?? S.p.z0].map(Math.round).join(",")).join(";"));
   return q.toString().replace(/%2C/g, ",").replace(/%3B/g, ";");
 }
@@ -899,6 +1242,8 @@ function readUrlState() {
   if (q.has("zv")) S.zvLinked = false;
   const pat = q.get("pattern"); if (["hex", "square", "random", "custom"].includes(pat)) S.pattern = pat;
   if (q.get("show") === "concentration") S.mode = "log";
+  if (q.get("show") === "response") S.mode = "resp";
+  if (q.get("scaffold") === "patch") S.scTile = false;
   if (S.pattern === "custom") {
     S.custom = (q.get("sites") || "").split(";").map(t => t.split(",").map(Number)).filter(s => (s.length === 2 || s.length === 3) && s.every(isFinite));
     if (!S.custom.length) S.pattern = "hex";
@@ -925,8 +1270,144 @@ mapC.addEventListener("pointermove", e => { if (drag === null) return; const [x,
 mapC.addEventListener("pointerup", () => { if (drag !== null) { drag = null; schedule(false); } });
 $("pattern").addEventListener("change", e => { S.pattern = e.target.value; if (S.pattern === "custom" && !S.custom.length) { S.pattern = "hex"; F = buildField(S.p, S.pattern, S.custom, S.seed); toCustom(); } schedule(false); });
 $("editBtn").addEventListener("click", () => { S.edit = !S.edit; schedule(false); });
+// ---------------------------------------------------------------------------
+// Save / load the parameter file. "Save YAML" writes a complete
+// config/parameters.yaml — every value as it stands here, with its label, unit,
+// range, status, sources and note, plus a `design:` block for the pattern and
+// hand-placed sites — so `python -m dermsim run --params my.yaml` reproduces
+// exactly what is on screen. "Load YAML" reads such a file back (and the
+// pipeline's own file, and JSON).
+// ---------------------------------------------------------------------------
+const yq = s => /^[A-Za-z0-9 ,.;:%×µ⁻¹²³⁶/()+–-]*$/.test(s) && !/^[-?:&*!|>%@`]/.test(s) && s.trim() === s && s !== "" ? s : JSON.stringify(s);
+const yblock = (text, indent) => {
+  const pad = " ".repeat(indent);
+  const words = String(text).replace(/\s+/g, " ").trim().split(" ");
+  const lines = [];
+  let line = "";
+  for (const w of words) { if (line && (line + " " + w).length > 78 - indent) { lines.push(line); line = w; } else line = line ? line + " " + w : w; }
+  if (line) lines.push(line);
+  return ">-\n" + lines.map(l => pad + l).join("\n");
+};
+function paramsYaml() {
+  const L = [`# Written by the dermal-rejuvenation viewer ${VERSION} on ${new Date().toISOString().slice(0, 10)}.`,
+    "# A complete parameter file: read it back here with \"Load YAML\", or give it to the",
+    "# pipeline with `python -m dermsim run --params this-file.yaml`. Values are the ones",
+    "# that were on screen; labels, ranges, statuses, sources and notes are copied from",
+    "# config/parameters.yaml of the private repository and are not edited here.", "",
+    "schema_version: 1", "", "signal:", `  name: ${yq(SIGNAL.name)}`, `  status: ${yq(SIGNAL.status)}`,
+    `  note: ${yblock(SIGNAL.note, 4)}`, "", "parameters:"];
+  for (const d of PARAMS) {
+    L.push(`  ${d.key}:`, `    group: ${yq(d.group)}`, `    label: ${yq(d.label)}`, `    unit: ${yq(d.unit)}`,
+      `    value: ${sig4(S.p[d.key])}`, `    min: ${d.min}`, `    max: ${d.max}`, `    log: ${d.log}`);
+    if (d.step !== undefined) L.push(`    step: ${d.step}`);
+    L.push(`    status: ${d.status}`, `    sources: [${d.src.join(", ")}]`, `    note: ${yblock(d.note_raw, 6)}`);
+  }
+  L.push("", "design:", `  pattern: ${S.pattern}`, `  show: ${S.mode}`);
+  if (S.pattern === "custom" && S.custom.length)
+    L.push("  sites:", ...S.custom.map(s => `    - [${[s[0], s[1], s[2] ?? S.p.z0].map(v => Math.round(v)).join(", ")}]`));
+  L.push("", "sources:");
+  for (const [k, s] of Object.entries(SOURCES)) L.push(`  ${k}:`, `    checked: ${yq(s.checked)}`, `    what: ${yblock(s.what, 6)}`);
+  return L.join("\n") + "\n";
+}
+// A small reader for the file above: `key: value` by indentation, block scalars,
+// inline lists. Enough for our own format and for config/parameters.yaml; it is
+// not a general YAML parser, and it tells you when it cannot read a file.
+function readYamlish(text) {
+  const root = {}, stack = [{ indent: -1, node: root }];
+  const lines = text.split(/\r?\n/);
+  for (let i = 0; i < lines.length; i++) {
+    const raw = lines[i];
+    if (!raw.trim() || /^\s*#/.test(raw)) continue;
+    const indent = raw.match(/^ */)[0].length, body = raw.trim();
+    while (stack.length > 1 && indent <= stack[stack.length - 1].indent) stack.pop();
+    const parent = stack[stack.length - 1].node;
+    if (body.startsWith("- ")) { (parent.__list || (parent.__list = [])).push(scalar(body.slice(2))); continue; }
+    const m = body.match(/^([A-Za-z0-9_.-]+):\s*(.*)$/);
+    if (!m) continue;
+    const [, key, rest] = m;
+    if (rest === "" || rest === ">-" || rest === ">" || rest === "|" || rest === "|-") {
+      if (rest && rest !== "") {                                     // block scalar: swallow the deeper lines
+        const parts = [];
+        while (i + 1 < lines.length && (lines[i + 1].trim() === "" || lines[i + 1].match(/^ */)[0].length > indent)) { parts.push(lines[++i].trim()); }
+        parent[key] = parts.join(" ").trim();
+      } else { const node = {}; parent[key] = node; stack.push({ indent, node }); }
+    } else parent[key] = scalar(rest);
+  }
+  return unlist(root);
+  function scalar(s) {
+    s = s.replace(/\s+#.*$/, "").trim();
+    if (/^".*"$/.test(s) || /^'.*'$/.test(s)) return s.slice(1, -1);
+    if (/^\[.*\]$/.test(s)) return s.slice(1, -1).split(",").map(x => scalar(x)).filter(x => x !== "");
+    if (s === "true") return true; if (s === "false") return false;
+    const n = Number(s);
+    return s !== "" && isFinite(n) ? n : s;
+  }
+  function unlist(o) {
+    if (o && typeof o === "object" && !Array.isArray(o)) {
+      if (o.__list && Object.keys(o).length === 1) return o.__list.map(unlist);
+      for (const k of Object.keys(o)) o[k] = unlist(o[k]);
+    }
+    return o;
+  }
+}
+function applyFile(text, name) {
+  let data;
+  try { data = name.endsWith(".json") ? JSON.parse(text) : readYamlish(text); } catch (e) { data = null; }
+  const ps = data && (data.parameters || data);
+  if (!ps || typeof ps !== "object") return { ok: false, msg: "not a parameter file" };
+  let set = 0;
+  const unknown = [], clamped = [];
+  for (const [key, entry] of Object.entries(ps)) {
+    const v = entry && typeof entry === "object" ? entry.value : entry;
+    if (typeof v !== "number" || !isFinite(v)) continue;
+    const def = PDEF[key];
+    if (!def) { unknown.push(key); continue; }
+    const c = Math.min(def.max, Math.max(def.min, v));
+    if (Math.abs(c - v) > 1e-9 * Math.max(1, Math.abs(v))) clamped.push(key);
+    S.p[key] = c; set++;
+  }
+  if (!set) return { ok: false, msg: "no parameter values found" };
+  const des = data.design || {};
+  if (["hex", "square", "random", "custom"].includes(des.pattern)) S.pattern = des.pattern;
+  if (["window", "log", "resp"].includes(des.show)) S.mode = des.show;
+  if (Array.isArray(des.sites) && des.sites.length) S.custom = des.sites.map(s => [+s[0], +s[1], s.length > 2 ? +s[2] : S.p.z0]).filter(s => isFinite(s[0]) && isFinite(s[1]));
+  if (S.pattern === "custom" && !S.custom.length) S.pattern = "hex";
+  S.zvLinked = false;
+  schedule(false);
+  const extra = [unknown.length ? `${unknown.length} unknown ignored` : "", clamped.length ? `${clamped.length} clamped to range` : ""].filter(Boolean);
+  return { ok: true, msg: `${set} values loaded${extra.length ? " (" + extra.join(", ") + ")" : ""}` };
+}
+function flash(btn, text, ok = true) {
+  const old = btn.textContent;
+  btn.textContent = text; btn.classList.toggle("warn", !ok);
+  setTimeout(() => { btn.textContent = old; btn.classList.remove("warn"); }, 2600);
+}
+$("saveYaml").addEventListener("click", () => { saveText("parameters.yaml", paramsYaml(), "text/yaml"); flash($("saveYaml"), "Saved ✓"); });
+$("loadYaml").addEventListener("click", () => $("yamlFile").click());
+$("yamlFile").addEventListener("change", e => {
+  const f = e.target.files && e.target.files[0];
+  if (!f) return;
+  const r = new FileReader();
+  r.onload = () => { const res = applyFile(String(r.result), f.name.toLowerCase()); flash($("loadYaml"), res.ok ? `✓ ${res.msg}` : `✗ ${res.msg}`, res.ok); };
+  r.readAsText(f);
+  e.target.value = "";
+});
+$("scTile").addEventListener("click", () => { S.scTile = true; scaffoldView(); syncUrl(); });
+$("scPatch").addEventListener("click", () => { S.scTile = false; scaffoldView(); syncUrl(); });
+$("scFiles").addEventListener("click", e => {
+  const b = e.target.closest("button[data-sc]");
+  if (!b) return;
+  const [text, mime] = scFiles()[b.dataset.sc];
+  saveText(b.dataset.sc, text, mime);
+});
+$("scPack").addEventListener("click", () => {
+  const files = Object.entries(scFiles());
+  files.forEach(([name, [text, mime]], i) => setTimeout(() => saveText(name, text, mime), i * 350));
+  flash($("scPack"), `${files.length} files ✓`);
+});
 $("mWindow").addEventListener("click", () => { S.mode = "window"; schedule(false); });
 $("mLog").addEventListener("click", () => { S.mode = "log"; schedule(false); });
+$("mResp").addEventListener("click", () => { S.mode = "resp"; schedule(false); });
 $("presetYoung").addEventListener("click", () => { S.p.sage = 1; schedule(false); });
 $("presetAged").addEventListener("click", () => { S.p.sage = 3; schedule(false); });
 $("reset").addEventListener("click", () => { resetParams(); schedule(false); });
@@ -942,7 +1423,7 @@ const HELP = [
     ["what", "What this shows", () => `<p>The viewer asks how densely rejuvenated fibroblasts must be implanted into aged dermis so that the signals they secrete reach the surrounding aged cells <b>inside a window</b>: above the concentration that activates aged cells, below the one that risks fibrotic activation.</p>
       <p>The large map is a horizontal slice through the dermis at the slice depth; the strip below it is a schematic cross-section through the skin. The panels on the right report how much of the dermis lies below, inside and above the window, search for the best layouts (<b>Optimise</b>), and show how coverage changes with the spacing of the sites.</p>
       <p>It builds on the group's implantation of mechanically reprogrammed fibroblasts into aged skin models (${cite("roy2024implanting")}). See <a href="#help/limits/list" data-help="limits/list">Limitations</a>.</p>`],
-    ["read", "Reading the maps", () => `<p><b>Window</b> colours: grey below the aged-cell threshold, teal inside the window (darker = closer to the ceiling), orange above the fibrotic ceiling. <b>Concentration</b> colours the signal on a log scale (dark blue low, yellow high); the dashed line is the aged-cell threshold and the orange line the fibrotic ceiling.</p>
+    ["read", "Reading the maps", () => `<p><b>Window</b> colours: grey below the aged-cell threshold, teal inside the window (darker = closer to the ceiling), orange above the fibrotic ceiling. <b>Concentration</b> colours the signal on a log scale (dark blue low, yellow high). <b>Response</b> colours the graded response of the host cells, half-maximal at the threshold (<a href="#help/model/response" data-help="model/response">more</a>). In every mode the dashed line is the aged-cell threshold and the orange line the fibrotic ceiling.</p>
       <p>On the map, circles are implant sites drawn with the cluster radius: solid where the slice cuts them, dashed for sites at other depths. With several injection depths the centre dot gives the depth (legend under the map). The dashed horizontal line marks the cross-section.</p>`],
     ["cross", "The cross-section", () => `<p>The strip below the map is a vertical cut through the skin along the dashed line. Between the dermal–epidermal junction (top line) and the dermis thickness the signal is shown as on the map, slightly transparent, with the threshold lines. On top of it, representative <b>host fibroblasts</b> (about every ${n("gap")} µm, not to density) are coloured by the signal where they sit: grey not reached, teal activated, orange above the ceiling. Implant clusters cut by the section are drawn with their cells; nearby ones as dashed outlines. Depth marks on the right give the injection depths.</p>
       <p>The epidermis and the hypodermis, the papillary / reticular boundary and the fibres are schematic: the model treats the dermis as homogeneous, with no flux through the junction. Layers enter the model in milestone M3.</p>`],
@@ -950,7 +1431,11 @@ const HELP = [
     ["presets", "Young and aged tissue", () => `<p><b>Young tissue</b> sets the aged-cell threshold factor s_age to 1; <b>Aged tissue</b> sets it to 3. That aged cells respond blunted or divergently is sourced (${cite("liao2026chromatin")}); the factor 3 is a placeholder. Both presets keep all other values.</p>
       <p>Ageing could also change the decay length λ, but in which direction is open: aged dermis has fewer cells (${cite("arnalforne2024dermis")}), and fewer consuming cells lengthen the range (${cite("oyleryaniv2017niches")}), while binding to the matrix shortens it. The presets therefore leave λ alone.</p>`],
     ["defaults", "Defaults and resetting", () => `<p>Each slider has a small grey tick at its <b>default</b>. When a value differs from its default it turns <span style="color:var(--teal);font-weight:600">teal</span> and a <b>↺</b> appears next to it: click it, or double-click the slider, to put that value back. Hovering a value shows its default. <b>Reset</b> at the top puts all values back at once. Defaults and their sources are listed under <a href="#help/params" data-help="params">Parameters</a>.</p>`],
-    ["share", "Sharing a view", () => `<p>The address in your browser always holds the current view: every value that differs from its default (all sliders), the pattern, the colouring and, for a custom layout, the position and depth of every site. <b>Copy link</b> copies it; whoever opens the link sees the same view. A link to a help entry (e.g. <code>#help/model/window</code>) can be added at the end and opens that entry.</p>
+    ["yaml", "Saving and loading the parameter file", () => `<p><b>Save YAML</b> downloads everything on screen as a complete <code>parameters.yaml</code>: every value as it stands, with its label, unit, range, status, sources and note, plus a <code>design:</code> block holding the pattern, the colouring and any hand-placed sites. It is the same file the pipeline reads, so</p>
+      <p style="text-align:center"><code>python -m dermsim run --params my-design.yaml</code></p>
+      <p>reproduces exactly what you were looking at — and so do <code>optimize</code>, <code>time</code>, <code>sweep</code> and <code>scaffold</code>. Useful for attaching a design to an email or a lab notebook, for keeping several variants side by side, and for taking a design from the browser into the pipeline without typing numbers.</p>
+      <p><b>Load YAML</b> reads such a file back, and also the pipeline's own <code>config/parameters.yaml</code> or a plain JSON file of <code>key: value</code> pairs. Only the values, the pattern, the colouring and the sites are taken; labels, sources and notes always come from this build of the viewer, so a file cannot put an unchecked source on screen. Values outside a slider's range are clamped and unknown names are ignored — the button says how many of each.</p>`],
+    ["share", "Sharing a view", () => `<p>The address in your browser always holds the current view: every value that differs from its default (all sliders), the pattern, the colouring and, for a custom layout, the position and depth of every site. <b>Copy link</b> copies it; whoever opens the link sees the same view. A link to a help entry (e.g. <code>#help/model/window</code>) can be added at the end and opens that entry. For a file you can keep or hand to the pipeline, use <a href="#help/start/yaml" data-help="start/yaml">Save YAML</a>.</p>
       <p>Address parameters: ${PARAMS.map(p => `<code>${p.key}</code>`).join(", ")} (each in the unit of its slider), <code>pattern</code> (hex, square, random, custom), <code>show=concentration</code>, and <code>sites=x,y,z;…</code> in µm for custom layouts. Values outside a slider's range are clamped to it.</p>`],
     ["status", "What the badges mean", () => `<p>Every value carries a badge; click it for its entry under <a href="#help/params" data-help="params">Parameters</a>.</p>
       <table><tr><td><span class="badge b-src">source</span></td><td>the default is a published value, checked against the source (abstract or full text) and listed under <a href="#help/refs" data-help="refs">References</a></td></tr>
@@ -977,6 +1462,16 @@ const HELP = [
     ["window", "The therapeutic window", () => `<p>Aged host cells are counted as activated above <code>c_on × s_age</code> and at risk of fibrotic activation above <code>c_fib</code>. The upper side is not hypothetical: the group notes that matrix deposition by implanted cells could also indicate fibrotic activation (${cite("roy2024implanting")}).</p>
       <p><b>The thresholds are open.</b> Our literature search (November 2026) found no verified activation threshold or fibrotic ceiling for TGF-β1 or TGF-β3 in dermal fibroblasts, so both are placeholders. The 10 ng/mL often used in experiments is a stimulation dose, not a threshold (${cite("liao2026chromatin")}). Windows with a lower and an upper side are documented for other signals: CCN2 stimulates collagen gene expression below 50 ng/mL and inhibits it above (${cite("nakerakanti2011ccn2")}); for VEGF the local amount secreted, not the total dose, decides between normal and aberrant vessels (${cite("ozawa2004vegf")}). TGF-β1 is also the minority isoform in adult skin (${cite("quan2002uv")}), and TGF-β3 improved scars in a phase II trial (${cite("mccollum2011avotermin")}).</p>`],
     ["boundary", "Boundaries", () => `<p>The dermal–epidermal junction is treated as impermeable: every site has a mirror image above it, which makes the flux through the junction zero. The deep side of the dermis is open (the signal may leave). Measured diffusion is slowest at the junction (${cite("wei2018microneedle")}).</p>`],
+    ["response", "Graded response", () => `<p>Whether a cell is "activated" is not a switch. The <b>Response</b> colouring shows the graded response</p>
+      <p style="text-align:center"><code>R(c) = cⁿ / (EC50ⁿ + cⁿ)</code></p>
+      <p>with the EC50 set to the aged-cell threshold, so R = ½ exactly at the lower edge of the window, and the <b>Hill exponent n</b> saying how sharply the cells tell doses apart. n = 1 is no cooperativity; larger n makes the response more switch-like.</p>
+      <p>No fitted Hill exponent for TGF-β on fibroblasts was found, so n is a <span class="badge b-ph">placeholder</span>. The direction is sourced: short-term SMAD2 phosphorylation is graded while the long-term response is switch-like (${cite("zi2011dynamics")}). The window (threshold and ceiling) is unchanged by this and is still what the coverage numbers count.</p>`],
+    ["time", "Time after implantation", () => `<p>The implanted cells do not signal forever. <b>Time after implantation</b> shows the state on a given day: the source of every site is multiplied by the surviving share</p>
+      <p style="text-align:center"><code>S(t) = 2^(−t / t½)</code></p>
+      <p>with <b>Implant half-life t½</b>. Everything on the page follows — maps, coverage, the design curve, the optimiser — so you can ask for a design that still works on day 14 rather than only on day 0.</p>
+      <p>This is allowed because the two time scales are far apart: the field itself settles in about 1/k (ten minutes for the default values) while the implant decays over days, so each day is the steady state of the source as it is on that day. The <b>Coverage</b> panel reports both numbers so the assumption can be checked.</p>
+      <p>Because the field is proportional to the source, the concentration at a point crosses any level exactly once, at <code>t = t½ · log₂(c₀ / level)</code>. That gives the days above the threshold, the days above the ceiling and so the days inside the window, in closed form and without stepping through time.</p>
+      <p>No measured half-life for implanted fibroblasts in dermis was found; the default sits inside the brackets the literature gives (${cite("hebda1999transplanted")}, ${cite("farrokhi2022rejection")}, ${cite("petrof2013erosions")}) and is a <span class="badge b-ph">placeholder</span>.</p>`],
     ["scaling", "Design scaling", () => `<p>Beyond about one λ from a site the signal falls off exponentially. Doubling the cells per site then adds only about half a λ of reach (0.46 λ at 1.7 λ, tending to 0.69 λ), so adding sites helps more than adding cells per site. One injection plane covers a band of the dermis around its depth; several injection depths cover the volume.</p>`],
     ["check", "How the numbers are checked", () => `<p>The solution is exact for the model. The reference implementation is a Python pipeline (<code>dermsim</code>); a finite-volume solution of the same problem agrees with it within 0.1 %, and the physics of this page reproduces the Python results on shared test cases (relative differences below 10⁻¹³), checked automatically on every change.</p>`]
   ]},
@@ -993,17 +1488,39 @@ const HELP = [
     ["depths", "Injection depths and spacing seen from above", () => `<p>The depths of the injection levels and the nearest distance between sites seen from above (all depths projected). See <a href="#help/model/depths" data-help="model/depths">Several injection depths</a>.</p>`],
     ["dose", "Sites and cells per cm²", () => `<p>Sites per cm² follow from the spacing (hexagonal: 1 / (a²·√3/2), square: 1 / a²) times the number of depths; cells per cm² multiply by the cells per site. For scale: a fibroblast cell therapy for acne scars injected 2 mL of 10–20 million cells per mL per session (${cite("munavalli2013azficel")}); the group's protocol used 40,000 cells per site (${cite("roy2024implanting")}).</p>`],
     ["overlap", "Overlapping clusters", () => `<p>Each implant site is a sphere of radius R. Two sites closer than 2R would overlap, which implanted cells cannot do, so the model is no longer meaningful there. This happens when the spacing per depth is below 2R, or when sites on neighbouring depths (offset sideways by the spacing seen from above and vertically by the spacing between depths) are closer than 2R. The optimiser only proposes layouts without overlap.</p>`],
+    ["response", "Mean response of the host cells", () => `<p>The average of the graded response R(c) over the dermis of one periodic cell, on the day shown. Unlike the window share it does not jump at the threshold: a cell at half the threshold still counts a little. See <a href="#help/model/response" data-help="model/response">Graded response</a>.</p>`],
+    ["intime", "Dermis ever in the window, and for how long", () => `<p>The implant decays, so the concentration at every point falls over time and crosses the window from above. <b>Ever in the window</b> is the share of the dermis that is inside the window at some point after implantation — including the tissue that starts <i>above</i> the ceiling and enters the window later. <b>Days in the window</b> is how long a point stays inside, as a mean, a median and the longest anywhere.</p>
+      <p>These counts are measured from implantation and do not depend on the day shown. They follow in closed form from the implant half-life: see <a href="#help/model/time" data-help="model/time">Time after implantation</a>.</p>`],
     ["reach", "Reach of one site", () => `<p>Distance from the centre of a single site at which the signal falls to the aged-cell threshold (no neighbours, no mirror image).</p>`],
     ["critical", "Largest gap-free spacing", () => `<p>For a single injection plane at the injection depth: the largest lattice spacing at which the least-covered point of the plane (the centre of a triangle or square of sites) still reaches the aged-cell threshold. It says nothing about other depths or about the ceiling.</p>`],
     ["curve", "Design curve", () => `<p>For the current values, the share of the dermis below, inside and above the window as the spacing (per depth) varies from 80 µm to 3 mm, computed on one periodic cell of the lattice in the background. The dashed line marks the current spacing. Too sparse leaves cells below threshold; with many cells per site, too dense can push tissue above the ceiling.</p>`]
   ]},
+  { topic: "scaffold", title: "Injection scaffold", entries: [
+    ["what", "The design as a device", () => `<p>The same design seen as something a workshop can build. The depths of the model collapse onto a few <b>needles</b>: the sideways shift of the injection depths repeats after three lattices (hexagonal) or two (square), so a tile of the array has three (or two) surface positions, whatever the number of depths. The plan view shows where the needles meet the skin — one <b>tile</b> with its two step vectors, or the whole <b>patch</b> — and the elevation shows how long each needle is and at which depths it releases.</p>
+      <p>With four or five depths two of them share a surface position. No device can put two needles there, so that needle simply <b>releases twice</b> along one track while it is withdrawn, marked by a filled centre in the plan view and by two dots in the elevation.</p>`],
+    ["needles", "Needle lengths", () => `<p>The model measures depth below the dermal–epidermal junction; a needle is measured from the skin surface, and it does not enter the skin to its full length because the skin is pressed in with it. So</p>
+      <p style="text-align:center"><code>needle length = (epidermis thickness + deepest deposit) / penetration</code></p>
+      <p>Epidermis thickness is a tissue value — 75 µm on the forearm as the sum of stratum corneum and cellular epidermis (${cite("sandbymoller2003epidermis")}), 30–63 µm across facial subunits (${cite("chopra2015face")}), 110 µm on the abdomen (${cite("wang2025ultrasound")}) — so set it for the body site you mean. The penetration factor defaults to 0.8: sharp arrays inserted to 64–90 % of their height (${cite("cordeiro2020templates")}), and 600 µm needles reached 330 µm at 4.4 N per array but 520 µm at 16.4 N (${cite("donnelly2010geometry")}), so the application force belongs in the specification.</p>
+      <p>For a sanity check on the lengths: hollow arrays pierced human skin at 550, 700 and 900 µm but not at 300 µm (${cite("verbaan2007arrays")}), and 500 µm hollow needles anaesthetised the dermis in people (${cite("gupta2012anesthesia")}).</p>`],
+    ["spec", "What the fabricator gets", () => `<p><b>Download pack</b> writes five files (your browser may ask to allow several downloads; the single buttons next to it always work):</p>
+      <ul><li><b>spec.md</b> — the specification to read: what the device has to do, the array geometry, a row per needle with its length and deposits, what the literature reports about building it, the questions only a fabricator can answer, and the caveats.</li>
+      <li><b>layout.dxf</b> — DXF R12 in millimetres, one circle per needle, <b>one layer per needle length</b> (<code>NEEDLE_L0600UM</code>), so the lengths can be separated into masks or processes.</li>
+      <li><b>layout.svg</b> — the same drawing 1:1 in millimetres, to look at without CAD.</li>
+      <li><b>tracks.csv</b> — every needle: position in mm, length and deposit depths in µm.</li>
+      <li><b>scaffold.json</b> — the same geometry for a script, with the model values behind it.</li></ul>
+      <p>Above ${SCAFFOLD_MAX_DRAW} needles the drawings carry one tile and its two step vectors instead of the whole array, which is how a mask is laid out anyway: step and repeat.</p>
+      <p><code>python -m dermsim scaffold --out DIR</code> writes the same five files from the pipeline.</p>`],
+    ["fab", "Can it be built?", () => `<p>Not a question this tool answers — but the specification carries what the literature reports, so the first conversation can start from facts. Needles of several heights in one master is reported for multi-layer SU-8 (up to six layers, 500 µm overall, 10 µm minimum lateral feature, one development step, ${cite("mata2006multilayer")}) and for inclined-and-rotated UV exposure, where height follows the mask-circle radius and the inclination angle (330–900 µm from the same mask, ${cite("takahashi2016exposure")}); in silicon, one mask and two etch steps gave heights from 68.5 to 246.4 µm (${cite("roh2022heights")}). Thick resist is reported to 1.5 mm in a single coating (${cite("lin2002ultrathick")}) with aspect ratios to 40:1 (${cite("williams2004postbake")}).</p>
+      <p>What this tool does check: that the needles do not overlap at the surface, how much clear wall-to-wall gap is left, how many needles the patch holds, and what volume one deposit is.</p>`]
+  ]},
   { topic: "limits", title: "Limitations", entries: [
-    ["list", "Limitations of this prototype", () => `<ul><li>Steady state. Implant survival and the decline of matrix deposition after 2–3 cell divisions (${cite("roy2024implanting")}) are not modelled yet.</li>
+    ["list", "Limitations of this prototype", () => `<ul><li>Quasi-static: at each day the field is the steady state of the source on that day, scaled by the surviving share of the implant. That is sound while the field settles far faster than the implant decays (the <b>Coverage</b> panel reports both), but there is no real time course — no transport delay, no accumulation, and the decline of matrix deposition after 2–3 cell divisions (${cite("roy2024implanting")}) is not modelled.</li>
       <li>Homogeneous dermis: no papillary / reticular layers in the model (the cross-section draws them schematically), no heterogeneity, no senescent cells or SASP.</li>
       <li>Uptake, capture and degradation are lumped into one linear decay; no saturation.</li>
       <li>One signal; no relay by host cells that start secreting in turn.</li>
-      <li>Values marked <span class="badge b-ph">placeholder</span> are not from checked sources: secretion per cell, thresholds, cluster radius, molecular weight. Do not read numbers off this prototype — including the optimiser's — as predictions.</li></ul>`],
-    ["roadmap", "Roadmap", () => `<p>M2 response and window with uptake and implant survival, design optimiser (first version here) · M3 dermal layers and injection depth · M4 heterogeneity and senescence · M5 several signals · M6 calibration against distance-resolved measurements.</p>`]
+      <li>Values marked <span class="badge b-ph">placeholder</span> are not from checked sources: the Hill exponent, the implant half-life, the aged-cell factor, cluster radius, molecular weight. Values marked <span class="badge b-ana">analogue</span> — secretion per cell, the activation threshold, the fibrotic ceiling, the penetration factor — are measured, but in other cell types or tissues, not in aged human dermis. Do not read numbers off this prototype — including the optimiser's and the scaffold's — as predictions.</li>
+      <li>The scaffold view is geometry only: it says nothing about whether such an array can be manufactured, inserted, sterilised or tolerated.</li></ul>`],
+    ["roadmap", "Roadmap", () => `<p>M2 response, implant survival, time in the window and the design optimiser (here) · M3 dermal layers with layer-specific diffusion · M4 heterogeneity and senescence · M5 several signals · M6 calibration against distance-resolved measurements.</p>`]
   ]},
   { topic: "refs", title: "References", entries: () => Object.keys(SOURCES).sort((a, b) => SOURCES[a].short.localeCompare(SOURCES[b].short)).map(k =>
     [k, SOURCES[k].short, () => `<p>${esc(SOURCES[k].cite)} <a href="${link(SOURCES[k])}" target="_blank" rel="noopener">${SOURCES[k].doi ? "doi:" + SOURCES[k].doi : SOURCES[k].pmid ? "PMID " + SOURCES[k].pmid : "link"}</a></p><p class="dim">Used for: ${esc(SOURCES[k].what)} <i>Checked against the ${esc(SOURCES[k].checked)}.</i></p>`]) },
@@ -1123,6 +1640,11 @@ window.__drv = {
   metrics: () => ({ plane: fractions(lastMapGrid.vals, F.d), volume: volumeFractions(F, S.p, 36, 40) }),
   optimise: (mode = "flat", opts) => optimise({ ...S.p }, geoPattern(), mode, opts),
   runOptimiser, opt: () => S.opt, worker: () => !!worker, curve: () => curve,
+  state: () => ({ p: { ...S.p }, pattern: S.pattern, mode: S.mode, custom: S.custom.map(s => s.slice()), scTile: S.scTile }),
+  survival: () => survival(S.p),
+  exposure: (nu = 12, nz = 16) => exposure(S.p, geoPattern(), S.p.a, nu, nz),
+  scaffold: () => scaffoldPlan(S.p, geoPattern()),
+  scFiles, paramsYaml, applyFile, readYamlish,
   stateQuery, syncUrl, readUrlState, resetParam, isDefault,
   openHelp, closeHelp, helpTargets: () => [...document.querySelectorAll("[data-help]")].map(a => a.dataset.help)
 };

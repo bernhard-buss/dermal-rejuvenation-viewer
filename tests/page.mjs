@@ -17,7 +17,8 @@ vm.runInNewContext(readFileSync(new URL("../data/parameters.js", import.meta.url
 const DP = ctx.window.DRV_PARAMS;
 if (!DP) fail("data/parameters.js does not define window.DRV_PARAMS");
 const keys = new Set(DP.parameters.map(p => p.key));
-for (const k of ["D", "lam", "sec", "mw", "con", "sage", "cfib", "a", "ncells", "R", "z0", "H", "L", "zv", "ys"])
+for (const k of ["D", "lam", "sec", "mw", "con", "sage", "cfib", "hill", "tday", "a", "ncells", "R", "tsurv",
+                 "levels", "dz", "z0", "H", "hep", "dneedle", "pen", "patch", "L", "zv", "ys"])
   if (!keys.has(k)) fail(`parameter ${k} missing`);
 for (const p of DP.parameters) {
   if (!(p.min <= p.value && p.value <= p.max)) fail(`${p.key}: default outside its range`);
@@ -25,6 +26,20 @@ for (const p of DP.parameters) {
     if (!DP.sources[k]) fail(`${p.key} cites ${k}, which is not in the sources`);
 }
 for (const m of html.matchAll(/cite\("([a-z0-9]+)"\)/g)) if (!DP.sources[m[1]]) fail(`help cites ${m[1]}, which is not in the sources`);
+for (const m of html.matchAll(/\["([a-z0-9]+)"\]\]/g)) if (!DP.sources[m[1]]) fail(`the scaffold specification cites ${m[1]}, which is not in the sources`);
+// every ⓘ and badge target must exist as a help entry
+const entries = new Set(), topics = new Set(["changelog", "refs", "params", "about"]);
+for (const t of html.matchAll(/\{ topic: "([a-z]+)", title: "[^"]*", entries: \[([\s\S]*?)\n  \]\}/g)) {
+  topics.add(t[1]);
+  for (const e of t[2].matchAll(/^\s*\["([a-z0-9]+)",/gm)) entries.add(`${t[1]}/${e[1]}`);
+}
+for (const m of html.matchAll(/data-help="([a-z0-9/_-]+)"/g)) {
+  const t = m[1];
+  if (!t || t === "topic/entry" || topics.has(t) || t.startsWith("refs/") || t.startsWith("params/")) continue;
+  if (!entries.has(t)) fail(`help target ${t} has no entry`);
+}
+for (const p of DP.parameters) for (const m of p.note.matchAll(/\{help:([a-z0-9/_-]+)\|/g))
+  if (!entries.has(m[1])) fail(`parameter ${p.key} links help ${m[1]}, which has no entry`);
 const VERSION = (html.match(/const VERSION = "([0-9.]+)"/) || [])[1];
 const changelog = readFileSync(new URL("../CHANGELOG.md", import.meta.url), "utf8");
 if (!changelog.includes(`## ${VERSION} `)) fail(`CHANGELOG.md has no entry for version ${VERSION}`);

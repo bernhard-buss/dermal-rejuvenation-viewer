@@ -22,8 +22,11 @@
   `{help:topic/entry|text}`, rendered by `renderNote()`.
 - **Physics = the Python model.** The block between `// >>> physics` and
   `// <<< physics` holds pure functions (no DOM, no state) mirroring
-  `dermsim.model` (multi-depth lattices: `levelDepths`, `levelShift`) and
-  `dermsim.optimize` (`optimiseSteps`, `clustersApart`, table look-up). The same
+  `dermsim.model` (multi-depth lattices: `levelDepths`, `levelShift`;
+  `survival` scales every source by the day), `dermsim.optimize`
+  (`optimiseSteps`, `clustersApart`, table look-up), `dermsim.response`
+  (`hill`, `timeAbove`, `windowTimes`, `exposure`) and the geometry of
+  `dermsim.scaffold` (`scaffoldPlan`, `scaffoldPositions`). The same
   block runs in a background Web Worker built from its text (`WORKER_SRC`) for
   the design curve, the coverage of the whole dermis and the optimiser; `ask()`
   cancels stale requests of the same kind and falls back to the main thread. Change both together, re-export, and run
@@ -51,9 +54,26 @@
   `CHANGELOG.md`; there is no second copy. Numbers in help text come from the data (`data-n` spans filled
   by `fillHelpNumbers()`), not typed constants. `#help/topic/entry` deep links
   open an entry; `?` opens the help.
+- **The hand-off pack is written here and in Python.** *Download pack* and
+  `python -m dermsim scaffold --out DIR` must produce the same `spec.md`,
+  `layout.dxf`, `layout.svg`, `tracks.csv` and `scaffold.json` byte for byte,
+  apart from the line naming the tool. The JS writers (`scSpecMd`, `scDxf`,
+  `scSvg`, `scTracksCsv`, `scFiles`) sit outside the physics block but mirror
+  `dermsim.scaffold`; after changing one, diff the two outputs for the same
+  design. Numbers in those files use the plain `f0`/`f1`/`f3`/`f4` formatters,
+  never `fmt()` (which groups thousands).
+- **Save / load YAML.** `paramsYaml()` writes a complete
+  `config/parameters.yaml` — values from `S.p`, everything else copied from
+  `DRV_PARAMS` — that `python -m dermsim --params FILE` reads; `readYamlish()`
+  plus `applyFile()` read one back. The reader takes only values, pattern,
+  colouring and sites: labels, statuses, sources and notes always come from the
+  build, so a file can never put an unchecked source on screen. A new parameter
+  needs nothing extra; a new non-numeric control goes into the `design:` block
+  and into `params.design()` on the Python side.
 - **The address holds the configuration.** `stateQuery()` writes every value that
   differs from its default (keys = `PARAMS` keys, slider units), `pattern`,
-  `show=concentration` and `sites=x,y;…` (µm, custom layouts); `syncUrl()` puts it
+  `show=concentration|response`, `scaffold=patch` and `sites=x,y;…` (µm, custom
+  layouts); `syncUrl()` puts it
   in the address after each final render, keeping a `#help…` part;
   `readUrlState()` reads it once at load and clamps to the slider ranges. A new
   control must be added to all three and to the help entry `start/share`.
@@ -64,9 +84,11 @@
   steady-state solution inside and outside the sphere, image source at z = 0
   (no flux), superposition with a cutoff at `R + 9.2 λ`; sites are bucketed by
   that cutoff. Units µm, s, molecules; shown in ng/mL via the molecular weight.
-- Test hook: `window.__drv` (`version`, `params()`, `set({...})`, `derived()`,
-  `sites()`, `field(x,y,z)`, `fieldNgml(x,y,z)`, `kernel(r)`, `criticalSpacing()`,
-  `metrics()`, `openHelp(target)`, `closeHelp()`, `helpTargets()`).
+- Test hook: `window.__drv` (`version`, `params()`, `state()`, `set({...})`,
+  `derived()`, `sites()`, `field(x,y,z)`, `fieldNgml(x,y,z)`, `kernel(r)`,
+  `criticalSpacing()`, `metrics()`, `survival()`, `exposure()`, `scaffold()`,
+  `scFiles()`, `paramsYaml()`, `applyFile()`, `readYamlish()`,
+  `openHelp(target)`, `closeHelp()`, `helpTargets()`).
 - Check after changes: `node tests/page.mjs && node tests/parity.mjs`; serve the folder (`.claude/static_server.js`, port 8766),
   no console errors; every `__drv.helpTargets()` resolves to a topic/entry; no
   "missing source" marker in the help; the kernel is continuous at r = R, matches

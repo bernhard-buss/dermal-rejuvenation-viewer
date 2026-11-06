@@ -44,13 +44,16 @@
    "group": "Signal",
    "label": "Active secretion per cell",
    "unit": "pg/10⁶ cells/day",
-   "value": 25,
+   "value": 360,
    "min": 0.1,
-   "max": 10000,
+   "max": 100000,
    "log": true,
-   "status": "ph",
-   "sources": [],
-   "note": "Secretion of the active (signalling) form by one implanted cell. No checked value per fibroblast was found; this is the most important missing parameter, and a threshold can be expressed in the same unit ({cite:ozawa2004vegf})."
+   "status": "ana",
+   "sources": [
+    "kelley1993autoinduction",
+    "needleman1990fibroblasts"
+   ],
+   "note": "Secretion of the signalling form by one implanted cell. Default: 15 pg/10⁶ cells/h, the upper bound for unstimulated human fetal lung fibroblasts ({cite:kelley1993autoinduction}) — an analogue, not dermal cells; the same cells reached 90 ± 7 pg/10⁶ cells/h (2160 per day) once induced. A dermal study reports 29.7 ± 5.8 pmol/10⁶ cells per 24 h ({cite:needleman1990fibroblasts}), about 2000× more in mass terms, which has to be reconciled from the full text (assay units, latent vs active). Still the model's least certain value, and nothing is known yet about rejuvenated cells. A threshold can be expressed in the same unit ({cite:ozawa2004vegf})."
   },
   {
    "key": "mw",
@@ -71,13 +74,16 @@
    "group": "Thresholds",
    "label": "Activation threshold c_on (young cells)",
    "unit": "ng/mL",
-   "value": 0.1,
+   "value": 1,
    "min": 0.001,
-   "max": 10,
+   "max": 50,
    "log": true,
-   "status": "ph",
-   "sources": [],
-   "note": "Concentration at which young fibroblasts respond. No verified value for dermal fibroblasts was found; to be measured. See {help:model/window|The therapeutic window}."
+   "status": "ana",
+   "sources": [
+    "dilger2025concentration",
+    "serpero2006polyp"
+   ],
+   "note": "Concentration at which young fibroblasts respond, and the EC50 of the graded response. Default: 1 ng/mL, which induced SMAD2 phosphorylation and α-SMA protein in primary human knee fibroblasts ({cite:dilger2025concentration}) and raised proliferation of nasal-polyp fibroblasts ({cite:serpero2006polyp}) — both analogues, not dermal cells, and a lowest effective dose rather than a fitted EC50. See {help:model/window|The therapeutic window}."
   },
   {
    "key": "sage",
@@ -99,13 +105,46 @@
    "group": "Thresholds",
    "label": "Fibrotic ceiling c_fib",
    "unit": "ng/mL",
-   "value": 2,
+   "value": 10,
    "min": 0.01,
-   "max": 100,
+   "max": 200,
    "log": true,
+   "status": "ana",
+   "sources": [
+    "serpero2006polyp",
+    "dilger2025concentration"
+   ],
+   "note": "Above this, conversion to myofibroblasts is expected. Default: 10 ng/mL, the lower of the two doses (10 and 20 ng/mL) that raised α-SMA in nasal-polyp fibroblasts while 1 ng/mL did not ({cite:serpero2006polyp}). Collagen deposition itself showed no upper limit from 0.5 to 40 ng/mL ({cite:dilger2025concentration}), so this ceiling is the myofibroblast switch, not a loss of effect. Analogues, not dermal cells. Windows with an upper side are documented for other signals, e.g. CCN2 ({cite:nakerakanti2011ccn2})."
+  },
+  {
+   "key": "hill",
+   "group": "Response",
+   "label": "Hill exponent n",
+   "unit": "–",
+   "value": 1,
+   "min": 0.5,
+   "max": 4,
+   "log": false,
+   "step": 0.1,
    "status": "ph",
+   "sources": [
+    "zi2011dynamics"
+   ],
+   "note": "Steepness of the graded dose response R(c) = cⁿ / (EC50ⁿ + cⁿ), with EC50 = the aged-cell threshold, so the response is half-maximal there. No fitted Hill exponent for TGF-β on fibroblasts was found; 1 (no cooperativity) is the neutral placeholder. Short-term SMAD2 phosphorylation is graded while the long-term response is switch-like ({cite:zi2011dynamics}), so n > 1 is likely for a late readout — the direction is sourced, the number is not. See {help:model/response|Graded response}."
+  },
+  {
+   "key": "tday",
+   "group": "Response",
+   "label": "Time after implantation",
+   "unit": "days",
+   "value": 0,
+   "min": 0,
+   "max": 180,
+   "log": false,
+   "step": 1,
+   "status": "des",
    "sources": [],
-   "note": "Above this, myofibroblast or fibrotic activation is expected. No verified value for dermal fibroblasts was found. Windows with an upper side are documented for other signals, e.g. CCN2 ({cite:nakerakanti2011ccn2})."
+   "note": "Everything shown is the steady state of the implant as it is on this day: the source per site is scaled by the surviving fraction S(t) = 2^(−t/t½). 0 is the fresh implant. See {help:model/time|Time after implantation}."
   },
   {
    "key": "a",
@@ -147,6 +186,23 @@
    "status": "ph",
    "sources": [],
    "note": "Radius of the sphere of implanted cells. Placeholder geometry; implanted cells also spread over days."
+  },
+  {
+   "key": "tsurv",
+   "group": "Implants",
+   "label": "Implant half-life t½",
+   "unit": "days",
+   "value": 10,
+   "min": 0.5,
+   "max": 180,
+   "log": true,
+   "status": "ph",
+   "sources": [
+    "hebda1999transplanted",
+    "farrokhi2022rejection",
+    "petrof2013erosions"
+   ],
+   "note": "Time over which half of the signalling implanted cells are lost or stop secreting. No measured half-life was found, only brackets: labelled fibroblasts injected into rabbit dermis were still detectable at 56 days, with a rise and fall in the first 28 days ({cite:hebda1999transplanted}); allogeneic fibroblasts were rejected within a week in immunocompetent mice ({cite:farrokhi2022rejection}); in patients the healing effect of one injection was gone after 28 days ({cite:petrof2013erosions}). The group analysed its implants after 10 days and saw matrix deposition decline after 2–3 divisions ({cite:roy2024implanting}). Placeholder inside those brackets; it scales the whole time course."
   },
   {
    "key": "levels",
@@ -207,6 +263,74 @@
    "note": "Default: the 2-mm-deep dermal region of the reconstructed skin model ({cite:roy2024implanting})."
   },
   {
+   "key": "hep",
+   "group": "Tissue",
+   "label": "Epidermis thickness",
+   "unit": "µm",
+   "value": 75,
+   "min": 20,
+   "max": 300,
+   "log": false,
+   "step": 5,
+   "status": "src",
+   "sources": [
+    "sandbymoller2003epidermis",
+    "chopra2015face",
+    "wang2025ultrasound"
+   ],
+   "note": "Used by the injection scaffold: the model measures depth below the dermal–epidermal junction, a needle from the skin surface. Default: 75 µm, the dorsal forearm of 71 volunteers (stratum corneum 18.3 ± 4.9 µm plus cellular epidermis 56.6 ± 11.5 µm, {cite:sandbymoller2003epidermis}). The face is thinner, 29.6–62.6 µm across 39 subunits ({cite:chopra2015face}); the abdomen measures 110 ± 18 µm by ultrasound ({cite:wang2025ultrasound}). Body site explains most of the variation, so set it for the intended site. See {help:scaffold/needles|Needle lengths}."
+  },
+  {
+   "key": "pen",
+   "group": "Scaffold",
+   "label": "Penetration of needle length",
+   "unit": "×",
+   "value": 0.8,
+   "min": 0.3,
+   "max": 1,
+   "log": false,
+   "step": 0.05,
+   "status": "ana",
+   "sources": [
+    "cordeiro2020templates",
+    "donnelly2010geometry"
+   ],
+   "note": "A needle does not enter the skin to its full length, because the skin is pressed in with it, so the needle has to be longer than the target depth: length = (epidermis + depth) / this factor. Default 0.8: sharp conical and pyramidal arrays inserted to 64–90 % of needle height ({cite:cordeiro2020templates}); 600 µm needles reached 330 µm at 4.4 N and 520 µm at 16.4 N per array ({cite:donnelly2010geometry}) — so it depends on the application force, and both are polymeric arrays in skin models, not hollow needles in human dermis."
+  },
+  {
+   "key": "dneedle",
+   "group": "Scaffold",
+   "label": "Needle outer diameter",
+   "unit": "µm",
+   "value": 100,
+   "min": 10,
+   "max": 500,
+   "log": false,
+   "step": 5,
+   "status": "des",
+   "sources": [
+    "burton2011hmts",
+    "romgens2014tip"
+   ],
+   "note": "Outer diameter of one needle at the skin surface, drawn in the layout and written into the specification. Design choice, not a model value: reported hollow needles carry a 10–40 µm cannula ({cite:burton2011hmts}) and solid tips of 5–37 µm needed 20–167 mN to insert, rising with tip diameter ({cite:romgens2014tip}). See {help:scaffold/spec|What the fabricator gets}."
+  },
+  {
+   "key": "patch",
+   "group": "Scaffold",
+   "label": "Scaffold patch size",
+   "unit": "mm",
+   "value": 5,
+   "min": 1,
+   "max": 25,
+   "log": false,
+   "step": 1,
+   "status": "des",
+   "sources": [
+    "burton2011hmts"
+   ],
+   "note": "Edge length of the square patch of skin the scaffold covers. Decides how many needles the array has; the layout itself is the periodic tile repeated over this area. For scale, a reported hollow-microneedle device is 1.27 cm² with 18 needles ({cite:burton2011hmts})."
+  },
+  {
    "key": "L",
    "group": "View",
    "label": "Field of view",
@@ -263,6 +387,48 @@
    "checked": "abstract",
    "what": "In a 3D normal human tissue model, unirradiated cells up to 1 mm from irradiated cells showed more micronuclei (1.7-fold) and apoptosis (2.8-fold)."
   },
+  "burton2011hmts": {
+   "short": "Burton et al. 2011",
+   "cite": "Burton SA, Ng CY, Simmers R, et al.. Rapid Intradermal Delivery of Liquid Formulations Using a Hollow Microstructured Array. Pharmaceutical Research. 2011;28:31–40.",
+   "doi": "10.1007/s11095-010-0177-8",
+   "checked": "abstract and full text",
+   "what": "A hollow microneedle device of 1.27 cm² carries eighteen 500–900 µm microstructures with 10–40 µm cannulae; the 900 µm structures penetrated swine skin to 612 µm on average and the device delivered 300–1500 µL intradermally."
+  },
+  "chopra2015face": {
+   "short": "Chopra et al. 2015",
+   "cite": "Chopra K, Calva D, Sosin M, et al.. A Comprehensive Examination of Topographic Thickness of Skin in the Human Face. Aesthetic Surgery Journal. 2015;35:1007–1013.",
+   "doi": "10.1093/asj/sjv079",
+   "checked": "abstract",
+   "what": "Punch biopsies of 39 facial subunits from ten cadaveric heads: facial epidermis 29.6 µm (posterior auricular) to 62.6 µm (upper lip), dermis 759 µm (upper medial eyelid) to 1969 µm (lower nasal sidewall)."
+  },
+  "cordeiro2020templates": {
+   "short": "Cordeiro et al. 2020",
+   "cite": "Cordeiro AS, Tekko IA, Jomaa MH, et al.. Two-Photon Polymerisation 3D Printing of Microneedle Array Templates with Versatile Designs: Application in the Development of Polymeric Drug Delivery Systems. Pharmaceutical Research. 2020;37:174.",
+   "doi": "10.1007/s11095-020-02887-9",
+   "checked": "abstract",
+   "what": "Two-photon-polymerised microneedle templates of 900–1300 µm height, 300–500 µm base width and 100–500 µm interspacing: sharp conical and pyramidal needles inserted to 64–90 % of their height in skin models."
+  },
+  "dilger2025concentration": {
+   "short": "Dilger et al. 2025",
+   "cite": "Dilger OB, Carstens MF, Garrett DJ, et al.. Temporal- and concentration-dependent effects of transforming growth factor-beta 1 (TGF-β1) in primary human knee fibroblasts. Bone & Joint Research. 2025;14:527–538.",
+   "doi": "10.1302/2046-3758.146.bjr-2024-0387.r3",
+   "checked": "abstract",
+   "what": "In primary human knee fibroblasts, collagen deposition was consistent across 0.5–40 ng/mL TGF-β1, while α-SMA protein and SMAD2 phosphorylation were induced at 1 ng/mL and robust ACTA2 transcription required 5 ng/mL."
+  },
+  "donnelly2010geometry": {
+   "short": "Donnelly et al. 2010",
+   "cite": "Donnelly RF, Garland MJ, Morrow DIJ, et al.. Optical coherence tomography is a valuable tool in the study of the effects of microneedle geometry on skin penetration characteristics and in-skin dissolution. Journal of Controlled Release. 2010;147:333–341.",
+   "doi": "10.1016/j.jconrel.2010.08.008",
+   "checked": "abstract",
+   "what": "Measured by optical coherence tomography in porcine skin, 600 µm polymeric microneedles penetrated 330 µm at 4.4 N per array and 520 µm at 16.4 N; needle interspacing did not change the depth."
+  },
+  "farrokhi2022rejection": {
+   "short": "Farrokhi et al. 2022",
+   "cite": "Farrokhi A, Rahavi M, Jo S, et al.. Inflammatory Immune Responses Trigger Rejection of Allogeneic Fibroblasts Transplanted into Mouse Skin. Cell Transplantation. 2022;31:09636897221113803.",
+   "doi": "10.1177/09636897221113803",
+   "checked": "abstract",
+   "what": "Allogeneic fibroblasts injected intradermally were rejected one week after transplantation in immunocompetent mice; rejection did not occur in γ-chain-deficient NOD-SCID mice."
+  },
   "francis1997distances": {
    "short": "Francis & Palsson 1997",
    "cite": "Francis K, Palsson BO. Effective intercellular communication distances are determined by the relative time constants for cyto/chemokine secretion and diffusion. Proceedings of the National Academy of Sciences. 1997;94:12258–12262.",
@@ -270,12 +436,40 @@
    "checked": "abstract",
    "what": "A single cell communicates by a soluble signal within a domain of about 250 µm, within 10–30 min; one dimensionless group governs it."
   },
+  "gupta2012anesthesia": {
+   "short": "Gupta et al. 2012",
+   "cite": "Gupta J, Denson DD, Felner EI, et al.. Rapid Local Anesthesia in Humans Using Minimally Invasive Microneedles. The Clinical Journal of Pain. 2012;28:129–135.",
+   "doi": "10.1097/ajp.0b013e318225dbe9",
+   "checked": "abstract",
+   "what": "Hollow microneedles 500 µm long injected lidocaine into the forearm of 15 participants and produced dermal anaesthesia equivalent to a 26-gauge intradermal needle."
+  },
+  "hebda1999transplanted": {
+   "short": "Hebda & Dohar 1999",
+   "cite": "Hebda PA, Dohar JE. Transplanted fetal fibroblasts: Survival and distribution over time in normal adult dermis compared with autogenic, allogenic, and xenogenic adult fibroblasts. Otolaryngology–Head and Neck Surgery. 1999;121:245–251.",
+   "doi": "10.1016/s0194-5998(99)70179-8",
+   "checked": "abstract",
+   "what": "Labelled fibroblasts injected intradermally into adult rabbit skin followed a biphasic curve — a rise and fall in cell density over 0–28 days, then a slow decrease — and were still detectable at 56 days, without signs of rejection."
+  },
+  "kelley1993autoinduction": {
+   "short": "Kelley et al. 1993",
+   "cite": "Kelley J, Shull S, Walsh JJ, et al.. Auto-induction of Transforming Growth Factor- β in Human Lung Fibroblasts. American Journal of Respiratory Cell and Molecular Biology. 1993;8:417–424.",
+   "doi": "10.1165/ajrcmb/8.4.417",
+   "checked": "abstract",
+   "what": "Human fetal lung fibroblasts (IMR90) accumulated TGF-β in conditioned medium at 90 ± 7 pg/10⁶ cells/h after a brief TGF-β1 exposure, against ≤ 15 pg/10⁶ cells/h uninduced, for up to 72 h; as little as 1 ng/mL auto-induced secretion."
+  },
   "kretsos2008dermis": {
    "short": "Kretsos et al. 2008",
    "cite": "Kretsos K, Miller MA, Zamora-Estrada G, et al.. Partitioning, diffusivity and clearance of skin permeants in mammalian dermis. International Journal of Pharmaceutics. 2008;346:64–79.",
    "doi": "10.1016/j.ijpharm.2007.06.020",
    "checked": "abstract",
    "what": "Decay lengths of topically applied small permeants in dermis 210–920 µm (capillary clearance 0.9–14 × 10⁻⁴ s⁻¹)."
+  },
+  "laurent2007needlelength": {
+   "short": "Laurent et al. 2007",
+   "cite": "Laurent A, Mistretta F, Bottigioli D, et al.. Echographic measurement of skin thickness in adults by high frequency ultrasound to assess the appropriate microneedle length for intradermal delivery of vaccines. Vaccine. 2007;25:6423–6430.",
+   "doi": "10.1016/j.vaccine.2007.05.046",
+   "checked": "abstract",
+   "what": "20 MHz ultrasound in 342 adults: mean skin thickness (epidermis plus dermis) 2.02 mm at the deltoid and 1.91 mm at the waist; the authors conclude a 1.5 mm needle inserted perpendicularly reaches the dermis regardless of gender, age, ethnicity and body mass index."
   },
   "liao2026chromatin": {
    "short": "Liao et al. 2026",
@@ -290,6 +484,27 @@
    "doi": "10.1111/wrr.12398",
    "checked": "abstract",
    "what": "Review: TGF-β1 may mediate fibrosis in adult wounds, while TGF-β3 may promote scarless healing in the fetus and reduced scarring in adults."
+  },
+  "lin2002ultrathick": {
+   "short": "Lin et al. 2002",
+   "cite": "Lin CH, Lee GB, Chang BW, et al.. A new fabrication process for ultra-thick microfluidic microstructures utilizing SU-8 photoresist. Journal of Micromechanics and Microengineering. 2002;12:590–597.",
+   "doi": "10.1088/0960-1317/12/5/312",
+   "checked": "abstract",
+   "what": "A constant-volume-injection coating gave SU-8 50 films up to 1.5 mm thick in a single coating, measured at 494.32 ± 17.13 µm for a nominal 500 µm film (n = 7), uniform to better than 3.1 % over 10 × 10 cm²."
+  },
+  "martanto2006microinfusion": {
+   "short": "Martanto et al. 2006",
+   "cite": "Martanto W, Moore JS, Kashlan O, et al.. Microinfusion Using Hollow Microneedles. Pharmaceutical Research. 2006;23:104–113.",
+   "doi": "10.1007/s11095-005-8498-8",
+   "checked": "abstract",
+   "what": "Single hollow glass microneedles inserted 720–1080 µm into human cadaver skin infused 15–96 µL/h, rising to 1130 µL/h once the flow resistance of compressed dermal tissue was relieved."
+  },
+  "mata2006multilayer": {
+   "short": "Mata et al. 2006",
+   "cite": "Mata A, Fleischman AJ, Roy S. Fabrication of multi-layer SU-8 microstructures. Journal of Micromechanics and Microengineering. 2006;16:276–284.",
+   "doi": "10.1088/0960-1317/16/2/012",
+   "checked": "abstract",
+   "what": "Multi-level SU-8 microstructures were built from up to six alternating thin and thick layers with a single development step, reaching overall thicknesses up to 500 µm with a minimum lateral feature size of 10 µm."
   },
   "mccollum2011avotermin": {
    "short": "McCollum et al. 2011",
@@ -319,6 +534,13 @@
    "checked": "abstract",
    "what": "CCN2/CTGF stimulated collagen gene expression below 50 ng/mL and inhibited it at higher doses: a window with a lower and an upper side."
   },
+  "needleman1990fibroblasts": {
+   "short": "Needleman et al. 1990",
+   "cite": "Needleman BW, Choi J, Burrows‐Mezu A, et al.. Secretion and binding of transforming growth factor β by scleroderma and normal dermal fibroblasts. Arthritis & Rheumatism. 1990;33:650–656.",
+   "doi": "10.1002/art.1780330507",
+   "checked": "abstract",
+   "what": "Human dermal fibroblasts: 12 431 ± 2425 TGF-β receptors per cell with a K_d of 27.1 ± 5.2 pM (normal donors), and a 24-hour secretion of 29.7 ± 5.8 pmol/10⁶ cells (means ± SEM)."
+  },
   "oyleryaniv2017niches": {
    "short": "Oyler-Yaniv et al. 2017",
    "cite": "Oyler-Yaniv A, Oyler-Yaniv J, Whitlock BM, et al.. A Tunable Diffusion-Consumption Mechanism of Cytokine Propagation Enables Plasticity in Cell-to-Cell Communication in the Immune System. Immunity. 2017;46:609–620.",
@@ -333,12 +555,33 @@
    "checked": "abstract",
    "what": "The local amount of VEGF secreted, not the total dose, decides between normal and aberrant angiogenesis."
   },
+  "petrof2013erosions": {
+   "short": "Petrof et al. 2013",
+   "cite": "Petrof G, Martinez-Queipo M, Mellerio JE, et al.. Fibroblast cell therapy enhances initial healing in recessive dystrophic epidermolysis bullosa wounds: results of a randomized, vehicle-controlled trial. British Journal of Dermatology. 2013;169:1025–1033.",
+   "doi": "10.1111/bjd.12599",
+   "checked": "abstract",
+   "what": "One intradermal injection of 5 × 10⁶ allogeneic fibroblasts per linear cm of wound margin increased the healing rate of RDEB erosions within the first 28 days but not thereafter."
+  },
   "quan2002uv": {
    "short": "Quan et al. 2002",
    "cite": "Quan T, He T, Kang S, et al.. Ultraviolet Irradiation Alters Transforming Growth Factor β/Smad Pathway in Human Skin In Vivo. Journal of Investigative Dermatology. 2002;119:499–506.",
    "doi": "10.1046/j.1523-1747.2002.01834.x",
    "checked": "abstract",
    "what": "Sun-protected adult human skin expresses TGF-β1, β2 and β3 transcripts in a ratio of 1:5:3."
+  },
+  "roh2022heights": {
+   "short": "Roh et al. 2022",
+   "cite": "Roh H, Yoon YJ, Park JS, et al.. Fabrication of High-Density Out-of-Plane Microneedle Arrays with Various Heights and Diverse Cross-Sectional Shapes. Nano-Micro Letters. 2022;14:24.",
+   "doi": "10.1007/s40820-021-00778-1",
+   "checked": "full text",
+   "what": "One photolithography step followed by two deep-reactive-ion-etch steps gave silicon microneedle arrays with heights from 68.54 to 246.44 µm within a single photomask design, densities up to 625 needles/mm² and aspect ratios up to about 25."
+  },
+  "romgens2014tip": {
+   "short": "Römgens et al. 2014",
+   "cite": "Römgens AM, Bader DL, Bouwstra JA, et al.. Monitoring the penetration process of single microneedles with varying tip diameters. Journal of the Mechanical Behavior of Biomedical Materials. 2014;40:397–405.",
+   "doi": "10.1016/j.jmbbm.2014.09.015",
+   "checked": "abstract",
+   "what": "Single solid microneedles with tip diameters of 5–37 µm inserted into human ex vivo skin needed 20–167 mN, rising linearly with tip diameter; the force drop occurred at about 160 µm depth for every tip diameter."
   },
   "romgens2015diffusion": {
    "short": "Römgens et al. 2015",
@@ -354,12 +597,33 @@
    "checked": "full text",
    "what": "Spheroids equivalent to 40,000 cells in 50 µL per implantation site, 2–3 sites per reconstructed aged skin model, within the 2-mm-deep dermis, analysed after 10 days. Matrix deposition of the implanted cells declined after 2–3 divisions; the authors note it could also indicate fibrotic activation."
   },
+  "sandbymoller2003epidermis": {
+   "short": "Sandby-Møller et al. 2003",
+   "cite": "Sandby-Møller J, Poulsen T, Wulf HC. Epidermal Thickness at Different Body Sites: Relationship to Age, Gender, Pigmentation, Blood Content, Skin Type and Smoking Habits. Acta Dermato-Venereologica. 2003;83:410–413.",
+   "doi": "10.1080/00015550310015419",
+   "checked": "abstract",
+   "what": "Biopsies from three body sites of 71 volunteers, measured microscopically: stratum corneum 18.3 ± 4.9 µm and cellular epidermis 56.6 ± 11.5 µm at the dorsal forearm (shoulder 11.0 and 70.3 µm, buttock 14.9 and 81.5 µm). Body site explains most of the variation."
+  },
+  "serpero2006polyp": {
+   "short": "Serpero et al. 2006",
+   "cite": "Serpero L, Petecchia L, Sabatini F, et al.. The effect of transforming growth factor (TGF)-β1 and (TGF)-β2 on nasal polyp fibroblast activities involved upper airway remodeling: Modulation by fluticasone propionate. Immunology Letters. 2006;105:61–67.",
+   "doi": "10.1016/j.imlet.2006.01.003",
+   "checked": "abstract",
+   "what": "Nasal-polyp fibroblasts stimulated with 1, 10 and 20 ng/mL TGF-β1 or TGF-β2: α-SMA rose significantly only at the two highest doses, while 1 ng/mL TGF-β1 already raised proliferation."
+  },
   "sprugel1987kinetics": {
    "short": "Sprugel et al. 1987",
    "cite": "Sprugel KH, McPherson JM, Clowes AW, et al.. Effects of growth factors in vivo. I. Cell ingrowth into porous subcutaneous chambers. The American journal of pathology. 1987;129:601–13.",
    "pmid": "3501246",
    "checked": "abstract",
    "what": "¹²⁵I-TGF-β was cleared from subcutaneous collagen chambers in rats with an initial-phase half-life of 22 h."
+  },
+  "takahashi2016exposure": {
+   "short": "Takahashi et al. 2016",
+   "cite": "Takahashi H, Jung Heo Y, Arakawa N, et al.. Scalable fabrication of microneedle arrays via spatially controlled UV exposure. Microsystems & Nanoengineering. 2016;2:16049.",
+   "doi": "10.1038/micronano.2016.49",
+   "checked": "abstract and full text",
+   "what": "Inclined and rotated UV lithography through circular mask patterns forms needle-shaped exposure-dose distributions in a negative epoxy resist, so needle heights and contours can be varied from the same mask patterns by the inclination angle and dose; heights of 330–900 µm at a 1200 µm pitch were made, with tip radii of curvature of 12 µm."
   },
   "urban2023isoforms": {
    "short": "Urban et al. 2023",
@@ -368,12 +632,40 @@
    "checked": "abstract",
    "what": "In fibroblasts of different origins, TGF-β1 activated signalling more potently than TGF-β3; TGF-β3 was rather inhibitory in keloid- and hypertrophic-scar-derived fibroblasts."
   },
+  "verbaan2007arrays": {
+   "short": "Verbaan et al. 2007",
+   "cite": "Verbaan FJ, Bal SM, van den Berg DJ, et al.. Assembled microneedle arrays enhance the transport of compounds varying over a large range of molecular weight across human dermatomed skin. Journal of Controlled Release. 2007;117:238–245.",
+   "doi": "10.1016/j.jconrel.2006.11.009",
+   "checked": "abstract",
+   "what": "Assembled hollow metal microneedle arrays pierced dermatomed human skin at needle lengths of 900, 700 and 550 µm, while 300 µm needles did not."
+  },
+  "wang2025ultrasound": {
+   "short": "Wang et al. 2025",
+   "cite": "Wang Y, Tian M, Guo R, et al.. Quantification of normal skin thickness using very high-frequency ultrasound: a clinical study in Chinese adults. Quantitative Imaging in Medicine and Surgery. 2025;15:5218–5231.",
+   "doi": "10.21037/qims-2024-2637",
+   "checked": "full text",
+   "what": "50 MHz ultrasound in 74 healthy adults: abdominal epidermis 0.1100 ± 0.0178 mm, abdominal dermis 2.3919 ± 0.5431 mm, full-thickness abdominal skin 2.5130 ± 0.5383 mm."
+  },
   "wei2018microneedle": {
    "short": "Wei et al. 2018",
    "cite": "Wei JCJ, Haridass IN, Crichton ML, et al.. Space- and time-resolved investigation on diffusion kinetics of human skin following macromolecule delivery by microneedle arrays. Scientific Reports. 2018;8:17759.",
    "doi": "10.1038/s41598-018-36009-8",
    "checked": "abstract",
    "what": "Ex vivo human skin, 70–2000 kDa dextrans: dermal diffusivities 1–20 µm²/s, lowest at the dermal–epidermal junction (0.7–3 µm²/s)."
+  },
+  "williams2004postbake": {
+   "short": "Williams & Wang 2004",
+   "cite": "Williams JD, Wang W. Study on the postbaking process and the effects on UV lithography of high aspect ratio SU-8 microstructures. Journal of Micro/Nanopatterning, Materials, and Metrology. 2004;3:563–568.",
+   "doi": "10.1117/1.1792650",
+   "checked": "abstract",
+   "what": "Controlling internal stress during the post-exposure bake gave SU-8 aspect ratios up to 40:1 in isolated open-field structures 1–1.5 mm thick with a standard broadband UV source."
+  },
+  "zi2011dynamics": {
+   "short": "Zi et al. 2011",
+   "cite": "Zi Z, Feng Z, Chapnick DA, et al.. Quantitative analysis of transient and sustained transforming growth factor‐β signaling dynamics. Molecular Systems Biology. 2011;7:MSB201122.",
+   "doi": "10.1038/msb.2011.22",
+   "checked": "abstract",
+   "what": "Ligand-induced short-term Smad2 phosphorylation is graded, whereas long-term Smad2 phosphorylation, long-term PAI-1 expression and the growth-inhibitory response are switch-like to a small change in TGF-β levels."
   }
  }
 }

@@ -2,6 +2,14 @@
 
 Newest version first. Each entry says what you can do or see differently.
 
+## 0.5.0 — 2026-11-06
+
+- **Time after implantation.** The implant does not signal forever: a new slider shows the state on any day after implantation, with the source scaled by the surviving share of the cells (*Implant half-life*). Maps, coverage, design curve and optimiser all follow, so you can ask for a design that still works on day 14. The coverage panel reports how much of the dermis is **ever** in the window — including tissue that starts above the ceiling and drops into it as the implant decays — and for how many days.
+- **Graded response.** A third colouring, *Response*, shows how strongly the host cells respond rather than only whether they are inside the window, with a new *Hill exponent* slider. Half-maximal at the aged-cell threshold.
+- **Injection scaffold.** A new panel turns the design into a device: where the needles meet the skin (one tile with its step vectors, or the whole patch), how long each needle is and at which depths it releases. With four or five injection depths two of them share a surface position, so that needle releases twice along one track. *Download pack* writes a specification, a DXF with one layer per needle length, an SVG at 1:1, a needle list and a JSON — enough to start a conversation with whoever builds it, including what the literature reports about building such an array.
+- **Save and load the parameter file.** *Save YAML* downloads everything on screen as a complete `parameters.yaml` that the Python pipeline reads directly (`--params`); *Load YAML* reads one back.
+- **Three values are no longer invented.** The secretion per cell, the activation threshold and the fibrotic ceiling now carry measured values from related cell types (badge *analogue*) instead of placeholders, as does the new epidermis thickness (*source*) used by the scaffold. All numbers on the page move accordingly.
+
 ## 0.4.0 — 2026-11-05
 
 - **Several injection depths.** Two new sliders, *Injection depths* (1–5) and *Spacing between depths*, stack lattices at several depths, each shifted sideways against its neighbour: seen from above the sites are closer together, in depth they keep their distance, and the volume of the dermis fills up. On the map, the centre dot of each site gives its depth and sites at other depths are dashed; the coverage panel lists the depths and the spacing seen from above. Hand-placed sites keep their own depth (new ones go to the slice depth).
