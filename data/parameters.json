@@ -475,6 +475,51 @@
    "note": "The share of the (non-senescent) host cells a design must put inside the window for one realisation to count as a success. Robustness is the share of realisations that succeed, P(C ≥ C*)."
   },
   {
+   "key": "ostar",
+   "group": "variation",
+   "label": "Overexposure limit O*",
+   "unit": "% of host cells",
+   "value": 5,
+   "min": 0,
+   "max": 50,
+   "log": false,
+   "step": 0.5,
+   "status": "des",
+   "sources": [],
+   "note": "The share of the host cells that may lie above the fibrotic ceiling in a successful realisation. A realisation succeeds when C ≥ C* and O ≤ O*, the plan's definition of an ideal density; 5 % is the plan's example."
+  },
+  {
+   "key": "pstar",
+   "group": "variation",
+   "label": "Required robustness P*",
+   "unit": "% of tissues",
+   "value": 90,
+   "min": 10,
+   "max": 100,
+   "log": false,
+   "step": 1,
+   "status": "des",
+   "sources": [],
+   "note": "How often a design must succeed to count as robust. Along the optimiser's front, the robust ideal density is the cheapest design that succeeds in at least this share of the random tissues."
+  },
+  {
+   "key": "sdpen",
+   "group": "variation",
+   "label": "Spread of the insertion depth",
+   "unit": "SD of the share inserted",
+   "value": 0.075,
+   "min": 0,
+   "max": 0.3,
+   "log": false,
+   "step": 0.005,
+   "status": "ana",
+   "sources": [
+    "cordeiro2020templates",
+    "donnelly2010geometry"
+   ],
+   "note": "How much the share of the needle length that enters the skin varies from one application to the next; each realisation draws one application, and all its deposits move deeper or shallower together. Sharp needles entered 64–90 % of their height ({cite:cordeiro2020templates}); 600 µm needles reached 330 µm at 4.4 N and 520 µm at 16.4 N per array ({cite:donnelly2010geometry}). Default: the standard deviation of an even spread over 64–90 % (our derivation), in skin models and pig skin rather than aged human skin, hence an analogue."
+  },
+  {
    "key": "cvpap",
    "group": "variation",
    "label": "Donor spread, papillary cellularity",

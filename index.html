@@ -30,8 +30,18 @@ a.hl{color:var(--teal);text-decoration:none;font-size:13px;margin-left:2px;curso
 header a.hl{color:var(--teal-l)}
 a.hl:hover{text-decoration:underline}
 .banner{background:var(--amber-bg);border-bottom:1px solid #EAD7AE;padding:6px 18px;font-size:13px;color:#5B420F}
-main{display:grid;grid-template-columns:340px minmax(440px,1fr) 360px;gap:14px;padding:14px;align-items:start}
-@media (max-width:1220px){main{grid-template-columns:1fr}}
+main{display:grid;grid-template-columns:1fr;gap:14px;padding:14px;align-items:start}
+/* Desktop: the page fills the window and does not scroll; the controls (left) and the
+   panels (right) scroll on their own, the map in the middle takes the space left and
+   is sized by fitLayout() so that it fits the height. Smaller windows: one column. */
+@media (min-width:1100px) and (min-height:620px){
+  body{height:100vh;display:flex;flex-direction:column;overflow:hidden}
+  main{flex:1;min-height:0;grid-template-columns:320px minmax(340px,1fr) 360px;align-items:stretch;padding:12px 14px 0}
+  #left,#right,.stage{overflow-y:auto;min-height:0;overscroll-behavior:contain;scrollbar-gutter:stable;padding-right:2px}
+  footer{padding:4px 18px 6px}
+}
+@media (min-width:1500px) and (min-height:620px){main{grid-template-columns:350px minmax(340px,1fr) 410px}}
+@media (max-width:1499px){header .sub{display:none}}
 .panel{background:#fff;border:1px solid var(--rule);border-radius:10px;padding:12px 14px;margin-bottom:14px;min-width:0}
 .panel h2{font-size:12px;text-transform:uppercase;letter-spacing:.07em;color:var(--teal);margin:2px 0 6px;display:flex;gap:4px;align-items:center}
 .prow{margin:9px 0 4px}
@@ -169,13 +179,20 @@ a.cite{text-decoration:none;border-bottom:1px dotted var(--teal)}
     </div>
     <div class="panel" id="mcPanel"><h2>Robustness <a class="hl" href="#help/metrics/robust" data-help="metrics/robust" title="Help: robustness over random tissues">ⓘ</a></h2>
       <div class="note">How often does this design reach its target in real, varying tissue? Draws random donors and tissues (step 4) and counts the host cells inside the window in each.</div>
-      <div class="toolbar" style="margin-top:8px"><span class="note" id="mcInfo" style="margin:0"></span><span class="sp"></span><button id="mcRun" class="primary">Run</button></div>
+      <div class="toolbar" style="margin-top:8px"><span class="note" id="mcInfo" style="margin:0"></span><span class="sp"></span>
+        <button id="mcMore" title="Continue the run with the next 100 tissues (seeds continue)" disabled>+100 tissues</button><button id="mcRun" class="primary">Run</button></div>
       <div class="prog" id="mcProg" hidden><div></div></div>
       <canvas id="mcHist" width="660" height="300" aria-label="Coverage of the host cells over random tissues"></canvas>
       <div id="mcStats"><div class="note">Not run yet. A run of the default 100 tissues takes a few seconds in the background.</div></div>
       <canvas id="mcCells" width="660" height="330" aria-label="Host cells of one random tissue, from above and in section"></canvas>
       <div class="legend" id="mcLegend"></div>
-      <div class="cap" id="mcCap"></div></div>
+      <label class="note" style="display:flex;gap:6px;align-items:center"><input type="checkbox" id="mcOverlay"> show tissue 1's host cells on the map (near the slice depth)</label>
+      <div class="cap" id="mcCap"></div>
+      <h2 style="margin-top:12px">Robust ideal density <a class="hl" href="#help/metrics/robustfront" data-help="metrics/robustfront" title="Help: the robust ideal density">ⓘ</a></h2>
+      <div class="toolbar"><span class="note" id="mcFrontInfo" style="margin:0">Run <b>Optimise</b> first: this tests each design on its front.</span><span class="sp"></span><button id="mcFrontRun" disabled>Test the front</button></div>
+      <div class="prog" id="mcFrontProg" hidden><div></div></div>
+      <canvas id="mcFront" width="660" height="300" aria-label="Robustness of each design on the optimiser's front against its dose"></canvas>
+      <div id="mcFrontText"></div></div>
     <div class="panel" id="scaffoldPanel"><h2>Injection scaffold <a class="hl" href="#help/scaffold/what" data-help="scaffold/what" title="Help: the injection scaffold">ⓘ</a></h2>
       <div class="row">
         <span class="seg"><button id="scTile" class="on" title="One periodic tile of the array">Tile</button><button id="scPatch" title="The whole patch of skin">Patch</button></span>
@@ -222,7 +239,7 @@ a.cite{text-decoration:none;border-bottom:1px dotted var(--teal)}
 <script src="data/parameters.js"></script>
 <script>
 "use strict";
-const VERSION = "0.8.0";
+const VERSION = "0.9.0";
 const $ = id => document.getElementById(id);
 function esc(s) { return String(s).replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); }
 
@@ -741,58 +758,95 @@ function fieldAtSites(q, sites, med, Qt, pts) {                    // Σ sites (
     return c;
   });
 }
-function realise(p, pattern, seed, nTargets, custom) {             // one random tissue and the coverage in it
-  const r = rng(seed), q = donor(p, gauss(r), gauss(r), gauss(r)), fRho = spectral(r, q.ell), fD = spectral(r, q.ell);
-  const H = q.H, L = q.L, hp = q.hpap, layered = !!Math.round(q.layers ?? 0);
+function drawTissue(p, seed, nTargets, L, offset = 0) {          // the random part, in dermsim.hetero._draw's order
+  const r = rng(seed), q = donor(p, gauss(r), gauss(r), gauss(r)), zpen = gauss(r), fRho = spectral(r, q.ell), fD = spectral(r, q.ell);
+  const H = q.H, hp = q.hpap, layered = !!Math.round(q.layers ?? 0), Lt = L ?? q.L;
   const pPap = layered ? q.rpap * hp / (q.rpap * hp + (H - hp)) : hp / H, n = Math.round(nTargets ?? q.ntarget);
   const pos = [], sen = [], e = [];
   for (let j = 0; j < n; j++) {
-    const u = r(), z = u < pPap ? r() * hp : hp + r() * (H - hp), x = r() * L, y = r() * L;
+    const u = r(), z = u < pPap ? r() * hp : hp + r() * (H - hp), x = offset + r() * Lt, y = offset + r() * Lt;
     pos.push([x, y, z]); sen.push(r() < q.fsen); e.push(gauss(r));
   }
-  const ks = levelKernels(q), d = ks[0].d, margin = Math.max(...ks.map(k => k.d.rc));
-  const sites = makeSites(q, pattern, custom, 0, margin * 1.5), med = siteMedia(q, sites, fRho, fD);
-  const c = fieldAtSites(q, sites, med, d.Qt, pos);
-  let wHost = 0, wIn = 0, wBelow = 0, wAbove = 0, nSen = 0;
-  const ec50 = [], w = [];
+  return { q, zpen, fRho, fD, pos, sen, e };
+}
+function insertedDepths(q, zs, zpen) {                             // this application went in deeper or shallower
+  if ((q.sdpen ?? 0) <= 0) return zs.slice();
+  const pen1 = Math.min(Math.max(q.pen + q.sdpen * zpen, 0.3), 1.0);
+  return zs.map(z => Math.min(Math.max((q.hep + z) * pen1 / q.pen - q.hep, 20), q.H - 20));
+}
+function scoreTissue(q, d, c, sen, e, w) {                        // dermsim.hetero._score
+  const n = c.length, ec50 = new Array(n), th = q.tsurv;
+  let wHost = 0, wAll = 0, wIn = 0, wBelow = 0, wAbove = 0, w2 = 0, wDays = 0, nSen = 0;
   for (let j = 0; j < n; j++) {
-    const wj = fieldLog(fRho, q.sigrho, pos[j][0], pos[j][1], pos[j][2]), sasp = Math.max(1 + q.ksasp * q.fsen * wj, 0.05);
-    const t = d.con * Math.exp(q.sigec * e[j]) * sasp; ec50.push(t); w.push(wj);
+    const wj = w[j], sasp = Math.max(1 + q.ksasp * q.fsen * wj, 0.05), t = d.con * Math.exp(q.sigec * e[j]) * sasp;
+    ec50[j] = t; wAll += wj;
     if (sen[j]) { nSen++; continue; }
-    wHost += wj;
+    wHost += wj; w2 += wj * wj;
     if (c[j] < t) wBelow += wj; else if (c[j] > d.cfib) wAbove += wj; else wIn += wj;
+    const c0 = d.surv > 0 ? c[j] / d.surv : 0;
+    const on = c0 > t ? th * Math.log2(c0 / t) : 0, over = c0 > d.cfib ? th * Math.log2(c0 / d.cfib) : 0;
+    wDays += wj * Math.max(on - over, 0);
   }
   const sh = v => wHost > 0 ? v / wHost : 0;
-  return { seed, coverage: sh(wIn), below: sh(wBelow), above: sh(wAbove), n_host: n - nSen, n_senescent: nSen,
-    donor: { hpap: q.hpap, rpap: q.rpap, cells: q.cells }, lam_levels: ks.map(k => k.d.lam), pos, sen, c, ec50, w, fRho };
+  return { coverage: sh(wIn), below: sh(wBelow), above: sh(wAbove), coverage_all: wAll > 0 ? wIn / wAll : 0,
+    days: sh(wDays), n_eff: w2 > 0 ? wHost * wHost / w2 : 0, ec50, n_host: n - nSen, n_senescent: nSen };
 }
-function mcReference(p, pattern, nTargets, custom) {               // the same host cells, no variation at all
-  const q = { ...p, cvpap: 0, cvret: 0, cvhpap: 0, sigrho: 0, sigd: 0, sigec: 0, ksasp: 0, fsen: 0 };
-  return realise(q, pattern, 0, 4 * Math.round(nTargets ?? p.ntarget), custom).coverage;
+function realise(p, pattern, seed, nTargets, custom) {             // one random tissue and the coverage in it
+  const T = drawTissue(p, seed, nTargets), q = T.q;
+  const ks = levelKernels(q), d = ks[0].d, margin = Math.max(...ks.map(k => k.d.rc));
+  const sites = makeSites(q, pattern, custom, 0, margin * 1.5);
+  const zs = insertedDepths(q, sites.map(s => s[2]), T.zpen); sites.forEach((s, i) => { s[2] = zs[i]; });
+  const med = siteMedia(q, sites, T.fRho, T.fD), c = fieldAtSites(q, sites, med, d.Qt, T.pos);
+  const w = T.pos.map(([x, y, z]) => fieldLog(T.fRho, q.sigrho, x, y, z));
+  const sc = scoreTissue(q, d, c, T.sen, T.e, w), depths = insertedDepths(q, levelDepths(q), T.zpen);
+  return { seed, coverage: sc.coverage, below: sc.below, above: sc.above, coverage_all: sc.coverage_all, days: sc.days, n_eff: sc.n_eff,
+    n_host: sc.n_host, n_senescent: sc.n_senescent, donor: { hpap: q.hpap, rpap: q.rpap, cells: q.cells },
+    depths, lam_levels: levelKernels(q, depths).map(k => k.d.lam), pos: T.pos, sen: T.sen, c, ec50: sc.ec50, w, fRho: T.fRho };
 }
-function mcStats(cov, above, cstar) {                              // as dermsim.hetero.stats
-  const n = cov.length, mean = cov.reduce((a, b) => a + b, 0) / n;
-  const sd = n > 1 ? Math.sqrt(cov.reduce((a, v) => a + (v - mean) ** 2, 0) / (n - 1)) : 0;
-  const hits = cov.filter(v => v >= cstar - 1e-12).length, pt = (hits + 1) / (n + 2), s = Float64Array.from(cov).sort();
-  const q = a => s[Math.min(n - 1, Math.floor(a * n))];
+const QUIET = { cvpap: 0, cvret: 0, cvhpap: 0, sdpen: 0, fsen: 0, ksasp: 0, sigec: 0, sigrho: 0, sigd: 0 };
+function mcReference(p, pattern, nTargets, custom) {               // the same kind of host cells, no variation at all
+  return realise({ ...p, ...QUIET }, pattern, 0, 4 * Math.round(nTargets ?? p.ntarget), custom).coverage;
+}
+const RUN_KEYS = ["coverage", "above", "coverage_all", "days", "n_eff"];
+function mcStats(runs, cstar, ostar) {                             // as dermsim.hetero.stats
+  const n = runs.length, v = runs.map(r => r.coverage), mean = v.reduce((a, b) => a + b, 0) / n;
+  const sd = n > 1 ? Math.sqrt(v.reduce((a, x) => a + (x - mean) ** 2, 0) / (n - 1)) : 0;
+  const okC = runs.map(r => r.coverage >= cstar - 1e-12), okO = runs.map(r => r.above <= ostar + 1e-12);
+  const hits = runs.filter((r, i) => okC[i] && okO[i]).length, pt = (hits + 1) / (n + 2), s = Float64Array.from(v).sort();
+  const noise = runs.reduce((a, r) => a + (r.n_eff > 0 ? r.coverage * (1 - r.coverage) / r.n_eff : 0), 0) / n;
+  const q = a => s[Math.min(n - 1, Math.floor(a * n))], avg = k => runs.reduce((a, r) => a + r[k], 0) / n;
   return { n, mean, sd, se: sd / Math.sqrt(n), p_hit: hits / n, se_p: Math.sqrt(pt * (1 - pt) / n),
-    q05: q(0.05), q50: q(0.5), q95: q(0.95), above_mean: above.reduce((a, b) => a + b, 0) / n };
+    p_cov: okC.filter(Boolean).length / n, p_safe: okO.filter(Boolean).length / n,
+    sd_noise: Math.sqrt(noise), sd_tissue: Math.sqrt(Math.max(sd * sd - noise, 0)),
+    q05: q(0.05), q50: q(0.5), q95: q(0.95), above_mean: avg("above"), all_mean: avg("coverage_all"), days_mean: avg("days") };
 }
-function hetFaithful(p) {                                          // claim A8: fields varying over ≥ 4 λ
+function hetFaithful(p) {                                          // claims A8, A12: fields varying over ≥ 4 λ
   if (p.sigrho <= 0 && p.sigd <= 0) return true;
   return p.ell >= 4 * Math.max(...levelKernels(p).map(k => k.d.lam));
 }
-function* monteCarloSteps(p, pattern, n, seed, nTargets, custom) {  // yields progress; returns the statistics
-  const cov = [], above = [];
+function* monteCarloSteps(p, pattern, n, seed, nTargets, custom) {  // yields progress; returns the statistics and the runs
+  const runs = [];
   let first = null;
   for (let i = 0; i < n; i++) {
     const r = realise(p, pattern, seed + i, nTargets, custom);
-    cov.push(r.coverage); above.push(r.above); if (!i) first = r;
+    runs.push(Object.fromEntries(RUN_KEYS.map(k => [k, r[k]]))); if (!i) first = r;
     yield { done: i + 1, total: n };
   }
-  return { ...mcStats(cov, above, p.cstar / 100), coverage: cov, seed, cstar: p.cstar / 100, first };
+  return { ...mcStats(runs, p.cstar / 100, p.ostar / 100), runs, coverage: runs.map(r => r.coverage), seed, cstar: p.cstar / 100, ostar: p.ostar / 100, first };
 }
 function monteCarlo(p, pattern, n, seed, nTargets, custom) { const g = monteCarloSteps(p, pattern, n, seed, nTargets, custom); let r; while (!(r = g.next()).done); return r.value; }
+function* robustFrontSteps(p, pattern, front, n, nTargets) {        // dermsim.hetero.robust_front: P(success) along the front
+  const rows = [];
+  for (let i = 0; i < front.length; i++) {
+    const sol = front[i], q = { ...p, a: sol.a, levels: sol.levels, dz: sol.dz, z0: sol.z0, ncells: sol.ncells };
+    const m = monteCarlo(q, pattern, n, 1, nTargets);
+    rows.push({ a: sol.a, levels: sol.levels, dz: sol.dz, z0: sol.z0, ncells: sol.ncells, cells_per_cm2: sol.cells_per_cm2,
+      window: sol.exact.window, mean: m.mean, p_hit: m.p_hit, se_p: m.se_p, above_mean: m.above_mean, pattern: sol.pattern });
+    yield { done: i + 1, total: front.length };
+  }
+  const ok = rows.filter(r => r.p_hit >= p.pstar / 100);
+  return { rows, robust: ok.length ? ok.reduce((a, b) => b.cells_per_cm2 < a.cells_per_cm2 ? b : a) : null, pstar: p.pstar / 100, n };
+}
 
 // <<< physics
 
@@ -835,13 +889,21 @@ function run(m) {
     const step = () => { if (!live(m)) return;
       const r = gen.next();
       if (!r.done) { postMessage({ kind: m.kind, id: m.id, progress: r.value.done / (r.value.total + 1) }); setTimeout(step, 0); return; }
-      postMessage({ kind: m.kind, id: m.id, res: r.value, ref: mcReference(m.p, m.pattern, m.nTargets, m.custom) }); };
+      postMessage({ kind: m.kind, id: m.id, res: r.value, ref: m.ref === false ? null : mcReference(m.p, m.pattern, m.nTargets, m.custom) }); };
+    step();
+  }
+  if (m.kind === "mcfront") {
+    const gen = robustFrontSteps(m.p, m.pattern, m.front, m.n, m.nTargets);
+    const step = () => { if (!live(m)) return;
+      const r = gen.next();
+      if (!r.done) { postMessage({ kind: m.kind, id: m.id, progress: r.value.done / r.value.total }); setTimeout(step, 0); return; }
+      postMessage({ kind: m.kind, id: m.id, res: r.value }); };
     step();
   }
 }`;
 let worker = null;
 try { worker = new Worker(URL.createObjectURL(new Blob([WORKER_SRC], { type: "text/javascript" }))); } catch (e) { worker = null; }
-const jobs = { volume: 0, curve: 0, optimise: 0, mc: 0 }, handlers = {};
+const jobs = { volume: 0, curve: 0, optimise: 0, mc: 0, mcfront: 0 }, handlers = {};
 function ask(kind, msg, onMsg) {
   const id = ++jobs[kind]; handlers[kind] = { id, onMsg };
   if (worker) { worker.postMessage({ ...msg, kind, id }); return; }
@@ -852,7 +914,8 @@ function ask(kind, msg, onMsg) {
     if (kind === "curve") msg.as.forEach((a, i) => onMsg({ i, a, fr: unitCellFractions(msg.p, msg.pat, a, msg.nu, msg.nz) }));
     if (kind === "optimise") { const results = {}; for (const md of (msg.mode === "both" ? ["flat", "volume"] : [msg.mode])) results[md] = optimise(msg.p, msg.pattern, md, msg.opts);
       const cur = unitCellFractions(msg.p, msg.pattern, msg.p.a, OPT_DEFAULTS.nu, OPT_DEFAULTS.nz); onMsg({ results, current: { window: cur[1], above: cur[2] } }); }
-    if (kind === "mc") onMsg({ res: monteCarlo(msg.p, msg.pattern, msg.n, msg.seed, msg.nTargets, msg.custom), ref: mcReference(msg.p, msg.pattern, msg.nTargets, msg.custom) });
+    if (kind === "mc") onMsg({ res: monteCarlo(msg.p, msg.pattern, msg.n, msg.seed, msg.nTargets, msg.custom), ref: msg.ref === false ? null : mcReference(msg.p, msg.pattern, msg.nTargets, msg.custom) });
+    if (kind === "mcfront") { const g = robustFrontSteps(msg.p, msg.pattern, msg.front, msg.n, msg.nTargets); let r; while (!(r = g.next()).done); onMsg({ res: r.value }); }
   }, 0);
 }
 if (worker) {
@@ -865,7 +928,7 @@ if (worker) {
 // ---------------------------------------------------------------------------
 const S = { p: {}, pattern: "hex", mode: "window", edit: false, custom: [], zvLinked: true, seed: 7, scTile: true,
   opt: { mode: "both", res: null, list: [], idx: -1, before: null, running: false, current: null },
-  mc: { res: null, ref: null, key: null, running: false } };
+  mc: { res: null, ref: null, key: null, running: false, overlay: false, front: null, frontRunning: false } };
 function resetParams() { for (const d of PARAMS) S.p[d.key] = d.def; S.pattern = "hex"; S.custom = []; S.zvLinked = true; }
 resetParams();
 const geoPattern = () => S.pattern === "square" ? "square" : "hex";
@@ -937,6 +1000,18 @@ function drawMap(n) {
     ctx.beginPath(); ctx.arc(x, y, r, 0, 2 * Math.PI); ctx.lineWidth = 2; ctx.strokeStyle = "rgba(255,255,255,.95)"; ctx.stroke();
     ctx.setLineDash([]); ctx.beginPath(); ctx.arc(x, y, pass ? 4 : 3, 0, 2 * Math.PI); ctx.fillStyle = col; ctx.fill();
     ctx.lineWidth = 1; ctx.strokeStyle = "#fff"; ctx.stroke(); ctx.restore();
+  }
+  const t1 = S.mc.overlay && S.mc.res && S.mc.res.first;
+  if (t1) {                                                        // tissue 1 of the Robustness run, near the slice depth
+    const dd = derived(S.mc.p), slab = Math.max(40, 0.04 * p.H), CELL = ["#7B868D", "#1F6E74", "#B8442A"];
+    t1.pos.forEach(([x, y, z], j) => {
+      if (Math.abs(z - p.zv) > slab) return;
+      const X = x * k, Y = y * k;
+      if (t1.sen[j]) { for (const [col, lw] of [["#fff", 4], ["#3E2E22", 1.8]]) { ctx.strokeStyle = col; ctx.lineWidth = lw; ctx.beginPath(); ctx.moveTo(X - 5, Y - 5); ctx.lineTo(X + 5, Y + 5); ctx.moveTo(X + 5, Y - 5); ctx.lineTo(X - 5, Y + 5); ctx.stroke(); } return; }
+      const st = t1.c[j] < t1.ec50[j] ? 0 : t1.c[j] > dd.cfib ? 2 : 1;
+      ctx.beginPath(); ctx.arc(X, Y, 4.8, 0, 2 * Math.PI); ctx.fillStyle = CELL[st]; ctx.fill();
+      ctx.lineWidth = 3; ctx.strokeStyle = "#fff"; ctx.stroke(); ctx.lineWidth = 1.2; ctx.strokeStyle = "#1B2A33"; ctx.stroke();
+    });
   }
   const yl = p.ys / 100 * L * k; ctx.setLineDash([4, 6]); ctx.strokeStyle = "rgba(27,42,51,.7)"; ctx.lineWidth = 1.5;
   ctx.beginPath(); ctx.moveTo(0, yl); ctx.lineTo(W, yl); ctx.stroke(); ctx.setLineDash([]);
@@ -1162,6 +1237,8 @@ function runOptimiser() {
     o.list = Object.values(m.results).flatMap(r => r.front.map(s => ({ ...s, pattern: r.pattern }))).sort((x, y) => x.cells_per_cm2 - y.cells_per_cm2 || x.exact.window - y.exact.window);
     let bi = 0; o.list.forEach((s, i) => { if (s.exact.window > o.list[bi].exact.window) bi = i; });
     o.idx = o.list.length ? bi : -1; plotOpt(); drawSolution(false);
+    $("mcFrontRun").disabled = !o.list.length;
+    $("mcFrontInfo").innerHTML = o.list.length ? `${o.list.length} designs on the front: how often does each succeed?` : "The optimiser found no designs.";
   });
 }
 function applySolution(s) {
@@ -1234,19 +1311,58 @@ const mcKey = () => JSON.stringify([MC_KEYS().map(k => S.p[k]), S.pattern, S.pat
 const mcPattern = () => S.pattern === "custom" ? "custom" : geoPattern();
 function syncMcNote() {
   const m = S.mc, p = S.p;
-  $("mcInfo").textContent = `${fmt(Math.round(p.mcn))} tissues × ${fmt(Math.round(p.ntarget))} host cells · target C* = ${fmt(p.cstar)} %` +
+  $("mcInfo").textContent = `${fmt(Math.round(p.mcn))} tissues × ${fmt(Math.round(p.ntarget))} host cells · success: C ≥ ${fmt(p.cstar)} %, O ≤ ${fmt(p.ostar)} %` +
     (S.pattern === "random" ? " · random pattern: run on the hexagonal lattice" : "");
   if (m.res && !m.running && m.key !== mcKey()) $("mcCap").innerHTML = `<b>Values changed since this run</b> — press <b>Run</b> again. ` + mcCaption();
 }
-function runMC() {
-  const m = S.mc; m.running = true; m.key = mcKey();
-  $("mcRun").disabled = true; $("mcProg").hidden = false; $("mcProg").firstChild.style.width = "0%";
-  const p = { ...S.p };
-  ask("mc", { p, pattern: mcPattern(), n: Math.round(p.mcn), seed: 1, nTargets: Math.round(p.ntarget), custom: S.pattern === "custom" ? S.custom.map(x => x.slice()) : null }, msg => {
+function runMC(more = false) {
+  const m = S.mc, cont = more === true && m.res && !m.running && m.key === mcKey();
+  if (!cont) m.key = mcKey();
+  m.running = true;
+  $("mcRun").disabled = true; $("mcMore").disabled = true; $("mcProg").hidden = false; $("mcProg").firstChild.style.width = "0%";
+  const p = cont ? m.p : { ...S.p }, seed = cont ? m.res.n + 1 : 1, n = cont ? 100 : Math.round(p.mcn);
+  ask("mc", { p, pattern: mcPattern(), n, seed, nTargets: Math.round(p.ntarget), custom: S.pattern === "custom" ? S.custom.map(x => x.slice()) : null, ref: !cont }, msg => {
     if (msg.progress !== undefined) { $("mcProg").firstChild.style.width = (100 * msg.progress).toFixed(0) + "%"; return; }
-    m.running = false; m.res = msg.res; m.ref = msg.ref; m.p = p; $("mcRun").disabled = false; $("mcProg").hidden = true;
-    drawMC();
+    m.running = false; m.p = p; $("mcRun").disabled = false; $("mcMore").disabled = false; $("mcProg").hidden = true;
+    if (cont) {                                                    // merge: the statistics of all tissues so far
+      const runs = m.res.runs.concat(msg.res.runs);
+      m.res = { ...mcStats(runs, p.cstar / 100, p.ostar / 100), runs, coverage: runs.map(r => r.coverage), seed: 1, cstar: p.cstar / 100, ostar: p.ostar / 100, first: m.res.first };
+    } else { m.res = msg.res; m.ref = msg.ref; }
+    drawMC(); drawMap(lastMapGrid ? lastMapGrid.n : 170);
   });
+}
+function runFront() {
+  const o = S.opt, m = S.mc; if (!o.list.length || m.frontRunning) return;
+  const p = { ...(o.before ? o.before.p : S.p) }, n = Math.min(Math.round(p.mcn), 40), nt = Math.min(Math.round(p.ntarget), 1000);
+  m.frontRunning = true; $("mcFrontRun").disabled = true; $("mcFrontProg").hidden = false; $("mcFrontProg").firstChild.style.width = "0%";
+  ask("mcfront", { p, pattern: geoPattern(), front: o.list.map(sol => ({ ...sol })), n, nTargets: nt }, msg => {
+    if (msg.progress !== undefined) { $("mcFrontProg").firstChild.style.width = (100 * msg.progress).toFixed(0) + "%"; return; }
+    m.frontRunning = false; m.front = { ...msg.res, p, nt }; $("mcFrontRun").disabled = false; $("mcFrontProg").hidden = true;
+    plotFront();
+  });
+}
+function plotFront() {
+  const F_ = S.mc.front, ctx = $("mcFront").getContext("2d"), c = $("mcFront"), k = ks(c), W = c.width, H = c.height;
+  ctx.clearRect(0, 0, W, H); if (!F_) return;
+  const rows = F_.rows, l = 46 * k, rr = 14 * k, t = 22 * k, b = 40 * k;
+  const xs = rows.map(r => Math.log10(r.cells_per_cm2)), x0 = Math.floor(Math.min(...xs)), x1 = Math.ceil(Math.max(...xs) + 1e-9);
+  const X = v => l + (Math.log10(v) - x0) / Math.max(x1 - x0, 1) * (W - l - rr), Y = v => t + (1 - v) * (H - t - b);
+  ctx.font = font(c, 11); ctx.lineWidth = k; ctx.strokeStyle = "#E3DED6"; ctx.fillStyle = "#44525A";
+  for (const v of [0, .25, .5, .75, 1]) { ctx.beginPath(); ctx.moveTo(l, Y(v)); ctx.lineTo(W - rr, Y(v)); ctx.stroke(); ctx.textAlign = "right"; ctx.fillText((v * 100) + "%", l - 5 * k, Y(v) + 4 * k); }
+  ctx.textAlign = "center";
+  for (let e = x0; e <= x1; e++) { const x = l + (e - x0) / Math.max(x1 - x0, 1) * (W - l - rr); ctx.beginPath(); ctx.moveTo(x, t); ctx.lineTo(x, H - b); ctx.stroke(); ctx.fillText("10" + String(e).split("").map(ch => "⁰¹²³⁴⁵⁶⁷⁸⁹"[+ch]).join(""), x, H - b + 15 * k); }
+  ctx.textAlign = "left"; ctx.fillText("cells per cm² (log scale) — each point a design of the optimiser's front", l, H - 6 * k);
+  const line = (key, col, wd, dash) => { ctx.save(); ctx.strokeStyle = col; ctx.lineWidth = wd * k; ctx.setLineDash(dash); ctx.beginPath(); rows.forEach((r, i) => { const x = X(r.cells_per_cm2), y = Y(r[key]); i ? ctx.lineTo(x, y) : ctx.moveTo(x, y); }); ctx.stroke(); ctx.restore(); };
+  line("window", "#8FA0A8", 1.5, [4 * k, 3 * k]); line("mean", "#2A6F75", 1.5, []); line("p_hit", "#A9472F", 2.5, []);
+  ctx.save(); ctx.strokeStyle = "#A9472F"; ctx.setLineDash([2 * k, 3 * k]); ctx.beginPath(); ctx.moveTo(l, Y(F_.pstar)); ctx.lineTo(W - rr, Y(F_.pstar)); ctx.stroke(); ctx.restore();
+  for (const r of rows) { ctx.beginPath(); ctx.arc(X(r.cells_per_cm2), Y(r.p_hit), 3.5 * k, 0, 2 * Math.PI); ctx.fillStyle = r === F_.robust ? "#1B2A33" : "#A9472F"; ctx.fill(); }
+  if (F_.robust) { const x = X(F_.robust.cells_per_cm2), y = Y(F_.robust.p_hit); ctx.beginPath(); ctx.arc(x, y, 7 * k, 0, 2 * Math.PI); ctx.strokeStyle = "#1B2A33"; ctx.lineWidth = 2 * k; ctx.stroke(); }
+  let lx = l; for (const [col, name] of [["#A9472F", "P(success)"], ["#2A6F75", "mean C"], ["#8FA0A8", "average tissue"]]) { ctx.fillStyle = col; ctx.fillRect(lx, 6 * k, 10 * k, 10 * k); ctx.fillStyle = "#1B2A33"; ctx.fillText(name, lx + 14 * k, 15 * k); lx += ctx.measureText(name).width + 26 * k; }
+  const best = rows.reduce((a, r) => r.window > a.window ? r : a, rows[0]), rb = F_.robust, P = F_.p;
+  const desc = r => `${fmt(r.cells_per_cm2)} cells/cm² — spacing ${fmt(r.a)} µm, ${r.levels} depth${r.levels > 1 ? "s" : ""}, ${fmt(r.ncells)} cells per site`;
+  $("mcFrontText").innerHTML = `<div class="metric"><span>Robust ideal density (P ≥ ${fmt(P.pstar)} %)</span><span class="v">${rb ? `<b>${fmt(rb.cells_per_cm2)}</b> cells/cm²` : "none on this front"}</span></div>` +
+    (rb ? `<div class="note">${desc(rb)}; succeeds in ${pct(rb.p_hit)} ± ${pct(rb.se_p)} of the tissues.</div>` : `<div class="note">No design on the front succeeds in ${fmt(P.pstar)} % of the tissues (success: C ≥ ${fmt(P.cstar)} % and O ≤ ${fmt(P.ostar)} %). The best on average: ${desc(best)}, ${pct(best.window)} in the average tissue.</div>`) +
+    `<div class="cap">Each design over ${F_.n} tissues of ${fmt(F_.nt)} host cells — the same tissues for every design, so the curve is not ragged by luck. A quick screen: check the chosen design with <b>Run</b> above (more tissues), or <code>python -m dermsim mc --front</code>.</div>`;
 }
 function mcCaption() {
   const m = S.mc; if (!m.res) return "";
@@ -1259,11 +1375,15 @@ function drawMC() {
   plotMC();
   const row = (a, b) => `<div class="metric"><span>${a}</span><span class="v">${b}</span></div>`;
   $("mcStats").innerHTML =
-    row(`Robustness P(C ≥ ${fmt(p.cstar)} %)`, `<b>${pct(r.p_hit)}</b> ± ${pct(sep)}`) +
+    row(`Robustness P(C ≥ ${fmt(p.cstar)} % and O ≤ ${fmt(p.ostar)} %)`, `<b>${pct(r.p_hit)}</b> ± ${pct(sep)}`) +
+    row("… coverage reached · ceiling respected", `${pct(r.p_cov)} · ${pct(r.p_safe)}`) +
     row("Coverage of the host cells, mean", `${pct(r.mean)} ± ${pct(se)}`) +
     row("… 5 % · median · 95 %", `${pct(r.q05)} · ${pct(r.q50)} · ${pct(r.q95)}`) +
+    row("… spread between tissues · sampling noise", `${pct(r.sd_tissue)} · ${pct(r.sd_noise)}`) +
     row("… without any variation", pct(m.ref)) +
+    row("… counting senescent cells as missed", pct(r.all_mean)) +
     row("Above the ceiling, mean", pct(r.above_mean)) +
+    row("Days in the window, mean per host cell", days(r.days_mean)) +
     row("Monte Carlo error (s.e.)", `<span style="color:${ok ? "inherit" : "var(--terra)"}">${pct(se)} · ${pct(sep)}${ok ? "" : " — more tissues"}</span>`) +
     (hetFaithful(p) ? "" : row(`<b style="color:var(--terra)">⚠ Variation shorter than 4 λ</b>`, `<span style="color:var(--terra)">indicative only</span>`));
   drawMCcells();
@@ -1678,7 +1798,8 @@ function schedule(coarse) {
   pending = requestAnimationFrame(() => { pending = null; render(coarse ? 90 : 170, false); });
   clearTimeout(fineTimer); fineTimer = setTimeout(() => { render(170, true); requestVolume(); drawChart(); }, coarse ? 260 : 0);
 }
-function render(n, final) { F = buildField(S.p, S.pattern, S.custom, S.seed); syncControls(); drawLegend(); drawMap(n); drawSection(n); drawMetrics(); if (final) { syncUrl(); scaffoldView(); } }
+let fitted = false;
+function render(n, final) { F = buildField(S.p, S.pattern, S.custom, S.seed); syncControls(); drawLegend(); if (!fitted) { fitted = true; fitLayout(); } drawMap(n); drawSection(n); drawMetrics(); if (final) { syncUrl(); scaffoldView(); } }
 
 // ---------------------------------------------------------------------------
 // The address holds the configuration: every value that differs from its
@@ -1879,9 +2000,26 @@ $("mLog").addEventListener("click", () => { S.mode = "log"; schedule(false); });
 $("mResp").addEventListener("click", () => { S.mode = "resp"; schedule(false); });
 $("ages").addEventListener("click", e => { const b = e.target.closest && e.target.closest("button[data-age]"); if (!b) return;
   const g = AGES.find(x => x.key === b.dataset.age); if (g) { Object.assign(S.p, g.values); schedule(false); } });
-$("mcRun").addEventListener("click", runMC);
-let resizeTimer = 0;                                               // plots are drawn for the width they had: redraw on resize
-window.addEventListener("resize", () => { clearTimeout(resizeTimer); resizeTimer = setTimeout(() => { plotOpt(); drawMC(); }, 200); });
+$("mcRun").addEventListener("click", () => runMC(false));
+$("mcMore").addEventListener("click", () => runMC(true));
+$("mcFrontRun").addEventListener("click", runFront);
+$("mcOverlay").addEventListener("change", e => { S.mc.overlay = e.target.checked; drawMap(lastMapGrid ? lastMapGrid.n : 170); });
+// Layout: on a desktop window the map is as large as the middle column's height allows
+// (the rest of the middle column scrolls under it); otherwise at most 720 px wide.
+const DESK = matchMedia("(min-width:1100px) and (min-height:620px)");
+function fitLayout() {
+  const panel = mapC.closest && mapC.closest(".panel"); if (!panel) return;
+  if (!DESK.matches) { panel.style.maxWidth = ""; mapC.style.width = ""; mapC.style.maxWidth = "720px"; mapC.style.margin = "0 auto"; return; }
+  const stage = panel.parentElement, cs = getComputedStyle(panel), tb = panel.querySelector(".toolbar"), lg = $("legend");
+  const padV = parseFloat(cs.paddingTop) + parseFloat(cs.paddingBottom) + 2, padH = parseFloat(cs.paddingLeft) + parseFloat(cs.paddingRight) + 2;
+  const availH = stage.clientHeight - padV - (tb ? tb.offsetHeight + 8 : 0) - (lg ? Math.max(lg.offsetHeight, 46) + 12 : 0) - 6;   // room for a legend of two lines
+  const size = Math.floor(Math.max(300, Math.min(stage.clientWidth - padH - 8, availH)));
+  Object.assign(panel.style, { maxWidth: size + padH + "px", marginLeft: "auto", marginRight: "auto" });
+  Object.assign(mapC.style, { width: size + "px", maxWidth: "", margin: "0 auto" });
+}
+let resizeTimer = 0;                                               // plots are drawn for the size they had: redraw on resize
+window.addEventListener("resize", () => { clearTimeout(resizeTimer); resizeTimer = setTimeout(() => {
+  fitLayout(); schedule(false); plotOpt(); drawMC(); plotFront(); }, 200); });
 $("reset").addEventListener("click", () => { resetParams(); schedule(false); });
 
 // ---------------------------------------------------------------------------
@@ -1976,8 +2114,11 @@ const HELP = [
       <li><b>Variation within the dermis</b>: two random fields, for the cell density (scaling the uptake) and the diffusion coefficient, log-normal with mean 1 and a correlation length. Not measured — FRAP found only marginal variation of diffusion within and between the layers (${cite("romgens2015diffusion")}) — so both are <span class="badge b-ph">placeholder</span>s, off by default.</li>
       <li><b>Host cells</b>, placed in the papillary or reticular dermis in proportion to the cells each holds. A share is <b>senescent</b>: in human dermis p21-positive cells rise with age, up to 15 % in donors over 65 (${cite("idda2020senescence")}); in baboon skin over 15 % of dermal fibroblasts carry damaged telomeres (${cite("jeyapalan2007primates")}). Senescent cells are not counted as targets. Every other cell has <b>its own threshold</b>: single cells answer one dose differently because their signalling proteins differ (${cite("strasen2018variability")}); the size of that spread is not given, so it is a placeholder, off by default.</li>
       <li>The <b>senescent secretome</b> (SASP, ${cite("coppe2008sasp")}) may change the threshold of the cells around: the project plan assumed it raises it, but the SASP also carries TGF-β family ligands that make neighbours senescent (${cite("acosta2013paracrine")}), so it might act with the signal instead. Neither size nor sign is known: a placeholder that can take either sign, off by default.</li>
+      <li><b>The insertion</b> of this application: needles entered 64–90 % of their height (${cite("cordeiro2020templates")}), and 600 µm needles reached 330 or 520 µm depending on the force applied (${cite("donnelly2010geometry")}). Each tissue draws how deep this application went; all its deposits move together.</li>
       <li><b>The field</b> at every host cell, each implant site with the medium of its level for this donor, scaled by the random fields averaged around it over its decay length.</li></ol>
-      <p>That last step is a reduction, and it was measured rather than trusted: against a three-dimensional finite-volume solution of the varying medium, it is close when the fields vary over at least four decay lengths, and no better than ignoring the variation when they vary over one or less. The panel warns in that range.</p>`],
+      <p>That last step is a reduction, and it was measured rather than trusted. The pipeline solves whole tissues in three dimensions (finite volumes over a block of sites, the varying medium itself) and compares, on the same host cells, the coverage it gives with the per-site medium's and with the mean field's (the variation ignored):</p>
+      <ul><li><b>Variation within the dermis costs coverage.</b> Varying over one decay length or more, it lowered the coverage below the mean-field value — by up to 16 % near the threshold, where the loss peaked at two to four decay lengths, and by up to 31 % near the ceiling, where it kept growing with the correlation length. Over half a decay length it averaged out. This is the proposal's hypothesis H3, supported.</li>
+      <li><b>The per-site medium</b> is within 5 % of the three-dimensional coverage from four decay lengths up, and within 3.5 % near the ceiling at any length; near the threshold over one to two decay lengths it overestimates the coverage by up to 14 %. The panel warns below four decay lengths, and <code>python -m dermsim mc --fv</code> solves every tissue in three dimensions instead.</li></ul>`],
     ["response", "Graded response", () => `<p>Whether a cell is "activated" is not a switch. The <b>Response</b> colouring shows the graded response</p>
       <p style="text-align:center"><code>R(c) = cⁿ / (EC50ⁿ + cⁿ)</code></p>
       <p>with the EC50 set to the aged-cell threshold, so R = ½ exactly at the lower edge of the window, and the <b>Hill exponent n</b> saying how sharply the cells tell doses apart. n = 1 is no cooperativity; larger n makes the response more switch-like.</p>
@@ -2002,12 +2143,17 @@ const HELP = [
       <p>How: about 14 spacings from 80 µm to 2 mm, 13 doses from 10³ to 10⁶ cells per site, 8 depths (flat) or 2–5 depths with 6 spacings and 6 middle depths (volume), all with every cluster inside the dermis and no two clusters overlapping; each design is scored on one periodic cell (12 × 12 × 16 points). For speed the field of each spacing is tabulated once and reused; the solutions shown are then re-evaluated exactly. The search runs in the background and takes a few seconds.</p>
       <p>The optimum depends on values measured in other tissues or still placeholders (secretion, thresholds, implant half-life): read it as a demonstration of the trade-offs until those are measured.</p>
       <p>With the depth-dependent dermis (the default), each injection level of each candidate decays with the effective decay length of <i>its own</i> depth, so a shallow level is judged with the shorter λ it really meets. To keep that fast, the field tables are built at a few decay lengths at most 15 % apart and each level is blended between the two around its own; the solutions shown are then re-evaluated exactly, and the two agree to within a few tenths of a per cent of the dermis. See <a href="#help/model/layers" data-help="model/layers">A dermis with depth</a>.</p>`],
-    ["robust", "Robustness over random tissues", () => `<p><b>Run</b> draws ${n("mcn")} random tissues (step 4: donors, variation, host cells — see <a href="#help/model/variation" data-help="model/variation">Patients and tissue vary</a>) and, in each, counts the share of the host cells inside the window: the coverage C of that tissue. The histogram shows how C spreads over the tissues.</p>
-      <ul><li><b>Robustness P(C ≥ C*)</b>: the share of tissues in which the design reaches the target coverage C* — the project's measure of a design that works in patients, not only on average.</li>
-      <li><b>Without any variation</b>: the same kind of count in the average tissue. The gap to the mean is what the variation costs.</li>
-      <li><b>Monte Carlo error</b>: the standard errors of the mean coverage and of P. Under 0.5 % and 2.5 % they are small enough to read the numbers; otherwise raise the number of tissues. The pipeline's <code>python -m dermsim mc</code> adds tissues until both are under target, and draws exactly the same tissues as this page (seeds 1, 2, 3, …).</li></ul>
+    ["robust", "Robustness over random tissues", () => `<p><b>Run</b> draws ${n("mcn")} random tissues (step 4: donors, the insertion, variation, host cells — see <a href="#help/model/variation" data-help="model/variation">Patients and tissue vary</a>) and, in each, counts the share of the host cells inside the window: the coverage C of that tissue, and the share O above the ceiling. The histogram shows how C spreads over the tissues.</p>
+      <ul><li><b>Robustness P(C ≥ C* and O ≤ O*)</b>: the share of tissues in which the design both reaches the target coverage and keeps the overexposure under its limit — the plan's definition of a design that works, here in patients rather than on average. The next line splits it: how often the coverage is reached, how often the ceiling is respected.</li>
+      <li><b>Spread between tissues · sampling noise</b>: part of the spread of C is only the luck of which host cells were drawn (a binomial share of the cells per tissue); the rest is the tissues themselves. With few tissues, a small spread between tissues is itself uncertain.</li>
+      <li><b>Without any variation</b>: the same kind of count in the average tissue. The gap to the mean is what the variation does — and it need not be a loss: near the threshold, tissues with fewer cells gain more than tissues with more cells lose.</li>
+      <li><b>Counting senescent cells as missed</b>: senescent cells are not targets, so they are left out of C. Counted as cells the design failed to reach, the coverage is lower by about the senescent share, and a C* above 1 − that share cannot be reached at all.</li>
+      <li><b>Days in the window</b>: how long, on average, a host cell spends inside the window as the implant decays (closed form, as in the Coverage panel).</li>
+      <li><b>Monte Carlo error</b>: the standard errors of the mean coverage and of P. Under 0.5 % and 2.5 % they are small enough to read the numbers; otherwise press <b>+100 tissues</b>, which continues with the next seeds. The pipeline's <code>python -m dermsim mc</code> adds tissues until both are under target, and draws exactly the same tissues as this page (seeds 1, 2, 3, …); <code>mc --sources</code> runs each source of variation alone, to show which one matters.</li></ul>
       <p>The coverage here is a share of <i>cells</i>, the plan's definition, and the papillary dermis holds many of them; <b>Dermis in window</b> in the Coverage panel is a share of the dermis's <i>volume</i>. The two differ even without any variation.</p>
-      <p>Below the histogram, tissue 1 is drawn from above and in depth: its host cells coloured by where they are, senescent cells as ×, and — if the cell density varies — the density as shading. The maps above are not changed by any of this.</p>`],
+      <p>Below the histogram, tissue 1 is drawn from above and in depth: its host cells coloured by where they are, senescent cells as ×, and — if the cell density varies — the density as shading. <b>Show tissue 1's host cells on the map</b> puts those near the slice depth on the map, over the average tissue's colours.</p>`],
+    ["robustfront", "The robust ideal density", () => `<p>The plan defines the ideal density as the smallest dose with C ≥ C* and O ≤ O*, <i>robust to heterogeneity</i>. The optimiser finds, for each dose, the design with the most dermis in the window of the average tissue — its front. <b>Test the front</b> runs each of those designs over the same random tissues and plots how often it succeeds against its dose; the <b>robust ideal density</b> is the cheapest design that succeeds in at least P* of the tissues (${n("pstar")} %, step 4).</p>
+      <p>All designs meet the same tissues, so their differences are not blurred by luck. To keep it quick each design gets at most 40 tissues of at most 1000 host cells: a screen. Check the design it picks with <b>Run</b> (apply it from the optimiser first), or with <code>python -m dermsim mc --front</code>. The front itself is chosen for the average tissue; a design that is not on it could be more robust, which this does not search.</p>`],
     ["depths", "Injection depths and spacing seen from above", () => `<p>The depths of the injection levels and the nearest distance between sites seen from above (all depths projected). See <a href="#help/model/depths" data-help="model/depths">Several injection depths</a>.</p>`],
     ["dose", "Sites and cells per cm²", () => `<p>Sites per cm² follow from the spacing (hexagonal: 1 / (a²·√3/2), square: 1 / a²) times the number of depths; cells per cm² multiply by the cells per site. For scale: a fibroblast cell therapy for acne scars injected 2 mL of 10–20 million cells per mL per session (${cite("munavalli2013azficel")}); the group's protocol used 40,000 cells per site (${cite("roy2024implanting")}).</p>`],
     ["overlap", "Overlapping clusters", () => `<p>Each implant site is a sphere of radius R. Two sites closer than 2R would overlap, which implanted cells cannot do, so the model is no longer meaningful there. This happens when the spacing per depth is below 2R, or when sites on neighbouring depths (offset sideways by the spacing seen from above and vertically by the spacing between depths) are closer than 2R. The optimiser only proposes layouts without overlap.</p>`],
@@ -2188,6 +2334,7 @@ buildControls();
 buildHelp();
 fillHelpNumbers();
 schedule(false);
+fitLayout();
 plotOpt();
 syncMcNote();
 openFromHash();

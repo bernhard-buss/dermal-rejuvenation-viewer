@@ -12,7 +12,7 @@ const api = new Function(`"use strict";${block[1]}
   return { derived, kernel, buildField, latticeAt, holePoint, criticalSpacing, singleReach, sitesPerCm2, fractions, unitCellFractions, volumeFractions, levelDepths, nLevels, optimise,
     survival, hill, timeAbove, windowTimes, median, exposure, scaffoldPlan, scaffoldPositions,
     tissueProfile, tissueEffective, reductionIsFaithful, cellularShare, levelKernels, images, deepMode,
-    rng, gauss, spectral, fieldG, fieldLog, donor, realise, mcStats, monteCarlo, hetFaithful };`)();
+    rng, gauss, spectral, fieldG, fieldLog, donor, realise, mcStats, monteCarlo, hetFaithful, insertedDepths };`)();
 const golden = JSON.parse(readFileSync(new URL("../data/golden.json", import.meta.url), "utf8"));
 const rtol = golden.rtol ?? 1e-9;
 
@@ -115,7 +115,8 @@ if (golden.mc) {
     close(`${c.name} faithful`, api.hetFaithful(c.params) ? 1 : 0, c.faithful ? 1 : 0, 0);
     for (const run of c.runs) {
       const got = api.realise(c.params, c.pattern, run.seed, c.n_targets);
-      for (const k of ["coverage", "below", "above"]) close(`${c.name} seed ${run.seed} ${k}`, got[k], run[k], 1e-9);
+      for (const k of ["coverage", "below", "above", "coverage_all", "days", "n_eff"]) close(`${c.name} seed ${run.seed} ${k}`, got[k], run[k], 1e-9);
+      run.depths.forEach((v, l) => close(`${c.name} seed ${run.seed} depth ${l}`, got.depths[l], v, 1e-12));
       for (const k of ["n_host", "n_senescent"]) close(`${c.name} seed ${run.seed} ${k}`, got[k], run[k], 0);
       for (const k of ["hpap", "rpap", "cells"]) close(`${c.name} seed ${run.seed} donor.${k}`, got.donor[k], run.donor[k], 1e-12);
       run.lam_levels.forEach((v, l) => close(`${c.name} seed ${run.seed} λ level ${l}`, got.lam_levels[l], v, 1e-12));
@@ -126,8 +127,10 @@ if (golden.mc) {
         close(`${tag} c`, got.c[j], cc, 1e-9); close(`${tag} threshold`, got.ec50[j], ec, 1e-9); close(`${tag} weight`, got.w[j], w, 1e-9);
       });
     }
+    for (const [zp, want] of c.inserted) api.insertedDepths(c.params, [60, 500, 1400], zp).forEach((v, i) => close(`${c.name} inserted(${zp})[${i}]`, v, want[i], 1e-12));
     const m = api.monteCarlo(c.params, c.pattern, c.mc.n, c.mc.seed, c.n_targets);
-    for (const k of ["n", "mean", "sd", "se", "p_hit", "se_p", "q05", "q50", "q95", "above_mean"]) close(`${c.name} mc.${k}`, m[k], c.mc[k], 1e-9);
+    for (const k of ["n", "mean", "sd", "se", "p_hit", "se_p", "p_cov", "p_safe", "sd_noise", "sd_tissue", "q05", "q50", "q95",
+                     "above_mean", "all_mean", "days_mean"]) close(`${c.name} mc.${k}`, m[k], c.mc[k], 1e-9);
   }
 }
 console.log(`${golden.generator} golden cases: ${golden.cases.length}, checks: ${checks}, failures: ${fails}, largest relative difference: ${worst.toExponential(2)}`);

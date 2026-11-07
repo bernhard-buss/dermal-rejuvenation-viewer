@@ -45,6 +45,10 @@
   `node tests/parity.mjs` (golden cases, relative tolerance 1e-9) and
   `node tests/page.mjs` (script compiles, noindex, parameters, changelog entry).
   CI runs both on every push.
+- **Layout.** On a desktop window (≥ 1100 × 620 px) the page does not scroll: `#left`,
+  the middle `.stage` and `#right` scroll on their own and `fitLayout()` sizes the map
+  to the middle column's height (canvas backing stores stay fixed; plots are redrawn
+  on resize). Below that, one scrolling column. Check both after layout changes.
 - **Versions are for the people using the viewer.** `VERSION` (top of the
   script) and `CHANGELOG.md` change only for user-facing changes:
   - a new feature, or a change in what the viewer computes or shows (including

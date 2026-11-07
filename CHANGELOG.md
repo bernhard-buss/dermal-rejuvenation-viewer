@@ -2,6 +2,16 @@
 
 Newest version first. Each entry says what you can do or see differently.
 
+## 0.9.0 — 2026-11-07
+
+- **The page fits the window on a desktop screen.** The controls on the left and the panels on the right scroll on their own and stay in view; the map in the middle takes the space between them and is as large as the window's height allows, with the cross-section below it. Smaller windows keep the single scrolling column, with the map at most 720 px wide.
+- **Robustness now means what the plan means:** a tissue counts as a success when the coverage reaches C* *and* at most O* of the host cells are above the ceiling (new: the overexposure limit O*, 5 % by default). The panel shows both shares, the spread between tissues apart from the sampling noise of the host cells, the coverage if senescent cells are counted as missed, and how many days a host cell spends in the window.
+- **Robust ideal density:** after **Optimise**, *Test the front* runs every design on the front over the same random tissues and marks the cheapest one that succeeds in at least P* of them (new: the required robustness P*, 90 % by default).
+- New source of variation, **spread of the insertion depth**: from one application to the next the needles enter deeper or shallower (sourced range of 64–90 % of their length), moving all deposits together.
+- **+100 tissues** continues a run with the next seeds, until the standard errors are small enough.
+- **Show tissue 1 on the map**: the host cells of the first random tissue near the slice depth, coloured by where they are, with the senescent ones.
+- Help: what the three-dimensional check found — variation within the dermis on the scale of λ or longer lowers the coverage below the average-tissue prediction, and where the panel's fast method holds.
+
 ## 0.8.0 — 2026-11-07
 
 - **Robustness** panel: draws many random tissues and counts, in each, the share of the host cells inside the window. It shows how that coverage spreads, how often the design reaches its target coverage C*, the coverage without any variation, the standard errors, and one tissue from above and in depth, with its senescent cells and, if set, its local cell density. The pipeline's `python -m dermsim mc` draws exactly the same tissues.

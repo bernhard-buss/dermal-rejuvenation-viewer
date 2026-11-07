@@ -42,9 +42,13 @@ models: Roy B, Pekec T, Yuan L, Shivashankar GV. *Aging Cell* 2024;23:e14032,
 - **Optimise**: searches flat and multi-depth layouts for the most dermis inside
   the window, plots every design against the dose with the best-coverage front,
   and lets you cycle through the solutions in the maps.
-- **Robustness**: draws many random tissues — donors, variation within the
-  dermis, senescent cells, cell-to-cell thresholds — and shows how the coverage
-  of the host cells spreads and how often the design reaches its target.
+- **Robustness**: draws many random tissues — donors, the insertion depth,
+  variation within the dermis, senescent cells, cell-to-cell thresholds — and
+  shows how the coverage of the host cells spreads and how often the design
+  succeeds (coverage reached, ceiling respected); along the optimiser's front it
+  finds the cheapest design that succeeds often enough (robust ideal density).
+- On a desktop window the page fits the screen: the controls and the panels
+  scroll on their own beside the map.
 - A cross-section through the skin with the host fibroblasts coloured by the
   signal where they sit, and the decay length against depth.
 - **Injection scaffold**: the design as a needle array, with a downloadable
