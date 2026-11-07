@@ -99,5 +99,16 @@ if (!errors.length && !/id="step_tissue"/.test(left)) errors.push("the control p
 if (!errors.length && !byId("metrics").innerHTML) errors.push("the coverage panel was not filled");
 if (!errors.length && !/^v\d/.test(byId("ver").textContent)) errors.push("the version chip is empty");
 
+// Save YAML must read back here, value for value; DRV_YAML_OUT=FILE also writes it, so the
+// pipeline's test suite can load it with `python -m dermsim --params FILE`.
+if (!errors.length) {
+  try {
+    const yaml = ctx.paramsYaml(), before = { ...ctx.window.__drv.params() };
+    if (!/^groups:/m.test(yaml) || !/primary: true/.test(yaml)) errors.push("Save YAML lacks the groups or the primary flags the pipeline requires");
+    const back = ctx.readYamlish(yaml);
+    for (const [k, v] of Object.entries(before)) if (k !== "pattern" && Math.abs(back.parameters[k].value - v) > 1e-3 * Math.max(1, Math.abs(v))) errors.push(`Save YAML: ${k} reads back as ${back.parameters[k].value}, not ${v}`);
+    if (process.env.DRV_YAML_OUT) (await import("node:fs")).writeFileSync(process.env.DRV_YAML_OUT, yaml);
+  } catch (e) { errors.push("Save YAML: " + (e.stack || e).toString().split("\n")[0]); }
+}
 if (errors.length) { for (const e of errors) console.error("✗ " + e); process.exit(1); }
 console.log(`smoke OK: the page script runs, builds ${(left.match(/class="panel step"/g) || []).length} steps and fills the panels`);

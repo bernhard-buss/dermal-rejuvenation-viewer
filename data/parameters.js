@@ -28,14 +28,20 @@ window.DRV_PARAMS = {
    "note": "Your design: where the sites go and how much goes into each."
   },
   {
-   "key": "device",
+   "key": "variation",
    "step": 4,
+   "title": "How much it varies",
+   "note": "Patients differ, and so does tissue within one patient. These values drive the Robustness panel: many random tissues, and how often the design reaches its target. They do not change the maps."
+  },
+  {
+   "key": "device",
+   "step": 5,
    "title": "The device",
    "note": "Only for the injection scaffold: what the needle array would look like."
   },
   {
    "key": "view",
-   "step": 5,
+   "step": 6,
    "title": "What you look at",
    "note": "Where and when you are looking. Changes nothing about the design."
   }
@@ -111,11 +117,11 @@ window.DRV_PARAMS = {
    "group": "tissue",
    "label": "Papillary dermis thickness",
    "unit": "µm",
-   "value": 101,
+   "value": 101.2,
    "min": 20,
    "max": 400,
    "log": false,
-   "step": 1,
+   "step": 0.01,
    "status": "src",
    "sources": [
     "arnalforne2024dermis",
@@ -128,11 +134,11 @@ window.DRV_PARAMS = {
    "group": "tissue",
    "label": "Papillary cell density",
    "unit": "× reticular",
-   "value": 11,
+   "value": 11.01,
    "min": 1,
    "max": 20,
    "log": false,
-   "step": 0.5,
+   "step": 0.01,
    "status": "ana",
    "sources": [
     "arnalforne2024dermis",
@@ -170,6 +176,38 @@ window.DRV_PARAMS = {
     "wei2018microneedle"
    ],
    "note": "Over this depth D rises from its junction value to the bulk value, D(z) = D − (D − D_junction)·e^(−z/this). That diffusion is slowest at the junction is measured ({cite:wei2018microneedle}); how thick the zone is was not found, so the depth itself is a placeholder."
+  },
+  {
+   "key": "cells",
+   "group": "tissue",
+   "label": "Cellularity (relative)",
+   "unit": "× default tissue",
+   "value": 1,
+   "min": 0.2,
+   "max": 6,
+   "log": true,
+   "status": "ana",
+   "sources": [
+    "arnalforne2024dermis",
+    "oyleryaniv2017niches"
+   ],
+   "note": "How many cells the dermis holds, relative to the default tissue (donors aged 55 and over), for which λ is the decay length. Uptake by cells is what removes the signal, and it follows the density of consuming cells ({cite:oyleryaniv2017niches}), so more cells mean a shorter λ and fewer a longer one. The age presets above set it from total cell counts per mm² of section in four age groups ({cite:arnalforne2024dermis}) — all nuclei, not fibroblasts only, hence an analogue. See {help:model/age|Age of the skin}."
+  },
+  {
+   "key": "deep",
+   "group": "tissue",
+   "label": "Below the dermis",
+   "unit": "0 open · 1 absorbing · 2 closed",
+   "value": 0,
+   "min": 0,
+   "max": 2,
+   "log": false,
+   "step": 1,
+   "status": "des",
+   "sources": [
+    "braverman1997microcirculation"
+   ],
+   "note": "What happens at the deep side of the dermis, the hypodermis. 0, open: the dermis simply continues — the model up to M3, and the middle case, in which below H the signal is cleared as in the dermis. 1, absorbing: the deep vascular plexus at the dermal–subcutaneous junction ({cite:braverman1997microcirculation}) clears everything that reaches it. 2, closed: nothing passes into the fat. No measurement says which holds; 1 and 2 bracket 0. It matters only for sites within a few λ of the dermis thickness. See {help:model/deep|Below the dermis}."
   },
   {
    "key": "sec",
@@ -406,6 +444,192 @@ window.DRV_PARAMS = {
    "note": "Radius of the sphere of implanted cells. Placeholder geometry; implanted cells also spread over days."
   },
   {
+   "key": "fsen",
+   "group": "variation",
+   "primary": true,
+   "label": "Senescent share of host cells",
+   "unit": "fraction",
+   "value": 0.15,
+   "min": 0,
+   "max": 0.6,
+   "log": false,
+   "step": 0.01,
+   "status": "ana",
+   "sources": [
+    "idda2020senescence",
+    "jeyapalan2007primates"
+   ],
+   "note": "Share of the host cells that are senescent. They are not counted as targets (coverage is over the others) and, with the SASP factor below, they raise the threshold around them. In human dermis, p21-positive cells increased with age and made up to 15 % of cells in donors over 65, while p16 was almost undetectable ({cite:idda2020senescence}); in baboon skin, dermal fibroblasts with damaged telomeres reached over 15 % of all fibroblasts ({cite:jeyapalan2007primates}). Markers of senescence in all cells, not a count of senescent fibroblasts: an analogue."
+  },
+  {
+   "key": "cstar",
+   "group": "variation",
+   "primary": true,
+   "label": "Target coverage C*",
+   "unit": "% of host cells",
+   "value": 90,
+   "min": 10,
+   "max": 100,
+   "log": false,
+   "step": 1,
+   "status": "des",
+   "sources": [],
+   "note": "The share of the (non-senescent) host cells a design must put inside the window for one realisation to count as a success. Robustness is the share of realisations that succeed, P(C ≥ C*)."
+  },
+  {
+   "key": "cvpap",
+   "group": "variation",
+   "label": "Donor spread, papillary cellularity",
+   "unit": "CV (SD / mean)",
+   "value": 0.166,
+   "min": 0,
+   "max": 1,
+   "log": false,
+   "step": 0.001,
+   "status": "ana",
+   "sources": [
+    "arnalforne2024dermis"
+   ],
+   "note": "How much the papillary cellularity differs between donors of one age group: 2714 ± 450.50 cells/mm² of section at 55 and over ({cite:arnalforne2024dermis}, n = 5). Each realisation draws one donor from a log-normal with this coefficient of variation. All nuclei, not fibroblasts only; the age presets set it for their group."
+  },
+  {
+   "key": "cvret",
+   "group": "variation",
+   "label": "Donor spread, reticular cellularity",
+   "unit": "CV (SD / mean)",
+   "value": 0.348,
+   "min": 0,
+   "max": 1,
+   "log": false,
+   "step": 0.001,
+   "status": "ana",
+   "sources": [
+    "arnalforne2024dermis"
+   ],
+   "note": "The same for the reticular dermis: 246.50 ± 85.72 cells/mm² of section at 55 and over ({cite:arnalforne2024dermis}, n = 5)."
+  },
+  {
+   "key": "cvhpap",
+   "group": "variation",
+   "label": "Donor spread, papillary thickness",
+   "unit": "CV (SD / mean)",
+   "value": 0.212,
+   "min": 0,
+   "max": 1,
+   "log": false,
+   "step": 0.001,
+   "status": "src",
+   "sources": [
+    "arnalforne2024dermis"
+   ],
+   "note": "The same for the papillary thickness: 101.2 ± 21.43 µm at 55 and over ({cite:arnalforne2024dermis}, n = 5)."
+  },
+  {
+   "key": "sigec",
+   "group": "variation",
+   "label": "Cell-to-cell spread of the threshold",
+   "unit": "SD of ln",
+   "value": 0,
+   "min": 0,
+   "max": 1.5,
+   "log": false,
+   "step": 0.01,
+   "status": "ph",
+   "sources": [
+    "strasen2018variability",
+    "urban2023isoforms"
+   ],
+   "note": "Single cells answer the same dose differently: a cell's threshold is the median × e^(this × a standard normal draw). Single-cell responses to TGF-β are set cell by cell by the levels of signalling proteins ({cite:strasen2018variability}), and fibroblast responses were heterogeneous ({cite:urban2023isoforms}); the size of the spread is not given there. Placeholder, off by default."
+  },
+  {
+   "key": "ksasp",
+   "group": "variation",
+   "label": "SASP effect on the threshold",
+   "unit": "× per senescent share",
+   "value": 0,
+   "min": -5,
+   "max": 20,
+   "log": false,
+   "step": 0.1,
+   "status": "ph",
+   "sources": [
+    "coppe2008sasp",
+    "acosta2013paracrine"
+   ],
+   "note": "Senescent cells secrete a mixture of factors (the SASP, {cite:coppe2008sasp}). Here the threshold of a host cell is multiplied by 1 + this × senescent share × local cell density. Positive: the SASP blunts the response, as the project plan assumed. But the SASP also carries TGF-β family ligands that induce senescence in neighbouring cells ({cite:acosta2013paracrine}), so it may act with the signal rather than against it — negative values. Neither size nor sign is measured: placeholder, off by default."
+  },
+  {
+   "key": "sigrho",
+   "group": "variation",
+   "label": "Variation of cell density within the dermis",
+   "unit": "CV",
+   "value": 0,
+   "min": 0,
+   "max": 1.5,
+   "log": false,
+   "step": 0.01,
+   "status": "ph",
+   "sources": [],
+   "note": "Local variation of the cell density beyond the two layers: a random field (log-normal, mean 1) with this coefficient of variation and the correlation length below, scaling the uptake around each implant site and weighting the host cells. Not measured; placeholder, off by default."
+  },
+  {
+   "key": "sigd",
+   "group": "variation",
+   "label": "Variation of diffusion within the dermis",
+   "unit": "CV",
+   "value": 0,
+   "min": 0,
+   "max": 1.5,
+   "log": false,
+   "step": 0.01,
+   "status": "ph",
+   "sources": [
+    "romgens2015diffusion"
+   ],
+   "note": "Local variation of the diffusion coefficient, as a second random field. FRAP in human skin found only marginal variation within and between papillary and reticular dermis ({cite:romgens2015diffusion}); the size of the local variation is not given. Placeholder, off by default."
+  },
+  {
+   "key": "ell",
+   "group": "variation",
+   "label": "Correlation length of the variation",
+   "unit": "µm",
+   "value": 200,
+   "min": 20,
+   "max": 3000,
+   "log": true,
+   "status": "ph",
+   "sources": [],
+   "note": "How far apart two points must be to vary independently, for both random fields. Not measured; placeholder."
+  },
+  {
+   "key": "mcn",
+   "group": "variation",
+   "label": "Realisations",
+   "unit": "tissues",
+   "value": 100,
+   "min": 10,
+   "max": 2000,
+   "log": true,
+   "step": 1,
+   "status": "des",
+   "sources": [],
+   "note": "Random tissues per run (each a donor, its random fields and its host cells). The panel reports the standard errors, so you can see whether this is enough."
+  },
+  {
+   "key": "ntarget",
+   "group": "variation",
+   "label": "Host cells per realisation",
+   "unit": "cells",
+   "value": 2000,
+   "min": 200,
+   "max": 20000,
+   "log": true,
+   "step": 1,
+   "status": "des",
+   "sources": [],
+   "note": "Host cells sampled per realisation. Their sampling noise is part of each realisation's coverage; more cells, less noise, more time."
+  },
+  {
    "key": "dneedle",
    "group": "device",
    "label": "Needle outer diameter",
@@ -513,7 +737,63 @@ window.DRV_PARAMS = {
    "note": "Width of the en-face map."
   }
  ],
+ "presets": {
+  "reference": "aged",
+  "source": "arnalforne2024dermis",
+  "note": "Photoprotected periumbilical skin, 25 autopsies in four age groups; total cellularity is all nuclei per mm² of section ({cite:arnalforne2024dermis}, Table 5). Children (0–12 years) are left out. Only the tissue changes; the signal, the thresholds and the design stay as they are.",
+  "groups": [
+   {
+    "key": "young",
+    "title": "13–25 years",
+    "n": 5,
+    "reference": false,
+    "values": {
+     "hpap": 70.95,
+     "rpap": 9.62,
+     "cells": 1.259,
+     "cvpap": 0.188,
+     "cvret": 0.136,
+     "cvhpap": 0.066
+    }
+   },
+   {
+    "key": "adult",
+    "title": "26–54 years",
+    "n": 10,
+    "reference": false,
+    "values": {
+     "hpap": 74.85,
+     "rpap": 8.8,
+     "cells": 1.193,
+     "cvpap": 0.196,
+     "cvret": 0.461,
+     "cvhpap": 0.18
+    }
+   },
+   {
+    "key": "aged",
+    "title": "55 years and over",
+    "n": 5,
+    "reference": true,
+    "values": {
+     "hpap": 101.2,
+     "rpap": 11.01,
+     "cells": 1.0,
+     "cvpap": 0.166,
+     "cvret": 0.348,
+     "cvhpap": 0.212
+    }
+   }
+  ]
+ },
  "sources": {
+  "acosta2013paracrine": {
+   "short": "Acosta et al. 2013",
+   "cite": "Acosta JC, Banito A, Wuestefeld T, et al.. A complex secretory program orchestrated by the inflammasome controls paracrine senescence. Nature Cell Biology. 2013;15:978–990.",
+   "doi": "10.1038/ncb2784",
+   "checked": "abstract",
+   "what": "The SASP induces paracrine senescence in normal cells, in culture and in vivo; TGF-β family ligands play a major role among its components."
+  },
   "arnalforne2024dermis": {
    "short": "Arnal-Forné et al. 2024",
    "cite": "Arnal-Forné M, Molina-García T, Ortega M, et al.. Changes in human skin composition due to intrinsic aging: a histologic and morphometric study. Histochemistry and Cell Biology. 2024;162:259–271.",
@@ -548,6 +828,13 @@ window.DRV_PARAMS = {
    "doi": "10.1093/asj/sjv079",
    "checked": "abstract",
    "what": "Punch biopsies of 39 facial subunits from ten cadaveric heads: facial epidermis 29.6 µm (posterior auricular) to 62.6 µm (upper lip), dermis 759 µm (upper medial eyelid) to 1969 µm (lower nasal sidewall)."
+  },
+  "coppe2008sasp": {
+   "short": "Coppé et al. 2008",
+   "cite": "Coppé JP, Patil CK, Rodier F, et al.. Senescence-Associated Secretory Phenotypes Reveal Cell-Nonautonomous Functions of Oncogenic RAS and the p53 Tumor Suppressor. PLoS Biology. 2008;6:e301.",
+   "doi": "10.1371/journal.pbio.0060301",
+   "checked": "abstract",
+   "what": "Cells induced to senesce by genotoxic stress secrete many factors linked to inflammation and malignancy: the senescence-associated secretory phenotype."
   },
   "cordeiro2020templates": {
    "short": "Cordeiro et al. 2020",
@@ -618,6 +905,20 @@ window.DRV_PARAMS = {
    "doi": "10.1016/s0194-5998(99)70179-8",
    "checked": "abstract",
    "what": "Labelled fibroblasts injected intradermally into adult rabbit skin followed a biphasic curve — a rise and fall in cell density over 0–28 days, then a slow decrease — and were still detectable at 56 days, without signs of rejection."
+  },
+  "idda2020senescence": {
+   "short": "Idda et al. 2020",
+   "cite": "Idda ML, McClusky WG, Lodde V, et al.. Survey of senescent cell markers with age in human tissues. Aging. 2020;12:4052–4066.",
+   "doi": "10.18632/aging.102903",
+   "checked": "full text",
+   "what": "In human dermis p21-positive cells increased with age, up to 15 % of cells in donors over 65; p16 was almost undetectable in the dermis."
+  },
+  "jeyapalan2007primates": {
+   "short": "Jeyapalan et al. 2007",
+   "cite": "Jeyapalan JC, Ferreira M, Sedivy JM, et al.. Accumulation of senescent cells in mitotic tissue of aging primates. Mechanisms of Ageing and Development. 2007;128:36–44.",
+   "doi": "10.1016/j.mad.2006.11.008",
+   "checked": "abstract",
+   "what": "In baboon skin, dermal fibroblasts with damaged telomeres accumulate with age and reach over 15 % of all fibroblasts."
   },
   "kelley1993autoinduction": {
    "short": "Kelley et al. 1993",
@@ -807,6 +1108,13 @@ window.DRV_PARAMS = {
    "pmid": "3501246",
    "checked": "abstract",
    "what": "¹²⁵I-TGF-β was cleared from subcutaneous collagen chambers in rats with an initial-phase half-life of 22 h."
+  },
+  "strasen2018variability": {
+   "short": "Strasen et al. 2018",
+   "cite": "Strasen J, Sarma U, Jentsch M, et al.. Cell‐specific responses to the cytokine TGFβ are determined by variability in protein levels. Molecular Systems Biology. 2018;14:MSB177733.",
+   "doi": "10.15252/msb.20177733",
+   "checked": "abstract",
+   "what": "The response of a single cell to a given TGF-β dose is set cell by cell by the levels of defined signalling proteins."
   },
   "takahashi2016exposure": {
    "short": "Takahashi et al. 2016",

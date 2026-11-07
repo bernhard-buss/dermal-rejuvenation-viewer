@@ -19,11 +19,16 @@ models: Roy B, Pekec T, Yuan L, Shivashankar GV. *Aging Cell* 2024;23:e14032,
   dermis: steady state, linear decay over a decay length λ, impermeable
   dermal–epidermal junction. By default the dermis has depth — slower diffusion
   under the junction, clearance following the cell density of the papillary and
-  reticular layers — folded into one effective decay length per design; the
-  uniform dermis of the earlier versions is one switch away.
-- Five numbered steps on the left (whose skin, what the cells make, how you
-  inject, the device, what you look at), each opening with the values that
-  usually matter and folding the rest away.
+  reticular layers — folded into one effective decay length per injection
+  level; the uniform dermis of the earlier versions is one switch away. Below
+  the dermis the signal may continue (open), be cleared (absorbing) or be
+  reflected (closed).
+- **Age** presets (13–25, 26–54, 55+ years) set the papillary thickness, the
+  cell density of the layers and their spread between donors from measured
+  values.
+- Six numbered steps on the left (whose skin, what the cells make, how you
+  inject, how much it varies, the device, what you look at), each opening with
+  the values that usually matter and folding the rest away.
 - Time after implantation (the implant decays with a half-life) and a graded
   response of the host cells; how long each part of the dermis spends in the
   window.
@@ -37,6 +42,9 @@ models: Roy B, Pekec T, Yuan L, Shivashankar GV. *Aging Cell* 2024;23:e14032,
 - **Optimise**: searches flat and multi-depth layouts for the most dermis inside
   the window, plots every design against the dose with the best-coverage front,
   and lets you cycle through the solutions in the maps.
+- **Robustness**: draws many random tissues — donors, variation within the
+  dermis, senescent cells, cell-to-cell thresholds — and shows how the coverage
+  of the host cells spreads and how often the design reaches its target.
 - A cross-section through the skin with the host fibroblasts coloured by the
   signal where they sit, and the decay length against depth.
 - **Injection scaffold**: the design as a needle array, with a downloadable

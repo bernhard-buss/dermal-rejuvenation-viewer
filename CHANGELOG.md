@@ -2,6 +2,16 @@
 
 Newest version first. Each entry says what you can do or see differently.
 
+## 0.8.0 — 2026-11-07
+
+- **Robustness** panel: draws many random tissues and counts, in each, the share of the host cells inside the window. It shows how that coverage spreads, how often the design reaches its target coverage C*, the coverage without any variation, the standard errors, and one tissue from above and in depth, with its senescent cells and, if set, its local cell density. The pipeline's `python -m dermsim mc` draws exactly the same tissues.
+- New step 4, **How much it varies**: the senescent share of host cells (an analogue from p21-positive cells in aged dermis, 15 % by default), the spread between donors of cellularity and papillary thickness (measured per age group), and, as placeholders that are off by default, the cell-to-cell spread of the threshold, an effect of senescent cells on their neighbours' threshold (either sign) and random variation of cell density and diffusion within the dermis.
+- **Age** buttons in the header (13–25, 26–54, 55+ years) set the tissue of an age group from measured layer values: papillary thickness, how many more cells the papillary dermis holds, the overall cellularity, and the donor spreads. They replace the former *Young / Aged tissue* buttons, which only changed the placeholder aged-cell factor. New parameter **Cellularity**: more cells take up more signal, so λ is shorter in younger skin.
+- **Each injection level now has its own decay length.** A stack from the papillary into the reticular dermis no longer shares one average λ: its top level decays faster than its bottom one. The cross-section marks each level's λ on the λ(z) curve, and the Coverage panel lists them. Coverage of multi-depth designs changes accordingly; single-depth designs are unchanged.
+- New parameter **Below the dermis**: the dermis continues (open, as before), the signal is cleared at the dermis thickness (absorbing), or nothing passes into the fat (closed). The cross-section draws the boundary.
+- The default papillary thickness and density ratio are now the exact measured values for donors aged 55 and over (101.2 µm, 11.01×), equal to the 55+ preset.
+- Fixed: **Save YAML** wrote no `groups` section and no `primary` flags, so since 0.7.0 a saved file could not be read by the pipeline (`--params`). It now can, and a test checks it.
+
 ## 0.7.2 — 2026-11-06
 
 - The *analogue* badge is explained more precisely: a checked value measured in a related system (other cells, another signal, another set-up) or as a related quantity, such as all nuclei instead of fibroblasts only. The help entry *Limitations of this prototype* now lists all six analogue values, including the decay length λ and the papillary cell density.

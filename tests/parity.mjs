@@ -11,7 +11,8 @@ if (!block) { console.error("physics block not found in index.html"); process.ex
 const api = new Function(`"use strict";${block[1]}
   return { derived, kernel, buildField, latticeAt, holePoint, criticalSpacing, singleReach, sitesPerCm2, fractions, unitCellFractions, volumeFractions, levelDepths, nLevels, optimise,
     survival, hill, timeAbove, windowTimes, median, exposure, scaffoldPlan, scaffoldPositions,
-    tissueProfile, tissueEffective, reductionIsFaithful, cellularShare };`)();
+    tissueProfile, tissueEffective, reductionIsFaithful, cellularShare, levelKernels, images, deepMode,
+    rng, gauss, spectral, fieldG, fieldLog, donor, realise, mcStats, monteCarlo, hetFaithful };`)();
 const golden = JSON.parse(readFileSync(new URL("../data/golden.json", import.meta.url), "utf8"));
 const rtol = golden.rtol ?? 1e-9;
 
@@ -33,6 +34,14 @@ for (const c of golden.cases) {
   for (const [x, y, z, v] of c.field) close(`${c.name} field(${x.toFixed(0)},${y.toFixed(0)},${z.toFixed(0)})`, F.at(x, y, z), v);
   close(`${c.name} reach`, api.singleReach(p, d, f), c.reach);
   close(`${c.name} survival`, api.survival(p), c.survival, 1e-12);
+  // each level its own medium; the images of the junction and of a bounded deep side
+  const ks = api.levelKernels(p);
+  c.levels.forEach(([D_, lam_, rc_], l) => { close(`${c.name} level ${l} D`, ks[l].d.D, D_, 1e-12); close(`${c.name} level ${l} λ`, ks[l].d.lam, lam_, 1e-12); close(`${c.name} level ${l} rc`, ks[l].d.rc, rc_, 1e-12); });
+  for (const [l, [zl, want]] of c.images.entries()) {
+    const got = api.images(zl, p.H, api.deepMode(p), ks[l].d.rc);
+    if (got.length !== want.length) { fails++; console.error(`✗ ${c.name} images(${zl}): ${got.length} images, want ${want.length}`); continue; }
+    want.forEach(([zi, g], i) => { close(`${c.name} image ${zl}[${i}] depth`, got[i][0], zi, 1e-12); close(`${c.name} image ${zl}[${i}] sign`, got[i][1], g, 0); });
+  }
   // a dermis with depth: profiles, the effective medium and when it may be trusted
   const te = api.tissueEffective(p), tw = c.tissue;
   for (const k of ["D", "k", "lam", "scale"]) close(`${c.name} tissue.effective.${k}`, te[k], tw.effective[k], 1e-12);
@@ -51,7 +60,7 @@ for (const c of golden.cases) {
   const vf = api.volumeFractions(F, p, c.volume.nxy, c.volume.nz);
   vf.forEach((v, i) => close(`${c.name} volume[${i}]`, v, c.volume.fractions[i], 1e-12));
   if (c.lattice) {
-    for (const [a, x, y, z, v] of c.lattice) close(`${c.name} lattice(a=${a}, z=${z})`, api.latticeAt(p, d, f, c.pattern, a, x, y, z), v);
+    for (const [a, x, y, z, v] of c.lattice) close(`${c.name} lattice(a=${a}, z=${z})`, api.latticeAt(p, ks, c.pattern, a, x, y, z), v);
     close(`${c.name} critical spacing`, api.criticalSpacing(p, c.pattern).a, c.critical_spacing ?? NaN, 1e-8);
     close(`${c.name} sites/cm²`, api.sitesPerCm2(c.pattern, p.a, api.nLevels(p)), c.sites_per_cm2);
     for (const [a, ...fr] of c.unit_cell.rows) api.unitCellFractions(p, c.pattern, a, c.unit_cell.nu, c.unit_cell.nz)
@@ -89,6 +98,36 @@ if (golden.optimise) {
       for (const k of ["window", "below", "above"]) close(`optimise ${mode}[${i}].${k}`, s[k], w[k], 1e-12);
       for (const k of ["window", "below", "above"]) close(`optimise ${mode}[${i}].exact.${k}`, s.exact[k], w.exact[k], 1e-12);
     });
+  }
+}
+// heterogeneity and the Monte Carlo (M4): same random numbers, same tissues, same coverage
+if (golden.mc) {
+  const g = golden.mc;
+  let r = api.rng(g.rng.seed);
+  g.rng.values.forEach((v, i) => close(`rng(${g.rng.seed})[${i}]`, r(), v, 0));
+  r = api.rng(g.gauss.seed);
+  g.gauss.values.forEach((v, i) => close(`gauss(${g.gauss.seed})[${i}]`, api.gauss(r), v, 1e-12));
+  const fld = api.spectral(api.rng(g.field.seed), g.field.ell);
+  for (const [x, y, z, gv, lv] of g.field.points) { close(`field g(${x},${y},${z})`, api.fieldG(fld, x, y, z), gv, 1e-9); close(`field ln(${x},${y},${z})`, api.fieldLog(fld, 0.4, x, y, z), lv, 1e-9); }
+  for (const c of g.cases) {
+    const dn = api.donor(c.params, ...c.donor.z);
+    for (const k of ["hpap", "rpap", "cells"]) close(`${c.name} donor.${k}`, dn[k], c.donor[k], 1e-12);
+    close(`${c.name} faithful`, api.hetFaithful(c.params) ? 1 : 0, c.faithful ? 1 : 0, 0);
+    for (const run of c.runs) {
+      const got = api.realise(c.params, c.pattern, run.seed, c.n_targets);
+      for (const k of ["coverage", "below", "above"]) close(`${c.name} seed ${run.seed} ${k}`, got[k], run[k], 1e-9);
+      for (const k of ["n_host", "n_senescent"]) close(`${c.name} seed ${run.seed} ${k}`, got[k], run[k], 0);
+      for (const k of ["hpap", "rpap", "cells"]) close(`${c.name} seed ${run.seed} donor.${k}`, got.donor[k], run.donor[k], 1e-12);
+      run.lam_levels.forEach((v, l) => close(`${c.name} seed ${run.seed} λ level ${l}`, got.lam_levels[l], v, 1e-12));
+      run.cells.forEach(([x, y, z, sen, cc, ec, w], i) => {
+        const j = i * 25, tag = `${c.name} seed ${run.seed} cell ${j}`;
+        close(`${tag} x`, got.pos[j][0], x, 1e-12); close(`${tag} y`, got.pos[j][1], y, 1e-12); close(`${tag} z`, got.pos[j][2], z, 1e-12);
+        close(`${tag} senescent`, got.sen[j] ? 1 : 0, sen ? 1 : 0, 0);
+        close(`${tag} c`, got.c[j], cc, 1e-9); close(`${tag} threshold`, got.ec50[j], ec, 1e-9); close(`${tag} weight`, got.w[j], w, 1e-9);
+      });
+    }
+    const m = api.monteCarlo(c.params, c.pattern, c.mc.n, c.mc.seed, c.n_targets);
+    for (const k of ["n", "mean", "sd", "se", "p_hit", "se_p", "q05", "q50", "q95", "above_mean"]) close(`${c.name} mc.${k}`, m[k], c.mc[k], 1e-9);
   }
 }
 console.log(`${golden.generator} golden cases: ${golden.cases.length}, checks: ${checks}, failures: ${fails}, largest relative difference: ${worst.toExponential(2)}`);

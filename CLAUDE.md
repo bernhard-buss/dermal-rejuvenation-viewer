@@ -26,17 +26,21 @@
   `survival` scales every source by the day), `dermsim.optimize`
   (`optimiseSteps`, `clustersApart`, table look-up), `dermsim.response`
   (`hill`, `timeAbove`, `windowTimes`, `exposure`), `dermsim.tissue`
-  (`tissueProfile`, `tissueEffective`, `reductionIsFaithful`) and the geometry of
-  `dermsim.scaffold` (`scaffoldPlan`, `scaffoldPositions`).
-- **A layered dermis enters through `derived()` only.** It folds the depth
-  profiles into one effective D and λ; everything downstream is unchanged. The
+  (`tissueProfile`, `tissueEffective`, `reductionIsFaithful`), `dermsim.hetero`
+  (`realise`, `monteCarloSteps`, `mcStats`: the same mulberry32 generator `rng`,
+  drawn in the same order, so both draw the same random tissues) and the geometry
+  of `dermsim.scaffold` (`scaffoldPlan`, `scaffoldPositions`).
+- **A layered dermis enters through `derived(p, z)` only.** It folds the depth
+  profiles into one effective D and λ for sources at depth z; `levelKernels`
+  asks once per injection level, and everything downstream takes those kernels. The
   page cannot solve the layered problem — the pipeline's finite-volume solver
   does, and it measured where the reduction holds (within 10 % of the threshold
   below ~3 λ, worse than half a threshold within 1 λ of the junction). Keep that
   caveat visible: the Coverage warning and the help entry `model/layers` are part
   of the feature, not decoration. The same
   block runs in a background Web Worker built from its text (`WORKER_SRC`) for
-  the design curve, the coverage of the whole dermis and the optimiser; `ask()`
+  the design curve, the coverage of the whole dermis, the optimiser and the
+  Monte Carlo; `ask()`
   cancels stale requests of the same kind and falls back to the main thread. Change both together, re-export, and run
   `node tests/parity.mjs` (golden cases, relative tolerance 1e-9) and
   `node tests/page.mjs` (script compiles, noindex, parameters, changelog entry).
