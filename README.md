@@ -51,7 +51,7 @@ Every value has a badge that opens its help entry:
 | Badge | Meaning |
 |---|---|
 | **source** | published value, checked against the source (abstract or full text) |
-| **analogue** | published value from a related system (e.g. other cytokines) |
+| **analogue** | published value measured in a related system (other cells, another signal, another set-up) or as a related quantity (all nuclei instead of fibroblasts only) |
 | **placeholder** | no checked source yet: results that depend on it are illustrative |
 | **design** | a choice (layout, depth) or a view setting |
 

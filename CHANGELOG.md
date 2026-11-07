@@ -2,6 +2,10 @@
 
 Newest version first. Each entry says what you can do or see differently.
 
+## 0.7.2 — 2026-11-06
+
+- The *analogue* badge is explained more precisely: a checked value measured in a related system (other cells, another signal, another set-up) or as a related quantity, such as all nuclei instead of fibroblasts only. The help entry *Limitations of this prototype* now lists all six analogue values, including the decay length λ and the papillary cell density.
+
 ## 0.7.1 — 2026-11-06
 
 - Help corrected where 0.7.0 had overtaken it: the cross-section, the limitations and the roadmap no longer describe the dermis as homogeneous or list the depth-dependent dermis as future work.

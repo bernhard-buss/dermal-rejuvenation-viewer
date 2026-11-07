@@ -214,7 +214,7 @@ a.cite{text-decoration:none;border-bottom:1px dotted var(--teal)}
 <script src="data/parameters.js"></script>
 <script>
 "use strict";
-const VERSION = "0.7.1";
+const VERSION = "0.7.2";
 const $ = id => document.getElementById(id);
 function esc(s) { return String(s).replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); }
 
@@ -233,7 +233,7 @@ const cite = key => SOURCES[key] ? `<a class="cite" href="#help/refs/${key}" dat
   : (console.warn("missing source", key), `<b style="color:#A9472F">[missing source: ${esc(key)}]</b>`);
 const renderNote = t => esc(t).replace(/\{cite:([a-z0-9]+)\}/g, (_, k) => cite(k))
   .replace(/\{help:([a-z0-9_\/-]+)\|([^}]*)\}/g, (_, h, txt) => `<a href="#help/${h}" data-help="${h}">${txt}</a>`);
-// status: "src" sourced value · "ana" analogue (published, related system) ·
+// status: "src" sourced value · "ana" analogue (published, related system or quantity) ·
 // "ph" placeholder (no checked source yet) · "des" design choice or view setting.
 const PARAMS = DP.parameters.map(q => ({ ...q, def: q.value, src: q.sources, note_raw: q.note, note: () => renderNote(q.note) }));
 const PDEF = Object.fromEntries(PARAMS.map(p => [p.key, p]));
@@ -1619,7 +1619,7 @@ const HELP = [
       <p>Address parameters: ${PARAMS.map(p => `<code>${p.key}</code>`).join(", ")} (each in the unit of its slider), <code>pattern</code> (hex, square, random, custom), <code>show=concentration</code>, and <code>sites=x,y,z;…</code> in µm for custom layouts. Values outside a slider's range are clamped to it.</p>`],
     ["status", "What the badges mean", () => `<p>Every value carries a badge; click it for its entry under <a href="#help/params" data-help="params">Parameters</a>.</p>
       <table><tr><td><span class="badge b-src">source</span></td><td>the default is a published value, checked against the source (abstract or full text) and listed under <a href="#help/refs" data-help="refs">References</a></td></tr>
-      <tr><td><span class="badge b-ana">analogue</span></td><td>published value measured in a related system (e.g. other cytokines); used until a value for this system exists</td></tr>
+      <tr><td><span class="badge b-ana">analogue</span></td><td>published value, checked against the source, but measured in a related system (other cells, another signal, another set-up) or as a related quantity (all nuclei instead of fibroblasts only); used until the value itself is measured in aged human dermis</td></tr>
       <tr><td><span class="badge b-ph">placeholder</span></td><td>no checked source yet; results that depend on it are illustrative only</td></tr>
       <tr><td><span class="badge b-des">design</span></td><td>a choice (implant layout, depth) or a view setting; needs no source</td></tr></table>`]
   ]},
@@ -1720,7 +1720,7 @@ const HELP = [
       <li>The depth-dependent dermis is reduced to one effective diffusion coefficient and decay length per design; that is accurate below about three decay lengths and only indicative above (the Coverage panel warns). Layers vary only with depth: no heterogeneity within a layer, no senescent cells or SASP, and the hypodermis is not modelled.</li>
       <li>Uptake, capture and degradation are lumped into one linear decay; no saturation.</li>
       <li>One signal; no relay by host cells that start secreting in turn.</li>
-      <li>Values marked <span class="badge b-ph">placeholder</span> are not from checked sources: the Hill exponent, the implant half-life, the aged-cell factor, cluster radius, molecular weight. Values marked <span class="badge b-ana">analogue</span> — secretion per cell, the activation threshold, the fibrotic ceiling, the penetration factor — are measured, but in other cell types or tissues, not in aged human dermis. Do not read numbers off this prototype — including the optimiser's and the scaffold's — as predictions.</li>
+      <li>Values marked <span class="badge b-ph">placeholder</span> are not from checked sources: the Hill exponent, the implant half-life, the aged-cell factor, cluster radius, molecular weight. Values marked <span class="badge b-ana">analogue</span> — secretion per cell, the activation threshold, the fibrotic ceiling, the decay length λ, the penetration factor and the papillary cell density — are measured, but in other cells, for another signal, with another set-up, or as a related quantity; none is the value itself in aged human dermis. Do not read numbers off this prototype — including the optimiser's and the scaffold's — as predictions.</li>
       <li>The scaffold view is geometry only: it says nothing about whether such an array can be manufactured, inserted, sterilised or tolerated.</li></ul>`],
     ["roadmap", "Roadmap", () => `<p>Done: M1 the minimal model · M2 graded response, implant survival, time in the window and the design optimiser · M3 a depth-dependent dermis (most of it; the rest is listed in the project plan). Next: M4 heterogeneity and senescence · M5 several signals · M6 calibration against distance-resolved measurements.</p>`]
   ]},

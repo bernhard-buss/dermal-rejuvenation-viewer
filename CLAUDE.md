@@ -18,7 +18,7 @@
   bibliography) live in its `config/parameters.yaml`; change them there. A source
   cited in the help (`cite(key)`) must be in that file's `sources` section.
   Status: `src` (sourced), `ana` (analogue: published value from a related
-  system), `ph` (placeholder), `des` (design / view). Notes use `{cite:key}` and
+  system or of a related quantity), `ph` (placeholder), `des` (design / view). Notes use `{cite:key}` and
   `{help:topic/entry|text}`, rendered by `renderNote()`.
 - **Physics = the Python model.** The block between `// >>> physics` and
   `// <<< physics` holds pure functions (no DOM, no state) mirroring
