@@ -1,4 +1,4 @@
-# Dermal Implant Density Viewer
+# Dermal Rejuvenation Viewer
 
 Browser prototype: how densely must rejuvenated fibroblasts be implanted into
 aged dermis so that the signals they secrete reach the surrounding aged cells
