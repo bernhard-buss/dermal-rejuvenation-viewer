@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <title>Dermal Rejuvenation Viewer</title>
+  <defs>
+    <clipPath id="tile"><rect width="64" height="64" rx="14"/></clipPath>
+    <radialGradient id="signal" cx="32" cy="38" r="24" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#7FC4C9"/>
+      <stop offset=".35" stop-color="#3A8C92"/>
+      <stop offset=".75" stop-color="#2A6F75" stop-opacity=".55"/>
+      <stop offset="1" stop-color="#2A6F75" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <g clip-path="url(#tile)">
+    <rect width="64" height="64" fill="#1B2A33"/>
+    <!-- epidermis with its rete ridges -->
+    <path d="M0 0H64V15Q58 21 52 15T40 15T28 15T16 15T4 15Q2 13 0 15Z" fill="#D7A086"/>
+    <!-- the signal spreading from one implant cluster -->
+    <circle cx="32" cy="38" r="24" fill="url(#signal)"/>
+    <circle cx="32" cy="38" r="17" fill="none" stroke="#7FC4C9" stroke-opacity=".5" stroke-width="1.6"/>
+    <!-- neighbouring sites of the lattice -->
+    <circle cx="7" cy="38" r="3.4" fill="#7FC4C9" fill-opacity=".75"/>
+    <circle cx="57" cy="38" r="3.4" fill="#7FC4C9" fill-opacity=".75"/>
+    <!-- the implant cluster: a few cells -->
+    <circle cx="32" cy="38" r="8.6" fill="#F7F4EF"/>
+    <circle cx="32" cy="38" r="1.9" fill="#1F5A60"/>
+    <circle cx="32.00" cy="33.50" r="1.9" fill="#1F5A60"/>
+    <circle cx="36.28" cy="36.61" r="1.9" fill="#1F5A60"/>
+    <circle cx="34.65" cy="41.64" r="1.9" fill="#1F5A60"/>
+    <circle cx="29.35" cy="41.64" r="1.9" fill="#1F5A60"/>
+    <circle cx="27.72" cy="36.61" r="1.9" fill="#1F5A60"/>
+  </g>
+</svg>

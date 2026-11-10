@@ -2,6 +2,10 @@
 
 Newest version first. Each entry says what you can do or see differently.
 
+## 0.11.1 — 2026-11-10
+
+- The viewer is now called **Dermal Rejuvenation Viewer** and has its own icon — in the browser tab, the header and on a phone's home screen: the epidermis over a dermis in which one implant cluster spreads its signal towards its neighbours.
+
 ## 0.11.0 — 2026-11-10
 
 - **A basic model for the tissue.** *Whose skin* now starts with four choices — **age** (0–12, 13–25, 26–54, 55+ years), **sex**, **body site** (the skin model, forehead, chest, abdomen, upper arm, forearm, back, thigh, lower leg, foot) and **ethnicity** — that set the **advanced** values below them from measurements: age the layers, cells, donor spread and senescent share; body site and sex the dermis and epidermis thickness. Ethnicity is kept but sets nothing, as no checked source gives values for it. The age buttons in the header moved here.

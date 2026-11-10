@@ -6,13 +6,18 @@
 <!-- Not for search engines: the page stays out of search results (see README). -->
 <meta name="robots" content="noindex, nofollow">
 <title>Dermal Rejuvenation Viewer</title>
+<link rel="icon" href="icons/icon-32.png" sizes="32x32" type="image/png">
+<link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icons/icon-180.png">
+<meta name="theme-color" content="#1B2A33">
 <style>
 :root{--ink:#1B2A33;--paper:#F7F4EF;--card:#EDE6DC;--rule:#D9D2C7;--teal:#2A6F75;--teal-l:#7FC4C9;
 --terra:#A9472F;--terra-l:#E89A84;--soft:#44525A;--amber:#8A5A0E;--amber-bg:#FFF6E3}
 *{box-sizing:border-box}
 body{margin:0;font:14px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;color:var(--ink);background:var(--paper)}
 header{display:flex;align-items:center;gap:12px;padding:10px 18px;background:var(--ink);color:var(--paper);flex-wrap:wrap}
-header h1{font-size:17px;margin:0;font-weight:600}
+header h1{font-size:17px;margin:0;font-weight:600;display:flex;align-items:center;gap:9px}
+header .logo{width:26px;height:26px;border-radius:7px;box-shadow:0 0 0 1px rgba(255,255,255,.16);flex:none}
 header .sub{font-size:12.5px;color:#BFCBD0}
 header .sp{flex:1}
 .verchip{color:var(--teal-l);font-size:12px;text-decoration:none;border:1px solid #4A5A63;border-radius:999px;padding:1px 8px}
@@ -68,7 +73,8 @@ footer{flex:none;padding:4px 18px 6px}
   main{order:4;padding:10px 10px 0}
   footer{display:none}
   header{padding:7px 10px;gap:5px 6px}
-  header h1{font-size:14.5px}
+  header h1{font-size:14.5px;gap:7px}
+  header .logo{width:22px;height:22px;border-radius:6px}
   header .sp{display:none}
   header #sigchip,header a.hl{display:none}
   header button{padding:2px 6px;font-size:12px}
@@ -181,7 +187,7 @@ a.cite{text-decoration:none;border-bottom:1px dotted var(--teal)}
 </head>
 <body>
 <header>
-  <h1>Dermal Rejuvenation Viewer</h1>
+  <h1><img class="logo" src="icons/icon.svg" alt="" width="26" height="26">Dermal Rejuvenation Viewer</h1>
   <span class="sub">How densely must rejuvenated fibroblasts be implanted for their signals to reach aged dermis?</span>
   <a class="verchip" id="sigchip" href="#help/model/signal" data-help="model/signal" title="Which signal the model stands for"></a>
   <a class="verchip" href="#help/changelog" data-help="changelog" title="Version: open the changelog"><span id="ver"></span><span id="vernew" hidden>new</span></a>
@@ -293,7 +299,7 @@ a.cite{text-decoration:none;border-bottom:1px dotted var(--teal)}
 <script src="data/parameters.js"></script>
 <script>
 "use strict";
-const VERSION = "0.11.0";
+const VERSION = "0.11.1";
 const $ = id => document.getElementById(id);
 function esc(s) { return String(s).replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); }
 
