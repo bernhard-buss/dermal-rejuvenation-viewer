@@ -2,6 +2,21 @@
 
 Newest version first. Each entry says what you can do or see differently.
 
+## 0.10.0 — 2026-11-10
+
+- **The dermis is now solved in depth.** New control *Dermis model* (step 1, under *more*) with three choices: **depth-resolved** (new, and the default), **averaged per level** (what the viewer computed up to 0.9) and **uniform**. The depth-resolved model carries the signal through the measured depth profile instead of giving each injection level one average decay length. It matters wherever a site reaches the papillary dermis, which is 5 % of the thickness and holds 37 % of the host cells. Example: a stack at 200 / 500 / 800 µm (hexagonal, 300 µm apart, 10⁵ cells per site secreting 300 pg/10⁶ cells/day) has 36 % of its host cells in the window by three-dimensional finite volumes, 35 % by the depth-resolved model and 60 % by the averaged one. Every number on the page moves; designs deep in the reticular dermis barely change. The Coverage panel shows what the other of the two models would say for your design.
+- **Coverage now counts host cells, not dermis volume** — in the Coverage panel, the design curve, the time in the window and the optimiser, as the Robustness panel already did. The share of the dermis volume is shown beside it; in the uniform dermis the two are the same number.
+- **The optimiser admits only designs that respect the ceiling:** at most O* of the host cells above it (the overexposure limit of step 4, 5 % by default). Designs that cover more by overexposing more are still drawn as faint dots but are no longer on the front.
+- **Old links and files keep working.** The switch *Depth-dependent dermis* (`layers`) became *Dermis model* (`dermis_model`); 0 and 1 mean what they did. A link or a saved YAML with the old name opens as before, the address is rewritten with the new name, and *Save YAML* writes the new name. A link that never set the switch now opens with the depth-resolved model and so shows new numbers; add `dermis_model=1` to it to see the former ones.
+- A cluster that the junction or a bounded deep side cuts: in the depth-resolved model the part inside the dermis carries its whole dose.
+- Robustness: with the depth-resolved model each random tissue gets its own solution, so differences between donors and in the insertion depth are computed without approximation. Variation *within* the dermis (off by default) still enters through each site's own scaled medium and is indicative only.
+
+## 0.9.1 — 2026-11-10
+
+- Fixed: the **fewer** button that folds a step's extra values away showed as a filled teal block with its text invisible; it is plain text again, like **more**.
+- Fixed: **↺** (back to the default) corrected the number but could leave the slider where it was; the slider now moves too.
+- Fixed: **overlapping clusters were missed when they sit directly above each other.** A stack repeats its sideways position every third depth (hexagonal) or every second depth (square), and only neighbouring depths were checked. The *Clusters overlap* warning now tests every pair of depths, at the depths the levels actually end up at, and the optimiser no longer proposes such stacks. With the default cluster radius of 150 µm this concerns square stacks of three or more depths spaced under 150 µm and hexagonal stacks of four or more depths spaced under 100 µm.
+
 ## 0.9.0 — 2026-11-07
 
 - **The page fits the window on a desktop screen.** The controls on the left and the panels on the right scroll on their own and stay in view; the map in the middle takes the space between them and is as large as the window's height allows, with the cross-section below it. Smaller windows keep the single scrolling column, with the map at most 720 px wide.

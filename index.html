@@ -59,7 +59,7 @@ main{display:grid;grid-template-columns:1fr;gap:14px;padding:14px;align-items:st
 .stepnote{margin:-2px 0 10px}
 .foldbtn{margin-top:4px;font-size:12px;padding:3px 8px;color:var(--muted);border-color:transparent;background:transparent}
 .foldbtn:hover{border-color:var(--line);color:var(--ink)}
-.foldbtn.on{color:var(--teal)}
+.foldbtn.on{color:var(--teal);background:transparent;border-color:transparent}   /* not button.on's filled teal: a text link */
 .fold[hidden]{display:none}
 .panel.off{display:none}
 button.warn{color:var(--terra);border-color:var(--terra)}
@@ -167,14 +167,14 @@ a.cite{text-decoration:none;border-bottom:1px dotted var(--teal)}
   <section id="right">
     <div class="panel"><h2>Coverage <a class="hl" href="#help/metrics/coverage" data-help="metrics/coverage" title="Help: coverage">ⓘ</a></h2><div id="metrics"></div></div>
     <div class="panel" id="optPanel"><h2>Optimise <a class="hl" href="#help/metrics/optimise" data-help="metrics/optimise" title="Help: optimising the design">ⓘ</a></h2>
-      <div class="note">Find the layouts that put the most dermis inside the window, for the current tissue and signal values.</div>
+      <div class="note">Find the layouts that put the most host cells inside the window, for the current tissue and signal values.</div>
       <div class="toolbar" style="margin-top:8px">
         <span class="seg"><button data-om="flat" title="One injection depth">Flat</button><button data-om="volume" title="Several injection depths">Volume</button><button data-om="both" class="on" title="Both, shown together">Both</button></span>
         <span class="sp"></span><button id="optRun" class="primary">Find designs</button>
       </div>
       <div class="prog" id="optProg" hidden><div></div></div>
       <div class="note" id="optLayerNote" hidden></div>
-      <canvas id="optPlot" width="660" height="400" aria-label="Designs found: share of dermis in the window against cells per cm²"></canvas>
+      <canvas id="optPlot" width="660" height="400" aria-label="Designs found: share of the host cells in the window against cells per cm²"></canvas>
       <div id="optSol"><div class="note">Not run yet. The search takes a few seconds and runs in the background.</div></div>
     </div>
     <div class="panel" id="mcPanel"><h2>Robustness <a class="hl" href="#help/metrics/robust" data-help="metrics/robust" title="Help: robustness over random tissues">ⓘ</a></h2>
@@ -213,9 +213,9 @@ a.cite{text-decoration:none;border-bottom:1px dotted var(--teal)}
       <div id="scSpec"></div>
       <div class="cap" id="scCap"></div></div>
     <div class="panel"><h2>Design curve <a class="hl" href="#help/metrics/curve" data-help="metrics/curve" title="Help: design curve">ⓘ</a></h2>
-      <canvas id="chart" width="660" height="380" aria-label="Share of dermis below, inside and above the window against site spacing"></canvas>
+      <canvas id="chart" width="660" height="380" aria-label="Share of the host cells below, inside and above the window against site spacing"></canvas>
       <div class="cap" id="chartCap"></div></div>
-    <div class="panel"><h2>Read me first</h2><div class="note"><b>With every value taken from a published source, the dose does not add up:</b> 40,000 implanted cells secreting the measured amount of <i>active</i> TGF-β peak at about <span data-n="gapPeak"></span> ng/mL, some <span data-n="gapCentre"></span>× below the concentration that activates a fibroblast, and <span data-n="gapWorst"></span>× below it at the least-covered point of the default lattice. That is this model's first real prediction, and the reason to measure rather than assume. <a href="#help/model/dose" data-help="model/dose">What would close the gap</a>.<br><br>Each implant site is a sphere of cells secreting one signal into dermis, at steady state; the signal decays over the length λ. The goal is as much of the dermis as possible <b>inside the window</b>, between the activation threshold of the aged cells and the fibrotic ceiling. Use several <b>injection depths</b> to fill the volume, or let <b>Optimise</b> search for you. Every value has a badge saying where it comes from; click it, or any ⓘ, for details and references. <a href="#help/start/what" data-help="start/what">Quick start</a>.</div></div>
+    <div class="panel"><h2>Read me first</h2><div class="note"><b>With every value taken from a published source, the dose does not add up:</b> 40,000 implanted cells secreting the measured amount of <i>active</i> TGF-β peak at about <span data-n="gapPeak"></span> ng/mL, some <span data-n="gapCentre"></span>× below the concentration that activates a fibroblast, and <span data-n="gapWorst"></span>× below it at the least-covered point of the default lattice. That is this model's first real prediction, and the reason to measure rather than assume. <a href="#help/model/dose" data-help="model/dose">What would close the gap</a>.<br><br>Each implant site is a sphere of cells secreting one signal into dermis, at steady state; the signal decays over the length λ. The goal is as many of the host cells as possible <b>inside the window</b>, between the activation threshold of the aged cells and the fibrotic ceiling. Use several <b>injection depths</b> to fill the volume, or let <b>Optimise</b> search for you. Every value has a badge saying where it comes from; click it, or any ⓘ, for details and references. <a href="#help/start/what" data-help="start/what">Quick start</a>.</div></div>
   </section>
 </main>
 <footer>Bernhard Buss (master thesis), supervised by Nicholas Lawler; group of Prof. G.V. Shivashankar (ETH Zurich / PSI). Builds on Roy et al., <i>Aging Cell</i> 2024 (<a href="https://doi.org/10.1111/acel.14032" target="_blank" rel="noopener">doi:10.1111/acel.14032</a>). Prototype, not peer-reviewed. Runs entirely in your browser; nothing is uploaded. <a href="#help/refs" data-help="refs">References</a> · <a href="#help/about" data-help="about">About</a></footer>
@@ -239,7 +239,7 @@ a.cite{text-decoration:none;border-bottom:1px dotted var(--teal)}
 <script src="data/parameters.js"></script>
 <script>
 "use strict";
-const VERSION = "0.9.0";
+const VERSION = "0.10.0";
 const $ = id => document.getElementById(id);
 function esc(s) { return String(s).replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); }
 
@@ -267,13 +267,19 @@ const STATUS = { src: ["b-src", "source"], ana: ["b-ana", "analogue"], ph: ["b-p
 // >>> physics
 // ---------------------------------------------------------------------------
 // Physics: steady state, linear decay, uniform spherical source per site, no-flux
-// dermal–epidermal junction (image source), and below the dermis either nothing
-// (it continues), an absorbing or a closed boundary (more images, `images`).
-// Each injection level decays with the medium of its own depth (`levelKernels`).
-//   D ∇²c − k c + s = 0,  s = s0 inside a sphere of radius R,  k = D/λ²
+// dermal–epidermal junction, and below the dermis either nothing (it continues), an
+// absorbing or a closed boundary.
+//   ∇·(D ∇c) − k c + s = 0,  s = s0 inside a sphere of radius R
+// Three dermis models (`dermis_model`, `dermisModel`): 0 uniform and 1 averaged per
+// level use the closed form for one D and λ = √(D/k), with mirror images (`images`)
+// for the boundaries,
 //   outside: c = (s0/k) [x cosh x − sinh x] e^{−r/λ}/(r/λ),  x = R/λ
 //   inside:  c = (s0/k) [1 − (1+x) e^{−x} sinh(r/λ)/(r/λ)]
-//   R → 0: point source q/(4πDr) e^{−r/λ}.
+//   R → 0: point source q/(4πDr) e^{−r/λ};
+// 2 depth-resolved (the default) solves D(z), k(z) in depth and looks the field of a
+// site up in a table c(ρ, z) (`siteTable`). All three enter through `levelKernels`:
+// one level per injection depth, whose `at(h², z)` is the field of one of its sites.
+// Coverage is counted over host cells (`depthSamples`), dermis volume as a second read-out.
 // Injection depths: `levels` lattices of spacing a at depths z0 + (ℓ − (n−1)/2)·dz,
 // shifted sideways (ABC stacking for hex, AB for square).
 // Units: µm, s, molecules; concentrations shown in ng/mL.
@@ -291,16 +297,20 @@ function survival(p) {                                             // share stil
 // local fibroblast density, so λ varies with depth. The profiles are reduced to the
 // one effective D and λ the sources of a design actually see; that reduction is
 // what `derived` uses, and `reductionIsFaithful` says when it may be trusted.
+// 0 uniform · 1 averaged per level (the profiles reduced to one D and λ per injection
+// level) · 2 depth-resolved (the same profiles solved in depth; the default)
+const DERMIS_MODELS = ["uniform", "averaged per level", "depth-resolved"];
+const dermisModel = p => Math.min(2, Math.max(0, Math.round(p.dermis_model ?? 0)));
 function tissueProfile(p) {                                        // `cells` scales the uptake (age presets)
   const kSlab = p.D / (p.lam * p.lam), kChem0 = Math.LN2 / (p.thalfc * 3600);
   const kChem = Math.min(kChem0, kSlab), kCell = Math.max(kSlab - kChem0, 0) * (p.cells ?? 1);
-  const layered = !!Math.round(p.layers ?? 0), f = Math.min(p.hpap, p.H) / p.H;
+  const layered = dermisModel(p) > 0, f = Math.min(p.hpap, p.H) / p.H;
   const meanRho = layered ? p.rpap * f + (1 - f) : 1;
   const dDej = Math.min(p.ddej, p.D);
-  return {
+  return {                                                         // below the dermis (z > H) the medium stays as at H
     layered, kChem, kCell, meanRho,
-    density: z => layered ? (z < p.hpap ? p.rpap : 1) / meanRho : 1,
-    D: z => layered ? p.D - (p.D - dDej) * Math.exp(-z / Math.max(p.tdej, 1e-9)) : p.D,
+    density: z => layered ? (Math.min(z, p.H) < p.hpap ? p.rpap : 1) / meanRho : 1,
+    D: z => layered ? p.D - (p.D - dDej) * Math.exp(-Math.min(z, p.H) / Math.max(p.tdej, 1e-9)) : p.D,
     k(z) { return layered ? kChem + kCell * this.density(z) : kChem + kCell; },
     lam(z) { return Math.sqrt(this.D(z) / this.k(z)); }
   };
@@ -329,11 +339,28 @@ function tissueEffective(p, z0, n = 400) {                         // sources at
 // above 50 % within 1 λ of the junction, where D changes five-fold over the range
 // of the signal.
 function reductionIsFaithful(p, z0) {                              // every level judged with its own medium
-  if (!Math.round(p.layers ?? 0)) return true;
+  if (dermisModel(p) !== 1) return true;                           // uniform, or solved in depth: nothing is reduced
   const zs = z0 === undefined || z0 === null ? levelDepths(p) : (Array.isArray(z0) ? z0 : [z0]);
   return zs.every(z => z >= 3 * tissueEffective(p, z).lam);
 }
-function derived(p, z) {                                           // medium of sources at depth z (default z0)
+// Coverage is the share of the host cells in the window, so each sample depth counts
+// with the cells it stands for; the share of the dermis volume is a second read-out.
+// Uniform dermis: nz equally spaced depths, equal weights (cells = volume). A dermis
+// with depth: the papillary layer (5 % of the thickness, over a third of the cells)
+// gets a quarter of the samples, the reticular dermis the rest.
+function depthSamples(p, nz) {                                     // {z, wc (by cells), wv (by volume), even}
+  const pr = tissueProfile(p), H = p.H, hp = (pr.layered && p.hpap > 0 && p.hpap < H) ? p.hpap : 0, z = [], wc = [], wv = [];
+  if (hp === 0 || nz < 2) { for (let m = 0; m < nz; m++) { z.push((m + 0.5) / nz * H); wc.push(1 / nz); wv.push(1 / nz); } return { z, wc, wv, even: true }; }
+  const np = Math.min(nz - 1, Math.max(1, Math.floor(nz / 4 + 0.5))), nr = nz - np, tot = p.rpap * hp + (H - hp);
+  for (let i = 0; i < np; i++) { z.push((i + 0.5) / np * hp); wc.push(p.rpap * hp / tot / np); wv.push(hp / H / np); }
+  for (let i = 0; i < nr; i++) { z.push(hp + (i + 0.5) / nr * (H - hp)); wc.push((H - hp) / tot / nr); wv.push((H - hp) / H / nr); }
+  return { z, wc, wv, even: wc.every(w => w === wc[0]) && wv.every(w => w === wv[0]) };
+}
+function papillaryCellShare(p) {                                   // share of the host cells in the papillary dermis
+  const hp = Math.min(p.hpap, p.H);
+  return dermisModel(p) > 0 ? p.rpap * hp / (p.rpap * hp + (p.H - hp)) : hp / p.H;
+}
+function derived(p, z) {                                           // source, thresholds, and one D and λ for sources at depth z (default z0)
   const e = tissueEffective(p, z), D = e.D, lam = e.lam;
   const kap = 1 / lam, k = D * kap * kap;                          // 1/µm, 1/s
   const qcell = p.sec * 1e-12 / (p.mw * 1000) * NA_ / 1e6 / 86400; // molecules/cell/s
@@ -366,16 +393,199 @@ function levelShift(pattern, l, a) {
 }
 const topDownSpacing = (pattern, a, levels) => levels <= 1 ? a : (pattern === "hex" ? a / SQRT3 : a / Math.SQRT2);
 const r9 = z => Math.round(z * 1e9) / 1e9;
-function levelKernels(p, depths) {                                 // {d, f} per level, each with its own medium
+const deepMode = p => Math.min(2, Math.max(0, Math.round(p.deep ?? 0)));
+// --- the depth-resolved kernel (dermsim.depth) ------------------------------------
+// The dermis changes with depth but not sideways, so on a disc of radius P around a
+// site (c = 0 at its rim, P = R + 9.2 λmax) the field is a Fourier–Bessel series
+//   c(ρ, z) = Σ_n u_n(z) J0(κ_n ρ),  κ_n = j_n/P,  J0(j_n) = 0,
+// and each mode obeys −(D u′)′ + (D κ² + k) u = s_n(z) with the real D(z), k(z), no flux
+// at the junction and the deep side as set (open: exact radiation condition into the
+// medium as it is at H; absorbing; closed). Finite volumes in depth, one tridiagonal
+// system per mode; the papillary boundary is on a cell face. The source sphere is a
+// disc of radius √(R² − (z − zs)²) at each depth, with transform ρ J1(κρ)/κ, rescaled
+// so that the discrete total is exact (a cluster cut by a boundary keeps its dose).
+// J0 and J1 are computed from their definitions with a fixed number of terms, exactly
+// as dermsim.depth does, so both give the same tables.
+const DEPTH = { NRHO: 384, KR: 60, NK_MIN: 96, HP: 2.5, HR: 10, SUB: 4, CUT: 9.2, X_SERIES: 12, N_SERIES: 34, N_ASYM: 24, CACHE_FULL: 24, CACHE_COLS: 600 };
+function besselJ(x, nu) {                                          // J0 (nu = 0) or J1 (nu = 1), x ≥ 0
+  if (x < DEPTH.X_SERIES) {                                        // power series
+    const q = x * x / 4; let term = 1, s = 1;
+    for (let m = 1; m <= DEPTH.N_SERIES; m++) { term = term * (-q) / (m * (m + nu)); s = s + term; }
+    return nu === 0 ? s : s * x / 2;
+  }
+  const mu = 4 * nu * nu; let a = 1, P = 1, Q = 0;                 // Hankel's asymptotic expansion
+  for (let k = 1; k <= DEPTH.N_ASYM; k++) {
+    a = a * (mu - (2 * k - 1) ** 2) / (k * 8) / x;
+    const sign = Math.floor(k / 2) % 2 ? -1 : 1;
+    if (k % 2) Q = Q + sign * a; else P = P + sign * a;
+  }
+  const w = x - (nu / 2 + 0.25) * Math.PI;
+  return Math.sqrt(2 / (Math.PI * x)) * (P * Math.cos(w) - Q * Math.sin(w));
+}
+const J0_ZEROS = [];
+function j0Zeros(n) {                                              // McMahon's estimate, then four Newton steps (J0′ = −J1)
+  while (J0_ZEROS.length < n) {
+    const b = (J0_ZEROS.length + 1 - 0.25) * Math.PI; let x = b + 1 / (8 * b);
+    for (let i = 0; i < 4; i++) x = x + besselJ(x, 0) / besselJ(x, 1);
+    J0_ZEROS.push(x);
+  }
+  return J0_ZEROS;
+}
+let DEPTH_BASIS = null;
+function depthBasis(nk) {                                          // J0(j_n · i/NRHO) and 2/J1(j_n)²: the same for every disc radius
+  if (!DEPTH_BASIS || DEPTH_BASIS.nk < nk) {
+    const jz = j0Zeros(nk), N = DEPTH.NRHO, J = new Float64Array((N + 1) * nk), w = new Float64Array(nk);
+    for (let i = 0; i < N; i++) for (let n = 0; n < nk; n++) J[i * nk + n] = besselJ(i / N * jz[n], 0);   // the rim (i = N) stays 0
+    for (let n = 0; n < nk; n++) { const j1 = besselJ(jz[n], 1); w[n] = 2 / (j1 * j1); }
+    DEPTH_BASIS = { nk, J, w };
+  }
+  return DEPTH_BASIS;
+}
+function depthGrid(p) {                                            // cells of ~HP µm to the papillary boundary (on a face), ~HR µm below
+  const pr = tissueProfile(p), H = p.H, zg = deepMode(p) ? H : H + p.R;   // open below: R past the dermis
+  const hp = (pr.layered && p.hpap > 0 && p.hpap < H) ? p.hpap : 0, zf = [0];
+  if (hp > 0) { const np = Math.max(2, Math.floor(hp / DEPTH.HP + 0.5)); for (let j = 0; j < np; j++) zf.push(hp * (j + 1) / np); }
+  const hr = Math.min(DEPTH.HR, Math.max(DEPTH.HP, p.R / 8)), nr = Math.max(2, Math.ceil((zg - hp) / hr - 1e-9));
+  for (let j = 0; j < nr; j++) zf.push(hp + (zg - hp) * (j + 1) / nr);
+  const nz = zf.length - 1, zc = new Float64Array(nz), dz = new Float64Array(nz), D = new Float64Array(nz), k = new Float64Array(nz), zn = new Float64Array(nz + 1);
+  let lamMax = 0;
+  for (let j = 0; j < nz; j++) {
+    zc[j] = 0.5 * (zf[j] + zf[j + 1]); dz[j] = zf[j + 1] - zf[j]; D[j] = pr.D(zc[j]); k[j] = pr.k(zc[j]); zn[j] = zc[j];
+    lamMax = Math.max(lamMax, Math.sqrt(D[j] / k[j]));
+  }
+  zn[nz] = zg;
+  return { zf, zc, dz, zn, zg, D, k, lamMax, nz };
+}
+const tableRadius = p => p.R + DEPTH.CUT * depthGrid(p).lamMax;    // in-plane reach of a table
+const nModes = (P, R) => Math.min(DEPTH.NRHO, Math.max(DEPTH.NK_MIN, Math.ceil(DEPTH.KR * P / (Math.PI * Math.max(R, 1e-9)))));
+function depthSolve(p, zs) {                                       // u_n at the nodes (cell centres and the deep end), unit source at depth zs
+  const g = depthGrid(p), R = p.R, P = R + DEPTH.CUT * g.lamMax, nk = nModes(P, R), jz = j0Zeros(nk), B = depthBasis(nk), nz = g.nz, SUB = DEPTH.SUB;
+  const kap = new Float64Array(nk); for (let n = 0; n < nk; n++) kap[n] = jz[n] / P;
+  // the source: ∫ over each cell of ρd J1(κ ρd)/κ dz, by sub-samples, divided by the sphere's volume on this grid
+  const S = new Float64Array(nk * nz), acc = new Float64Array(nk); let vol = 0;
+  for (let j = 0; j < nz; j++) {
+    if (g.zf[j + 1] <= zs - R || g.zf[j] >= zs + R) continue;
+    acc.fill(0); let area = 0;
+    for (let q = 0; q < SUB; q++) {
+      const zq = g.zf[j] + (q + 0.5) / SUB * g.dz[j], r2 = R * R - (zq - zs) * (zq - zs);
+      if (r2 <= 0) continue;
+      const rd = Math.sqrt(r2);
+      for (let n = 0; n < nk; n++) acc[n] = acc[n] + rd * besselJ(kap[n] * rd, 1) / kap[n];
+      area += Math.PI * r2;
+    }
+    for (let n = 0; n < nk; n++) S[n * nz + j] = acc[n] / SUB * g.dz[j];
+    vol += area / SUB * g.dz[j];
+  }
+  if (vol <= 0) {                                                  // a sphere finer than the grid: a point in its cell
+    let j = 0; while (j < nz - 1 && g.zf[j + 1] <= zs) j++;
+    for (let n = 0; n < nk; n++) S[n * nz + j] = 1 / (2 * Math.PI);
+  } else for (let i = 0; i < S.length; i++) S[i] = S[i] / vol;
+  const cond = new Float64Array(nz - 1); for (let j = 0; j < nz - 1; j++) cond[j] = 1 / (g.dz[j] / (2 * g.D[j]) + g.dz[j + 1] / (2 * g.D[j + 1]));
+  const deep = deepMode(p), gEnd = g.D[nz - 1] / (g.dz[nz - 1] / 2), u = new Float64Array(nk * (nz + 1)), cp = new Float64Array(nz), dp = new Float64Array(nz);
+  for (let n = 0; n < nk; n++) {                                   // Thomas algorithm, mode by mode
+    const k2 = kap[n] * kap[n], wn = B.w[n] / (P * P), mu = g.D[nz - 1] * Math.sqrt(k2 + g.k[nz - 1] / g.D[nz - 1]);
+    const diag = j => {
+      let v = g.k[j] * g.dz[j] + k2 * (g.D[j] * g.dz[j]);
+      if (j < nz - 1) v += cond[j];
+      if (j > 0) v += cond[j - 1];
+      if (j === nz - 1) { if (deep === 0) v += gEnd * mu / (gEnd + mu); else if (deep === 1) v += gEnd; }   // open: half cell in series with the half-space
+      return v;
+    };
+    const d0 = diag(0); cp[0] = -cond[0] / d0; dp[0] = S[n * nz] * wn / d0;
+    for (let j = 1; j < nz; j++) {
+      const m = diag(j) + cond[j - 1] * cp[j - 1];
+      if (j < nz - 1) cp[j] = -cond[j] / m;
+      dp[j] = (S[n * nz + j] * wn + cond[j - 1] * dp[j - 1]) / m;
+    }
+    const o = n * (nz + 1);
+    u[o + nz - 1] = dp[nz - 1];
+    for (let j = nz - 2; j >= 0; j--) u[o + j] = dp[j] - cp[j] * u[o + j + 1];
+    u[o + nz] = deep === 0 ? u[o + nz - 1] * gEnd / (gEnd + mu) : deep === 2 ? u[o + nz - 1] : 0;   // the value at the deep end
+  }
+  return { u, g, P, nk };
+}
+function zIndex(zn, z) {                                           // [interval, weight] of depth z among the nodes, clamped
+  let lo = 0, hi = zn.length;
+  while (lo < hi) { const mid = (lo + hi) >> 1; if (zn[mid] <= z) lo = mid + 1; else hi = mid; }
+  const j = Math.min(Math.max(lo - 1, 0), zn.length - 2);
+  return [j, Math.min(Math.max((z - zn[j]) / (zn[j + 1] - zn[j]), 0), 1)];
+}
+const TABLES = new Map(), COLUMNS = new Map();
+function cachedTable(store, limit, key, build) {
+  let t = store.get(key);
+  if (t) { store.delete(key); store.set(key, t); return t; }
+  t = build(); store.set(key, t);
+  while (store.size > limit) store.delete(store.keys().next().value);
+  return t;
+}
+const tableKey = (p, zs) => [p.H, p.D, p.lam, p.thalfc, p.cells ?? 1, p.ddej, p.tdej, p.hpap, p.rpap, p.R, dermisModel(p) > 0 ? 1 : 0, deepMode(p), r9(zs)].join(",");
+function synthesise(S, nodesU, nzn, zn) {                          // c[i, j] = Σ_n J0(j_n i/NRHO) u_n(z_j)
+  const B = depthBasis(S.nk), N = DEPTH.NRHO, c = new Float64Array((N + 1) * nzn);
+  for (let i = 0; i < N; i++) for (let n = 0; n < S.nk; n++) {
+    const J = B.J[i * B.nk + n], o = n * nzn, b = i * nzn;
+    for (let j = 0; j < nzn; j++) c[b + j] += J * nodesU[o + j];
+  }
+  return { P: S.P, drho: S.P / N, zn, nzn, c, lamMax: S.g.lamMax };
+}
+function siteTable(p, zs) {                                        // c(ρ, z) around a site at depth zs, every depth of the grid (1 molecule/s)
+  return cachedTable(TABLES, DEPTH.CACHE_FULL, tableKey(p, zs), () => { const S = depthSolve(p, zs); return synthesise(S, S.u, S.g.nz + 1, S.g.zn); });
+}
+function siteColumns(p, zs, zOut) {                                // the same at the depths zOut only: column m is c(ρ, zOut[m])
+  return cachedTable(COLUMNS, DEPTH.CACHE_COLS, tableKey(p, zs) + "|" + zOut.join(","), () => {
+    const S = depthSolve(p, zs), nzn = S.g.nz + 1, m = zOut.length, uo = new Float64Array(S.nk * m);
+    zOut.forEach((z, c) => { const [j, w] = zIndex(S.g.zn, z); for (let n = 0; n < S.nk; n++) uo[n * m + c] = S.u[n * nzn + j] * (1 - w) + S.u[n * nzn + j + 1] * w; });
+    return synthesise(S, uo, m, Float64Array.from(zOut));
+  });
+}
+function tableAt(t, rho, z) {                                      // bilinear look-up; 0 from the rim on
+  if (!(rho < t.P)) return 0;
+  const N = DEPTH.NRHO, x = Math.min(rho / t.drho, N), i = Math.min(Math.floor(x), N - 1), f = x - i, [j, w] = zIndex(t.zn, z), b = i * t.nzn + j, e = b + t.nzn;
+  return (1 - w) * ((1 - f) * t.c[b] + f * t.c[e]) + w * ((1 - f) * t.c[b + 1] + f * t.c[e + 1]);
+}
+function tableCol(t, rho, m) {                                     // look-up in column m of a table of siteColumns
+  if (!(rho < t.P)) return 0;
+  const N = DEPTH.NRHO, x = Math.min(rho / t.drho, N), i = Math.min(Math.floor(x), N - 1), f = x - i;
+  return (1 - f) * t.c[i * t.nzn + m] + f * t.c[(i + 1) * t.nzn + m];
+}
+// One level per injection depth: `d`, `f` the effective medium and its closed-form
+// kernel; `at(h2, z)` the field of one site at horizontal distance² h2 and depth z,
+// boundaries included (mirror images, or the depth-resolved table); `atCol(h2, m)` the
+// same at the m-th of the depths the level was built for; `rc` the in-plane distance
+// beyond which a site contributes nothing. The one place where the dermis model enters.
+function makeLevel(p, z, zOut) {
+  const d = derived(p, z), f = kernel(p, d), resolved = dermisModel(p) === 2;
+  const rc = resolved ? tableRadius(p) : d.rc, rc2 = rc * rc, imgs = resolved ? [] : images(z, p.H, deepMode(p), rc);
+  let tab = null, cols = null, zq = NaN, jq = 0, wq = 0;
+  const lev = { p, z, d, f, resolved, rc, rc2, imgs, zOut: zOut ?? null,
+    table() { return tab || (tab = siteTable(p, z)); },
+    columns() { return cols || (cols = siteColumns(p, z, lev.zOut)); },
+    at(h2, zz) {
+      if (h2 > rc2) return 0;
+      if (resolved) {
+        const t = lev.table(), rho = Math.sqrt(h2); if (!(rho < t.P)) return 0;
+        if (zz !== zq) { [jq, wq] = zIndex(t.zn, zz); zq = zz; }  // the depth changes less often than the site
+        const N = DEPTH.NRHO, x = Math.min(rho / t.drho, N), i = Math.min(Math.floor(x), N - 1), fr = x - i, b = i * t.nzn + jq, e = b + t.nzn;
+        return d.Qt * ((1 - wq) * ((1 - fr) * t.c[b] + fr * t.c[e]) + wq * ((1 - fr) * t.c[b + 1] + fr * t.c[e + 1]));
+      }
+      let c = 0;
+      for (const [zi, g] of imgs) { const r = Math.sqrt(h2 + (zz - zi) * (zz - zi)); if (r < rc) c += g * f(r); }
+      return c;
+    },
+    atCol(h2, m) { return resolved ? (h2 > rc2 ? 0 : d.Qt * tableCol(lev.columns(), Math.sqrt(h2), m)) : lev.at(h2, lev.zOut[m]); },
+    inPlane(r) { return resolved ? d.Qt * tableAt(lev.table(), r, z) : f(r); }   // one site alone, at its own depth
+  };
+  return lev;
+}
+function levelKernels(p, depths, zOut) {                           // one level per injection depth, each with the medium of its own depth
   const out = [], cache = new Map();
   for (const z of depths ?? levelDepths(p)) {
     const key = r9(z);
-    if (!cache.has(key)) { const d = derived(p, z); cache.set(key, { d, f: kernel(p, d) }); }
+    if (!cache.has(key)) cache.set(key, makeLevel(p, z, zOut));
     out.push(cache.get(key));
   }
   return out;
 }
-const deepMode = p => Math.min(2, Math.max(0, Math.round(p.deep ?? 0)));
+const cutoff = (p, ks) => Math.max(...(ks ?? levelKernels(p)).map(k => k.rc));   // no site contributes beyond this
 function images(zs, H, deep, reach) {                              // [depth, sign]: junction, and the deep side if bounded
   if (deep === 0) return [[zs, 1], [-zs, 1]];
   const sg = deep === 1 ? -1 : 1, N = Math.ceil((reach + 2 * H) / (4 * H)), out = [];
@@ -389,7 +599,7 @@ const sitesPerCm2 = (pattern, a, levels = 1) => levels * 1e8 / (pattern === "squ
 function rng(seed) { return () => { seed |= 0; seed = seed + 0x6D2B79F5 | 0; let t = Math.imul(seed ^ seed >>> 15, 1 | seed); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
 function makeSites(p, pattern, custom, seed, margin) {             // [x, y, z]
   if (pattern === "custom") return (custom || []).map(s => [s[0], s[1], s.length > 2 ? s[2] : p.z0]);
-  const L = p.L, m = margin ?? Math.max(...levelKernels(p).map(k => k.d.rc)), a = p.a, out = [], c0 = L / 2, depths = levelDepths(p);
+  const L = p.L, m = margin ?? cutoff(p), a = p.a, out = [], c0 = L / 2, depths = levelDepths(p);
   if (pattern === "hex" || pattern === "square") {
     const dy = pattern === "hex" ? a * SQRT3 / 2 : a;
     const jmax = Math.ceil((L / 2 + m) / dy) + 1, imax = Math.ceil((L / 2 + m) / a) + 1;
@@ -407,37 +617,34 @@ function makeSites(p, pattern, custom, seed, margin) {             // [x, y, z]
   return out;
 }
 function buildField(p, pattern, custom, seed) {
-  const d = derived(p), f = kernel(p, d), ks = levelKernels(p), sites = makeSites(p, pattern, custom, seed, Math.max(...ks.map(k => k.d.rc)));
-  const keys = [...new Set(sites.map(s => r9(s[2])))].sort((x, y) => x - y), gk = levelKernels(p, keys), gi = new Map(keys.map((z, i) => [z, i]));
-  const deep = deepMode(p), groups = gk.map(k => ({ ...k, rc: k.d.rc, rc2: k.d.rc * k.d.rc, imgs: null }));
-  for (const s of sites) { const g = groups[gi.get(r9(s[2]))]; s[3] = gi.get(r9(s[2])); if (!g.imgs) g.imgs = images(s[2], p.H, deep, g.rc); }
+  const d = derived(p), f = kernel(p, d), ks = levelKernels(p), sites = makeSites(p, pattern, custom, seed, cutoff(p, ks));
+  const keys = [...new Set(sites.map(s => r9(s[2])))].sort((x, y) => x - y), gi = new Map(keys.map((z, i) => [z, i])), groups = new Array(keys.length).fill(null);
+  for (const s of sites) { const i = gi.get(r9(s[2])); s[3] = i; if (!groups[i]) groups[i] = makeLevel(p, keys[i]); }   // one level per depth that occurs
   const cs = Math.max(...groups.map(g => g.rc), 50), grid = new Map();
   for (const s of sites) { const key = Math.floor(s[0] / cs) + "," + Math.floor(s[1] / cs); (grid.get(key) || grid.set(key, []).get(key)).push(s); }
   function at(x, y, z) {
     const bx = Math.floor(x / cs), by = Math.floor(y / cs); let c = 0;
     for (let i = bx - 1; i <= bx + 1; i++) for (let j = by - 1; j <= by + 1; j++) {
       const b = grid.get(i + "," + j); if (!b) continue;
-      for (const s of b) {
-        const g = groups[s[3]], dx = x - s[0], dy = y - s[1], h2 = dx * dx + dy * dy; if (h2 > g.rc2) continue;
-        for (const [zi, sg] of g.imgs) { const r = Math.sqrt(h2 + (z - zi) * (z - zi)); if (r < g.rc) c += sg * g.f(r); }   // images: junction, deep side
-      }
+      for (const s of b) { const g = groups[s[3]], dx = x - s[0], dy = y - s[1], h2 = dx * dx + dy * dy; if (h2 <= g.rc2) c += g.at(h2, z); }
     }
     return c;
   }
   return { d, f, ks, sites, at };
 }
-function latticeAt(p, ks, pattern, a, x, y, z) {                  // infinite multi-level lattice, level 0 at the origin; ks: levelKernels
-  const dy = pattern === "hex" ? a * SQRT3 / 2 : a, depths = levelDepths(p), deep = deepMode(p);
+function latticeSum(lev, pattern, a, l, x, y, at) {               // Σ at(h²) over the sites of level l's lattice within reach of (x, y)
+  const dy = pattern === "hex" ? a * SQRT3 / 2 : a, n = Math.ceil(lev.rc / Math.min(a, dy)) + 1, [sx, sy] = levelShift(pattern, l, a), rc2 = lev.rc2;
   let c = 0;
-  for (let l = 0; l < depths.length; l++) {
-    const { d, f } = ks[l], rc = d.rc, rc2 = rc * rc, n = Math.ceil(rc / Math.min(a, dy)) + 1;
-    const [sx, sy] = levelShift(pattern, l, a), imgs = images(depths[l], p.H, deep, rc);
-    for (let j = -n; j <= n; j++) for (let i = -n; i <= n; i++) {
-      const X = i * a + (pattern === "hex" && (j & 1) ? a / 2 : 0) + sx, Y = j * dy + sy, h2 = (x - X) ** 2 + (y - Y) ** 2;
-      if (h2 > rc2) continue;
-      for (const [zi, g] of imgs) { const r = Math.sqrt(h2 + (z - zi) ** 2); if (r < rc) c += g * f(r); }
-    }
+  for (let j = -n; j <= n; j++) for (let i = -n; i <= n; i++) {
+    const X = i * a + (pattern === "hex" && (j & 1) ? a / 2 : 0) + sx, Y = j * dy + sy, h2 = (x - X) ** 2 + (y - Y) ** 2;
+    if (h2 > rc2) continue;
+    c += at(h2);
   }
+  return c;
+}
+function latticeAt(p, ks, pattern, a, x, y, z) {                  // infinite multi-level lattice, level 0 at the origin; ks: levelKernels
+  let c = 0;
+  for (let l = 0; l < ks.length; l++) { const lev = ks[l]; c += latticeSum(lev, pattern, a, l, x, y, h2 => lev.at(h2, z)); }
   return c;
 }
 function holePoint(pattern, a) { return pattern === "hex" ? [a / 2, a / (2 * SQRT3)] : [a / 2, a / 2]; }
@@ -449,25 +656,47 @@ function criticalSpacing(p, pat) {                                 // one inject
   for (let it = 0; it < 60; it++) { const mid = Math.sqrt(lo * hi); if (cmin(mid) >= d.con) lo = mid; else hi = mid; }
   return { a: lo, pat };
 }
-function singleReach(p, d, f) {
-  if (f(0) < d.con) return 0;
-  let lo = 0, hi = p.R + 60 * d.lam;
-  for (let it = 0; it < 80; it++) { const m = (lo + hi) / 2; if (f(m) >= d.con) lo = m; else hi = m; }
+function singleReach(p) {                                          // one site alone at z0, in its own plane, down to the threshold
+  const lev = levelKernels({ ...p, levels: 1 })[0], d = lev.d;     // uniform, averaged: no boundary; depth-resolved: the dermis as it is
+  if (lev.inPlane(0) < d.con) return 0;
+  let lo = 0, hi = lev.resolved ? lev.rc : p.R + 60 * d.lam;
+  for (let it = 0; it < 80; it++) { const m = (lo + hi) / 2; if (lev.inPlane(m) >= d.con) lo = m; else hi = m; }
   return lo;
 }
-function fractions(vals, d) { let u = 0, w = 0, o = 0; for (const c of vals) { if (c < d.con) u++; else if (c <= d.cfib) w++; else o++; } const n = vals.length; return [u / n, w / n, o / n]; }
-function unitCellFractions(p, pat, a, nu, nz) {                    // one periodic cell over the dermis depth
-  const ks = levelKernels(p), d = ks[0].d, dy = pat === "hex" ? a * SQRT3 / 2 : a, vals = [];
-  for (let l = 0; l < nz; l++) for (let v = 0; v < nu; v++) for (let u = 0; u < nu; u++) {
-    const uu = (u + 0.5) / nu, vv = (v + 0.5) / nu, x = pat === "hex" ? uu * a + vv * a / 2 : uu * a, y = vv * dy;
-    vals.push(latticeAt(p, ks, pat, a, x, y, (l + 0.5) / nz * p.H));
+// Shares below the threshold, in the window, above the ceiling. With `w` (one weight per
+// sample depth, values ordered depth by depth) each depth counts with its weight: points
+// are counted per depth and the depths added in order, as dermsim.model.fractions does.
+function fractions(vals, d, w) {
+  const n = vals.length;
+  if (!w) { let u = 0, o = 0; for (let i = 0; i < n; i++) { const c = vals[i]; if (c < d.con) u++; else if (c > d.cfib) o++; } return [u / n, (n - u - o) / n, o / n]; }
+  const nz = w.length, per = n / nz; let under = 0, win = 0, over = 0;
+  for (let m = 0; m < nz; m++) {
+    let u = 0, o = 0;
+    for (let i = m * per; i < (m + 1) * per; i++) { const c = vals[i]; if (c < d.con) u++; else if (c > d.cfib) o++; }
+    under += w[m] * u / per; win += w[m] * (per - u - o) / per; over += w[m] * o / per;
   }
-  return fractions(vals, d);
+  return [under, win, over];
 }
-function volumeFractions(Fld, p, nxy, nz) {                        // the dermis in view, 0–H deep
-  const vals = new Float64Array(nxy * nxy * nz); let k = 0;
-  for (let l = 0; l < nz; l++) for (let j = 0; j < nxy; j++) for (let i = 0; i < nxy; i++) vals[k++] = Fld.at((i + 0.5) / nxy * p.L, (j + 0.5) / nxy * p.L, (l + 0.5) / nz * p.H);
-  return fractions(vals, Fld.d);
+function unitCellField(p, pat, a, nu, nz) {                        // nz depths × nu² points of one periodic cell: {c, d, wc, wv}
+  const S = depthSamples(p, nz), ks = levelKernels(p, null, S.z), dy = pat === "hex" ? a * SQRT3 / 2 : a, c = new Float64Array(nz * nu * nu);
+  let k = 0;
+  for (let m = 0; m < nz; m++) for (let v = 0; v < nu; v++) for (let u = 0; u < nu; u++) {
+    const uu = (u + 0.5) / nu, vv = (v + 0.5) / nu, x = pat === "hex" ? uu * a + vv * a / 2 : uu * a, y = vv * dy;
+    let t = 0;
+    for (let l = 0; l < ks.length; l++) { const lev = ks[l]; t += latticeSum(lev, pat, a, l, x, y, h2 => lev.atCol(h2, m)); }
+    c[k++] = t;
+  }
+  return { c, d: ks[0].d, wc: S.even ? null : S.wc, wv: S.even ? null : S.wv };
+}
+function unitCellCoverage(p, pat, a, nu, nz) {                     // by host cells (the definition) and by dermis volume
+  const F = unitCellField(p, pat, a, nu, nz);
+  return { cells: fractions(F.c, F.d, F.wc), volume: fractions(F.c, F.d, F.wv) };
+}
+const unitCellFractions = (p, pat, a, nu, nz) => unitCellCoverage(p, pat, a, nu, nz).cells;
+function viewCoverage(Fld, p, nxy, nz) {                           // the dermis in view, 0–H deep: by host cells and by volume
+  const S = depthSamples(p, nz), vals = new Float64Array(nxy * nxy * nz); let k = 0;
+  for (let l = 0; l < nz; l++) for (let j = 0; j < nxy; j++) for (let i = 0; i < nxy; i++) vals[k++] = Fld.at((i + 0.5) / nxy * p.L, (j + 0.5) / nxy * p.L, S.z[l]);
+  return { cells: fractions(vals, Fld.d, S.even ? null : S.wc), volume: fractions(vals, Fld.d, S.even ? null : S.wv) };
 }
 // --- graded response, survival, time in the window (dermsim.response) -----------
 function hill(c, ec50, n) {                                        // R(c) = cⁿ/(EC50ⁿ + cⁿ)
@@ -493,19 +722,23 @@ function quasiStatic(p, d) {                                       // the two ti
   return { field_days: fieldDays, diffusion_days: (p.a * p.a / p.D) / 86400,
     tsurv_days: p.tsurv, ratio: p.tsurv ? fieldDays / p.tsurv : Infinity };
 }
-function exposure(p, pat, a, nu, nz) {                             // response and days in the window, one lattice cell
-  const q = { ...p, tday: 0 }, ks0 = levelKernels(q), d0 = ks0[0].d, d = derived(p);
-  const dy = pat === "hex" ? a * SQRT3 / 2 : a, tw = new Float64Array(nu * nu * nz);
-  let act = 0, ever = 0, sum = 0, max = 0, k = 0;
-  for (let l = 0; l < nz; l++) for (let v = 0; v < nu; v++) for (let u = 0; u < nu; u++) {
-    const uu = (u + 0.5) / nu, vv = (v + 0.5) / nu, x = pat === "hex" ? uu * a + vv * a / 2 : uu * a;
-    const c0 = latticeAt(q, ks0, pat, a, x, vv * dy, (l + 0.5) / nz * p.H);
-    const t = windowTimes(c0, d0, p.tsurv)[2];
-    tw[k++] = t; sum += t; if (t > 0) ever++; if (t > max) max = t;
-    act += hill(c0 * d.surv, d.con, p.hill);
+function weightedMedian(v, w) {                                    // the value at which the summed weight first reaches half
+  const order = Array.from(v, (_, i) => i).sort((a, b) => v[a] - v[b]); let tot = 0, acc = 0;
+  for (const x of w) tot += x;
+  for (const i of order) { acc += w[i]; if (acc >= 0.5 * tot) return v[i]; }
+  return v[order[order.length - 1]];
+}
+function exposure(p, pat, a, nu, nz) {                             // response and days in the window of the host cells, one lattice cell
+  const F = unitCellField({ ...p, tday: 0 }, pat, a, nu, nz), d0 = F.d, d = derived(p), n = F.c.length, tw = new Float64Array(n);
+  const per = F.wc ? n / F.wc.length : 1;                          // one weight per depth → one per sample
+  let act = 0, ever = 0, sum = 0, max = 0;
+  for (let i = 0; i < n; i++) {
+    const c0 = F.c[i], t = windowTimes(c0, d0, p.tsurv)[2], w = F.wc ? F.wc[Math.floor(i / per)] / per : 1;
+    tw[i] = t; sum += w * t; if (t > 0) ever += w; if (t > max) max = t;
+    act += w * hill(c0 * d.surv, d.con, p.hill);
   }
-  return { activation: act / tw.length, ever: ever / tw.length, days_mean: sum / tw.length,
-    days_median: median(tw), days_max: max };
+  if (!F.wc) return { activation: act / n, ever: ever / n, days_mean: sum / n, days_median: median(tw), days_max: max };
+  return { activation: act, ever, days_mean: sum, days_median: weightedMedian(tw, Float64Array.from(tw, (_, i) => F.wc[Math.floor(i / per)] / per)), days_max: max };
 }
 // --- the injection scaffold: needle tracks of a design (dermsim.scaffold) -------
 const SCAFFOLD_MAX_DRAW = 6000;
@@ -558,9 +791,14 @@ function geometries(p, mode, o) {                                  // [levels, d
   }
   return out;
 }
-function clustersApart(pattern, a, n, dz, R) {                     // clusters must not overlap
+const STACK_PERIOD = { hex: 3, square: 2 }, TOUCH = 1e-9;          // depths after which the stacking repeats; touching is apart
+function clustersApart(pattern, a, n, dz, R, depths) {             // every two cluster centres ≥ 2R apart in 3-D
   if (a < 2 * R) return false;
-  return n === 1 || Math.hypot(topDownSpacing(pattern, a, 2), dz) >= 2 * R;
+  const z = depths ?? Array.from({ length: n }, (_, l) => l * dz);
+  const period = STACK_PERIOD[pattern] ?? 1, side = topDownSpacing(pattern, a, 2);
+  for (let i = 0; i < z.length; i++) for (let j = i + 1; j < z.length; j++)   // every pair of depths, not just neighbours:
+    if (Math.hypot((j - i) % period === 0 ? 0 : side, z[j] - z[i]) < 2 * R - TOUCH) return false;   // same stacking position → directly above
+  return true;
 }
 function planePoints(pattern, a, nu) {                             // row-major over (iv, iu)
   const dy = pattern === "hex" ? a * SQRT3 / 2 : a, X = new Float64Array(nu * nu), Y = new Float64Array(nu * nu);
@@ -593,7 +831,7 @@ function interpT(tab, row, t) {
   const w = t / tab.step - kk, b = row * (tab.K + 1) + kk;
   return tab.T[b] * (1 - w) + tab.T[b + 1] * w;
 }
-function layoutField(tabs, nodes, media, Dref, p, pattern, n, dz, z0, o) {   // nz × nu² values, current cells per site
+function layoutField(tabs, nodes, media, Dref, p, pattern, n, dz, z0, o, zs) {   // nz × nu² values at the sample depths zs, current cells per site
   // each level: the tables of the two λ nodes around its own λ, blended, scaled by Dref/D_l;
   // the images (junction, deep side) are further look-ups with their sign
   const nu = o.nu, nz = o.nz, F = new Float64Array(nz * nu * nu), depths = levelDepths({ ...p, levels: n, dz, z0 });
@@ -603,7 +841,7 @@ function layoutField(tabs, nodes, media, Dref, p, pattern, n, dz, z0, o) {   // 
     let i = 0, w = 0;
     if (nodes.length > 1) { i = Math.max(0, Math.min(nodes.length - 2, nodes.filter(x => x <= lamL).length - 1)); w = (1 / lamL - 1 / nodes[i]) / (1 / nodes[i + 1] - 1 / nodes[i]); }
     for (let m = 0; m < nz; m++) {
-      const z = (m + 0.5) / nz * p.H;
+      const z = zs ? zs[m] : (m + 0.5) / nz * p.H;
       for (let iv = 0; iv < nu; iv++) for (let iu = 0; iu < nu; iu++) {
         const row = ((iv - sh + nu) % nu) * nu + ((iu - sh + nu) % nu);
         let c0 = 0; for (const [zi, g] of imgs) c0 += g * interpT(tabs[i], row, Math.abs(z - zi));
@@ -613,6 +851,32 @@ function layoutField(tabs, nodes, media, Dref, p, pattern, n, dz, z0, o) {   // 
       }
     }
   });
+  return F;
+}
+// Depth-resolved dermis: the field of a site is a table of its depth alone, so each
+// depth's columns at the sample depths are built once, each spacing sums them over its
+// lattice (latticeTable), and a stack is the sum of its levels' shifted tables.
+function latticeTable(tab, pattern, a, nu) {                       // T[i·nz + m]: single-level lattice of unit sources at plane point i, sample depth m
+  const dy = pattern === "hex" ? a * SQRT3 / 2 : a, n = Math.ceil(tab.P / Math.min(a, dy)) + 1, [X, Y] = planePoints(pattern, a, nu), nz = tab.nzn, N = DEPTH.NRHO;
+  const T = new Float64Array(nu * nu * nz);
+  for (let i = 0; i < nu * nu; i++) for (let j = -n; j <= n; j++) for (let ii = -n; ii <= n; ii++) {
+    const sx = ii * a + (pattern === "hex" && (j & 1) ? a / 2 : 0), sy = j * dy, rho = Math.sqrt((X[i] - sx) ** 2 + (Y[i] - sy) ** 2);
+    if (!(rho < tab.P)) continue;
+    const x = Math.min(rho / tab.drho, N), i0 = Math.min(Math.floor(x), N - 1), fr = x - i0, b = i0 * nz, e = b + nz;
+    for (let m = 0; m < nz; m++) T[i * nz + m] += (1 - fr) * tab.c[b + m] + fr * tab.c[e + m];
+  }
+  return T;
+}
+function stackField(tabs, Qt, p, pattern, n, dz, z0, o) {         // nz × nu² values of a layout, depth-resolved
+  const nu = o.nu, nz = o.nz, F = new Float64Array(nz * nu * nu);
+  levelDepths({ ...p, levels: n, dz, z0 }).forEach((zl, l) => {
+    const sh = pattern === "hex" ? (l % 3) * nu / 3 : (l % 2) * nu / 2, T = tabs.get(r9(zl));
+    for (let iv = 0; iv < nu; iv++) for (let iu = 0; iu < nu; iu++) {
+      const row = ((iv - sh + nu) % nu) * nu + ((iu - sh + nu) % nu);
+      for (let m = 0; m < nz; m++) F[m * nu * nu + iv * nu + iu] += T[row * nz + m];
+    }
+  });
+  for (let i = 0; i < F.length; i++) F[i] = F[i] * Qt;
   return F;
 }
 function paretoFront(cands) {                                      // best coverage for each dose
@@ -653,35 +917,51 @@ function blendFields(F0, F1, w) {
   return out;
 }
 function* optimiseSteps(p, pattern, mode, optsIn) {                // yields progress; returns the result
+  // coverage = share of the host cells in the window; designs with more than O* of them
+  // above the ceiling are evaluated (points) but not admitted to the front
   const o = { ...OPT_DEFAULTS, ...(optsIn || {}) };
   pattern = (pattern === "hex" || pattern === "square") ? pattern : "hex";
-  const d = derived(p), cells = cellsGrid(o), geos = geometries(p, mode, o), as = aGrid(o), cands = [];
-  const media = new Map(geos.map(g => [g.join("|"), medium(p, ...g)]));
-  const lams = geos.length ? [...media.values()].flatMap(m => m.map(x => x[1])) : [d.lam];
-  const nodes = lamNodes(Math.min(...lams), Math.max(...lams)), Dref = d.D;
-  const nodeD = nodes.map(lam => ({ ...d, D: Dref, lam, kap: 1 / lam, k: Dref / (lam * lam), thalf: Math.LN2 * lam * lam / Dref, rc: p.R + 9.2 * lam }));
-  const nodeF = nodeD.map(nd => kernel(p, nd));
+  const d = derived(p), cells = cellsGrid(o), geos = geometries(p, mode, o), as = aGrid(o), cands = [], nu = o.nu;
+  const S = depthSamples(p, o.nz), wc = S.even ? null : S.wc, ostar = (p.ostar ?? 100) / 100, resolved = dermisModel(p) === 2;
+  const depthsOf = g => levelDepths({ ...p, levels: g[0], dz: g[1], z0: g[2] });
+  let nodes = [], media, Dref, nodeD, nodeF, cols;
+  if (resolved) {                                                  // one column table per depth that occurs
+    cols = new Map();
+    for (const g of geos) for (const zl of depthsOf(g)) if (!cols.has(r9(zl))) cols.set(r9(zl), siteColumns(p, zl, S.z));
+  } else {
+    media = new Map(geos.map(g => [g.join("|"), medium(p, ...g)]));
+    const lams = geos.length ? [...media.values()].flatMap(m => m.map(x => x[1])) : [d.lam];
+    nodes = lamNodes(Math.min(...lams), Math.max(...lams)); Dref = d.D;
+    nodeD = nodes.map(lam => ({ ...d, D: Dref, lam, kap: 1 / lam, k: Dref / (lam * lam), thalf: Math.LN2 * lam * lam / Dref, rc: p.R + 9.2 * lam }));
+    nodeF = nodeD.map(nd => kernel(p, nd));
+  }
   for (let ia = 0; ia < as.length; ia++) {
-    const a = as[ia], tabs = nodeD.map((nd, j) => optTable(p, nd, nodeF[j], pattern, a, o));
-    for (const [n, dz, z0] of geos) {
-      if (!clustersApart(pattern, a, n, dz, p.R)) continue;
-      const F = layoutField(tabs, nodes, media.get([n, dz, z0].join("|")), Dref, p, pattern, n, dz, z0, o), N = F.length;
-      for (const c of cells) {
-        const s = c / p.ncells; let under = 0, over = 0;
-        for (let i = 0; i < N; i++) { const v = F[i] * s; if (v < d.con) under++; else if (v > d.cfib) over++; }
-        cands.push({ mode, a, levels: n, dz, z0, ncells: c, below: under / N, window: (N - under - over) / N, above: over / N,
-          cells_per_cm2: sitesPerCm2(pattern, a, n) * c });
+    const a = as[ia], ok = geos.filter(g => clustersApart(pattern, a, g[0], g[1], p.R));
+    if (ok.length) {
+      let tabs;
+      if (resolved) {
+        const need = [...new Set(ok.flatMap(g => depthsOf(g).map(r9)))].sort((x, y) => x - y);
+        tabs = new Map(need.map(key => [key, latticeTable(cols.get(key), pattern, a, nu)]));
+      } else tabs = nodeD.map((nd, j) => optTable(p, nd, nodeF[j], pattern, a, o));
+      for (const [n, dz, z0] of ok) {
+        const F = resolved ? stackField(tabs, d.Qt, p, pattern, n, dz, z0, o)
+          : layoutField(tabs, nodes, media.get([n, dz, z0].join("|")), Dref, p, pattern, n, dz, z0, o, S.z), N = F.length, V = new Float64Array(N);
+        for (const c of cells) {
+          const sc = c / p.ncells; for (let i = 0; i < N; i++) V[i] = F[i] * sc;
+          const [under, win, over] = fractions(V, d, wc);
+          cands.push({ mode, a, levels: n, dz, z0, ncells: c, below: under, window: win, above: over, cells_per_cm2: sitesPerCm2(pattern, a, n) * c });
+        }
       }
     }
     yield { done: ia + 1, total: as.length };
   }
-  const front = spreadFront(paretoFront(cands), o.keep);
+  const front = spreadFront(paretoFront(cands.filter(c => c.above <= ostar + 1e-12)), o.keep);
   for (const sol of front) {
     const q = { ...p, a: sol.a, levels: sol.levels, dz: sol.dz, z0: sol.z0, ncells: sol.ncells };
-    const [u, w, ov] = unitCellFractions(q, pattern, sol.a, o.nu, o.nz);
-    sol.exact = { below: u, window: w, above: ov };
+    const cov = unitCellCoverage(q, pattern, sol.a, nu, o.nz), [u, w, ov] = cov.cells;
+    sol.exact = { below: u, window: w, above: ov, volume: cov.volume[1] };
   }
-  return { mode, pattern, evaluated: cands.length, lam_nodes: nodes, points: cands.map(c => [c.cells_per_cm2, c.window, c.above]), front };
+  return { mode, pattern, evaluated: cands.length, lam_nodes: nodes, ostar, points: cands.map(c => [c.cells_per_cm2, c.window, c.above]), front };
 }
 function optimise(p, pattern, mode, opts) { const g = optimiseSteps(p, pattern, mode, opts); let r; while (!(r = g.next()).done); return r.value; }
 
@@ -723,7 +1003,7 @@ function siteMedia(q, sites, fRho, fD) {                           // [D, k] per
       const px = s[0] + ox * d.lam, py = s[1] + oy * d.lam, pz = Math.abs(s[2] + oz * d.lam);
       rho = rho + w * fieldLog(fRho, q.sigrho, px, py, pz); dd = dd + w * fieldLog(fD, q.sigd, px, py, pz);
     }
-    D[i] = d.D * dd; k[i] = kChem + (d.k - kChem) * rho;
+    D[i] = d.D * dd; k[i] = rho === 1 ? d.k : kChem + (d.k - kChem) * rho;   // no variation: the level's medium itself
   });
   return { D, k };
 }
@@ -737,8 +1017,9 @@ function kernelDk(D, k, Qt, R) {                                   // kernel() f
     return pref * (1 - a * (kr < 1e-6 ? 1 : Math.sinh(kr) / kr));
   };
 }
-function fieldAtSites(q, sites, med, Qt, pts) {                    // Σ sites (own D, k, cutoff) and their images
-  const n = sites.length, rc = new Float64Array(n), fs = [];
+function fieldAtSites(q, sites, med, Qt, pts) {                    // Σ sites, each with its own D and k
+  if (dermisModel(q) === 2) return fieldTables(q, sites, med, Qt, pts);
+  const n = sites.length, rc = new Float64Array(n), fs = [];       // uniform, averaged: closed-form kernels and their images
   for (let i = 0; i < n; i++) { rc[i] = q.R + 9.2 * Math.sqrt(med.D[i] / med.k[i]); fs.push(kernelDk(med.D[i], med.k[i], Qt, q.R)); }
   let reach = 0; for (let i = 0; i < n; i++) reach = Math.max(reach, rc[i]);
   const deep = deepMode(q), imgs = new Map();
@@ -758,10 +1039,41 @@ function fieldAtSites(q, sites, med, Qt, pts) {                    // Σ sites (
     return c;
   });
 }
+// Depth-resolved: each site's level table — exact for this donor's dermis — and, where the
+// random fields scaled the site's medium, times K(r; D_site, k_site) / K(r; D_level, k_level),
+// K the closed-form kernel at the distance r from the site's centre.
+function fieldTables(q, sites, med, Qt, pts) {
+  const n = sites.length, levs = new Map(), lv = new Array(n), ratio = new Array(n).fill(null);
+  for (let i = 0; i < n; i++) {
+    const key = r9(sites[i][2]);
+    if (!levs.has(key)) levs.set(key, makeLevel(q, key));
+    const lev = lv[i] = levs.get(key);
+    if (med.D[i] !== lev.d.D || med.k[i] !== lev.d.k) {
+      const ks = kernelDk(med.D[i], med.k[i], 1, q.R), k0 = lev.k0 || (lev.k0 = kernelDk(lev.d.D, lev.d.k, 1, q.R));
+      ratio[i] = r => ks(r) / k0(r);
+    }
+  }
+  let reach = 50; for (const lev of levs.values()) reach = Math.max(reach, lev.rc);
+  const grid = new Map();
+  sites.forEach((s, i) => { const key = Math.floor(s[0] / reach) + "," + Math.floor(s[1] / reach); (grid.get(key) || grid.set(key, []).get(key)).push(i); });
+  return pts.map(([x, y, z]) => {
+    const bx = Math.floor(x / reach), by = Math.floor(y / reach); let c = 0;
+    for (let a = bx - 1; a <= bx + 1; a++) for (let b = by - 1; b <= by + 1; b++) {
+      const bin = grid.get(a + "," + b); if (!bin) continue;
+      for (const i of bin) {
+        const s = sites[i], h2 = (x - s[0]) ** 2 + (y - s[1]) ** 2, lev = lv[i]; if (h2 > lev.rc2) continue;
+        let t = Qt * tableAt(lev.table(), Math.sqrt(h2), z);
+        if (t !== 0 && ratio[i]) t = t * ratio[i](Math.sqrt(h2 + (z - lev.z) ** 2));
+        c += t;
+      }
+    }
+    return c;
+  });
+}
 function drawTissue(p, seed, nTargets, L, offset = 0) {          // the random part, in dermsim.hetero._draw's order
   const r = rng(seed), q = donor(p, gauss(r), gauss(r), gauss(r)), zpen = gauss(r), fRho = spectral(r, q.ell), fD = spectral(r, q.ell);
-  const H = q.H, hp = q.hpap, layered = !!Math.round(q.layers ?? 0), Lt = L ?? q.L;
-  const pPap = layered ? q.rpap * hp / (q.rpap * hp + (H - hp)) : hp / H, n = Math.round(nTargets ?? q.ntarget);
+  const H = q.H, hp = q.hpap, Lt = L ?? q.L;
+  const pPap = papillaryCellShare(q), n = Math.round(nTargets ?? q.ntarget);   // cells per layer: evenly spread in a uniform dermis
   const pos = [], sen = [], e = [];
   for (let j = 0; j < n; j++) {
     const u = r(), z = u < pPap ? r() * hp : hp + r() * (H - hp), x = offset + r() * Lt, y = offset + r() * Lt;
@@ -793,7 +1105,7 @@ function scoreTissue(q, d, c, sen, e, w) {                        // dermsim.het
 }
 function realise(p, pattern, seed, nTargets, custom) {             // one random tissue and the coverage in it
   const T = drawTissue(p, seed, nTargets), q = T.q;
-  const ks = levelKernels(q), d = ks[0].d, margin = Math.max(...ks.map(k => k.d.rc));
+  const ks = levelKernels(q), d = ks[0].d, margin = cutoff(q, ks);
   const sites = makeSites(q, pattern, custom, 0, margin * 1.5);
   const zs = insertedDepths(q, sites.map(s => s[2]), T.zpen); sites.forEach((s, i) => { s[2] = zs[i]; });
   const med = siteMedia(q, sites, T.fRho, T.fD), c = fieldAtSites(q, sites, med, d.Qt, T.pos);
@@ -820,9 +1132,9 @@ function mcStats(runs, cstar, ostar) {                             // as dermsim
     sd_noise: Math.sqrt(noise), sd_tissue: Math.sqrt(Math.max(sd * sd - noise, 0)),
     q05: q(0.05), q50: q(0.5), q95: q(0.95), above_mean: avg("above"), all_mean: avg("coverage_all"), days_mean: avg("days") };
 }
-function hetFaithful(p) {                                          // claims A8, A12: fields varying over ≥ 4 λ
+function hetFaithful(p) {                                          // fields varying over ≥ 4 λ (uniform dermis) or ≥ 8 λ (a dermis with depth)
   if (p.sigrho <= 0 && p.sigd <= 0) return true;
-  return p.ell >= 4 * Math.max(...levelKernels(p).map(k => k.d.lam));
+  return p.ell >= (dermisModel(p) > 0 ? 8 : 4) * Math.max(...levelKernels(p).map(k => k.d.lam));
 }
 function* monteCarloSteps(p, pattern, n, seed, nTargets, custom) {  // yields progress; returns the statistics and the runs
   const runs = [];
@@ -847,12 +1159,25 @@ function* robustFrontSteps(p, pattern, front, n, nTargets) {        // dermsim.h
   const ok = rows.filter(r => r.p_hit >= p.pstar / 100);
   return { rows, robust: ok.length ? ok.reduce((a, b) => b.cells_per_cm2 < a.cells_per_cm2 ? b : a) : null, pstar: p.pstar / 100, n };
 }
+// The Coverage panel's numbers for the design in view: host cells and volume and the time
+// in the window (coverageOfView), then what the other way of solving the same dermis
+// would say (coverageOther) — sent separately, so the first does not wait for the second.
+function coverageOfView(p, pattern, custom, seed, nxy, nz, pat) {
+  const cov = viewCoverage(buildField(p, pattern, custom, seed), p, nxy, nz);
+  return { fr: cov.cells, vol: cov.volume, ex: pat ? exposure(p, pat, p.a, 12, 16) : null };
+}
+function coverageOther(p, pattern, custom, seed, nxy, nz) {
+  const m = dermisModel(p), alt = m === 2 ? 1 : m === 1 ? 2 : null;
+  if (alt === null) return null;
+  const q = { ...p, dermis_model: alt };
+  return { model: alt, fr: viewCoverage(buildField(q, pattern, custom, seed), q, nxy, nz).cells };
+}
 
 // <<< physics
 
 // ---------------------------------------------------------------------------
 // Background worker: the same physics block, for the design curve, the
-// coverage of the whole dermis and the optimiser. A newer request of the same
+// coverage of the host cells and the optimiser. A newer request of the same
 // kind cancels an older one. Falls back to the main thread if workers fail.
 // ---------------------------------------------------------------------------
 const PHYS_SRC = ([...document.scripts].map(s => s.textContent).join("\n").match(/\/\/ >>> physics([\s\S]*?)\/\/ <<< physics/) || [])[1] || "";
@@ -862,9 +1187,10 @@ onmessage = e => { const m = e.data; latest[m.kind] = m.id; setTimeout(() => run
 const live = m => latest[m.kind] === m.id;
 function run(m) {
   if (!live(m)) return;
-  if (m.kind === "volume") { const F = buildField(m.p, m.pattern, m.custom, m.seed);
-    postMessage({ kind: m.kind, id: m.id, fr: volumeFractions(F, m.p, m.nxy, m.nz),
-      ex: m.pat ? exposure(m.p, m.pat, m.p.a, 12, 16) : null }); return; }
+  if (m.kind === "volume") {
+    postMessage({ kind: m.kind, id: m.id, ...coverageOfView(m.p, m.pattern, m.custom, m.seed, m.nxy, m.nz, m.pat) });
+    setTimeout(() => { if (!live(m)) return; const other = coverageOther(m.p, m.pattern, m.custom, m.seed, m.nxy, m.nz); if (other) postMessage({ kind: m.kind, id: m.id, other }); }, 0);
+    return; }
   if (m.kind === "curve") {
     let i = 0;
     const step = () => { if (!live(m)) return;
@@ -909,8 +1235,8 @@ function ask(kind, msg, onMsg) {
   if (worker) { worker.postMessage({ ...msg, kind, id }); return; }
   setTimeout(() => {                                               // fallback without a worker
     if (jobs[kind] !== id) return;
-    if (kind === "volume") onMsg({ fr: volumeFractions(buildField(msg.p, msg.pattern, msg.custom, msg.seed), msg.p, msg.nxy, msg.nz),
-      ex: msg.pat ? exposure(msg.p, msg.pat, msg.p.a, 12, 16) : null });
+    if (kind === "volume") { onMsg(coverageOfView(msg.p, msg.pattern, msg.custom, msg.seed, msg.nxy, msg.nz, msg.pat));
+      const other = coverageOther(msg.p, msg.pattern, msg.custom, msg.seed, msg.nxy, msg.nz); if (other && jobs[kind] === id) onMsg({ other }); }
     if (kind === "curve") msg.as.forEach((a, i) => onMsg({ i, a, fr: unitCellFractions(msg.p, msg.pat, a, msg.nu, msg.nz) }));
     if (kind === "optimise") { const results = {}; for (const md of (msg.mode === "both" ? ["flat", "volume"] : [msg.mode])) results[md] = optimise(msg.p, msg.pattern, md, msg.opts);
       const cur = unitCellFractions(msg.p, msg.pattern, msg.p.a, OPT_DEFAULTS.nu, OPT_DEFAULTS.nz); onMsg({ results, current: { window: cur[1], above: cur[2] } }); }
@@ -1035,7 +1361,7 @@ function drawSection(nx) {
   ctx.fillStyle = "#B97C63"; ctx.fillRect(0, 0, W, 4);
   // dermis tissue: papillary (lighter) and reticular, fibres. With a depth-dependent
   // dermis the boundary is the papillary thickness of the model, not a drawing.
-  const layered = !!Math.round(p.layers ?? 0);
+  const layered = dermisModel(p) > 0, averaged = dermisModel(p) === 1;
   const zp = layered ? Math.min(p.hpap, Hd) : Math.min(0.1 * Hd, 200);
   ctx.fillStyle = "#EBD2C1"; ctx.fillRect(0, T, W, Hc);
   ctx.fillStyle = "#F3E1D5"; ctx.fillRect(0, T, W, zp * kz);
@@ -1121,18 +1447,18 @@ function drawSection(nx) {
     ctx.strokeStyle = "#2A6F75"; ctx.lineWidth = 2 * k; ctx.beginPath();
     for (let j = 0; j <= 80; j++) { const zz = j / 80 * Hd, xx = x0 + pr.lam(zz) / lmax * wpl; j ? ctx.lineTo(xx, T + zz * kz) : ctx.moveTo(xx, T + zz * kz); }
     ctx.stroke();
-    zl.forEach((z, i) => {                                         // the effective λ each level decays with
+    if (averaged) zl.forEach((z, i) => {                           // the one λ each level decays with in the averaged model
       ctx.beginPath(); ctx.arc(x0 + Math.min(lv[i], lmax) / lmax * wpl, T + z * kz, 3.5 * k, 0, 2 * Math.PI);
       ctx.fillStyle = multi ? LEVEL_COL[i % LEVEL_COL.length] : "#8A7F70"; ctx.fill(); ctx.strokeStyle = "#fff"; ctx.lineWidth = k; ctx.stroke();
     });
     ctx.font = font(secC, 10); ctx.fillStyle = "#2A6F75";
     ctx.fillText(`λ(z) 0–${fmt(lmax)}`, x0 - 4, T + 11 * k);
-    ctx.fillStyle = "#8A7F70"; ctx.fillText(`● level: ${lv.map(fmt).join(" · ")} µm`, x0 - 4 - 40 * k, T + Hc - 4 * k);
+    if (averaged) { ctx.fillStyle = "#8A7F70"; ctx.fillText(`● level: ${lv.map(fmt).join(" · ")} µm`, x0 - 4 - 40 * k, T + Hc - 4 * k); }
     ctx.restore();
   }
   levelDepths(p).forEach((zl, i) => { const yy = T + zl * kz, txt = fmt(zl) + " µm"; ctx.fillStyle = multi ? LEVEL_COL[i % LEVEL_COL.length] : "#1B2A33"; ctx.fillRect(W - 8, yy - 1, 8, 2); label(txt, W - 14 - ctx.measureText(txt).width, yy + 4 * k); });
   $("secCap").innerHTML = `Cross-section at y = ${fmt(y)} µm through 0–${fmt(Hd)} µm of dermis (vertical scale ${(kz / kx).toFixed(2)}× the horizontal). Cells are drawn every ~${fmt(gap / kx)} µm and coloured by the signal where they sit; fibres and the bands above and below are schematic. ` +
-    (layered ? `The papillary boundary is at the modelled ${fmt(p.hpap)} µm; the curve on the right is λ against depth, and each dot the effective λ one injection level decays with. ` : `Layer boundaries are schematic: switch on <b>Depth-dependent tissue</b> to model them. `) +
+    (layered ? `The papillary boundary is at the modelled ${fmt(p.hpap)} µm; the curve on the right is the decay length λ against depth` + (averaged ? `, and each dot the one λ an injection level decays with in the averaged model. ` : `. `) : `Layer boundaries are schematic: choose a <b>Dermis model</b> with depth (step 1) to model them. `) +
     [`Below the dermis the model simply continues (open). `, `The line at the bottom is an absorbing boundary: the signal is cleared there. `, `The line at the bottom is a closed boundary: nothing passes into the fat. `][deepMode(p)] +
     `<a href="#help/start/cross" data-help="start/cross">More</a>`;
 }
@@ -1141,19 +1467,22 @@ function drawSection(nx) {
 // Metrics, design curve, optimiser views
 // ---------------------------------------------------------------------------
 const bar = fr => `<div class="bar">${fr.map((f, i) => `<div style="width:${(100 * f).toFixed(2)}%;background:${["#BFCBD1", "#2A6F75", "#A9472F"][i]}"></div>`).join("")}</div>`;
-let volCache = null, exCache = null;
+let volCache = null, volByVolume = null, otherCache = null, exCache = null;
 const pct = x => (100 * x).toFixed(1) + " %";
 const days = x => !isFinite(x) ? "–" : x >= 10 ? x.toFixed(0) + " d" : x >= 1 ? x.toFixed(1) + " d" : x > 0 ? (24 * x).toFixed(0) + " h" : "0";
 function drawMetrics() {
   const p = S.p, d = F.d, plane = fractions(lastMapGrid.vals, d), nl = nLevels(p), pat = geoPattern();
   const spc = S.pattern === "custom" ? S.custom.length / (p.L * p.L / 1e8) : sitesPerCm2(pat, p.a, nl);
-  const crit = (S.pattern === "hex" || S.pattern === "square") ? criticalSpacing(p, pat) : null, reach = singleReach(p, d, F.f);
+  const crit = (S.pattern === "hex" || S.pattern === "square") ? criticalSpacing(p, pat) : null, reach = singleReach(p), dm = dermisModel(p);
   const hl = t => ` <a class="hl" href="#help/metrics/${t}" data-help="metrics/${t}">ⓘ</a>`;
   const depths = S.pattern === "custom" ? "custom" : levelDepths(p).map(fmt).join(" · ") + " µm";
   const rows = [
-    ["Dermis in window (whole depth)" + hl("coverage"), volCache ? `<b>${pct(volCache[1])}</b>` : "…"],
+    ["Host cells in window (whole dermis)" + hl("coverage"), volCache ? `<b>${pct(volCache[1])}</b>` : "…"],
     ["… below threshold / above ceiling", volCache ? `${pct(volCache[0])} / ${pct(volCache[2])}` : "…"],
-    ["Slice in window (at " + fmt(p.zv) + " µm)", pct(plane[1])],
+    ...(dm > 0 ? [["… as a share of the dermis volume" + hl("coverage"), volByVolume ? pct(volByVolume[1]) : "…"]] : []),
+    ...(dm > 0 ? [[(dm === 2 ? "… the averaged model would say" : "… the depth-resolved model says") + ` <a class="hl" href="#help/model/layers" data-help="model/layers" title="Help: a dermis with depth">ⓘ</a>`,
+      otherCache ? `${pct(otherCache.fr[1])}` + (Math.abs(otherCache.fr[1] - (volCache ? volCache[1] : 0)) >= 0.05 ? ` <span style="color:var(--terra)">(${otherCache.fr[1] > volCache[1] ? "+" : "−"}${(100 * Math.abs(otherCache.fr[1] - volCache[1])).toFixed(0)} points)</span>` : "") : "…"]] : []),
+    ["Slice in window (at " + fmt(p.zv) + " µm, by area)", pct(plane[1])],
     ["Injection depths" + hl("depths"), depths],
     ["Spacing seen from above", S.pattern === "custom" ? "–" : fmt(topDownSpacing(pat, p.a, nl)) + " µm"],
     ["Sites per cm²" + hl("dose"), fmt(spc)],
@@ -1161,7 +1490,7 @@ function drawMetrics() {
     ["Reach of one site (to aged-cell threshold)" + hl("reach"), fmt(reach) + " µm"],
     ["Largest gap-free spacing, one plane" + hl("critical"), crit ? (isNaN(crit.a) ? "none (threshold not reached)" : fmt(crit.a) + " µm") : "lattice patterns only"],
     ["Mean response of the host cells" + hl("response"), exCache ? pct(exCache.activation) : (S.pattern === "custom" ? "lattice patterns only" : "…")],
-    ["Dermis ever in the window" + hl("intime"), exCache ? pct(exCache.ever) : (S.pattern === "custom" ? "–" : "…")],
+    ["Host cells ever in the window" + hl("intime"), exCache ? pct(exCache.ever) : (S.pattern === "custom" ? "–" : "…")],
     ["Days in the window (mean · median · longest)" + hl("intime"),
       exCache ? `${days(exCache.days_mean)} · ${days(exCache.days_median)} · ${days(exCache.days_max)}` : (S.pattern === "custom" ? "–" : "…")]
   ];
@@ -1169,26 +1498,30 @@ function drawMetrics() {
     ? latticeAt(p, F.ks, pat, p.a, 0, 0, levelDepths(p)[0]) : Math.max(...lastMapGrid.vals);
   if (peak < d.con) rows.unshift([`<b>Nothing reaches the threshold</b> <a class="hl" href="#help/model/dose" data-help="model/dose" title="Help: does the dose add up?">ⓘ</a>`,
     `<b>${(d.con / Math.max(peak, 1e-300)).toFixed(0)}× short</b> at the strongest point`]);
-  if (Math.round(p.layers) || (p.cells ?? 1) !== 1) {
+  const at = rows.findIndex(r => r[0].startsWith("Slice in window"));
+  if (dm === 1 || (dm === 0 && (p.cells ?? 1) !== 1)) {
     const lv = [...new Set(F.ks.map(kk => kk.d.lam))];
-    rows.splice(3, 0, [`Effective decay length${lv.length > 1 ? ", per level" : ""} <a class="hl" href="#help/model/layers" data-help="model/layers" title="Help: a dermis with depth">ⓘ</a>`,
+    rows.splice(at, 0, [`Effective decay length${lv.length > 1 ? ", per level" : ""} <a class="hl" href="#help/model/layers" data-help="model/layers" title="Help: a dermis with depth">ⓘ</a>`,
       `${lv.map(fmt).join(" · ")} µm <span class="note" style="display:inline">(slab ${fmt(p.lam)} µm)</span>`]);
   }
-  if (Math.round(p.layers)) {
-    if (!reductionIsFaithful(p)) rows.unshift([`<b style="color:var(--terra)">⚠ Too shallow for one effective λ</b> <a class="hl" href="#help/model/layers" data-help="model/layers" title="Help: a dermis with depth">ⓘ</a>`,
-      `<span style="color:var(--terra)">indicative only</span>`]);
+  if (dm === 2) {
+    const pr = tissueProfile(p);
+    rows.splice(at, 0, [`Decay length, junction → deep dermis <a class="hl" href="#help/model/layers" data-help="model/layers" title="Help: a dermis with depth">ⓘ</a>`,
+      `${fmt(pr.lam(0))} → ${fmt(pr.lam(p.H))} µm <span class="note" style="display:inline">(slab ${fmt(p.lam)} µm)</span>`]);
   }
-  if (S.pattern === "hex" || S.pattern === "square") if (!clustersApart(pat, p.a, nl, p.dz, p.R))
-    rows.unshift([`<b style="color:var(--terra)">⚠ Clusters overlap</b>` + hl("overlap"), `<span style="color:var(--terra)">spacing &lt; 2R</span>`]);
+  if (dm === 1 && !reductionIsFaithful(p)) rows.unshift([`<b style="color:var(--terra)">⚠ Too shallow for one effective λ</b> <a class="hl" href="#help/model/layers" data-help="model/layers" title="Help: a dermis with depth">ⓘ</a>`,
+    `<span style="color:var(--terra)">indicative only</span>`]);
+  if (S.pattern === "hex" || S.pattern === "square") if (!clustersApart(pat, p.a, nl, p.dz, p.R, levelDepths(p)))
+    rows.unshift([`<b style="color:var(--terra)">⚠ Clusters overlap</b>` + hl("overlap"), `<span style="color:var(--terra)">centres &lt; 2R apart</span>`]);
   $("metrics").innerHTML = (volCache ? bar(volCache) : `<div class="bar"></div>`) +
-    `<div class="note" style="margin-bottom:6px">grey: below the aged-cell threshold · teal: in the window · orange: above the fibrotic ceiling</div>` +
+    `<div class="note" style="margin-bottom:6px">Host cells — grey: below the aged-cell threshold · teal: in the window · orange: above the fibrotic ceiling</div>` +
     rows.map(r => `<div class="metric"><span>${r[0]}</span><span class="v">${r[1]}</span></div>`).join("") +
     `<div class="derived">Per site ${fmt(d.Qt)} molecules/s${d.surv < 1 ? ` on day ${fmt(p.tday)} (${pct(d.surv)} of ${fmt(d.Q)} fresh)` : ""}. Decay rate k = D/λ² = ${fmt(d.k)} s⁻¹ (half-life ${fmt(d.thalf / 60)} min). Thresholds: aged cells ${fmt(p.con * p.sage)} ng/mL (${fmt(p.con * p.sage * 1000 / p.mw)} pM), ceiling ${fmt(p.cfib)} ng/mL.</div>`;
 }
 function requestVolume() {
   const pat = (S.pattern === "hex" || S.pattern === "square") ? S.pattern : null;
   ask("volume", { p: { ...S.p }, pattern: S.pattern, pat, custom: S.custom, seed: S.seed, nxy: 36, nz: 40 },
-    m => { volCache = m.fr; exCache = m.ex; drawMetrics(); });
+    m => { if (m.fr) { volCache = m.fr; volByVolume = m.vol; exCache = m.ex; otherCache = null; } if (m.other) otherCache = m.other; drawMetrics(); });
 }
 const CURVE = { N: 22, nu: 12, nz: 16 };
 let curve = { as: [], res: [] };
@@ -1217,14 +1550,17 @@ function plotChart() {
   ctx.lineWidth = k; ctx.strokeStyle = "#1B2A33"; ctx.setLineDash([4 * k, 4 * k]); ctx.beginPath(); ctx.moveTo(x(p.a), t); ctx.lineTo(x(p.a), H - b); ctx.stroke(); ctx.setLineDash([]);
   let lx = l; for (const [, col, name] of lines) { ctx.fillStyle = col; ctx.fillRect(lx, 7 * k, 10 * k, 10 * k); ctx.fillStyle = "#1B2A33"; ctx.fillText(name, lx + 14 * k, 16 * k); lx += ctx.measureText(name).width + 26 * k; }
   const done = res.filter(Boolean).length;
-  $("chartCap").textContent = (done < as.length ? `Computing… ${done}/${as.length}. ` : "") + "Share of the dermis (0–" + fmt(p.H) + " µm deep) below the aged-cell threshold, inside the window and above the fibrotic ceiling as the spacing varies, with all other values as set" + (nLevels(p) > 1 ? ` (${nLevels(p)} depths)` : "") + ". Dashed: current spacing." + (S.pattern === "random" ? " Random pattern: shown for the hexagonal lattice of the same density." : "");
+  $("chartCap").textContent = (done < as.length ? `Computing… ${done}/${as.length}. ` : "") + "Share of the host cells (dermis 0–" + fmt(p.H) + " µm deep) below the aged-cell threshold, inside the window and above the fibrotic ceiling as the spacing varies, with all other values as set" + (nLevels(p) > 1 ? ` (${nLevels(p)} depths)` : "") + ". Dashed: current spacing." + (S.pattern === "random" ? " Random pattern: shown for the hexagonal lattice of the same density." : "");
 }
 
 // Optimiser panel: run, plot all designs and the fronts, cycle through solutions.
 function syncOptNote() {
-  const on = !!Math.round(S.p.layers), el = $("optLayerNote");
-  el.hidden = !on;
-  if (on) el.innerHTML = `The dermis is depth-dependent, so each candidate is scored with the decay length its own depths see — shallow layouts a shorter one. This makes the search about three times slower. <a href="#help/metrics/optimise" data-help="metrics/optimise">How</a>`;
+  const dm = dermisModel(S.p), el = $("optLayerNote");
+  el.hidden = false;
+  el.innerHTML = `Ranks designs by the share of the <b>host cells</b> in the window and admits only those with at most ${fmt(S.p.ostar)} % above the ceiling (O*, step 4). ` +
+    (dm === 2 ? `Depth-resolved dermis: every candidate is computed exactly, from one table per injection depth. `
+      : dm === 1 ? `Averaged dermis: each candidate is scored with the decay length its own depths see — shallow layouts a shorter one. ` : ``) +
+    `<a href="#help/metrics/optimise" data-help="metrics/optimise">How</a>`;
 }
 function runOptimiser() {
   const o = S.opt; o.running = true; o.res = null; o.list = []; o.idx = -1; o.before = { p: { ...S.p }, pattern: S.pattern, custom: S.custom.map(s => s.slice()), zvLinked: S.zvLinked };
@@ -1251,7 +1587,7 @@ function drawSolution(apply = true) {
   if (apply) applySolution(s);
   const depths = levelDepths({ ...S.p, levels: s.levels, dz: s.dz, z0: s.z0 }).map(fmt).join(" · ");
   $("optSol").innerHTML = `<div class="soln"><div class="head"><button id="optPrev" title="Previous solution (lower dose)" ${o.idx ? "" : "disabled"}>◀</button><span class="nav">${o.idx + 1} / ${o.list.length}</span><button id="optNext" title="Next solution (higher dose)" ${o.idx < o.list.length - 1 ? "" : "disabled"}>▶</button><span class="chip ${s.mode}">${s.mode}</span><span class="sp" style="flex:1"></span><button id="optApply" title="Show this design in the maps">Show</button></div>
-    <div><span class="big">${pct(s.exact.window)}</span> of the dermis in the window · ${pct(s.exact.above)} above the ceiling</div>
+    <div><span class="big">${pct(s.exact.window)}</span> of the host cells in the window · ${pct(s.exact.above)} above the ceiling${s.exact.volume !== undefined && Math.abs(s.exact.volume - s.exact.window) >= 0.005 ? ` · ${pct(s.exact.volume)} of the dermis volume` : ""}</div>
     <div class="row"><span>${fmt(s.cells_per_cm2)} cells/cm²</span><span>${fmt(sitesPerCm2(s.pattern, s.a, s.levels))} sites/cm²</span><span>${fmt(s.ncells)} cells/site</span></div>
     <div class="row"><span>spacing ${fmt(s.a)} µm${s.levels > 1 ? ` (${fmt(topDownSpacing(s.pattern, s.a, s.levels))} µm seen from above)` : ""}</span><span>depth${s.levels > 1 ? "s" : ""} ${depths} µm</span></div>
     <div style="margin-top:6px"><button id="optBack" title="Restore the values you had before searching">Back to my design</button></div></div>`;
@@ -1385,7 +1721,7 @@ function drawMC() {
     row("Above the ceiling, mean", pct(r.above_mean)) +
     row("Days in the window, mean per host cell", days(r.days_mean)) +
     row("Monte Carlo error (s.e.)", `<span style="color:${ok ? "inherit" : "var(--terra)"}">${pct(se)} · ${pct(sep)}${ok ? "" : " — more tissues"}</span>`) +
-    (hetFaithful(p) ? "" : row(`<b style="color:var(--terra)">⚠ Variation shorter than 4 λ</b>`, `<span style="color:var(--terra)">indicative only</span>`));
+    (hetFaithful(p) ? "" : row(`<b style="color:var(--terra)">⚠ Variation shorter than ${dermisModel(p) > 0 ? 8 : 4} λ</b>`, `<span style="color:var(--terra)">indicative only</span>`));
   drawMCcells();
   $("mcCap").innerHTML = mcCaption();
 }
@@ -1751,12 +2087,22 @@ function resetParam(key) {                                         // one slider
   if (key === "H") { S.p.z0 = Math.min(S.p.z0, S.p.H - 20); S.p.zv = Math.min(S.p.zv, S.p.H); }
   schedule(false);
 }
+// Move a slider from code (reset, presets, a loaded file). Only when its position really
+// changes, so a slider being dragged is left alone. Safari does not repaint the thumb of a
+// range input whose value is set from script while it has focus — and clicking ↺ leaves
+// the focus on the slider there — so blur it and force a repaint.
+function setSlider(el, v) {
+  if (document.activeElement === el) el.blur();
+  el.value = v;
+  el.style.display = "none"; void el.offsetWidth; el.style.display = "";
+}
 function syncControls() {
   for (const def of PARAMS) {
-    const same = isDefault(def.key);
-    $("s_" + def.key).value = toSlider(def, S.p[def.key]);
+    const same = isDefault(def.key), el = $("s_" + def.key), v = toSlider(def, S.p[def.key]);
+    if (Math.abs(+el.value - v) > 0.5 * (+el.step || 1)) setSlider(el, v);
     $("v_" + def.key).textContent = def.unit === "0 / 1" ? (Math.round(S.p[def.key]) ? "on" : "off")
-      : def.key === "deep" ? ["open", "absorbing", "closed"][deepMode(S.p)] : fmt(S.p[def.key]) + " " + def.unit;
+      : def.key === "deep" ? ["open", "absorbing", "closed"][deepMode(S.p)]
+      : def.key === "dermis_model" ? ["uniform", "averaged", "depth-resolved"][dermisModel(S.p)] : fmt(S.p[def.key]) + " " + def.unit;
     $("v_" + def.key).classList.toggle("changed", !same);
     $("r_" + def.key).hidden = same;
   }
@@ -1767,7 +2113,7 @@ function syncControls() {
   $("mWindow").classList.toggle("on", S.mode === "window"); $("mLog").classList.toggle("on", S.mode === "log");
   $("mResp").classList.toggle("on", S.mode === "resp");
   $("scaffoldPanel").classList.toggle("off", S.pattern === "custom" || S.pattern === "random");
-  for (const key of ["ddej", "tdej", "hpap", "rpap", "thalfc"]) $("row_" + key).classList.toggle("off", !Math.round(S.p.layers));
+  for (const key of ["ddej", "tdej", "hpap", "rpap", "thalfc"]) $("row_" + key).classList.toggle("off", !dermisModel(S.p));
   $("scTile").classList.toggle("on", S.scTile); $("scPatch").classList.toggle("on", !S.scTile);
   syncOptNote();
   for (const b of $("ages").querySelectorAll("button")) { const g = AGES.find(x => x.key === b.dataset.age);
@@ -1808,6 +2154,10 @@ function render(n, final) { F = buildField(S.p, S.pattern, S.custom, S.seed); sy
 // readUrlState() applies it once at load. A new control goes in all three and
 // in the help entry start/share.
 // ---------------------------------------------------------------------------
+// Renamed parameters (DP.renamed: old key → new key, values keep their meaning): an old
+// link or file is read as the new key; the address is rewritten after the first render
+// and Save YAML writes the new names, so nothing has to be migrated by hand.
+const RENAMED = DP.renamed || {};
 const sig4 = v => +(+v).toPrecision(4);
 function stateQuery() {
   const q = new URLSearchParams();
@@ -1824,6 +2174,7 @@ function syncUrl() {
 }
 function readUrlState() {
   const q = new URLSearchParams(location.search);
+  for (const [old, now] of Object.entries(RENAMED)) if (q.has(old) && !q.has(now)) q.set(now, q.get(old));
   for (const def of PARAMS) if (q.has(def.key)) { const v = parseFloat(q.get(def.key)); if (isFinite(v)) S.p[def.key] = Math.min(def.max, Math.max(def.min, v)); }
   if (q.has("zv")) S.zvLinked = false;
   const pat = q.get("pattern"); if (["hex", "square", "random", "custom"].includes(pat)) S.pattern = pat;
@@ -1880,7 +2231,9 @@ function paramsYaml() {
     "# pipeline with `python -m dermsim run --params this-file.yaml`. Values are the ones",
     "# that were on screen; labels, ranges, statuses, sources and notes are copied from",
     "# config/parameters.yaml of the private repository and are not edited here.", "",
-    "schema_version: 1", "", "signal:", `  name: ${yq(SIGNAL.name)}`, `  status: ${yq(SIGNAL.status)}`,
+    "schema_version: 1", "",
+    ...(Object.keys(RENAMED).length ? ["renamed:", ...Object.entries(RENAMED).map(([o, n]) => `  ${o}: ${n}`), ""] : []),
+    "signal:", `  name: ${yq(SIGNAL.name)}`, `  status: ${yq(SIGNAL.status)}`,
     `  note: ${yblock(SIGNAL.note, 4)}`, "", "groups:"];
   for (const g of DP.groups || []) L.push(`  - key: ${g.key}`, `    step: ${g.step}`, `    title: ${yq(g.title)}`, `    note: ${yblock(g.note, 6)}`);
   L.push("", "parameters:");
@@ -1947,9 +2300,13 @@ function applyFile(text, name) {
   if (!ps || typeof ps !== "object") return { ok: false, msg: "not a parameter file" };
   let set = 0;
   const unknown = [], clamped = [];
-  for (const [key, entry] of Object.entries(ps)) {
+  let renamed = 0;
+  for (const [key0, entry] of Object.entries(ps)) {
     const v = entry && typeof entry === "object" ? entry.value : entry;
     if (typeof v !== "number" || !isFinite(v)) continue;
+    if (RENAMED[key0] && RENAMED[key0] in ps) continue;           // an old name beside the new one: the new one counts
+    const key = RENAMED[key0] ?? key0;
+    if (key !== key0) renamed++;
     const def = PDEF[key];
     if (!def) { unknown.push(key); continue; }
     const c = Math.min(def.max, Math.max(def.min, v));
@@ -1964,7 +2321,7 @@ function applyFile(text, name) {
   if (S.pattern === "custom" && !S.custom.length) S.pattern = "hex";
   S.zvLinked = false;
   schedule(false);
-  const extra = [unknown.length ? `${unknown.length} unknown ignored` : "", clamped.length ? `${clamped.length} clamped to range` : ""].filter(Boolean);
+  const extra = [renamed ? `${renamed} renamed` : "", unknown.length ? `${unknown.length} unknown ignored` : "", clamped.length ? `${clamped.length} clamped to range` : ""].filter(Boolean);
   return { ok: true, msg: `${set} values loaded${extra.length ? " (" + extra.join(", ") + ")" : ""}` };
 }
 function flash(btn, text, ok = true) {
@@ -2048,9 +2405,9 @@ const HELP = [
     ["yaml", "Saving and loading the parameter file", () => `<p><b>Save YAML</b> downloads everything on screen as a complete <code>parameters.yaml</code>: every value as it stands, with its label, unit, range, status, sources and note, plus a <code>design:</code> block holding the pattern, the colouring and any hand-placed sites. It is the same file the pipeline reads, so</p>
       <p style="text-align:center"><code>python -m dermsim run --params my-design.yaml</code></p>
       <p>reproduces exactly what you were looking at — and so do <code>optimize</code>, <code>time</code>, <code>sweep</code> and <code>scaffold</code>. Useful for attaching a design to an email or a lab notebook, for keeping several variants side by side, and for taking a design from the browser into the pipeline without typing numbers.</p>
-      <p><b>Load YAML</b> reads such a file back, and also the pipeline's own <code>config/parameters.yaml</code> or a plain JSON file of <code>key: value</code> pairs. Only the values, the pattern, the colouring and the sites are taken; labels, sources and notes always come from this build of the viewer, so a file cannot put an unchecked source on screen. Values outside a slider's range are clamped and unknown names are ignored — the button says how many of each.</p>`],
+      <p><b>Load YAML</b> reads such a file back, and also the pipeline's own <code>config/parameters.yaml</code> or a plain JSON file of <code>key: value</code> pairs. Only the values, the pattern, the colouring and the sites are taken; labels, sources and notes always come from this build of the viewer, so a file cannot put an unchecked source on screen. Values outside a slider's range are clamped and unknown names are ignored — the button says how many of each. A file saved before a parameter was renamed loads as well: the old name is read as the new one, and the next <b>Save YAML</b> writes the new names.</p>`],
     ["share", "Sharing a view", () => `<p>The address in your browser always holds the current view: every value that differs from its default (all sliders), the pattern, the colouring and, for a custom layout, the position and depth of every site. <b>Copy link</b> copies it; whoever opens the link sees the same view. A link to a help entry (e.g. <code>#help/model/window</code>) can be added at the end and opens that entry. For a file you can keep or hand to the pipeline, use <a href="#help/start/yaml" data-help="start/yaml">Save YAML</a>.</p>
-      <p>Address parameters: ${PARAMS.map(p => `<code>${p.key}</code>`).join(", ")} (each in the unit of its slider), <code>pattern</code> (hex, square, random, custom), <code>show=concentration</code>, and <code>sites=x,y,z;…</code> in µm for custom layouts. Values outside a slider's range are clamped to it.</p>`],
+      <p>Address parameters: ${PARAMS.map(p => `<code>${p.key}</code>`).join(", ")} (each in the unit of its slider), <code>pattern</code> (hex, square, random, custom), <code>show=concentration</code>, and <code>sites=x,y,z;…</code> in µm for custom layouts. Values outside a slider's range are clamped to it. A link made before a parameter was renamed still opens: the old name is read (${Object.entries(RENAMED).map(([o, nw]) => `<code>${o}</code> as <code>${nw}</code>`).join(", ") || "none so far"}) and the address is rewritten with the new one.</p>`],
     ["status", "What the badges mean", () => `<p>Every value carries a badge; click it for its entry under <a href="#help/params" data-help="params">Parameters</a>.</p>
       <table><tr><td><span class="badge b-src">source</span></td><td>the default is a published value, checked against the source (abstract or full text) and listed under <a href="#help/refs" data-help="refs">References</a></td></tr>
       <tr><td><span class="badge b-ana">analogue</span></td><td>published value, checked against the source, but measured in a related system (other cells, another signal, another set-up) or as a related quantity (all nuclei instead of fibroblasts only); used until the value itself is measured in aged human dermis</td></tr>
@@ -2075,7 +2432,7 @@ const HELP = [
       <p>The default, ${n("lam.def", "µm")}, is the upper end of the cytokine measurement: an <span class="badge b-ana">analogue</span> until λ is measured for the rejuvenated cells' signals.</p>`],
     ["window", "The therapeutic window", () => `<p>Aged host cells are counted as activated above <code>c_on × s_age</code> and at risk of fibrotic activation above <code>c_fib</code>. The upper side is not hypothetical: the group notes that matrix deposition by implanted cells could also indicate fibrotic activation (${cite("roy2024implanting")}).</p>
       <p><b>Where the values come from.</b> No activation threshold or fibrotic ceiling has been measured in <i>dermal</i> fibroblasts, so both are <span class="badge b-ana">analogues</span> from related cells. The threshold, ${n("con.def", "ng/mL")}, is the dose that induced SMAD2 phosphorylation and α-SMA protein in primary human knee fibroblasts (${cite("dilger2025concentration")}). The ceiling, ${n("cfib.def", "ng/mL")}, is the lower of the two doses that raised α-SMA in nasal-polyp fibroblasts (${cite("serpero2006polyp")}); collagen deposition itself showed no upper limit up to 40 ng/mL (${cite("dilger2025concentration")}), so the ceiling here is the switch to myofibroblasts, not a loss of effect. The 10 ng/mL often used in experiments is a stimulation dose, not a threshold (${cite("liao2026chromatin")}). Windows with a lower and an upper side are documented for other signals too: CCN2 stimulates collagen gene expression below 50 ng/mL and inhibits it above (${cite("nakerakanti2011ccn2")}).</p>`],
-    ["boundary", "Boundaries", () => `<p>The dermal–epidermal junction is treated as impermeable: every site has a mirror image above it, which makes the flux through the junction zero. Measured diffusion is slowest at the junction (${cite("wei2018microneedle")}). The deep side of the dermis is open by default — the dermis simply continues — and <b>Below the dermis</b> in step 1 can bound it instead: see <a href="#help/model/deep" data-help="model/deep">Below the dermis</a>.</p>`],
+    ["boundary", "Boundaries", () => `<p>The dermal–epidermal junction is treated as impermeable: no signal crosses it (the depth-resolved model solves with that condition; the uniform and the averaged model give every site a mirror image above it). Measured diffusion is slowest at the junction (${cite("wei2018microneedle")}). The deep side of the dermis is open by default — the dermis simply continues — and <b>Below the dermis</b> in step 1 can bound it instead: see <a href="#help/model/deep" data-help="model/deep">Below the dermis</a>.</p>`],
     ["deep", "Below the dermis", () => `<p>Under the dermis lies the hypodermis, mostly fat, and at the junction between the two runs the deep horizontal vascular plexus (${cite("braverman1997microcirculation")}). How much of the signal that plexus clears, and whether any passes into the fat, has not been measured, so the model offers the three cases that bracket it:</p>
       <ul><li><b>Open</b> (the default, and the model up to M3): the dermis simply continues below its thickness H — the signal is cleared there as in the dermis.</li>
       <li><b>Absorbing</b>: everything that reaches H is cleared (c = 0 at H), as by a perfect vascular sink. The cross-section draws a dashed line.</li>
@@ -2092,16 +2449,21 @@ const HELP = [
       <h4>So what should be measured</h4>
       <p>The gap has to be closed by <b>what the rejuvenated cells actually secrete</b> and by <b>where the threshold for the response you care about really lies</b> — the 1 ng/mL above is for α-SMA and pSMAD2 in knee fibroblasts, a pro-fibrotic readout, not for gentle rejuvenation of aged dermal cells. Both are measurable, and the model says they decide the answer. Move the <i>Active secretion per cell</i> and <i>Activation threshold</i> sliders to see how little it takes.</p>
       <p>It is also possible that the signal is not soluble TGF-β at all — extracellular vesicles, direct contact or a mechanical relay would each change the picture, and none of them is in this model.</p>`],
-    ["layers", "A dermis with depth", () => `<p>The model's default dermis has depth: two measured depth dependences change how far the signal carries. The simpler model it replaced — one diffusion coefficient and one decay length everywhere — is still there: <b>Depth-dependent dermis</b>, under <i>more</i> in step 1, switches it back.</p>
+    ["layers", "A dermis with depth", () => `<p>The dermis is not the same at every depth, and two measured depth dependences change how far the signal carries. <b>Dermis model</b>, under <i>more</i> in step 1, chooses how they enter: <b>depth-resolved</b> (the default), <b>averaged per level</b> or <b>uniform</b>.</p>
       <p><b>Diffusion is slowest right under the epidermis.</b> Dermal diffusivities of 1–20 µm²/s were measured for dextrans, the lowest (0.7–3 µm²/s) at the dermal–epidermal junction (${cite("wei2018microneedle")}), while papillary and reticular dermis differ only marginally deeper down (${cite("romgens2015diffusion")}). So D rises from its junction value to the bulk value over the <i>depth of the slow zone</i>. How thick that zone is was not found, so that depth is a <span class="badge b-ph">placeholder</span>.</p>
       <p><b>Clearance follows the cells that consume the signal.</b> Cytokine niche size scales with the density of consuming cells (${cite("oyleryaniv2017niches")}), so the uptake part of the decay follows the local fibroblast density, which is higher in the papillary dermis. The split between uptake and chemistry is not a free choice: the chemical rate comes from the measured half-life of TGF-β in tissue (${cite("sprugel1987kinetics")}), and for the default values it is <b>${n("cellshare")} %</b> uptake — nearly all of it. The profile keeps the same average clearance as the slab, so λ still sets the overall scale.</p>
-      <p>Together these make λ short near the junction and full-length deeper down; the curve on the right of the cross-section shows it.</p>
-      <h4>What the viewer actually computes</h4>
-      <p>The page keeps its exact homogeneous kernel and folds the layering into <b>one effective D and λ per injection level</b>, averaged over the depth range that level's sources actually reach — a stack reaching from the papillary into the reticular dermis has a short λ at its top and a long one at its bottom (the dots on the λ(z) curve in the cross-section, and the Coverage panel). The Python pipeline solves the layered problem properly with a finite-volume solver and was used to measure how far the reduction is from it:</p>
-      <ul><li>deeper than about 3 λ: within 10 % of the activation threshold — and closer than ignoring the layers altogether;</li>
-      <li>deeper than about 6 λ: within 1 %;</li>
-      <li>within 1 λ of the junction: off by more than half the threshold, because D changes five-fold over the range of the signal. The Coverage panel says so when your design is in that range.</li></ul>
-      <p>So the layered numbers here are trustworthy for ordinary injection depths and only indicative for very shallow ones; <code>python -m dermsim tissue --fv</code> prints the comparison.</p>`],
+      <p>Together these make λ short near the junction and full-length deeper down; the curve on the right of the cross-section shows it. The papillary dermis is ${n("papthick")} % of the thickness and holds ${n("papshare")} % of the host cells.</p>
+      <h4>Three ways to compute it</h4>
+      <ul><li><b>Depth-resolved</b> (the default). The profile is solved in depth. Around each site the signal is split into ring-shaped patterns, and each of them obeys a one-dimensional equation through the real D(z) and k(z), with the junction and the deep side as its boundaries. That gives, for each injection depth, a table of the signal against sideways distance and depth, and everything on the page looks values up in those tables. Nothing is averaged. A cluster that the junction or a bounded deep side cuts keeps its whole dose in the part inside the dermis.</li>
+      <li><b>Averaged per level.</b> The same dermis, but each injection level gets one effective D and λ, averaged over the depth range its signal reaches, and the closed-form solution of a uniform medium (the dots on the λ(z) curve). This is what the viewer computed up to version 0.9. It is wrong where a source reaches the papillary dermis: the many cells there take the signal up much faster than the average says.</li>
+      <li><b>Uniform.</b> One diffusion coefficient and one decay length everywhere: the model up to M2, and the only case with a closed-form solution, which the other two are checked against.</li></ul>
+      <h4>How good each is</h4>
+      <p>The pipeline solves the same problem independently with finite volumes, and both were measured against it, for the default tissue:</p>
+      <ul><li>One site, depth-resolved: within 1 % of the finite volumes wherever the signal exceeds 1 % of its peak, for sites from 60 to 1500 µm deep (0.2–0.4 % for clusters that lie inside the dermis); half the points agree to 0.1 % or better.</li>
+      <li>One site, averaged: for a site 1000 µm deep half the points agree to 0.3 %; at 500 µm the median difference is 14 %, at 200 µm 75 %.</li>
+      <li>A stack at 200 / 500 / 800 µm (hexagonal, 300 µm apart, 10⁵ cells per site secreting 300 pg/10⁶ cells/day): three-dimensional finite volumes put 36 % of the host cells in the window and 23 % above the ceiling; depth-resolved 35 % and 23 %; averaged 60 % and 14 %.</li></ul>
+      <p>The Coverage panel shows what the other of the two would say for your design, so you can see where they part; <code>python -m dermsim tissue --fv</code> prints the comparison with the finite volumes.</p>
+      <p>What the depth-resolved model does not settle: the junction values of the profile — diffusion at the junction and the depth of the slow zone — are placeholders, and the result moves with them.</p>`],
     ["age", "Age of the skin", () => { const ag = (DP.presets && DP.presets.groups) || [];
       return `<p>One study measured the layers of photoprotected periumbilical skin in four age groups, from 25 autopsies (${cite("arnalforne2024dermis")}): with age the papillary dermis grows thicker, and both layers hold fewer cells. The <b>Age</b> buttons take three of its groups (children are left out) and set, for each:</p>
       <table><tr><th>Age</th><th>papillary dermis</th><th>papillary ÷ reticular cells</th><th>cellularity</th><th>donor spread (papillary · reticular cells · thickness)</th></tr>
@@ -2118,7 +2480,7 @@ const HELP = [
       <li><b>The field</b> at every host cell, each implant site with the medium of its level for this donor, scaled by the random fields averaged around it over its decay length.</li></ol>
       <p>That last step is a reduction, and it was measured rather than trusted. The pipeline solves whole tissues in three dimensions (finite volumes over a block of sites, the varying medium itself) and compares, on the same host cells, the coverage it gives with the per-site medium's and with the mean field's (the variation ignored):</p>
       <ul><li><b>Variation within the dermis costs coverage.</b> Varying over one decay length or more, it lowered the coverage below the mean-field value — by up to 16 % near the threshold, where the loss peaked at two to four decay lengths, and by up to 31 % near the ceiling, where it kept growing with the correlation length. Over half a decay length it averaged out. This is the proposal's hypothesis H3, supported.</li>
-      <li><b>The per-site medium</b> is within 5 % of the three-dimensional coverage from four decay lengths up, and within 3.5 % near the ceiling at any length; near the threshold over one to two decay lengths it overestimates the coverage by up to 14 %. The panel warns below four decay lengths, and <code>python -m dermsim mc --fv</code> solves every tissue in three dimensions instead.</li></ul>`],
+      <li><b>The per-site medium</b> is within 5 % of the three-dimensional coverage from four decay lengths up, and within 3.5 % near the ceiling at any length; near the threshold over one to two decay lengths it overestimates the coverage by up to 14 %. That was measured in a uniform dermis. In a dermis with depth, with the depth-resolved model (each site's table scaled by the ratio of the varied to the unvaried closed-form signal), single tissues were off by 6 points of coverage at four decay lengths and by 3 at eight. So the panel warns below four decay lengths in the uniform dermis and below eight otherwise, and <code>python -m dermsim mc --fv</code> solves every tissue in three dimensions instead.</li></ul>`],
     ["response", "Graded response", () => `<p>Whether a cell is "activated" is not a switch. The <b>Response</b> colouring shows the graded response</p>
       <p style="text-align:center"><code>R(c) = cⁿ / (EC50ⁿ + cⁿ)</code></p>
       <p>with the EC50 set to the aged-cell threshold, so R = ½ exactly at the lower edge of the window, and the <b>Hill exponent n</b> saying how sharply the cells tell doses apart. n = 1 is no cooperativity; larger n makes the response more switch-like.</p>
@@ -2137,12 +2499,15 @@ const HELP = [
     ["pattern", "Implant pattern", () => `<p><span class="badge b-des">design</span> <b>Hexagonal</b> and <b>square</b> lattices continue beyond the view. <b>Random</b> places sites at random with the same mean density as the hexagonal lattice, separately at each depth. <b>Custom</b> uses the sites you place (see <a href="#help/start/edit" data-help="start/edit">Editing implant sites</a>).</p>`]
   ]},
   { topic: "metrics", title: "Coverage and design", entries: [
-    ["coverage", "Coverage", () => `<p><b>Dermis in window</b> is the share of the whole dermis (0 to the dermis thickness, across the view) inside the window, sampled on a 36 × 36 × 40 grid in the background; the bar shows below / inside / above. <b>Slice in window</b> is the same for the en-face map only.</p>`],
-    ["optimise", "Optimising the design", () => `<p><b>Find designs</b> searches the layouts that put the most dermis inside the window, keeping your tissue and signal values (D, λ, secretion, thresholds, cluster radius, dermis thickness) and the pattern (hexagonal or square). <b>Flat</b> varies the spacing, the depth and the cells per site; <b>Volume</b> also the number of depths (2–5) and the spacing between them; <b>Both</b> runs the two.</p>
-      <p>The plot shows every design evaluated (faint dots): share of the dermis in the window against the dose in cells per cm². The line through the larger dots is the <b>front</b>: for each dose the best coverage found. The diamond is your design. Use ◀ ▶ (or click a point) to <b>cycle through the solutions</b> along the front, from low to high dose; each is shown in the maps at once. <b>Back to my design</b> restores what you had.</p>
-      <p>How: about 14 spacings from 80 µm to 2 mm, 13 doses from 10³ to 10⁶ cells per site, 8 depths (flat) or 2–5 depths with 6 spacings and 6 middle depths (volume), all with every cluster inside the dermis and no two clusters overlapping; each design is scored on one periodic cell (12 × 12 × 16 points). For speed the field of each spacing is tabulated once and reused; the solutions shown are then re-evaluated exactly. The search runs in the background and takes a few seconds.</p>
-      <p>The optimum depends on values measured in other tissues or still placeholders (secretion, thresholds, implant half-life): read it as a demonstration of the trade-offs until those are measured.</p>
-      <p>With the depth-dependent dermis (the default), each injection level of each candidate decays with the effective decay length of <i>its own</i> depth, so a shallow level is judged with the shorter λ it really meets. To keep that fast, the field tables are built at a few decay lengths at most 15 % apart and each level is blended between the two around its own; the solutions shown are then re-evaluated exactly, and the two agree to within a few tenths of a per cent of the dermis. See <a href="#help/model/layers" data-help="model/layers">A dermis with depth</a>.</p>`],
+    ["coverage", "Coverage", () => `<p><b>Host cells in window</b> is the coverage C of the project: the share of the host cells of the whole dermis (0 to the dermis thickness, across the view) that sit inside the window; the bar shows below / inside / above. It is counted on a 36 × 36 grid at 40 depths in the background, and each depth counts with the cells it stands for. With a dermis that has depth the papillary dermis is ${n("papthick")} % of the thickness and holds ${n("papshare")} % of the cells, so a quarter of the depths lie in it.</p>
+      <p><b>As a share of the dermis volume</b> is the same count with each depth weighted by its thickness instead: how much tissue, not how many cells. In the uniform dermis the cells are spread evenly and the two are the same number. Up to version 0.9 this panel showed the volume share.</p>
+      <p><b>The averaged model would say</b> (or <b>the depth-resolved model says</b>) is the coverage from the other way of computing the same dermis; a difference of five points or more is marked. See <a href="#help/model/layers" data-help="model/layers">A dermis with depth</a>. <b>Slice in window</b> is the share of the en-face map's area.</p>`],
+    ["optimise", "Optimising the design", () => `<p><b>Find designs</b> searches the layouts that put the most <b>host cells</b> inside the window, keeping your tissue and signal values (D, λ, secretion, thresholds, cluster radius, dermis thickness) and the pattern (hexagonal or square). <b>Flat</b> varies the spacing, the depth and the cells per site; <b>Volume</b> also the number of depths (2–5) and the spacing between them; <b>Both</b> runs the two.</p>
+      <p><b>Only designs that respect the ceiling are admitted:</b> at most O* of the host cells above the fibrotic ceiling (the <i>overexposure limit</i> of step 4, ${n("ostar")} % now). The project's ideal density is the smallest dose with C ≥ C* <i>and</i> O ≤ O*, so a design that covers more by overexposing more is not a solution.</p>
+      <p>The plot shows every design evaluated (faint dots, admitted or not): share of the host cells in the window against the dose in cells per cm². The line through the larger dots is the <b>front</b>: for each dose the best coverage among the admitted designs. The diamond is your design. Use ◀ ▶ (or click a point) to <b>cycle through the solutions</b> along the front, from low to high dose; each is shown in the maps at once. <b>Back to my design</b> restores what you had.</p>
+      <p>How: about 14 spacings from 80 µm to 2 mm, 13 doses from 10³ to 10⁶ cells per site, 8 depths (flat) or 2–5 depths with 6 spacings and 6 middle depths (volume), all with every cluster inside the dermis and no two clusters overlapping; each design is scored on one periodic cell (12 × 12 points at 16 depths, weighted by host cells). The search runs in the background and takes a few seconds.</p>
+      <p>With the <b>depth-resolved</b> dermis (the default) the signal of a site depends on its depth but not on the spacing, so one table per injection depth is built once and every layout is a sum of look-ups: the search is already the exact value. With the <b>averaged</b> dermis each level is scored with the decay length of its own depth, from field tables at a few decay lengths at most 15 % apart, and the solutions shown are re-evaluated exactly. See <a href="#help/model/layers" data-help="model/layers">A dermis with depth</a>.</p>
+      <p>The optimum depends on values measured in other tissues or still placeholders (secretion, thresholds, implant half-life): read it as a demonstration of the trade-offs until those are measured.</p>`],
     ["robust", "Robustness over random tissues", () => `<p><b>Run</b> draws ${n("mcn")} random tissues (step 4: donors, the insertion, variation, host cells — see <a href="#help/model/variation" data-help="model/variation">Patients and tissue vary</a>) and, in each, counts the share of the host cells inside the window: the coverage C of that tissue, and the share O above the ceiling. The histogram shows how C spreads over the tissues.</p>
       <ul><li><b>Robustness P(C ≥ C* and O ≤ O*)</b>: the share of tissues in which the design both reaches the target coverage and keeps the overexposure under its limit — the plan's definition of a design that works, here in patients rather than on average. The next line splits it: how often the coverage is reached, how often the ceiling is respected.</li>
       <li><b>Spread between tissues · sampling noise</b>: part of the spread of C is only the luck of which host cells were drawn (a binomial share of the cells per tissue); the rest is the tissues themselves. With few tissues, a small spread between tissues is itself uncertain.</li>
@@ -2150,19 +2515,19 @@ const HELP = [
       <li><b>Counting senescent cells as missed</b>: senescent cells are not targets, so they are left out of C. Counted as cells the design failed to reach, the coverage is lower by about the senescent share, and a C* above 1 − that share cannot be reached at all.</li>
       <li><b>Days in the window</b>: how long, on average, a host cell spends inside the window as the implant decays (closed form, as in the Coverage panel).</li>
       <li><b>Monte Carlo error</b>: the standard errors of the mean coverage and of P. Under 0.5 % and 2.5 % they are small enough to read the numbers; otherwise press <b>+100 tissues</b>, which continues with the next seeds. The pipeline's <code>python -m dermsim mc</code> adds tissues until both are under target, and draws exactly the same tissues as this page (seeds 1, 2, 3, …); <code>mc --sources</code> runs each source of variation alone, to show which one matters.</li></ul>
-      <p>The coverage here is a share of <i>cells</i>, the plan's definition, and the papillary dermis holds many of them; <b>Dermis in window</b> in the Coverage panel is a share of the dermis's <i>volume</i>. The two differ even without any variation.</p>
+      <p>The coverage here is the same quantity as <b>Host cells in window</b> in the Coverage panel — a share of cells, the plan's definition — counted on randomly placed host cells instead of a regular grid; without any variation the two agree up to the sampling noise.</p>
       <p>Below the histogram, tissue 1 is drawn from above and in depth: its host cells coloured by where they are, senescent cells as ×, and — if the cell density varies — the density as shading. <b>Show tissue 1's host cells on the map</b> puts those near the slice depth on the map, over the average tissue's colours.</p>`],
     ["robustfront", "The robust ideal density", () => `<p>The plan defines the ideal density as the smallest dose with C ≥ C* and O ≤ O*, <i>robust to heterogeneity</i>. The optimiser finds, for each dose, the design with the most dermis in the window of the average tissue — its front. <b>Test the front</b> runs each of those designs over the same random tissues and plots how often it succeeds against its dose; the <b>robust ideal density</b> is the cheapest design that succeeds in at least P* of the tissues (${n("pstar")} %, step 4).</p>
       <p>All designs meet the same tissues, so their differences are not blurred by luck. To keep it quick each design gets at most 40 tissues of at most 1000 host cells: a screen. Check the design it picks with <b>Run</b> (apply it from the optimiser first), or with <code>python -m dermsim mc --front</code>. The front itself is chosen for the average tissue; a design that is not on it could be more robust, which this does not search.</p>`],
     ["depths", "Injection depths and spacing seen from above", () => `<p>The depths of the injection levels and the nearest distance between sites seen from above (all depths projected). See <a href="#help/model/depths" data-help="model/depths">Several injection depths</a>.</p>`],
     ["dose", "Sites and cells per cm²", () => `<p>Sites per cm² follow from the spacing (hexagonal: 1 / (a²·√3/2), square: 1 / a²) times the number of depths; cells per cm² multiply by the cells per site. For scale: a fibroblast cell therapy for acne scars injected 2 mL of 10–20 million cells per mL per session (${cite("munavalli2013azficel")}); the group's protocol used 40,000 cells per site (${cite("roy2024implanting")}).</p>`],
-    ["overlap", "Overlapping clusters", () => `<p>Each implant site is a sphere of radius R. Two sites closer than 2R would overlap, which implanted cells cannot do, so the model is no longer meaningful there. This happens when the spacing per depth is below 2R, or when sites on neighbouring depths (offset sideways by the spacing seen from above and vertically by the spacing between depths) are closer than 2R. The optimiser only proposes layouts without overlap.</p>`],
+    ["overlap", "Overlapping clusters", () => `<p>Each implant site is a sphere of radius R. Two sites closer than 2R would overlap, which implanted cells cannot do, so the model is no longer meaningful there. This happens when the spacing per depth is below 2R, or when sites on two different depths are closer than 2R. Sites on neighbouring depths are offset sideways by the spacing seen from above, but the stacking repeats: every third depth of a hexagonal stack and every second depth of a square one lies directly above an earlier one, so there only the vertical distance keeps the clusters apart. Depths pushed together at the edge of the dermis count with the depth they end up at. The optimiser only proposes layouts without overlap.</p>`],
     ["response", "Mean response of the host cells", () => `<p>The average of the graded response R(c) over the dermis of one periodic cell, on the day shown. Unlike the window share it does not jump at the threshold: a cell at half the threshold still counts a little. See <a href="#help/model/response" data-help="model/response">Graded response</a>.</p>`],
-    ["intime", "Dermis ever in the window, and for how long", () => `<p>The implant decays, so the concentration at every point falls over time and crosses the window from above. <b>Ever in the window</b> is the share of the dermis that is inside the window at some point after implantation — including the tissue that starts <i>above</i> the ceiling and enters the window later. <b>Days in the window</b> is how long a point stays inside, as a mean, a median and the longest anywhere.</p>
+    ["intime", "Host cells ever in the window, and for how long", () => `<p>The implant decays, so the concentration at every point falls over time and crosses the window from above. <b>Ever in the window</b> is the share of the host cells that are inside the window at some point after implantation — including those that start <i>above</i> the ceiling and enter the window later. <b>Days in the window</b> is how long a host cell stays inside, as a mean, a median and the longest anywhere.</p>
       <p>These counts are measured from implantation and do not depend on the day shown. They follow in closed form from the implant half-life: see <a href="#help/model/time" data-help="model/time">Time after implantation</a>.</p>`],
-    ["reach", "Reach of one site", () => `<p>Distance from the centre of a single site at which the signal falls to the aged-cell threshold (no neighbours, no mirror image).</p>`],
+    ["reach", "Reach of one site", () => `<p>Distance from the centre of a single site, in its own plane, at which the signal falls to the aged-cell threshold (no neighbours). Depth-resolved model: in the dermis as it is at that depth; uniform and averaged model: without any boundary.</p>`],
     ["critical", "Largest gap-free spacing", () => `<p>For a single injection plane at the injection depth: the largest lattice spacing at which the least-covered point of the plane (the centre of a triangle or square of sites) still reaches the aged-cell threshold. It says nothing about other depths or about the ceiling.</p>`],
-    ["curve", "Design curve", () => `<p>For the current values, the share of the dermis below, inside and above the window as the spacing (per depth) varies from 80 µm to 3 mm, computed on one periodic cell of the lattice in the background. The dashed line marks the current spacing. Too sparse leaves cells below threshold; with many cells per site, too dense can push tissue above the ceiling.</p>`]
+    ["curve", "Design curve", () => `<p>For the current values, the share of the host cells below, inside and above the window as the spacing (per depth) varies from 80 µm to 3 mm, computed on one periodic cell of the lattice in the background. The dashed line marks the current spacing. Too sparse leaves cells below threshold; with many cells per site, too dense can push cells above the ceiling.</p>`]
   ]},
   { topic: "scaffold", title: "Injection scaffold", entries: [
     ["what", "The design as a device", () => `<p>The same design seen as something a workshop can build. The depths of the model collapse onto a few <b>needles</b>: the sideways shift of the injection depths repeats after three lattices (hexagonal) or two (square), so a tile of the array has three (or two) surface positions, whatever the number of depths. The plan view shows where the needles meet the skin — one <b>tile</b> with its two step vectors, or the whole <b>patch</b> — and the elevation shows how long each needle is and at which depths it releases.</p>
@@ -2184,12 +2549,12 @@ const HELP = [
   ]},
   { topic: "limits", title: "Limitations", entries: [
     ["list", "Limitations of this prototype", () => `<ul><li>Quasi-static: at each day the field is the steady state of the source on that day, scaled by the surviving share of the implant. That is sound while the field settles far faster than the implant decays (the <b>Coverage</b> panel reports both), but there is no real time course — no transport delay, no accumulation, and the decline of matrix deposition after 2–3 cell divisions (${cite("roy2024implanting")}) is not modelled.</li>
-      <li>The depth-dependent dermis is reduced to one effective diffusion coefficient and decay length per injection level; that is accurate below about three decay lengths and only indicative above (the Coverage panel warns). The maps show the average tissue; variation between patients and within the dermis, senescent cells and the SASP enter only the Robustness panel, through each site's averaged medium. The hypodermis is a boundary condition (open, absorbing or closed), not a tissue.</li>
+      <li>The dermis changes with depth only, not sideways, and the junction part of its profile (diffusion at the junction, depth of the slow zone) is a placeholder. The depth-resolved model solves that profile; the averaged model reduces it to one diffusion coefficient and decay length per injection level and is only indicative where a source reaches the papillary dermis (the Coverage panel shows both). The maps show the average tissue; variation between patients, senescent cells and the SASP enter only the Robustness panel. Variation <i>within</i> the dermis (off by default) enters there through each site's own scaled medium, which is indicative only. The hypodermis is a boundary condition (open, absorbing or closed), not a tissue.</li>
       <li>Uptake, capture and degradation are lumped into one linear decay; no saturation.</li>
       <li>One signal; no relay by host cells that start secreting in turn.</li>
       <li>Values marked <span class="badge b-ph">placeholder</span> are not from checked sources: the Hill exponent, the implant half-life, the aged-cell factor, cluster radius, molecular weight, the depth of the slow zone, and in step 4 the spread of the thresholds, the SASP effect and the variation within the dermis. Values marked <span class="badge b-ana">analogue</span> — secretion per cell, the activation threshold, the fibrotic ceiling, the decay length λ, the penetration factor, the papillary cell density, the cellularity, the senescent share and the donor spread of the cell counts — are measured, but in other cells, for another signal, with another set-up, or as a related quantity; none is the value itself in aged human dermis. Do not read numbers off this prototype — including the optimiser's and the scaffold's — as predictions.</li>
       <li>The scaffold view is geometry only: it says nothing about whether such an array can be manufactured, inserted, sterilised or tolerated.</li></ul>`],
-    ["roadmap", "Roadmap", () => `<p>Done: M1 the minimal model · M2 graded response, implant survival, time in the window and the design optimiser · M3 a depth-dependent dermis with a decay length per injection level, the age of the skin and the boundary below the dermis · M4 variation between patients and within the dermis, senescent cells, and robustness over random tissues. Next: M5 several signals · M6 calibration against distance-resolved measurements, which is also what would replace the placeholders.</p>`]
+    ["roadmap", "Roadmap", () => `<p>Done: M1 the minimal model · M2 graded response, implant survival, time in the window and the design optimiser · M3 a dermis that changes with depth, solved in depth, the age of the skin and the boundary below the dermis · M4 variation between patients and within the dermis, senescent cells, and robustness over random tissues. Next: M5 several signals · M6 calibration against distance-resolved measurements, which is also what would replace the placeholders.</p>`]
   ]},
   { topic: "refs", title: "References", entries: () => Object.keys(SOURCES).sort((a, b) => SOURCES[a].short.localeCompare(SOURCES[b].short)).map(k =>
     [k, SOURCES[k].short, () => `<p>${esc(SOURCES[k].cite)} <a href="${link(SOURCES[k])}" target="_blank" rel="noopener">${SOURCES[k].doi ? "doi:" + SOURCES[k].doi : SOURCES[k].pmid ? "PMID " + SOURCES[k].pmid : "link"}</a></p><p class="dim">Used for: ${esc(SOURCES[k].what)} <i>Checked against the ${esc(SOURCES[k].checked)}.</i></p>`]) },
@@ -2212,13 +2577,16 @@ function buildHelp() {
   fillHelpNumbers();
 }
 // The dose gap at the default values (claim R20): computed, so it moves with the parameter file.
-function defaultGap() {
-  const p = Object.fromEntries(PARAMS.map(d => [d.key, d.def])), d = derived(p), f = kernel(p, d), h = holePoint("hex", p.a);
-  return { peak: f(0) / d.perNgml, centre: d.con / f(0), worst: d.con / latticeAt(p, levelKernels(p), "hex", p.a, h[0], h[1], p.z0) };
+function defaultGap() {                                            // the default design, by the default dermis model
+  const p = Object.fromEntries(PARAMS.map(d => [d.key, d.def])), ks = levelKernels(p), d = ks[0].d, h = holePoint("hex", p.a);
+  const peak = levelKernels({ ...p, levels: 1 })[0].inPlane(0);      // the centre of one site alone
+  return { peak: peak / d.perNgml, centre: d.con / peak, worst: d.con / latticeAt(p, ks, "hex", p.a, h[0], h[1], p.z0) };
 }
 function fillHelpNumbers() {
   const g = defaultGap();
+  const P0 = Object.fromEntries(PARAMS.map(d => [d.key, d.def]));
   const extra = { gap: () => fmt(17 / (secC.width / S.p.L)), cellshare: () => (100 * cellularShare(S.p)).toFixed(1),
+    papshare: () => (100 * papillaryCellShare(P0)).toFixed(0), papthick: () => (100 * Math.min(P0.hpap, P0.H) / P0.H).toFixed(0),
     gapPeak: () => g.peak.toFixed(2), gapCentre: () => g.centre.toFixed(0), gapWorst: () => g.worst.toFixed(0) };
   for (const el of document.querySelectorAll("[data-n]")) { const [k, f] = el.dataset.n.split("."); const def = PDEF[k]; el.textContent = extra[k] ? extra[k]() : def ? fmt(f === "def" ? def.def : S.p[k]) : "?"; }
 }
@@ -2311,9 +2679,11 @@ window.__drv = {
   sites: () => F.sites.map(s => s.slice()),
   field: (x, y, z) => F.at(x, y, z),                              // molecules/µm³
   fieldNgml: (x, y, z) => F.at(x, y, z) / derived(S.p).perNgml,    // ng/mL
-  kernel: r => kernel(S.p, derived(S.p))(r),
+  kernel: r => kernel(S.p, derived(S.p))(r),                    // closed form of the effective medium (uniform, averaged)
+  siteField: (rho, z) => derived(S.p).Qt * tableAt(siteTable(S.p, S.p.z0), rho, z),   // depth-resolved: one site at z0
+  dermisModel: () => DERMIS_MODELS[dermisModel(S.p)],
   criticalSpacing: () => criticalSpacing(S.p, geoPattern()),
-  metrics: () => ({ plane: fractions(lastMapGrid.vals, F.d), volume: volumeFractions(F, S.p, 36, 40) }),
+  metrics: () => ({ plane: fractions(lastMapGrid.vals, F.d), ...viewCoverage(F, S.p, 36, 40) }),
   optimise: (mode = "flat", opts) => optimise({ ...S.p }, geoPattern(), mode, opts),
   runOptimiser, opt: () => S.opt, worker: () => !!worker, curve: () => curve,
   runMC, mc: () => S.mc, realise: (seed = 1, n) => realise({ ...S.p }, mcPattern(), seed, n, S.pattern === "custom" ? S.custom : null),

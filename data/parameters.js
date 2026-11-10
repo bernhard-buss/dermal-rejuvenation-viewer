@@ -46,6 +46,9 @@ window.DRV_PARAMS = {
    "note": "Where and when you are looking. Changes nothing about the design."
   }
  ],
+ "renamed": {
+  "layers": "dermis_model"
+ },
  "parameters": [
   {
    "key": "H",
@@ -81,18 +84,18 @@ window.DRV_PARAMS = {
    "note": "Aged cells respond blunted or divergently ({cite:liao2026chromatin}): the direction is sourced, the size of the factor is a placeholder. The aged-cell threshold is c_on × s_age."
   },
   {
-   "key": "layers",
+   "key": "dermis_model",
    "group": "tissue",
-   "label": "Depth-dependent dermis",
-   "unit": "0 / 1",
-   "value": 1,
+   "label": "Dermis model",
+   "unit": "0 uniform · 1 averaged · 2 depth-resolved",
+   "value": 2,
    "min": 0,
-   "max": 1,
+   "max": 2,
    "log": false,
    "step": 1,
    "status": "des",
    "sources": [],
-   "note": "On (the default): diffusion is slower near the dermal–epidermal junction and clearance follows the local fibroblast density, so λ varies with depth — the measured picture. Off: one diffusion coefficient and one decay length through the whole dermis, the simpler model used up to M2, kept for comparison and because it is what the analytic check is done against. See {help:model/layers|A dermis with depth}."
+   "note": "How the dermis is modelled. 2, depth-resolved (the default): diffusion is slower near the dermal–epidermal junction and clearance follows the local fibroblast density — the measured picture — and the signal is solved in depth through that profile. 1, averaged per level: the same dermis, but each injection level sees one average diffusion coefficient and decay length; faster, and wrong where a source reaches the papillary dermis (kept for comparison, and it is what the viewer showed up to 0.9). 0, uniform: one diffusion coefficient and one decay length through the whole dermis, the model up to M2, and what the analytic check is done against. See {help:model/layers|A dermis with depth}."
   },
   {
    "key": "hep",

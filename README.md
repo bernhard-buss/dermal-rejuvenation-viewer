@@ -19,8 +19,10 @@ models: Roy B, Pekec T, Yuan L, Shivashankar GV. *Aging Cell* 2024;23:e14032,
   dermis: steady state, linear decay over a decay length λ, impermeable
   dermal–epidermal junction. By default the dermis has depth — slower diffusion
   under the junction, clearance following the cell density of the papillary and
-  reticular layers — folded into one effective decay length per injection
-  level; the uniform dermis of the earlier versions is one switch away. Below
+  reticular layers — and the signal is solved through that depth profile
+  (*Dermis model*: depth-resolved). The earlier ways of computing it, one
+  average decay length per injection level or a uniform dermis, are one control
+  away, and the Coverage panel shows where they part. Below
   the dermis the signal may continue (open), be cleared (absorbing) or be
   reflected (closed).
 - **Age** presets (13–25, 26–54, 55+ years) set the papillary thickness, the
@@ -37,11 +39,13 @@ models: Roy B, Pekec T, Yuan L, Shivashankar GV. *Aging Cell* 2024;23:e14032,
 - Several injection depths: stacked lattices, shifted sideways against each
   other, so that seen from above the sites are closer while in depth they keep
   their distance.
-- Reports the share of the dermis inside the window, sites and cells per cm²,
-  the reach of one site, the largest gap-free spacing and a design curve.
-- **Optimise**: searches flat and multi-depth layouts for the most dermis inside
-  the window, plots every design against the dose with the best-coverage front,
-  and lets you cycle through the solutions in the maps.
+- Reports the share of the host cells inside the window (and of the dermis
+  volume beside it), sites and cells per cm², the reach of one site, the largest
+  gap-free spacing and a design curve.
+- **Optimise**: searches flat and multi-depth layouts for the most host cells
+  inside the window with at most a set share above the ceiling, plots every
+  design against the dose with the best-coverage front, and lets you cycle
+  through the solutions in the maps.
 - **Robustness**: draws many random tissues — donors, the insertion depth,
   variation within the dermis, senescent cells, cell-to-cell thresholds — and
   shows how the coverage of the host cells spreads and how often the design

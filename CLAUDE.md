@@ -30,14 +30,27 @@
   (`realise`, `monteCarloSteps`, `mcStats`: the same mulberry32 generator `rng`,
   drawn in the same order, so both draw the same random tissues) and the geometry
   of `dermsim.scaffold` (`scaffoldPlan`, `scaffoldPositions`).
-- **A layered dermis enters through `derived(p, z)` only.** It folds the depth
-  profiles into one effective D and λ for sources at depth z; `levelKernels`
-  asks once per injection level, and everything downstream takes those kernels. The
-  page cannot solve the layered problem — the pipeline's finite-volume solver
-  does, and it measured where the reduction holds (within 10 % of the threshold
-  below ~3 λ, worse than half a threshold within 1 λ of the junction). Keep that
-  caveat visible: the Coverage warning and the help entry `model/layers` are part
-  of the feature, not decoration. The same
+- **Three dermis models, entering through `levelKernels` only** (`dermis_model`,
+  `dermisModel`): 0 uniform, 1 averaged per level (one effective D and λ per
+  injection level, `derived(p, z)`), 2 depth-resolved (the default: `besselJ`,
+  `depthGrid`, `depthSolve`, `siteTable`, `siteColumns` mirror `dermsim.depth`
+  term for term, so the tables agree to rounding). `levelKernels` returns one
+  level per injection depth (`makeLevel`); its `at(h², z)` is the field of one
+  site with the boundaries in it, and everything downstream takes those levels.
+  The pipeline's finite volumes measured both (the depth-resolved one within 1 %,
+  the averaged one tens of percent off where a source reaches the papillary
+  dermis). Keep that visible: the Coverage panel's line with the other model's
+  number, the warning for the averaged model, and the help entry `model/layers`
+  are part of the feature, not decoration.
+- **Coverage is counted over host cells** (`depthSamples`, `fractions` with one
+  weight per depth, added in a fixed order — the optimiser compares these sums,
+  so do not reorder them); the dermis volume is a second read-out
+  (`unitCellCoverage`, `viewCoverage`). The optimiser admits only O ≤ O*.
+- **Renamed parameters stay readable.** `DP.renamed` (old key → new key, from
+  the `renamed:` section of the parameter file) is applied by `readUrlState`
+  (the address is then rewritten by `syncUrl`) and by `applyFile`; `paramsYaml`
+  writes the new names and the table. A rename needs nothing here, only the
+  line in `config/parameters.yaml`. The same
   block runs in a background Web Worker built from its text (`WORKER_SRC`) for
   the design curve, the coverage of the whole dermis, the optimiser and the
   Monte Carlo; `ask()`
@@ -112,12 +125,14 @@
 - Canvases are drawn at about twice their displayed size; use `ks(canvas)` /
   `font(canvas, px)` for text, line widths and markers so they read the same at
   any width.
-- Physics: uniform sphere of radius R per site, `k = D/λ²`, exact
-  steady-state solution inside and outside the sphere, image source at z = 0
-  (no flux), superposition with a cutoff at `R + 9.2 λ`; sites are bucketed by
-  that cutoff. Units µm, s, molecules; shown in ng/mL via the molecular weight.
+- Physics: uniform sphere of radius R per site. Uniform and averaged model:
+  `k = D/λ²`, exact steady-state solution inside and outside the sphere, image
+  source at z = 0 (no flux), superposition with a cutoff at `R + 9.2 λ`.
+  Depth-resolved model: a table c(ρ, z) per injection depth out to
+  `R + 9.2 λmax`, looked up bilinearly. Sites are bucketed by that cutoff. Units µm, s, molecules; shown in ng/mL via the molecular weight.
 - Test hook: `window.__drv` (`version`, `params()`, `state()`, `set({...})`,
   `derived()`, `sites()`, `field(x,y,z)`, `fieldNgml(x,y,z)`, `kernel(r)`,
+  `siteField(rho,z)`, `dermisModel()`,
   `criticalSpacing()`, `metrics()`, `survival()`, `exposure()`, `scaffold()`,
   `scFiles()`, `paramsYaml()`, `applyFile()`, `readYamlish()`,
   `openHelp(target)`, `closeHelp()`, `helpTargets()`).
