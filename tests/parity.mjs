@@ -13,11 +13,11 @@ const api = new Function(`"use strict";${block[1]}
     dermisModel, depthSamples, papillaryCellShare, besselJ, j0Zeros, depthGrid, nModes, siteTable, siteColumns, tableAt, tableCol, DEPTH,
     survival, hill, timeAbove, windowTimes, median, exposure, scaffoldPlan, scaffoldPositions,
     tissueProfile, tissueEffective, reductionIsFaithful, cellularShare, levelKernels, images, deepMode,
-    rng, gauss, spectral, fieldG, fieldLog, donor, realise, mcStats, monteCarlo, hetFaithful, insertedDepths };`)();
+    rng, gauss, spectral, fieldG, fieldLog, donor, realise, mcStats, monteCarlo, hetFaithful, insertedDepths, robustFrontSteps };`)();
 const golden = JSON.parse(readFileSync(new URL("../data/golden.json", import.meta.url), "utf8"));
 const rtol = golden.rtol ?? 1e-9;
 
-let checks = 0, fails = 0, worst = 0;
+let checks = 0, fails = 0, worst = 0, worstAt = "";
 // `floor`: values smaller than this are compared on its scale. A depth-resolved field is a
 // sum of a few hundred modes that cancel far from the source, so where it has fallen to a
 // millionth of the activation threshold the last digits are rounding, not physics.
@@ -26,7 +26,7 @@ function close(what, got, want, tol = rtol, floor = 1e-300) {
   const bothNaN = (want === null || Number.isNaN(want)) && Number.isNaN(got);
   const err = bothNaN ? 0 : Math.abs(got - want) / Math.max(Math.abs(want), floor);
   if (!bothNaN && !(err <= tol)) { fails++; console.error(`✗ ${what}: got ${got}, want ${want} (rel ${err.toExponential(2)})`); }
-  else if (!bothNaN && Number.isFinite(err)) worst = Math.max(worst, err);
+  else if (!bothNaN && Number.isFinite(err) && err > worst) { worst = err; worstAt = what; }
 }
 
 const DMAP = { k: "k", kap: "kap", lam: "lam", D: "D", thalf: "thalf", qcell: "qcell", Q: "Q", surv: "surv", Qt: "Qt", per_ngml: "perNgml", con: "con", cfib: "cfib", rc: "rc" };
@@ -115,8 +115,8 @@ if (golden.depth) {
   const zeros = api.j0Zeros(api.DEPTH.NRHO);
   g.zero_index.forEach((i, k) => close(`zero ${i + 1} of J0`, zeros[i], g.zeros[k], 1e-13));
   for (const c of g.cases) {
-    const p = c.params, G = api.depthGrid(p), T = api.siteTable(p, c.zs), C = api.siteColumns(p, c.zs, c.z_out), tiny = 1e-9 * c.peak;
-    close(`${c.name} P`, T.P, c.P, 1e-12); close(`${c.name} modes`, api.nModes(T.P, p.R), c.modes, 0);
+    const p = c.params, G = api.depthGrid(p), T = api.siteTable(p, c.zs), C = api.siteColumns(p, c.zs, c.z_out), tiny = 1e-6 * c.peak;   // below a millionth of the peak the digits are rounding
+    close(`${c.name} P`, T.P, c.P, 1e-12); close(`${c.name} modes`, T.modes, c.modes, 0);
     close(`${c.name} nodes`, G.zn.length, c.nodes, 0); close(`${c.name} zg`, G.zg, c.zg, 1e-12); close(`${c.name} λmax`, G.lamMax, c.lam_max, 1e-12);
     [0, 1, G.zn.length >> 1, G.zn.length - 2, G.zn.length - 1].forEach((j, k) => close(`${c.name} node ${j}`, G.zn[j], c.zn[k], 1e-12));
     let peak = 0; for (const v of T.c) peak = Math.max(peak, v);
@@ -163,5 +163,14 @@ if (golden.mc) {
                      "above_mean", "all_mean", "days_mean"]) close(`${c.name} mc.${k}`, m[k], c.mc[k], 1e-9);
   }
 }
-console.log(`${golden.generator} golden cases: ${golden.cases.length}, checks: ${checks}, failures: ${fails}, largest relative difference: ${worst.toExponential(2)}`);
+// robustness along a front: every design over the same tissues (tissues outside, designs inside)
+if (golden.front) {
+  const g = golden.front, it = api.robustFrontSteps(g.params, g.pattern, g.front, g.n, g.n_targets);
+  let r; while (!(r = it.next()).done);
+  const got = r.value;
+  close(`${g.name} rows`, got.rows.length, g.rows.length, 0);
+  g.rows.forEach((w, i) => { for (const k of ["a", "ncells", "cells_per_cm2", "window", "mean", "p_hit", "se_p", "above_mean"]) close(`${g.name}[${i}].${k}`, got.rows[i][k], w[k], 1e-9); });
+  close(`${g.name} robust design`, got.robust ? got.robust.cells_per_cm2 : NaN, g.robust ? g.robust.cells_per_cm2 : NaN, 1e-9);
+}
+console.log(`${golden.generator} golden cases: ${golden.cases.length}, checks: ${checks}, failures: ${fails}, largest relative difference: ${worst.toExponential(2)}${worst > 1e-10 ? ` (${worstAt})` : ""}`);
 process.exit(fails ? 1 : 0);

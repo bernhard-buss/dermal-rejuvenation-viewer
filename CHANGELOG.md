@@ -2,6 +2,12 @@
 
 Newest version first. Each entry says what you can do or see differently.
 
+## 0.12.0 — 2026-11-10
+
+- **Variation within the dermis follows the path of the signal.** With *variation of the cell density* or *of the diffusion* switched on (Robustness panel, both off by default), each site's signal at each host cell is now scaled by what the tissue between the two takes up, instead of by an average around the site. Against tissues solved in three dimensions the coverage is within about 2 points for patches of two to four decay lengths (it was 2 to 7 off). The warning now appears for patches finer than two decay lengths, where the new treatment can be 4 to 5 points low, and for patches wider than four in a dermis with depth. Robustness numbers with these two values switched on change, and a run then takes about five times as long at the default patch size; with them off nothing changes.
+- **Test the front is nearly twice as fast.** Every design now reuses a tissue's solution wherever it injects at the same depth; the numbers are the same.
+- **Clusters cut by the junction are computed more finely** in the depth-resolved model (twice the sideways detail). Designs with a cluster reaching above the junction change slightly; the largest difference from the finite-volume reference there fell from 4 % to 0.7 %.
+
 ## 0.11.2 — 2026-11-10
 
 - **Help on a phone** fills the screen: first the list of topics, with the search above it; tap a topic and its text gets all the room, with ‹ to go back to the list and × to close. Search results open in the same space, and an ⓘ next to a value goes straight to its entry. Wide tables scroll sideways. On larger screens the help is unchanged.

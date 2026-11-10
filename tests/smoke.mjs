@@ -110,5 +110,14 @@ if (!errors.length) {
     if (process.env.DRV_YAML_OUT) (await import("node:fs")).writeFileSync(process.env.DRV_YAML_OUT, yaml);
   } catch (e) { errors.push("Save YAML: " + (e.stack || e).toString().split("\n")[0]); }
 }
+// DRV_PACK_OUT=DIR writes the hand-off pack of the default design, so the pipeline's test suite
+// can compare it byte for byte with `python -m dermsim scaffold --out`.
+if (!errors.length && process.env.DRV_PACK_OUT) {
+  try {
+    const fs = await import("node:fs"), dir = process.env.DRV_PACK_OUT;
+    fs.mkdirSync(dir, { recursive: true });
+    for (const [name, [text]] of Object.entries(ctx.window.__drv.scFiles())) fs.writeFileSync(`${dir}/${name}`, text);
+  } catch (e) { errors.push("hand-off pack: " + (e.stack || e).toString().split("\n")[0]); }
+}
 if (errors.length) { for (const e of errors) console.error("✗ " + e); process.exit(1); }
 console.log(`smoke OK: the page script runs, builds ${(left.match(/class="panel step"/g) || []).length} steps and fills the panels`);
