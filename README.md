@@ -28,9 +28,11 @@ models: Roy B, Pekec T, Yuan L, Shivashankar GV. *Aging Cell* 2024;23:e14032,
 - A **basic tissue model** — age, sex, body site, ethnicity — sets the advanced
   tissue values from measurements (layers and cells by age; dermis and epidermis
   thickness at ten body sites by sex); a value changed by hand stays yours.
-- Five numbered steps on the left (whose skin, what the cells make, how you
-  inject, the device, what you look at) and the analysis panels on the right,
-  one open at a time on each side.
+- Three panes — **Model** (five numbered steps: whose skin, what the cells make,
+  how you inject, the device, what you look at), **View** (map and cross-section)
+  and **Analysis** — side by side under one title bar on a desktop window, as tabs
+  on smaller screens (at the bottom on a phone held upright); one section open at
+  a time in Model and in Analysis.
 - Time after implantation (the implant decays with a half-life) and a graded
   response of the host cells; how long each part of the dermis spends in the
   window.

@@ -113,7 +113,7 @@ window.DRV_PARAMS = {
     "chopra2015face",
     "wang2025ultrasound"
    ],
-   "note": "Used by the injection scaffold: the model measures depth below the dermal–epidermal junction, a needle from the skin surface. Default: 75 µm, the dorsal forearm of 71 volunteers (stratum corneum 18.3 ± 4.9 µm plus cellular epidermis 56.6 ± 11.5 µm, {cite:sandbymoller2003epidermis}). The face is thinner, 29.6–62.6 µm across 39 subunits ({cite:chopra2015face}); the abdomen measures 110 ± 18 µm by ultrasound ({cite:wang2025ultrasound}). Body site explains most of the variation, so set it for the intended site. See {help:scaffold/needles|Needle lengths}."
+   "note": "Used by the injection scaffold: the model measures depth below the dermal–epidermal junction, a needle from the skin surface. Default: 75 µm, the dorsal forearm of 71 volunteers (stratum corneum 18.3 ± 4.9 µm plus cellular epidermis 56.6 ± 11.5 µm, {cite:sandbymoller2003epidermis}). The face is thinner, 29.6–62.6 µm across 39 subunits ({cite:chopra2015face}); the abdomen measures 110 ± 18 µm by ultrasound ({cite:wang2025ultrasound}). Body site explains most of the variation: the body site of the basic model sets it. See {help:scaffold/needles|Needle lengths}."
   },
   {
    "key": "hpap",
@@ -194,7 +194,7 @@ window.DRV_PARAMS = {
     "arnalforne2024dermis",
     "oyleryaniv2017niches"
    ],
-   "note": "How many cells the dermis holds, relative to the default tissue (donors aged 55 and over), for which λ is the decay length. Uptake by cells is what removes the signal, and it follows the density of consuming cells ({cite:oyleryaniv2017niches}), so more cells mean a shorter λ and fewer a longer one. The age presets above set it from total cell counts per mm² of section in four age groups ({cite:arnalforne2024dermis}) — all nuclei, not fibroblasts only, hence an analogue. See {help:model/age|Age of the skin}."
+   "note": "How many cells the dermis holds, relative to the default tissue (donors aged 55 and over), for which λ is the decay length. Uptake by cells is what removes the signal, and it follows the density of consuming cells ({cite:oyleryaniv2017niches}), so more cells mean a shorter λ and fewer a longer one. The age of the basic model sets it from total cell counts per mm² of section in four age groups ({cite:arnalforne2024dermis}) — all nuclei, not fibroblasts only, hence an analogue. See {help:model/age|Age of the skin}."
   },
   {
    "key": "deep",
@@ -462,7 +462,7 @@ window.DRV_PARAMS = {
     "idda2020senescence",
     "jeyapalan2007primates"
    ],
-   "note": "Share of the host cells that are senescent. They are not counted as targets (coverage is over the others) and, with the SASP factor below, they raise the threshold around them. In human dermis, p21-positive cells increased with age and made up to 15 % of cells in donors over 65, while p16 was almost undetectable ({cite:idda2020senescence}); in baboon skin, dermal fibroblasts with damaged telomeres reached over 15 % of all fibroblasts ({cite:jeyapalan2007primates}). Markers of senescence in all cells, not a count of senescent fibroblasts: an analogue."
+   "note": "Share of the host cells that are senescent. They are not counted as targets (coverage is over the others) and, with the SASP factor below, they raise the threshold around them. In human dermis, p21-positive cells increased with age and made up to 15 % of cells in donors over 65, while p16 was almost undetectable ({cite:idda2020senescence}); in baboon skin, dermal fibroblasts with damaged telomeres reached over 15 % of all fibroblasts ({cite:jeyapalan2007primates}). Markers of senescence in all cells, not a count of senescent fibroblasts: an analogue. The age of the basic model sets it, scaled by how p21-positive dermal cells rise with age (our mapping of the age groups, claim K4)."
   },
   {
    "key": "cstar",
@@ -538,7 +538,7 @@ window.DRV_PARAMS = {
    "sources": [
     "arnalforne2024dermis"
    ],
-   "note": "How much the papillary cellularity differs between donors of one age group: 2714 ± 450.50 cells/mm² of section at 55 and over ({cite:arnalforne2024dermis}, n = 5). Each realisation draws one donor from a log-normal with this coefficient of variation. All nuclei, not fibroblasts only; the age presets set it for their group."
+   "note": "How much the papillary cellularity differs between donors of one age group: 2714 ± 450.50 cells/mm² of section at 55 and over ({cite:arnalforne2024dermis}, n = 5). Each realisation draws one donor from a log-normal with this coefficient of variation. All nuclei, not fibroblasts only; the age of the basic model sets it for its group."
   },
   {
    "key": "cvret",
@@ -788,12 +788,27 @@ window.DRV_PARAMS = {
  "presets": {
   "reference": "aged",
   "source": "arnalforne2024dermis",
-  "note": "Photoprotected periumbilical skin, 25 autopsies in four age groups; total cellularity is all nuclei per mm² of section ({cite:arnalforne2024dermis}, Table 5). Children (0–12 years) are left out. Only the tissue changes; the signal, the thresholds and the design stay as they are.",
+  "note": "Photoprotected periumbilical skin, 25 autopsies in four age groups; total cellularity is all nuclei per mm² of section ({cite:arnalforne2024dermis}, Table 5), children included. Only the tissue changes; the signal, the thresholds and the design stay as they are.",
   "senescent": {
    "source": "idda2020senescence",
    "oldest": 0.15
   },
   "groups": [
+   {
+    "key": "child",
+    "title": "0–12 years",
+    "n": 5,
+    "reference": false,
+    "values": {
+     "hpap": 77.18,
+     "rpap": 3.12,
+     "cells": 4.258,
+     "cvpap": 0.154,
+     "cvret": 0.54,
+     "cvhpap": 0.192,
+     "fsen": 0.019
+    }
+   },
    {
     "key": "young",
     "title": "13–25 years",

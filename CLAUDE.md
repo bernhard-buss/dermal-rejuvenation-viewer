@@ -58,12 +58,15 @@
   `node tests/parity.mjs` (golden cases, relative tolerance 1e-9) and
   `node tests/page.mjs` (script compiles, noindex, parameters, changelog entry).
   CI runs both on every push.
-- **Layout.** On a desktop window (≥ 1100 × 620 px) the page does not scroll: `#left`,
-  the middle `.stage` and `#right` scroll on their own. `fitLayout()` sizes the map to
-  the middle column's height and sets the grid so that the middle column is exactly
-  as wide as the map and the analysis column takes the rest (min 380 px; canvas
-  backing stores stay fixed; plots are redrawn on resize). Below that, one scrolling
-  column. Check both after layout changes.
+- **Layout: three panes, Model / View / Analysis** (`#left`, `.stage`, `#right`,
+  each `data-col`), and the page itself never scrolls; each pane scrolls on its own
+  under the bar `#panes`. Desktop (≥ 1100 × 620 px): side by side; `fitLayout()` sets
+  `--cols` for the bar and the columns alike (map ≤ 960 px, as large as the height
+  allows; analysis 380–560 px; centred). Below that, `#panes` is a tab bar at the top
+  and only `body[data-col]`'s pane shows (`setPane`, remembered as `drv_pane`); phones
+  held upright (≤ 700 px, portrait) get it at the bottom. A pane drawn while hidden
+  is redrawn when it is shown. Canvas backing stores stay fixed. Check all three
+  sizes after layout changes. The prototype banner closes (`drv_banner`).
 - **One section open at a time, on each side.** Headers `.acc-head` with
   `data-acc="left|right"` and `data-pane`; `openPane()` switches (remembered in
   `localStorage`, `drv_open_left` / `drv_open_right`) and calls `ON_OPEN[pane]` to

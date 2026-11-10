@@ -29,18 +29,51 @@ button:disabled{cursor:default}
 a.hl{color:var(--teal);text-decoration:none;font-size:13px;margin-left:2px;cursor:help}
 header a.hl{color:var(--teal-l)}
 a.hl:hover{text-decoration:underline}
-.banner{background:var(--amber-bg);border-bottom:1px solid #EAD7AE;padding:6px 18px;font-size:13px;color:#5B420F}
-main{display:grid;grid-template-columns:1fr;gap:14px;padding:14px;align-items:start}
-/* Desktop: the page fills the window and does not scroll; the controls (left) and the
-   panels (right) scroll on their own, the map in the middle takes the space left and
-   is sized by fitLayout() so that it fits the height. Smaller windows: one column. */
+.banner{display:flex;align-items:center;gap:10px;background:var(--amber-bg);border-bottom:1px solid #EAD7AE;padding:6px 10px 6px 18px;font-size:13px;color:#5B420F}
+.banner > span{flex:1}
+.banner[hidden]{display:none}
+.bclose{border:0;background:transparent;color:#5B420F;font-size:18px;line-height:1;padding:0 6px;border-radius:4px}
+.bclose:hover{background:#F4E3BC}
+/* Three panes — Model (the design, left), View (the maps), Analysis (right) — in one
+   layout that never scrolls as a page: each pane scrolls on its own, under its title.
+   Desktop (≥ 1100 × 620): side by side under a title bar laid on the same centred grid;
+   fitLayout() sets the columns (--cols): the map as large as the height allows (≤ 960 px),
+   the analysis column what is left (380–560 px). Smaller windows: the titles become tabs
+   at the top and one pane shows at a time; phones held upright get them at the bottom. */
+body{height:100vh;height:100dvh;display:flex;flex-direction:column;overflow:hidden}
+header,.banner{flex:none}
+.panes{flex:none;display:flex;justify-content:center;gap:4px;padding:6px 14px 0;background:#fff;border-bottom:1px solid var(--rule)}
+.panes button{border:0;border-bottom:2px solid transparent;border-radius:0;background:transparent;padding:6px 18px 7px;font-weight:600;font-size:13px;color:var(--soft);display:flex;align-items:center;gap:7px;letter-spacing:.02em}
+.panes button svg{width:17px;height:17px;flex:none}
+.panes button.on{color:var(--teal);border-bottom-color:var(--teal)}
+main{flex:1;min-height:0;display:block;padding:12px 14px 0}
+main > section{height:100%;overflow-y:auto;overscroll-behavior:contain;padding-right:2px}
+body[data-col="model"] main > section:not(#left),body[data-col="view"] main > section:not(.stage),
+body[data-col="analysis"] main > section:not(#right){display:none}
+footer{flex:none;padding:4px 18px 6px}
 @media (min-width:1100px) and (min-height:620px){
-  body{height:100vh;display:flex;flex-direction:column;overflow:hidden}
-  main{flex:1;min-height:0;grid-template-columns:340px minmax(340px,1fr) minmax(380px,1fr);align-items:stretch;padding:12px 14px 0}
-  #left,#right,.stage{overflow-y:auto;min-height:0;overscroll-behavior:contain;scrollbar-gutter:stable;padding-right:2px}
-  footer{padding:4px 18px 6px}
+  .panes,main{display:grid;grid-template-columns:var(--cols,340px minmax(340px,1fr) minmax(380px,560px));column-gap:14px;justify-content:center}
+  .panes{padding:0 14px;background:#fff}
+  .panes button{justify-content:flex-start;padding:9px 2px 8px;font-size:12px;text-transform:uppercase;letter-spacing:.09em;color:var(--ink);cursor:default;border-bottom:0}
+  .panes button svg{display:none}
+  .panes button.on{color:var(--ink)}
+  main{align-items:stretch}
+  main > section{display:block !important;min-height:0;scrollbar-gutter:stable}
 }
-/* fitLayout() then gives the middle column exactly the map's width and the analysis column the rest */
+@media (max-width:700px) and (orientation:portrait){
+  .panes{order:5;justify-content:stretch;gap:0;padding:0 0 env(safe-area-inset-bottom);border-top:1px solid var(--rule);border-bottom:0}
+  .panes button{flex:1;flex-direction:column;gap:2px;padding:7px 4px 6px;font-size:11.5px;border-bottom:0;border-top:2px solid transparent}
+  .panes button.on{border-top-color:var(--teal);border-bottom-color:transparent}
+  .panes button svg{width:20px;height:20px}
+  main{order:4;padding:10px 10px 0}
+  footer{display:none}
+  header{padding:7px 10px;gap:5px 6px}
+  header h1{font-size:14.5px}
+  header .sp{display:none}
+  header #sigchip,header a.hl{display:none}
+  header button{padding:2px 6px;font-size:12px}
+  .banner{padding:5px 6px 5px 10px;font-size:12px}
+}
 @media (max-width:1499px){header .sub{display:none}}
 .panel{background:#fff;border:1px solid var(--rule);border-radius:10px;padding:12px 14px;margin-bottom:14px;min-width:0}
 .panel h2{font-size:12px;text-transform:uppercase;letter-spacing:.07em;color:var(--teal);margin:2px 0 6px;display:flex;gap:4px;align-items:center}
@@ -157,10 +190,15 @@ a.cite{text-decoration:none;border-bottom:1px dotted var(--teal)}
   <span><button id="linkbtn" title="Copy a link that reproduces everything shown: all values, pattern, colouring and your own sites">Copy link</button><button id="saveYaml" title="Download everything shown as a parameters.yaml the Python pipeline can read">Save YAML</button><button id="loadYaml" title="Load a parameters.yaml saved here or from the pipeline">Load YAML</button><input type="file" id="yamlFile" accept=".yaml,.yml,.json" hidden><a class="hl" href="#help/start/yaml" data-help="start/yaml" title="Help: saving and loading the parameter file">ⓘ</a></span>
   <button id="helpbtn" data-help="" title="Help (press ?)">Help</button>
 </header>
-<div class="banner">Prototype. Values marked <span class="badge b-ph" data-help="start/status">placeholder</span> have no checked source yet, so results that depend on them are illustrative only. <a href="#help/model/window" data-help="model/window">Why the thresholds are open</a>.</div>
+<div class="banner" id="banner"><span>Prototype. Values marked <span class="badge b-ph" data-help="start/status">placeholder</span> have no checked source yet, so results that depend on them are illustrative only. <a href="#help/model/window" data-help="model/window">Why the thresholds are open</a>.</span><button class="bclose" id="bannerClose" aria-label="Close this notice" title="Close this notice (it stays closed on this device)">×</button></div>
+<nav class="panes" id="panes" aria-label="Model, view and analysis">
+  <button data-col="model" title="Model: the design — whose skin, what the cells make, how you inject, the device, what you look at"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><path d="M3 5h14M3 10h14M3 15h14"/><circle cx="7" cy="5" r="1.8" fill="#fff"/><circle cx="13" cy="10" r="1.8" fill="#fff"/><circle cx="9" cy="15" r="1.8" fill="#fff"/></svg>Model</button>
+  <button data-col="view" title="View: the map and the cross-section"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="2.5" y="2.5" width="15" height="15" rx="2"/><circle cx="7" cy="7" r="1.6"/><circle cx="13" cy="7" r="1.6"/><circle cx="10" cy="12.5" r="1.6"/></svg>View</button>
+  <button data-col="analysis" title="Analysis: coverage, optimiser, robustness, scaffold, design curve"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><path d="M3 17h14M5 14V9M10 14V4M15 14v-7"/></svg>Analysis</button>
+</nav>
 <main>
-  <section id="left"></section>
-  <section class="stage">
+  <section id="left" data-col="model"></section>
+  <section class="stage" data-col="view">
     <div class="panel">
       <div class="toolbar">
         <span>Show</span>
@@ -179,7 +217,7 @@ a.cite{text-decoration:none;border-bottom:1px dotted var(--teal)}
       <div class="cap" id="secCap"></div>
     </div>
   </section>
-  <section id="right">
+  <section id="right" data-col="analysis">
     <div class="panel apanel" data-pane="coverage"><h2 class="acc-head" data-acc="right" data-pane="coverage">Coverage <a class="hl" href="#help/metrics/coverage" data-help="metrics/coverage" title="Help: coverage">ⓘ</a><span class="chev" aria-hidden="true"></span></h2><div class="pbody"><div id="metrics"></div></div></div>
     <div class="panel apanel" id="optPanel" data-pane="optimise"><h2 class="acc-head" data-acc="right" data-pane="optimise">Optimise <a class="hl" href="#help/metrics/optimise" data-help="metrics/optimise" title="Help: optimising the design">ⓘ</a><span class="chev" aria-hidden="true"></span></h2><div class="pbody">
       <div class="note">Find the layouts that put the most host cells inside the window, for the current tissue and signal values.</div>
@@ -2502,23 +2540,42 @@ $("mcOverlay").addEventListener("change", e => { S.mc.overlay = e.target.checked
 // Layout: on a desktop window the map is as large as the middle column's height allows
 // (the rest of the middle column scrolls under it); otherwise at most 720 px wide.
 const DESK = matchMedia("(min-width:1100px) and (min-height:620px)");
+// Three panes, one layout: side by side on a desktop window, one at a time otherwise.
+const PANES = ["model", "view", "analysis"], PANE_KEY = "drv_pane";
+function setPane(col) {
+  if (!PANES.includes(col)) col = "view";
+  S.pane = col; document.body.dataset.col = col; store.set(PANE_KEY, col);
+  for (const b of document.querySelectorAll("#panes button")) { const on = b.dataset.col === col; b.classList.toggle("on", on); b.setAttribute("aria-pressed", on ? "true" : "false"); }
+  if (DESK.matches) return;
+  if (col === "view") { fitLayout(); schedule(false); }             // drawn while hidden: draw again at its size
+  if (col === "analysis") { const o = ACC.right.open; if (ON_OPEN[o]) ON_OPEN[o](); }
+}
 function fitLayout() {
   const panel = mapC.closest && mapC.closest(".panel"), mainEl = document.querySelector("main"); if (!panel || !mainEl) return;
-  if (!DESK.matches) { mainEl.style.gridTemplateColumns = ""; panel.style.maxWidth = ""; mapC.style.width = ""; mapC.style.maxWidth = "720px"; mapC.style.margin = "0 auto"; return; }
-  const stage = panel.parentElement, cs = getComputedStyle(panel), ms = getComputedStyle(mainEl), tb = panel.querySelector(".toolbar"), lg = $("legend");
+  const stage = panel.parentElement, cs = getComputedStyle(panel), tb = panel.querySelector(".toolbar"), lg = $("legend");
   const padV = parseFloat(cs.paddingTop) + parseFloat(cs.paddingBottom) + 2, padH = parseFloat(cs.paddingLeft) + parseFloat(cs.paddingRight) + 2;
-  const gap = parseFloat(ms.columnGap) || 14, inner = mainEl.clientWidth - parseFloat(ms.paddingLeft) - parseFloat(ms.paddingRight);
-  const LEFT = 340, RIGHT_MIN = 380, GUTTER = 16;                  // GUTTER: the middle column's own scrollbar
   const availH = stage.clientHeight - padV - (tb ? tb.offsetHeight + 8 : 0) - (lg ? Math.max(lg.offsetHeight, 46) + 12 : 0) - 6;   // room for a legend of two lines
-  const availW = inner - LEFT - RIGHT_MIN - 2 * gap - padH - GUTTER;
-  const size = Math.floor(Math.max(300, Math.min(availW, availH)));
-  mainEl.style.gridTemplateColumns = `${LEFT}px ${size + padH + GUTTER}px minmax(${RIGHT_MIN}px, 1fr)`;
   Object.assign(panel.style, { maxWidth: "", marginLeft: "", marginRight: "" });
+  if (!DESK.matches) {                                             // one pane at a time: the map fits the pane
+    document.documentElement.style.removeProperty("--cols");
+    if (!stage.clientWidth) return;                                // another pane is showing; fitted when the view is opened
+    const size = Math.floor(Math.max(260, Math.min(stage.clientWidth - padH - 6, availH, 960)));
+    Object.assign(mapC.style, { width: size + "px", maxWidth: "", margin: "0 auto" });
+    return;
+  }
+  const ms = getComputedStyle(mainEl), gap = parseFloat(ms.columnGap) || 14, inner = mainEl.clientWidth - parseFloat(ms.paddingLeft) - parseFloat(ms.paddingRight);
+  const LEFT = 340, RIGHT_MIN = 380, RIGHT_MAX = 560, MAP_MAX = 960, GUTTER = 16;   // GUTTER: the middle column's own scrollbar
+  const availW = inner - LEFT - RIGHT_MIN - 2 * gap - padH - GUTTER;
+  const size = Math.floor(Math.max(300, Math.min(availW, availH, MAP_MAX)));
+  const centre = size + padH + GUTTER, right = Math.max(RIGHT_MIN, Math.min(RIGHT_MAX, inner - LEFT - centre - 2 * gap));
+  document.documentElement.style.setProperty("--cols", `${LEFT}px ${centre}px ${right}px`);   // the title bar and the columns share it
   Object.assign(mapC.style, { width: size + "px", maxWidth: "", margin: "0 auto" });
 }
 let resizeTimer = 0;                                               // plots are drawn for the size they had: redraw on resize
 window.addEventListener("resize", () => { clearTimeout(resizeTimer); resizeTimer = setTimeout(() => {
   fitLayout(); schedule(false); const o = ACC.right.open; if (ON_OPEN[o]) ON_OPEN[o](); }, 200); });
+$("panes").addEventListener("click", e => { const b = e.target.closest && e.target.closest("button[data-col]"); if (b && !DESK.matches) setPane(b.dataset.col); });
+$("bannerClose").addEventListener("click", () => { $("banner").hidden = true; store.set("drv_banner", "closed"); fitLayout(); schedule(false); });
 $("reset").addEventListener("click", () => { resetParams(); schedule(false); });
 
 // ---------------------------------------------------------------------------
@@ -2538,7 +2595,7 @@ const HELP = [
       <p>The papillary / reticular boundary is the modelled one (at the papillary thickness of step 1), and the curve on the right shows how the decay length changes with depth — see <a href="#help/model/layers" data-help="model/layers">A dermis with depth</a>. The epidermis, the hypodermis and the fibres are drawn schematically: the model covers the dermis only, with no flux through the junction. With the uniform dermis switched on the boundary goes back to a schematic one.</p>`],
     ["edit", "Editing implant sites", () => `<p>Press <b>Edit sites</b>, then click the map to add a site <b>at the slice depth</b>, drag a site to move it, and shift-click a site to remove it. Editing turns the pattern into <i>custom</i>: from then on only the sites in view count, and each keeps its own depth (move the slice depth to place sites at other depths). Choose a lattice again under <i>Pattern</i> to go back.</p>`],
     ["presets", "The basic model: age, sex, body site", () => `<p>Step 1, <b>Whose skin</b>, starts with the <b>basic model</b>: a few choices that set the <b>advanced</b> tissue values below them from measurements.</p>
-      <ul><li><b>Age</b> sets the layers and cells of the dermis — papillary thickness, how many more cells the papillary dermis holds than the reticular, the overall cellularity, how much these differ between donors — from one morphometric study of four age groups (${cite("arnalforne2024dermis")}), and the senescent share from how p21-positive dermal cells rise with age (${cite("idda2020senescence")}; our mapping of its age groups onto these). <b>55+</b> is the default. See <a href="#help/model/age" data-help="model/age">Age of the skin</a>.</li>
+      <ul><li><b>Age</b> sets the layers and cells of the dermis — papillary thickness, how many more cells the papillary dermis holds than the reticular, the overall cellularity, how much these differ between donors — from one morphometric study of four age groups (${cite("arnalforne2024dermis")}), and the senescent share from how p21-positive dermal cells rise with age (${cite("idda2020senescence")}; our mapping of its age groups onto these — it has no donors under 13, so children get the youngest group's share, an assumption). <b>55+</b> is the default. See <a href="#help/model/age" data-help="model/age">Age of the skin</a>.</li>
       <li><b>Body site</b> and <b>sex</b> set the dermis thickness and the epidermis thickness, measured by ultrasound at ten sites in 41 men and 33 women (${cite("wang2025ultrasound")}); <i>either</i> weights the two by their numbers, which reproduces the study's all-volunteer values. The default site is the group's skin model, 2 mm of dermis (${cite("roy2024implanting")}).</li>
       <li><b>Ethnicity</b> is kept with the selection, but sets nothing: ${renderNote((DP.basic || { ethnicity: { note: "" } }).ethnicity.note)}</li></ul>
       <p><b>Custom values.</b> Move an advanced value by hand and it stays yours: changing the basic model afterwards leaves it as it is, and the step says <span class="cchip">custom</span> and lists what you changed and what the basic model would give, with a link to take its values again. The basic selection itself is kept, so whatever else it comes to influence still knows whose skin this is. ↺ on an advanced value goes back to the basic model's value, not to the file's.</p>
@@ -2611,7 +2668,7 @@ const HELP = [
       <p>The Coverage panel shows what the other of the two would say for your design, so you can see where they part; <code>python -m dermsim tissue --fv</code> prints the comparison with the finite volumes.</p>
       <p>What the depth-resolved model does not settle: the junction values of the profile — diffusion at the junction and the depth of the slow zone — are placeholders, and the result moves with them.</p>`],
     ["age", "Age of the skin", () => { const ag = (DP.presets && DP.presets.groups) || [];
-      return `<p>One study measured the layers of photoprotected periumbilical skin in four age groups, from 25 autopsies (${cite("arnalforne2024dermis")}): with age the papillary dermis grows thicker, and both layers hold fewer cells. The <b>Age</b> buttons take three of its groups (children are left out) and set, for each:</p>
+      return `<p>One study measured the layers of photoprotected periumbilical skin in four age groups, from 25 autopsies (${cite("arnalforne2024dermis")}): with age the papillary dermis grows thicker, and both layers hold fewer cells. The <b>Age</b> choices of the basic model take its four groups, children included, and set, for each:</p>
       <table><tr><th>Age</th><th>papillary dermis</th><th>papillary ÷ reticular cells</th><th>cellularity</th><th>donor spread (papillary · reticular cells · thickness)</th></tr>
       ${ag.map(g => `<tr><td>${esc(g.title)}${g.reference ? " (default)" : ""}</td><td>${g.values.hpap} µm</td><td>${g.values.rpap}×</td><td>${g.values.cells.toFixed(2)}×</td><td>${[g.values.cvpap, g.values.cvret, g.values.cvhpap].map(v => (100 * v).toFixed(0) + " %").join(" · ")}</td></tr>`).join("")}</table>
       <p>All of it is computed by the pipeline from the study's means and standard deviations, not typed: the thickness as measured, the density ratio of the two layers' cell counts, the <b>cellularity</b> as the depth-averaged count over the model's dermis relative to the default group, and the donor spread as standard deviation over mean (n = ${ag.map(g => g.n).join(", ")} donors).</p>
@@ -2850,6 +2907,8 @@ buildControls();
 buildHelp();
 fillHelpNumbers();
 schedule(false);
+if (store.get("drv_banner") === "closed") $("banner").hidden = true;
+setPane(store.get(PANE_KEY) || "view");
 fitLayout();
 plotOpt();
 syncMcNote();

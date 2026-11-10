@@ -4,12 +4,15 @@ Newest version first. Each entry says what you can do or see differently.
 
 ## 0.11.0 — 2026-11-10
 
-- **A basic model for the tissue.** *Whose skin* now starts with four choices — **age** (13–25, 26–54, 55+ years), **sex**, **body site** (the skin model, forehead, chest, abdomen, upper arm, forearm, back, thigh, lower leg, foot) and **ethnicity** — that set the **advanced** values below them from measurements: age the layers, cells, donor spread and senescent share; body site and sex the dermis and epidermis thickness. Ethnicity is kept but sets nothing, as no checked source gives values for it. The age buttons in the header moved here.
+- **A basic model for the tissue.** *Whose skin* now starts with four choices — **age** (0–12, 13–25, 26–54, 55+ years), **sex**, **body site** (the skin model, forehead, chest, abdomen, upper arm, forearm, back, thigh, lower leg, foot) and **ethnicity** — that set the **advanced** values below them from measurements: age the layers, cells, donor spread and senescent share; body site and sex the dermis and epidermis thickness. Ethnicity is kept but sets nothing, as no checked source gives values for it. The age buttons in the header moved here.
 - **Custom values:** move an advanced value by hand and it stays yours when you change the basic model; the step marks it *custom*, lists what the basic model would give, and offers to take its values again. ↺ on such a value goes back to the basic model's value. The selection travels with links and Save YAML.
 - **One section at a time.** The design steps on the left and the analysis panels on the right each show one section open; click a title to switch. A closed step shows how many of its values you changed.
 - The values of *How much it varies* moved from the design steps into the **Robustness** panel, which they feed. The steps are five again.
 - On a desktop window the middle column is now exactly as wide as the map, and the **analysis column takes the rest** of the width.
 - Finer sliders for the dermis thickness (10 µm) and the epidermis thickness (1 µm), so the measured site values sit on them.
+- **Model, View, Analysis.** The three columns now have titles that form one bar, which stays in place while each column scrolls underneath. The page no longer stretches on wide screens: the three columns stay centred, the map grows only up to 960 px and the analysis column up to 560 px.
+- **Tabs on smaller screens.** Below 1100 px wide (or 620 px high) the titles become tabs at the top and one of Model, View and Analysis shows at a time instead of one long page; on a phone held upright the tabs sit at the bottom of the screen, with a more compact header.
+- The **prototype notice** at the top can be closed (×); it stays closed on that device.
 
 ## 0.10.0 — 2026-11-10
 
