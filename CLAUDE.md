@@ -59,9 +59,23 @@
   `node tests/page.mjs` (script compiles, noindex, parameters, changelog entry).
   CI runs both on every push.
 - **Layout.** On a desktop window (≥ 1100 × 620 px) the page does not scroll: `#left`,
-  the middle `.stage` and `#right` scroll on their own and `fitLayout()` sizes the map
-  to the middle column's height (canvas backing stores stay fixed; plots are redrawn
-  on resize). Below that, one scrolling column. Check both after layout changes.
+  the middle `.stage` and `#right` scroll on their own. `fitLayout()` sizes the map to
+  the middle column's height and sets the grid so that the middle column is exactly
+  as wide as the map and the analysis column takes the rest (min 380 px; canvas
+  backing stores stay fixed; plots are redrawn on resize). Below that, one scrolling
+  column. Check both after layout changes.
+- **One section open at a time, on each side.** Headers `.acc-head` with
+  `data-acc="left|right"` and `data-pane`; `openPane()` switches (remembered in
+  `localStorage`, `drv_open_left` / `drv_open_right`) and calls `ON_OPEN[pane]` to
+  redraw a plot that was drawn while hidden. A closed design step shows how many of
+  its values are off their defaults (`chg_<group>`).
+- **The basic tissue model** (step 1): `basicValues(sel)` mirrors
+  `dermsim.params.basic_values` from the export (`DP.presets`, `DP.sites`,
+  `DP.basic`). `defaultOf(key)` is the basic model's value for the keys it sets,
+  so `isDefault`, ↺ and the default tick follow the selection; a value moved by hand
+  is *custom* (`customKeys()`) and survives a change of the selection (`setBasic`).
+  The selection travels in links (`age`, `sex`, `site`, `ethnicity`) and in Save
+  YAML (`design.basic`).
 - **Versions are for the people using the viewer.** `VERSION` (top of the
   script) and `CHANGELOG.md` change only for user-facing changes:
   - a new feature, or a change in what the viewer computes or shows (including
@@ -100,7 +114,8 @@
   needs nothing extra; a new non-numeric control goes into the `design:` block
   and into `params.design()` on the Python side.
 - **The control panel is five numbered steps** from the parameter file's `groups`
-  (`key`, `step`, `title`, `note`). Values marked `primary: true` open with their
+  (`key`, `step`, `title`, `note`); a group with `place: analysis` (the variation)
+  has no step and is drawn inside its analysis panel (`#mcParams`). Values marked `primary: true` open with their
   step; the rest fold behind *more* (open folds remembered in `localStorage`,
   `drv_open_steps`). `syncFolds()` opens any step holding a folded value that is off
   its default, so a shared link never hides what it changed. A new parameter goes

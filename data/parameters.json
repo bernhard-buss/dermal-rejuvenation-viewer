@@ -11,7 +11,7 @@
    "key": "tissue",
    "step": 1,
    "title": "Whose skin",
-   "note": "The dermis you are injecting into. Mostly measured — the badge on each value says how well."
+   "note": "The dermis you are injecting into. The basic model (age, sex, body site) sets the advanced values from measurements; change an advanced value and it stays yours. The badge on each value says how well it is known."
   },
   {
    "key": "signal",
@@ -27,19 +27,19 @@
   },
   {
    "key": "variation",
-   "step": 4,
+   "place": "analysis",
    "title": "How much it varies",
-   "note": "Patients differ, and so does tissue within one patient. These values drive the Robustness panel: many random tissues, and how often the design reaches its target. They do not change the maps."
+   "note": "Patients differ, and so does tissue within one patient. These values drive the Robustness analysis: many random tissues, and how often the design reaches its target. They do not change the maps."
   },
   {
    "key": "device",
-   "step": 5,
+   "step": 4,
    "title": "The device",
    "note": "Only for the injection scaffold: what the needle array would look like."
   },
   {
    "key": "view",
-   "step": 6,
+   "step": 5,
    "title": "What you look at",
    "note": "Where and when you are looking. Changes nothing about the design."
   }
@@ -58,12 +58,12 @@
    "min": 500,
    "max": 4000,
    "log": false,
-   "step": 50,
+   "step": 10,
    "status": "src",
    "sources": [
     "roy2024implanting"
    ],
-   "note": "Default: the 2-mm-deep dermal region of the reconstructed skin model ({cite:roy2024implanting}). Human dermis is thicker at most trunk sites — papillary plus reticular comes to 2.7 mm periumbilical in donors over 55 ({cite:arnalforne2024dermis}) and 2.4–2.9 mm on abdomen and back by 50 MHz ultrasound ({cite:wang2025ultrasound}) — so raise it for an in vivo design."
+   "note": "Default: the 2-mm-deep dermal region of the reconstructed skin model ({cite:roy2024implanting}). Human dermis is thicker at most trunk sites — papillary plus reticular comes to 2.7 mm periumbilical in donors over 55 ({cite:arnalforne2024dermis}) and 2.4–2.9 mm on abdomen and back by 50 MHz ultrasound ({cite:wang2025ultrasound}). The body site and sex of the basic model set it from the ultrasound study; the skin model is the default site."
   },
   {
    "key": "sage",
@@ -104,7 +104,7 @@
    "min": 20,
    "max": 300,
    "log": false,
-   "step": 5,
+   "step": 1,
    "status": "src",
    "sources": [
     "sandbymoller2003epidermis",
@@ -787,6 +787,10 @@
   "reference": "aged",
   "source": "arnalforne2024dermis",
   "note": "Photoprotected periumbilical skin, 25 autopsies in four age groups; total cellularity is all nuclei per mm² of section ({cite:arnalforne2024dermis}, Table 5). Children (0–12 years) are left out. Only the tissue changes; the signal, the thresholds and the design stay as they are.",
+  "senescent": {
+   "source": "idda2020senescence",
+   "oldest": 0.15
+  },
   "groups": [
    {
     "key": "young",
@@ -799,7 +803,8 @@
      "cells": 1.259,
      "cvpap": 0.188,
      "cvret": 0.136,
-     "cvhpap": 0.066
+     "cvhpap": 0.066,
+     "fsen": 0.019
     }
    },
    {
@@ -813,7 +818,8 @@
      "cells": 1.193,
      "cvpap": 0.196,
      "cvret": 0.461,
-     "cvhpap": 0.18
+     "cvhpap": 0.18,
+     "fsen": 0.048
     }
    },
    {
@@ -827,10 +833,256 @@
      "cells": 1.0,
      "cvpap": 0.166,
      "cvret": 0.348,
-     "cvhpap": 0.212
+     "cvhpap": 0.212,
+     "fsen": 0.15
     }
    }
   ]
+ },
+ "sites": {
+  "default": "model",
+  "source": "wang2025ultrasound",
+  "note": "Dermis and epidermis by very-high-frequency ultrasound in 74 healthy adults at West China Hospital ({cite:wang2025ultrasound}). The dermis was thicker in men except on the back; the epidermis did not differ between the sexes. The skin model is the group's reconstructed aged skin, 2 mm of dermis ({cite:roy2024implanting}), with the forearm epidermis of a histology study ({cite:sandbymoller2003epidermis}).",
+  "n": {
+   "male": 41,
+   "female": 33
+  },
+  "groups": [
+   {
+    "key": "model",
+    "title": "Skin model (Phenion FT aged)",
+    "measured": false,
+    "values": {
+     "either": {
+      "H": 2000.0,
+      "hep": 75.0
+     },
+     "female": {
+      "H": 2000.0,
+      "hep": 75.0
+     },
+     "male": {
+      "H": 2000.0,
+      "hep": 75.0
+     }
+    }
+   },
+   {
+    "key": "forehead",
+    "title": "Forehead",
+    "measured": true,
+    "values": {
+     "either": {
+      "H": 2154.4,
+      "hep": 99.0
+     },
+     "female": {
+      "H": 2099.1,
+      "hep": 96.5
+     },
+     "male": {
+      "H": 2199.0,
+      "hep": 101.0
+     }
+    }
+   },
+   {
+    "key": "chest",
+    "title": "Chest",
+    "measured": true,
+    "values": {
+     "either": {
+      "H": 1956.0,
+      "hep": 103.9
+     },
+     "female": {
+      "H": 1847.8,
+      "hep": 105.7
+     },
+     "male": {
+      "H": 2043.0,
+      "hep": 102.4
+     }
+    }
+   },
+   {
+    "key": "abdomen",
+    "title": "Abdomen",
+    "measured": true,
+    "values": {
+     "either": {
+      "H": 2391.9,
+      "hep": 110.0
+     },
+     "female": {
+      "H": 2282.0,
+      "hep": 109.7
+     },
+     "male": {
+      "H": 2480.3,
+      "hep": 110.2
+     }
+    }
+   },
+   {
+    "key": "upperarm",
+    "title": "Upper arm",
+    "measured": true,
+    "values": {
+     "either": {
+      "H": 1613.9,
+      "hep": 113.0
+     },
+     "female": {
+      "H": 1405.1,
+      "hep": 114.4
+     },
+     "male": {
+      "H": 1782.0,
+      "hep": 111.8
+     }
+    }
+   },
+   {
+    "key": "forearm",
+    "title": "Forearm",
+    "measured": true,
+    "values": {
+     "either": {
+      "H": 1613.8,
+      "hep": 117.8
+     },
+     "female": {
+      "H": 1414.9,
+      "hep": 120.1
+     },
+     "male": {
+      "H": 1773.8,
+      "hep": 115.9
+     }
+    }
+   },
+   {
+    "key": "back",
+    "title": "Back",
+    "measured": true,
+    "values": {
+     "either": {
+      "H": 2916.7,
+      "hep": 118.4
+     },
+     "female": {
+      "H": 2928.8,
+      "hep": 118.6
+     },
+     "male": {
+      "H": 2906.9,
+      "hep": 118.2
+     }
+    }
+   },
+   {
+    "key": "thigh",
+    "title": "Thigh",
+    "measured": true,
+    "values": {
+     "either": {
+      "H": 1771.4,
+      "hep": 116.6
+     },
+     "female": {
+      "H": 1564.5,
+      "hep": 118.9
+     },
+     "male": {
+      "H": 1938.0,
+      "hep": 114.8
+     }
+    }
+   },
+   {
+    "key": "leg",
+    "title": "Lower leg",
+    "measured": true,
+    "values": {
+     "either": {
+      "H": 1797.7,
+      "hep": 112.8
+     },
+     "female": {
+      "H": 1586.7,
+      "hep": 112.8
+     },
+     "male": {
+      "H": 1967.6,
+      "hep": 112.8
+     }
+    }
+   },
+   {
+    "key": "foot",
+    "title": "Foot (dorsum)",
+    "measured": true,
+    "values": {
+     "either": {
+      "H": 1149.2,
+      "hep": 114.7
+     },
+     "female": {
+      "H": 1047.5,
+      "hep": 114.3
+     },
+     "male": {
+      "H": 1231.0,
+      "hep": 115.0
+     }
+    }
+   }
+  ]
+ },
+ "basic": {
+  "defaults": {
+   "age": "aged",
+   "sex": "either",
+   "site": "model",
+   "ethnicity": "unspecified"
+  },
+  "sex": [
+   "either",
+   "female",
+   "male"
+  ],
+  "ethnicity": {
+   "options": [
+    "unspecified",
+    "African American",
+    "Caucasian",
+    "Chinese",
+    "Mexican"
+   ],
+   "source": "querleux2009ethnic",
+   "note": "In about 400 women of four ethnic groups living in the same environment, papillary dermis thickness appeared quite constant irrespective of age or ethnic group ({cite:querleux2009ethnic}), and no checked source gives other tissue values by ethnicity, so the choice sets nothing in the current model."
+  },
+  "sets": {
+   "age": [
+    "cells",
+    "cvhpap",
+    "cvpap",
+    "cvret",
+    "fsen",
+    "hpap",
+    "rpap"
+   ],
+   "site": [
+    "H",
+    "hep"
+   ],
+   "sex": [
+    "H",
+    "hep"
+   ],
+   "ethnicity": []
+  }
  },
  "sources": {
   "acosta2013paracrine": {
@@ -1098,6 +1350,13 @@
    "doi": "10.1046/j.1523-1747.2002.01834.x",
    "checked": "abstract",
    "what": "Sun-protected adult human skin expresses TGF-β1, β2 and β3 transcripts in a ratio of 1:5:3."
+  },
+  "querleux2009ethnic": {
+   "short": "Querleux et al. 2009",
+   "cite": "Querleux B, Baldeweck T, Diridollou S, et al.. Skin from various ethnic origins and aging: an in vivo cross‐sectional multimodality imaging study. Skin Research and Technology. 2009;15:306–313.",
+   "doi": "10.1111/j.1600-0846.2009.00365.x",
+   "checked": "abstract",
+   "what": "In about 400 women of four ethnic groups, papillary dermis thickness appeared quite constant irrespective of age or ethnic group."
   },
   "raphael2013depth": {
    "short": "Raphael et al. 2013",

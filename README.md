@@ -25,12 +25,12 @@ models: Roy B, Pekec T, Yuan L, Shivashankar GV. *Aging Cell* 2024;23:e14032,
   away, and the Coverage panel shows where they part. Below
   the dermis the signal may continue (open), be cleared (absorbing) or be
   reflected (closed).
-- **Age** presets (13–25, 26–54, 55+ years) set the papillary thickness, the
-  cell density of the layers and their spread between donors from measured
-  values.
-- Six numbered steps on the left (whose skin, what the cells make, how you
-  inject, how much it varies, the device, what you look at), each opening with
-  the values that usually matter and folding the rest away.
+- A **basic tissue model** — age, sex, body site, ethnicity — sets the advanced
+  tissue values from measurements (layers and cells by age; dermis and epidermis
+  thickness at ten body sites by sex); a value changed by hand stays yours.
+- Five numbered steps on the left (whose skin, what the cells make, how you
+  inject, the device, what you look at) and the analysis panels on the right,
+  one open at a time on each side.
 - Time after implantation (the implant decays with a half-life) and a graded
   response of the host cells; how long each part of the dermis spends in the
   window.
