@@ -2,6 +2,10 @@
 
 Newest version first. Each entry says what you can do or see differently.
 
+## 0.11.2 — 2026-11-10
+
+- **Help on a phone** fills the screen: first the list of topics, with the search above it; tap a topic and its text gets all the room, with ‹ to go back to the list and × to close. Search results open in the same space, and an ⓘ next to a value goes straight to its entry. Wide tables scroll sideways. On larger screens the help is unchanged.
+
 ## 0.11.1 — 2026-11-10
 
 - The viewer is now called **Dermal Rejuvenation Viewer** and has its own icon — in the browser tab, the header and on a phone's home screen: the epidermis over a dermis in which one implant cluster spreads its signal towards its neighbours.

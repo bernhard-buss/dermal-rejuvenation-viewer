@@ -157,6 +157,8 @@ footer{padding:4px 18px 18px;font-size:12px;color:var(--soft)}
 /* help */
 dialog#help{width:min(1000px,94vw);height:min(760px,88vh);border:1px solid var(--rule);border-radius:12px;padding:0}
 dialog#help::backdrop{background:rgba(27,42,51,.35)}
+.hback,.hx{display:none}
+#hclose .hx{font-size:22px;line-height:1}
 .hwrap{display:flex;flex-direction:column;height:100%}
 .hbar{display:flex;gap:10px;align-items:center;padding:10px 14px;background:var(--ink);color:var(--paper)}
 .hbar input{flex:1;max-width:360px;font:inherit;border-radius:6px;border:1px solid #4A5A63;padding:4px 8px}
@@ -178,6 +180,31 @@ kbd{border:1px solid #6A7A83;border-radius:4px;padding:0 4px;font-size:11px}
 .hcontent table{border-collapse:collapse;font-size:13px;margin:6px 0}
 .hcontent td,.hcontent th{border-bottom:1px solid #EEE8DF;padding:4px 6px;text-align:left;vertical-align:top}
 .hcontent code{background:var(--paper);padding:0 4px;border-radius:4px}
+/* Small screens: the help fills the screen and reads as a list of topics, then one topic
+   (or the search results) with all the room; ‹ goes back to the list, × closes. */
+@media (max-width:700px), (max-height:500px){
+  dialog#help{width:100%;height:100%;height:100dvh;max-width:none;max-height:none;margin:0;inset:0;border:0;border-radius:0}
+  .hbar{flex-wrap:wrap;gap:8px;padding:8px 8px 10px;padding-top:max(8px, env(safe-area-inset-top))}
+  .hbar strong{flex:1;min-width:0;font-size:16px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .hbar input{order:5;flex:1 1 100%;max-width:none;font-size:16px;padding:7px 10px}
+  .hbar .sp,.hkeys,#hclose .htxt{display:none}
+  .hback,#hclose .hx{display:inline-flex}
+  .hback,#hclose{align-items:center;justify-content:center;min-width:38px;height:36px;padding:0 8px;font-size:22px;line-height:1;background:transparent;color:var(--paper);border-color:#4A5A63}
+  .hbody{display:block;position:relative}
+  .hnav,.hcontent{height:100%;overflow:auto;-webkit-overflow-scrolling:touch}
+  .hnav{width:100%;border-right:0;padding:0;background:#fff}
+  .hnav button{padding:13px 16px;font-size:15.5px;border-bottom:1px solid #EEE8DF;display:flex;justify-content:space-between}
+  .hnav button::after{content:"›";color:var(--soft);font-weight:400}
+  .hnav button.active{color:var(--ink)}
+  .hnav a{display:none}
+  .hcontent{padding:2px 16px calc(24px + env(safe-area-inset-bottom));font-size:15px;line-height:1.5}
+  .hcontent h2{font-size:19px}
+  .hcontent section[data-topic] > h2{display:none}                  /* the header names the topic */
+  .hcontent table{display:block;overflow-x:auto}
+  dialog#help[data-view="list"] .hcontent,dialog#help:not([data-view="list"]) .hnav{display:none}
+  dialog#help[data-view="list"] .hback{visibility:hidden}
+  dialog#help[data-view="detail"] .hbar input{display:none}
+}
 a.cite{text-decoration:none;border-bottom:1px dotted var(--teal)}
 .hit{display:block;padding:8px 0;border-bottom:1px solid #F0ECE5;color:var(--ink);text-decoration:none}
 .hit small{color:var(--soft);margin-left:8px}
@@ -283,11 +310,12 @@ a.cite{text-decoration:none;border-bottom:1px dotted var(--teal)}
 <dialog id="help" aria-labelledby="helptitle">
   <div class="hwrap">
     <div class="hbar">
+      <button id="hback" class="hback" aria-label="Back to the help topics" title="Back to the topics">‹</button>
       <strong id="helptitle">Help</strong>
       <input type="search" id="hsearch" placeholder="Search the help…" aria-label="Search the help">
       <span class="sp"></span>
       <span class="hkeys"><kbd>?</kbd> opens · <kbd>Esc</kbd> closes</span>
-      <button id="hclose" aria-label="Close help">Close</button>
+      <button id="hclose" aria-label="Close help"><span class="htxt">Close</span><span class="hx" aria-hidden="true">×</span></button>
     </div>
     <div class="hbody">
       <nav class="hnav" id="hnav" aria-label="Help topics"></nav>
@@ -299,7 +327,7 @@ a.cite{text-decoration:none;border-bottom:1px dotted var(--teal)}
 <script src="data/parameters.js"></script>
 <script>
 "use strict";
-const VERSION = "0.11.1";
+const VERSION = "0.11.2";
 const $ = id => document.getElementById(id);
 function esc(s) { return String(s).replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); }
 
@@ -2820,11 +2848,20 @@ function openHelp(target = "") {
   if (art) { art.scrollIntoView({ block: "start" }); art.classList.remove("flash"); void art.offsetWidth; art.classList.add("flash"); }
   else $("hcontent").scrollTop = 0;
   history.replaceState(null, "", "#help/" + topic + (art ? "/" + entry : ""));
+  helpView(HELP_SMALL.matches && !target ? "list" : "detail");     // small screens: the Help button opens the list
+}
+// Small screens show one of three views: the topic list, one topic, or the search results.
+const HELP_SMALL = matchMedia("(max-width:700px), (max-height:500px)");
+function helpView(view) {
+  help.dataset.view = view;
+  const sec = topics().find(s => !s.hidden);
+  $("helptitle").textContent = !HELP_SMALL.matches ? "Help" : view === "results" ? "Search" : view === "detail" && sec ? sec.dataset.title : "Help";
+  if (view === "list") $("hnav").scrollTop = 0;
 }
 function helpSearch(q) {
   const res = $("hresults"); q = q.trim().toLowerCase();
   const active = (help.querySelector(".hnav .active") || {}).dataset?.topic;
-  if (q.length < 2) { res.hidden = true; for (const sec of topics()) sec.hidden = sec.dataset.topic !== active; return; }
+  if (q.length < 2) { res.hidden = true; for (const sec of topics()) sec.hidden = sec.dataset.topic !== active; if (help.dataset.view === "results") helpView(HELP_SMALL.matches ? "list" : "detail"); return; }
   const hits = [];
   for (const sec of topics()) for (const a of sec.querySelectorAll("article[data-entry]")) {
     const text = a.textContent.replace(/\s+/g, " "), i = text.toLowerCase().indexOf(q); if (i < 0) continue;
@@ -2832,7 +2869,7 @@ function helpSearch(q) {
     hits.push(`<a class="hit" href="#help/${sec.dataset.topic}/${a.dataset.entry}" data-help="${sec.dataset.topic}/${a.dataset.entry}"><b>${esc(a.querySelector("h3").textContent)}</b><small>${esc(sec.dataset.title)}</small><br>${from ? "…" : ""}${snip}…</a>`);
   }
   for (const sec of topics()) sec.hidden = true;
-  res.hidden = false;
+  res.hidden = false; helpView("results"); $("hcontent").scrollTop = 0;
   res.innerHTML = `<h2>${hits.length} ${hits.length === 1 ? "entry" : "entries"} for “${esc(q)}”</h2>` + (hits.join("") || `<p class="dim">Nothing found. Try a shorter word.</p>`);
 }
 // CHANGELOG.md is the one place the history is written; the page renders it.
@@ -2870,6 +2907,7 @@ $("hsearch").addEventListener("input", e => helpSearch(e.target.value));
 const clearHelpHash = () => { if (location.hash.startsWith("#help")) history.replaceState(null, "", location.pathname + location.search); };
 function closeHelp() { if (help.open) help.close(); clearHelpHash(); }
 $("hclose").addEventListener("click", closeHelp);
+$("hback").addEventListener("click", () => { if (help.dataset.view === "results") { $("hsearch").value = ""; helpSearch(""); } helpView("list"); });
 help.addEventListener("click", e => { if (e.target === help) closeHelp(); });
 help.addEventListener("close", clearHelpHash);
 help.addEventListener("cancel", clearHelpHash);   // Esc
