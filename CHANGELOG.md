@@ -2,6 +2,12 @@
 
 Newest version first. Each entry says what you can do or see differently.
 
+## 0.13.0 — 2026-11-11
+
+- **The senescent share of the host cells is now part of *Whose skin*.** It moved from the Robustness panel to the advanced values of step 1, next to the other values of the tissue, and it still follows the **age** you pick (1.9 % up to 25 years, 4.8 % at 26–54, 15 % at 55+). It acts where it did: in the Robustness analysis.
+- **Sex is female or male; *either* is gone, and male is the default.** *Either* was the average of the men and women measured, which is nobody's skin. At the nine measured body sites the sex sets the dermis and epidermis thickness as before; the skin model is the same for both, and the step now says so. A link with a measured body site and no sex used to mean *either* and now means male; a saved file keeps its values (they show as custom).
+- **What the sex does and does not set** is now in the help (*The basic model*), with its sources: the dermis is thicker in men in three ultrasound studies; dermal cells differed only slightly or negligibly between the sexes, so the cell values, the papillary thickness and the senescent share do not depend on it; women's dermis is denser in fibres, which no value of the model takes yet.
+
 ## 0.12.0 — 2026-11-10
 
 - **Variation within the dermis follows the path of the signal.** With *variation of the cell density* or *of the diffusion* switched on (Robustness panel, both off by default), each site's signal at each host cell is now scaled by what the tissue between the two takes up, instead of by an average around the site. Against tissues solved in three dimensions the coverage is within about 2 points for patches of two to four decay lengths (it was 2 to 7 off). The warning now appears for patches finer than two decay lengths, where the new treatment can be 4 to 5 points low, and for patches wider than four in a dermis with depth. Robustness numbers with these two values switched on change, and a run then takes about five times as long at the default patch size; with them off nothing changes.

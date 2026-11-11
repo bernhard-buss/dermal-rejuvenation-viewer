@@ -327,7 +327,7 @@ a.cite{text-decoration:none;border-bottom:1px dotted var(--teal)}
 <script src="data/parameters.js"></script>
 <script>
 "use strict";
-const VERSION = "0.12.0";
+const VERSION = "0.13.0";
 const $ = id => document.getElementById(id);
 function esc(s) { return String(s).replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); }
 
@@ -2151,7 +2151,7 @@ const ageLabel = g => g.title.replace(/ years and over$/, "+").replace(/ years$/
 function basicValues(sel) {                                        // as dermsim.params.basic_values
   const out = {}, a = AGES.find(g => g.key === sel.age), st = SITES.find(g => g.key === sel.site);
   if (a) Object.assign(out, a.values);
-  if (st) Object.assign(out, st.values[sel.sex] || st.values.either);
+  if (st) Object.assign(out, st.values[sel.sex] || st.values[BASIC.defaults.sex]);
   return out;
 }
 const near = (a, b) => Math.abs(a - b) <= 1e-9 * Math.max(1, Math.abs(b));
@@ -2177,7 +2177,7 @@ function basicHtml() {
   return `<h3 class="subhead">Basic <a class="hl" href="#help/start/presets" data-help="start/presets" title="Help: the basic model">ⓘ</a></h3>
     <div class="basic">
       <div class="brow"><span class="blab">Age</span>${seg("age", AGES.map(g => [g.key, ageLabel(g), g.title]))}</div>
-      <div class="brow"><span class="blab">Sex</span>${seg("sex", BASIC.sex.map(x => [x, x]))}</div>
+      <div class="brow"><span class="blab">Sex</span>${seg("sex", BASIC.sex.map(x => [x, x]))}<span class="note" id="sexNote" title="The skin model is a reconstructed tissue, the same for both sexes; at a measured body site the sex sets the dermis and epidermis thickness" hidden>sets nothing for the skin model</span></div>
       <div class="brow"><span class="blab">Body site</span>${sel("site", SITES.map(g => [g.key, g.title]))}</div>
       <div class="brow"><span class="blab">Ethnicity</span>${sel("ethnicity", BASIC.ethnicity.options.map(x => [x, x]))}<span class="note" title="No checked source gives tissue values by ethnicity; the choice is kept with the selection">sets nothing</span></div>
       <div class="note" id="basicNote"></div>
@@ -2194,8 +2194,9 @@ function syncBasic() {
   }
   const a = AGES.find(g => g.key === S.basic.age), st = SITES.find(g => g.key === S.basic.site), v = basicValues(S.basic);
   $("basicNote").innerHTML = (a ? `<b>${esc(ageLabel(a))}</b>: papillary dermis ${fmt(v.hpap)} µm, ${fmt(v.rpap)}× the reticular cells, cellularity ${v.cells.toFixed(2)}×, senescent ${fmt(100 * v.fsen)} % (${cite(DP.presets.source)}${DP.presets.senescent ? ", " + cite(DP.presets.senescent.source) : ""}). ` : "") +
-    (st ? `<b>${esc(st.title)}</b>${st.measured ? `, ${esc(S.basic.sex === "either" ? "either sex" : S.basic.sex)}` : ""}: dermis ${fmt(v.H)} µm, epidermis ${fmt(v.hep)} µm (${st.measured ? cite(DP.sites.source) : cite("roy2024implanting")}). ` : "") +
+    (st ? `<b>${esc(st.title)}</b>${st.measured ? `, ${esc(S.basic.sex)}` : ""}: dermis ${fmt(v.H)} µm, epidermis ${fmt(v.hep)} µm (${st.measured ? cite(DP.sites.source) : cite("roy2024implanting")}). ` : "") +
     `<a href="#help/start/presets" data-help="start/presets">What each choice sets</a>`;
+  if ($("sexNote")) $("sexNote").hidden = !st || st.measured;
   const cus = customKeys();
   $("advChip").hidden = !cus.length;
   $("advNote").innerHTML = cus.length
@@ -2648,8 +2649,8 @@ const HELP = [
       <p>The papillary / reticular boundary is the modelled one (at the papillary thickness of step 1), and the curve on the right shows how the decay length changes with depth — see <a href="#help/model/layers" data-help="model/layers">A dermis with depth</a>. The epidermis, the hypodermis and the fibres are drawn schematically: the model covers the dermis only, with no flux through the junction. With the uniform dermis switched on the boundary goes back to a schematic one.</p>`],
     ["edit", "Editing implant sites", () => `<p>Press <b>Edit sites</b>, then click the map to add a site <b>at the slice depth</b>, drag a site to move it, and shift-click a site to remove it. Editing turns the pattern into <i>custom</i>: from then on only the sites in view count, and each keeps its own depth (move the slice depth to place sites at other depths). Choose a lattice again under <i>Pattern</i> to go back.</p>`],
     ["presets", "The basic model: age, sex, body site", () => `<p>Step 1, <b>Whose skin</b>, starts with the <b>basic model</b>: a few choices that set the <b>advanced</b> tissue values below them from measurements.</p>
-      <ul><li><b>Age</b> sets the layers and cells of the dermis — papillary thickness, how many more cells the papillary dermis holds than the reticular, the overall cellularity, how much these differ between donors — from one morphometric study of four age groups (${cite("arnalforne2024dermis")}), and the senescent share from how p21-positive dermal cells rise with age (${cite("idda2020senescence")}; our mapping of its age groups onto these — it has no donors under 13, so children get the youngest group's share, an assumption). <b>55+</b> is the default. See <a href="#help/model/age" data-help="model/age">Age of the skin</a>.</li>
-      <li><b>Body site</b> and <b>sex</b> set the dermis thickness and the epidermis thickness, measured by ultrasound at ten sites in 41 men and 33 women (${cite("wang2025ultrasound")}); <i>either</i> weights the two by their numbers, which reproduces the study's all-volunteer values. The default site is the group's skin model, 2 mm of dermis (${cite("roy2024implanting")}).</li>
+      <ul><li><b>Age</b> sets the layers and cells of the dermis — papillary thickness, how many more cells the papillary dermis holds than the reticular, the overall cellularity, how much these differ between donors — from one morphometric study of four age groups (${cite("arnalforne2024dermis")}), and the senescent share from how p21-positive dermal cells rise with age (${cite("idda2020senescence")}; our mapping of its age groups onto these — it has no donors under 13, so children get the youngest group's share, an assumption). The senescent share is one of the advanced values of this step; it acts in the <a href="#help/metrics/robust" data-help="metrics/robust">Robustness</a> analysis, not on the maps. <b>55+</b> is the default. See <a href="#help/model/age" data-help="model/age">Age of the skin</a>.</li>
+      <li><b>Body site</b> and <b>sex</b> set the dermis thickness and the epidermis thickness. ${renderNote((DP.sites || { note: "" }).note)} <b>Male</b> is the default sex and the skin model the default site, so the sex sets nothing until you pick a body site.</li>
       <li><b>Ethnicity</b> is kept with the selection, but sets nothing: ${renderNote((DP.basic || { ethnicity: { note: "" } }).ethnicity.note)}</li></ul>
       <p><b>Custom values.</b> Move an advanced value by hand and it stays yours: changing the basic model afterwards leaves it as it is, and the step says <span class="cchip">custom</span> and lists what you changed and what the basic model would give, with a link to take its values again. The basic selection itself is kept, so whatever else it comes to influence still knows whose skin this is. ↺ on an advanced value goes back to the basic model's value, not to the file's.</p>
       <p>The choices travel with a shared link and with <b>Save YAML</b>; the pipeline takes them as <code>--age</code>, <code>--sex</code>, <code>--site</code> and <code>--ethnicity</code>.</p>`],

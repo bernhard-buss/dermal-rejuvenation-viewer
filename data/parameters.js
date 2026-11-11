@@ -13,7 +13,7 @@ window.DRV_PARAMS = {
    "key": "tissue",
    "step": 1,
    "title": "Whose skin",
-   "note": "The dermis you are injecting into. The basic model (age, sex, body site) sets the advanced values from measurements; change an advanced value and it stays yours. The badge on each value says how well it is known."
+   "note": "The dermis you are injecting into. The basic model (age, sex, body site) sets the advanced values from measurements; change an advanced value and it stays yours. The badge on each value says how well it is known. The senescent share is part of the tissue and follows the age."
   },
   {
    "key": "signal",
@@ -195,6 +195,24 @@ window.DRV_PARAMS = {
     "oyleryaniv2017niches"
    ],
    "note": "How many cells the dermis holds, relative to the default tissue (donors aged 55 and over), for which λ is the decay length. Uptake by cells is what removes the signal, and it follows the density of consuming cells ({cite:oyleryaniv2017niches}), so more cells mean a shorter λ and fewer a longer one. The age of the basic model sets it from total cell counts per mm² of section in four age groups ({cite:arnalforne2024dermis}) — all nuclei, not fibroblasts only, hence an analogue. See {help:model/age|Age of the skin}."
+  },
+  {
+   "key": "fsen",
+   "group": "tissue",
+   "primary": true,
+   "label": "Senescent share of host cells",
+   "unit": "fraction",
+   "value": 0.15,
+   "min": 0,
+   "max": 0.6,
+   "log": false,
+   "step": 0.01,
+   "status": "ana",
+   "sources": [
+    "idda2020senescence",
+    "jeyapalan2007primates"
+   ],
+   "note": "Share of the host cells that are senescent. They are not counted as targets (coverage is over the others) and, with the SASP factor below, they raise the threshold around them. In human dermis, p21-positive cells increased with age and made up to 15 % of cells in donors over 65, while p16 was almost undetectable ({cite:idda2020senescence}); in baboon skin, dermal fibroblasts with damaged telomeres reached over 15 % of all fibroblasts ({cite:jeyapalan2007primates}). Markers of senescence in all cells, not a count of senescent fibroblasts: an analogue. The age of the basic model sets it, scaled by how p21-positive dermal cells rise with age (our mapping of the age groups, claim K4). It belongs to the tissue, so it is set here; it acts in the Robustness analysis, which leaves senescent cells out of the targets and lets them shift the threshold around them. The maps of the average tissue do not change with it."
   },
   {
    "key": "deep",
@@ -445,24 +463,6 @@ window.DRV_PARAMS = {
    "status": "ph",
    "sources": [],
    "note": "Radius of the sphere of implanted cells. Placeholder geometry; implanted cells also spread over days."
-  },
-  {
-   "key": "fsen",
-   "group": "variation",
-   "primary": true,
-   "label": "Senescent share of host cells",
-   "unit": "fraction",
-   "value": 0.15,
-   "min": 0,
-   "max": 0.6,
-   "log": false,
-   "step": 0.01,
-   "status": "ana",
-   "sources": [
-    "idda2020senescence",
-    "jeyapalan2007primates"
-   ],
-   "note": "Share of the host cells that are senescent. They are not counted as targets (coverage is over the others) and, with the SASP factor below, they raise the threshold around them. In human dermis, p21-positive cells increased with age and made up to 15 % of cells in donors over 65, while p16 was almost undetectable ({cite:idda2020senescence}); in baboon skin, dermal fibroblasts with damaged telomeres reached over 15 % of all fibroblasts ({cite:jeyapalan2007primates}). Markers of senescence in all cells, not a count of senescent fibroblasts: an analogue. The age of the basic model sets it, scaled by how p21-positive dermal cells rise with age (our mapping of the age groups, claim K4)."
   },
   {
    "key": "cstar",
@@ -859,7 +859,7 @@ window.DRV_PARAMS = {
  "sites": {
   "default": "model",
   "source": "wang2025ultrasound",
-  "note": "Dermis and epidermis by very-high-frequency ultrasound in 74 healthy adults at West China Hospital ({cite:wang2025ultrasound}). The dermis was thicker in men except on the back; the epidermis did not differ between the sexes. The skin model is the group's reconstructed aged skin, 2 mm of dermis ({cite:roy2024implanting}), with the forearm epidermis of a histology study ({cite:sandbymoller2003epidermis}).",
+  "note": "Dermis and epidermis by very-high-frequency ultrasound in 74 healthy adults (41 men, 33 women) at West China Hospital ({cite:wang2025ultrasound}). The dermis was thicker in men except on the back; the epidermis did not differ between the sexes. Two other ultrasound studies also found the dermis thicker in men at most sites ({cite:wang2023density}, {cite:firooz2017echodensity}). The sex sets these two thicknesses and nothing else. Dermal cells differed only slightly or negligibly between men and women ({cite:quaglino1996dermis}), and no checked source gives the cell density, the papillary thickness or the senescent share by sex. Women have the denser dermis — a higher volume fraction of collagen fibres except in the second and third decades of life ({cite:vitellaro1994stereology}) and a higher echo density ({cite:firooz2017echodensity}, {cite:wang2023density}) — with less collagen in total ({cite:shuster1975collagen}); no value of the model takes that. The skin model is the group's reconstructed aged skin, 2 mm of dermis ({cite:roy2024implanting}), with the forearm epidermis of a histology study ({cite:sandbymoller2003epidermis}); it is the same for both sexes.",
   "n": {
    "male": 41,
    "female": 33
@@ -870,10 +870,6 @@ window.DRV_PARAMS = {
     "title": "Skin model (Phenion FT aged)",
     "measured": false,
     "values": {
-     "either": {
-      "H": 2000.0,
-      "hep": 75.0
-     },
      "female": {
       "H": 2000.0,
       "hep": 75.0
@@ -889,10 +885,6 @@ window.DRV_PARAMS = {
     "title": "Forehead",
     "measured": true,
     "values": {
-     "either": {
-      "H": 2154.4,
-      "hep": 99.0
-     },
      "female": {
       "H": 2099.1,
       "hep": 96.5
@@ -908,10 +900,6 @@ window.DRV_PARAMS = {
     "title": "Chest",
     "measured": true,
     "values": {
-     "either": {
-      "H": 1956.0,
-      "hep": 103.9
-     },
      "female": {
       "H": 1847.8,
       "hep": 105.7
@@ -927,10 +915,6 @@ window.DRV_PARAMS = {
     "title": "Abdomen",
     "measured": true,
     "values": {
-     "either": {
-      "H": 2391.9,
-      "hep": 110.0
-     },
      "female": {
       "H": 2282.0,
       "hep": 109.7
@@ -946,10 +930,6 @@ window.DRV_PARAMS = {
     "title": "Upper arm",
     "measured": true,
     "values": {
-     "either": {
-      "H": 1613.9,
-      "hep": 113.0
-     },
      "female": {
       "H": 1405.1,
       "hep": 114.4
@@ -965,10 +945,6 @@ window.DRV_PARAMS = {
     "title": "Forearm",
     "measured": true,
     "values": {
-     "either": {
-      "H": 1613.8,
-      "hep": 117.8
-     },
      "female": {
       "H": 1414.9,
       "hep": 120.1
@@ -984,10 +960,6 @@ window.DRV_PARAMS = {
     "title": "Back",
     "measured": true,
     "values": {
-     "either": {
-      "H": 2916.7,
-      "hep": 118.4
-     },
      "female": {
       "H": 2928.8,
       "hep": 118.6
@@ -1003,10 +975,6 @@ window.DRV_PARAMS = {
     "title": "Thigh",
     "measured": true,
     "values": {
-     "either": {
-      "H": 1771.4,
-      "hep": 116.6
-     },
      "female": {
       "H": 1564.5,
       "hep": 118.9
@@ -1022,10 +990,6 @@ window.DRV_PARAMS = {
     "title": "Lower leg",
     "measured": true,
     "values": {
-     "either": {
-      "H": 1797.7,
-      "hep": 112.8
-     },
      "female": {
       "H": 1586.7,
       "hep": 112.8
@@ -1041,10 +1005,6 @@ window.DRV_PARAMS = {
     "title": "Foot (dorsum)",
     "measured": true,
     "values": {
-     "either": {
-      "H": 1149.2,
-      "hep": 114.7
-     },
      "female": {
       "H": 1047.5,
       "hep": 114.3
@@ -1060,12 +1020,11 @@ window.DRV_PARAMS = {
  "basic": {
   "defaults": {
    "age": "aged",
-   "sex": "either",
+   "sex": "male",
    "site": "model",
    "ethnicity": "unspecified"
   },
   "sex": [
-   "either",
    "female",
    "male"
   ],
@@ -1178,6 +1137,13 @@ window.DRV_PARAMS = {
    "doi": "10.1177/09636897221113803",
    "checked": "abstract",
    "what": "Allogeneic fibroblasts injected intradermally were rejected one week after transplantation in immunocompetent mice; rejection did not occur in γ-chain-deficient NOD-SCID mice."
+  },
+  "firooz2017echodensity": {
+   "short": "Firooz et al. 2017",
+   "cite": "Firooz A, Rajabi‐Estarabadi A, Zartab H, et al.. The influence of gender and age on the thickness and echo‐density of skin. Skin Research and Technology. 2017;23:13–20.",
+   "doi": "10.1111/srt.12294",
+   "checked": "abstract",
+   "what": "22 and 50 MHz ultrasound in 30 healthy volunteers (17 women, 13 men, 24–61 years) at cheek, neck, palm, dorsal foot and sole: the dermis was thicker in men (significant at the neck and the dorsum of the foot) and its echo-density higher in women at all sites (significant at the neck); overall, skin thickness decreased with age."
   },
   "francis1997distances": {
    "short": "Francis & Palsson 1997",
@@ -1361,6 +1327,13 @@ window.DRV_PARAMS = {
    "checked": "abstract",
    "what": "One intradermal injection of 5 × 10⁶ allogeneic fibroblasts per linear cm of wound margin increased the healing rate of RDEB erosions within the first 28 days but not thereafter."
   },
+  "quaglino1996dermis": {
+   "short": "Quaglino et al. 1996",
+   "cite": "Quaglino D, Bergamini G, Boraldi F, et al.. Ultrastructural and morphometrical evaluations on normal human dermal connective tissue--the influence of age, sex and body region. The British journal of dermatology. 1996;134:1013–22.",
+   "pmid": "8763417",
+   "checked": "abstract",
+   "what": "Ultrastructure and morphometry of dermal biopsies from 50 healthy Caucasian subjects (6 fetal months to 83 years): only slight or negligible differences between males and females for collagen, elastic fibres and mesenchymal cells."
+  },
   "quan2002uv": {
    "short": "Quan et al. 2002",
    "cite": "Quan T, He T, Kang S, et al.. Ultraviolet Irradiation Alters Transforming Growth Factor β/Smad Pathway in Human Skin In Vivo. Journal of Investigative Dermatology. 2002;119:499–506.",
@@ -1424,6 +1397,13 @@ window.DRV_PARAMS = {
    "checked": "abstract",
    "what": "Nasal-polyp fibroblasts stimulated with 1, 10 and 20 ng/mL TGF-β1 or TGF-β2: α-SMA rose significantly only at the two highest doses, while 1 ng/mL TGF-β1 already raised proliferation."
   },
+  "shuster1975collagen": {
+   "short": "Shuster et al. 1975",
+   "cite": "Shuster S, Black MM, McVITIE E. The influence of age and sex on skin thickness, skin collagen and density. British Journal of Dermatology. 1975;93:639–643.",
+   "doi": "10.1111/j.1365-2133.1975.tb05113.x",
+   "checked": "abstract",
+   "what": "Forearm skin collagen decreased with age and was less in females at all ages; skin collagen and dermal thickness are directly related."
+  },
   "sprugel1987kinetics": {
    "short": "Sprugel et al. 1987",
    "cite": "Sprugel KH, McPherson JM, Clowes AW, et al.. Effects of growth factors in vivo. I. Cell ingrowth into porous subcutaneous chambers. The American journal of pathology. 1987;129:601–13.",
@@ -1458,6 +1438,20 @@ window.DRV_PARAMS = {
    "doi": "10.1016/j.jconrel.2006.11.009",
    "checked": "abstract",
    "what": "Assembled hollow metal microneedle arrays pierced dermatomed human skin at needle lengths of 900, 700 and 550 µm, while 300 µm needles did not."
+  },
+  "wang2023density": {
+   "short": "Wang et al. 2023",
+   "cite": "Wang S, Yu R, Fan W, et al.. Detection of skin thickness and density in healthy Chinese people by using high‐frequency ultrasound. Skin Research and Technology. 2023;29:e13219.",
+   "doi": "10.1111/srt.13219",
+   "checked": "abstract",
+   "what": "22 or 75 MHz ultrasound at 13 sites in 189 healthy Chinese volunteers (85 men, 104 women, 22–75 years): the dermis was thicker in men at most sites, the density of epidermis and dermis lower in men at most sites, and dermis thickness and density lower in the older group at almost all sites."
+  },
+  "vitellaro1994stereology": {
+   "short": "Vitellaro‐Zuccarello et al. 1994",
+   "cite": "Vitellaro‐Zuccarello L, Cappelletti S, Rossi VDP, et al.. Stereological analysis of collagen and elastic fibers in the normal human dermis: Variability with age, sex, and body region. The Anatomical Record. 1994;238:153–162.",
+   "doi": "10.1002/ar.1092380202",
+   "checked": "abstract",
+   "what": "Stereology of skin biopsies from trunk or limbs (26 males, 19 females): the fractional volume of collagen fibres is constant through the dermis layers and always higher in females than in males, except in the second and third decades of life; collagen fibre density rises with age to 30–40 years and then falls."
   },
   "wang2025ultrasound": {
    "short": "Wang et al. 2025",
