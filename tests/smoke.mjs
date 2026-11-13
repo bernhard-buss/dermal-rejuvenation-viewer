@@ -108,6 +108,10 @@ if (!errors.length) {
     const back = ctx.readYamlish(yaml);
     for (const [k, v] of Object.entries(before)) if (k !== "pattern" && Math.abs(back.parameters[k].value - v) > 1e-3 * Math.max(1, Math.abs(v))) errors.push(`Save YAML: ${k} reads back as ${back.parameters[k].value}, not ${v}`);
     if (process.env.DRV_YAML_OUT) (await import("node:fs")).writeFileSync(process.env.DRV_YAML_OUT, yaml);
+    // Load YAML accepts normalized design.show names and clamps z0 / zv to H
+    ctx.applyFile(JSON.stringify({ parameters: { H: 800, z0: 1500, zv: 1500 }, design: { show: "concentration" } }), "t.json");
+    if (ctx.window.__drv.state().mode !== "log" || ctx.window.__drv.params().z0 !== 780 || ctx.window.__drv.params().zv !== 800) errors.push("Load YAML: show=concentration or z0/zv clamping failed");
+    ctx.applyFile(yaml, "parameters.yaml");
   } catch (e) { errors.push("Save YAML: " + (e.stack || e).toString().split("\n")[0]); }
 }
 // DRV_PACK_OUT=DIR writes the hand-off pack of the default design, so the pipeline's test suite

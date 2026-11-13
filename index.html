@@ -411,7 +411,7 @@ function slabLambda(p) {                                           // uniform de
 function tissueEffective(p, z0, n = 400) {                         // sources at depth(s) z0, default the design depth
   const pr = tissueProfile(p), lam0 = slabLambda(p);
   if (!pr.layered) return { D: p.D, k: p.D / (lam0 * lam0), lam: lam0, scale: lam0 / p.lam };
-  const zs = z0 === undefined || z0 === null ? [p.z0] : (Array.isArray(z0) ? z0 : [z0]);
+  const zs = z0 === undefined || z0 === null ? [Math.min(Math.max(p.z0, 20), p.H - 20)] : (Array.isArray(z0) ? z0 : [z0]);
   let sw = 0, sD = 0, sk = 0;
   for (let i = 0; i < n; i++) {
     const z = i / (n - 1) * p.H;
@@ -739,7 +739,7 @@ function latticeAt(p, ks, pattern, a, x, y, z) {                  // infinite mu
 function holePoint(pattern, a) { return pattern === "hex" ? [a / 2, a / (2 * SQRT3)] : [a / 2, a / 2]; }
 function criticalSpacing(p, pat) {                                 // one injection plane at z0
   const q = { ...p, levels: 1 }, ks = levelKernels(q), d = ks[0].d;
-  const cmin = a => { const h = holePoint(pat, a); return latticeAt(q, ks, pat, a, h[0], h[1], q.z0); };
+  const cmin = a => { const h = holePoint(pat, a); return latticeAt(q, ks, pat, a, h[0], h[1], ks[0].z); };
   let lo = 5, hi = 50000;
   if (cmin(lo) < d.con) return { a: NaN, pat };
   for (let it = 0; it < 60; it++) { const mid = Math.sqrt(lo * hi); if (cmin(mid) >= d.con) lo = mid; else hi = mid; }
@@ -1025,7 +1025,7 @@ function* optimiseSteps(p, pattern, mode, optsIn) {                // yields pro
     nodeF = nodeD.map(nd => kernel(p, nd));
   }
   for (let ia = 0; ia < as.length; ia++) {
-    const a = as[ia], ok = geos.filter(g => clustersApart(pattern, a, g[0], g[1], p.R));
+    const a = as[ia], ok = geos.filter(g => clustersApart(pattern, a, g[0], g[1], p.R, depthsOf(g)));
     if (ok.length) {
       let tabs;
       if (resolved) {
@@ -2248,8 +2248,8 @@ function buildControls() {
   for (const def of PARAMS) {
     $("s_" + def.key).addEventListener("input", e => {
       S.p[def.key] = fromSlider(def, +e.target.value);
-      if (def.key === "z0" && S.zvLinked) S.p.zv = S.p.z0;
-      if (def.key === "zv") S.zvLinked = false;
+      if (def.key === "z0") { S.p.z0 = Math.min(S.p.z0, S.p.H - 20); if (S.zvLinked) S.p.zv = S.p.z0; }
+      if (def.key === "zv") { S.p.zv = Math.min(S.p.zv, S.p.H); S.zvLinked = false; }
       if (def.key === "H") { S.p.z0 = Math.min(S.p.z0, S.p.H - 20); S.p.zv = Math.min(S.p.zv, S.p.H); }
       schedule(true);
     });
@@ -2401,6 +2401,7 @@ function readUrlState() {
     Object.assign(S.p, basicValues(S.basic));
   }
   for (const def of PARAMS) if (q.has(def.key)) { const v = parseFloat(q.get(def.key)); if (isFinite(v)) S.p[def.key] = Math.min(def.max, Math.max(def.min, v)); }
+  S.p.z0 = Math.min(S.p.z0, S.p.H - 20); S.p.zv = Math.min(S.p.zv, S.p.H);
   if (q.has("zv")) S.zvLinked = false;
   const pat = q.get("pattern"); if (["hex", "square", "random", "custom"].includes(pat)) S.pattern = pat;
   if (q.get("show") === "concentration") S.mode = "log";
@@ -2541,6 +2542,7 @@ function applyFile(text, name) {
     S.p[key] = c; set++;
   }
   if (!set) return { ok: false, msg: "no parameter values found" };
+  S.p.z0 = Math.min(S.p.z0, S.p.H - 20); S.p.zv = Math.min(S.p.zv, S.p.H);
   const des = data.design || {};
   if (BASIC) {                                                     // the file's values are complete; its selection says which are custom
     const b = des.basic || {}, ok = { age: AGES.map(g => g.key), sex: BASIC.sex, site: SITES.map(g => g.key), ethnicity: BASIC.ethnicity.options };
@@ -2548,7 +2550,8 @@ function applyFile(text, name) {
     for (const k of Object.keys(ok)) if (ok[k].includes(b[k])) S.basic[k] = b[k];
   }
   if (["hex", "square", "random", "custom"].includes(des.pattern)) S.pattern = des.pattern;
-  if (["window", "log", "resp"].includes(des.show)) S.mode = des.show;
+  const show = { concentration: "log", response: "resp" }[des.show] || des.show;
+  if (["window", "log", "resp"].includes(show)) S.mode = show;
   if (Array.isArray(des.sites) && des.sites.length) S.custom = des.sites.map(s => [+s[0], +s[1], s.length > 2 ? +s[2] : S.p.z0]).filter(s => isFinite(s[0]) && isFinite(s[1]));
   if (S.pattern === "custom" && !S.custom.length) S.pattern = "hex";
   S.zvLinked = false;
@@ -2664,7 +2667,7 @@ const HELP = [
       <p>reproduces exactly what you were looking at — and so do <code>optimize</code>, <code>time</code>, <code>sweep</code> and <code>scaffold</code>. Useful for attaching a design to an email or a lab notebook, for keeping several variants side by side, and for taking a design from the browser into the pipeline without typing numbers.</p>
       <p><b>Load YAML</b> reads such a file back, and also the pipeline's own <code>config/parameters.yaml</code> or a plain JSON file of <code>key: value</code> pairs. Only the values, the pattern, the colouring and the sites are taken; labels, sources and notes always come from this build of the viewer, so a file cannot put an unchecked source on screen. Values outside a slider's range are clamped and unknown names are ignored — the button says how many of each. A file saved before a parameter was renamed loads as well: the old name is read as the new one, and the next <b>Save YAML</b> writes the new names.</p>`],
     ["share", "Sharing a view", () => `<p>The address in your browser always holds the current view: every value that differs from its default (all sliders), the pattern, the colouring and, for a custom layout, the position and depth of every site. <b>Copy link</b> copies it; whoever opens the link sees the same view. A link to a help entry (e.g. <code>#help/model/window</code>) can be added at the end and opens that entry. For a file you can keep or hand to the pipeline, use <a href="#help/start/yaml" data-help="start/yaml">Save YAML</a>.</p>
-      <p>Address parameters: ${PARAMS.map(p => `<code>${p.key}</code>`).join(", ")} (each in the unit of its slider), <code>pattern</code> (hex, square, random, custom), <code>show=concentration</code>, and <code>sites=x,y,z;…</code> in µm for custom layouts. Values outside a slider's range are clamped to it. A link made before a parameter was renamed still opens: the old name is read (${Object.entries(RENAMED).map(([o, nw]) => `<code>${o}</code> as <code>${nw}</code>`).join(", ") || "none so far"}) and the address is rewritten with the new one.</p>`],
+      <p>Address parameters: ${PARAMS.map(p => `<code>${p.key}</code>`).join(", ")} (each in the unit of its slider), <code>age</code>, <code>sex</code>, <code>site</code>, <code>ethnicity</code>, <code>pattern</code> (hex, square, random, custom), <code>show=concentration</code> or <code>show=response</code>, <code>scaffold=patch</code>, and <code>sites=x,y,z;…</code> in µm for custom layouts. Values outside a slider's range are clamped to it. A link made before a parameter was renamed still opens: the old name is read (${Object.entries(RENAMED).map(([o, nw]) => `<code>${o}</code> as <code>${nw}</code>`).join(", ") || "none so far"}) and the address is rewritten with the new one.</p>`],
     ["status", "What the badges mean", () => `<p>Every value carries a badge; click it for its entry under <a href="#help/params" data-help="params">Parameters</a>.</p>
       <table><tr><td><span class="badge b-src">source</span></td><td>the default is a published value, checked against the source (abstract or full text) and listed under <a href="#help/refs" data-help="refs">References</a></td></tr>
       <tr><td><span class="badge b-ana">analogue</span></td><td>published value, checked against the source, but measured in a related system (other cells, another signal, another set-up) or as a related quantity (all nuclei instead of fibroblasts only); used until the value itself is measured in aged human dermis</td></tr>
