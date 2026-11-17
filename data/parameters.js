@@ -796,7 +796,7 @@ window.DRV_PARAMS = {
   "default": "age70up",
   "source": "arnalforne2024dermis",
   "note": "Layers and cells from photoprotected periumbilical skin, 25 autopsies in four age groups; total cellularity is all nuclei per mm² of section ({cite:arnalforne2024dermis}, Table 5). The senescent share from p21-positive dermal cells in three groups of skin donors ({cite:idda2020senescence}). Only the tissue changes; the signal, the thresholds and the design stay as they are.",
-  "derivation": "**How the six groups were derived.** The age cut-offs of every age-resolved study in the project were laid over each other, and a cut was kept where studies of several quantities agree; no cut-off was moved. **12 | 13** and **25 | 26** are the group borders of the one histology study that measured the papillary dermis and the cell counts by age ({cite:arnalforne2024dermis}); growth of the skin ends at about 20 years ({cite:tan1982ultrasound}, {cite:diridollou2001ageing}). **39 | 40** is where the studies of senescent cells ({cite:idda2020senescence}), of the superficial dermis by optical imaging ({cite:pedrazzani2020lcoct}, {cite:boone2015hdoct}) and of the dermis by ultrasound ({cite:wang2023density}) set a border. **54 | 55** is again the histology study's border ({cite:arnalforne2024dermis}). **69 | 70** is where p16-positive dermal cells jump ({cite:ressler2006p16}), where nuclei counts are binned ({cite:andrew1964dermis}) and about where ultrasound shows the skin thinning ({cite:derigal1989ultrasound}, {cite:escoffier1989mechanical}). **What each group rests on.** Papillary thickness and cell counts were measured in donors aged 0.1–2, 13–25, 34–54 and 58–79 years, five to ten each, and are published as group means only ({cite:arnalforne2024dermis}); p21-positive dermal cells in skin donors aged 19–30, 41–46 and 70–90 years, five each ({cite:idda2020senescence}). A group mean is placed at the mean age of its donors (the middle of their age range where only the range is published) and the means are joined by straight lines; beyond the youngest and the oldest mean the value is held, never extrapolated. Each group is evaluated at one age: 13–25 at 18.6 years and 40–54 at 42.9 years, the mean ages of the donors measured in them, 70 and over at 80 years, the middle of the oldest skin donors; 0–12, 26–39 and 55–69 hold no group mean, so they are evaluated at their middle (6, 32.5 and 62 years) and their values are interpolated. No donor was aged 3–12 or 26–33 years, and none over 79 years for the layers. An independent count of fibroblast-like cells is constant from the second decade to 71–85 years ({cite:gunin2011dermis}); it counts a different thing and is not used. **An age in years** takes the same lines at that age and adds one regression: the skin thickness of the forearm by ultrasound, falling by 0.0036 mm per year in men and 0.002 mm in women over 21 years and rising by 0.019 mm per year up to 20 years ({cite:tan1982ultrasound}; a second ultrasound study found 0.004 and 0.003 mm per year, {cite:escoffier1989mechanical}). It scales the dermis thickness of a measured body site from the median age of that site's volunteers (30 years for the men, 45 for the women, {cite:wang2025ultrasound}) to the chosen age; the growth line is used as a shape and joined to the adult line at 20 years (our construction). Histology of the inner arm gives a steeper loss, 12.8 µm per year ({cite:branchet1990thickness}), and the rate differs by site ({cite:wang2023density}), so the forearm line is an analogue for the other sites. The epidermis is not changed with age: one histology series found it thinning ({cite:branchet1990thickness}), another none between 20 and 68 years ({cite:sandbymoller2003epidermis}). The collagen area fraction by age is shown from its published regressions ({cite:marcosgarces2014collagen}); no value of the model takes it.",
+  "derivation": "**How the six groups were derived.** The age cut-offs of every age-resolved study in the project were laid over each other, and a cut was kept where studies of several quantities agree; no cut-off was moved. **12 | 13** and **25 | 26** are the group borders of the one histology study that measured the papillary dermis and the cell counts by age ({cite:arnalforne2024dermis}); growth of the skin ends at about 20 years ({cite:tan1982ultrasound}, {cite:diridollou2001ageing}). **39 | 40** is where the studies of senescent cells ({cite:idda2020senescence}, {cite:dimri1995biomarker}), of the superficial dermis by optical imaging ({cite:pedrazzani2020lcoct}, {cite:boone2015hdoct}) and of the dermis by ultrasound ({cite:wang2023density}) set a border. **54 | 55** is again the histology study's border ({cite:arnalforne2024dermis}). **69 | 70** is where p16-positive dermal cells jump ({cite:ressler2006p16}), where senescence staining separates the old donors ({cite:dimri1995biomarker}), where cell counts are binned ({cite:andrew1964dermis}, {cite:gunin2011dermis}) and about where ultrasound shows the skin thinning ({cite:derigal1989ultrasound}, {cite:escoffier1989mechanical}). **What each group rests on.** Papillary thickness and cell counts were measured in donors aged 0.1–2, 13–25, 34–54 and 58–79 years, five to ten each, and are published as group means only ({cite:arnalforne2024dermis}); p21-positive dermal cells in skin donors aged 19–30, 41–46 and 70–90 years, five each ({cite:idda2020senescence}). A group mean is placed at the mean age of its donors (the middle of their age range where only the range is published) and the means are joined by straight lines; beyond the youngest and the oldest mean the value is held, never extrapolated. Each group is evaluated at one age: 13–25 at 18.6 years and 40–54 at 42.9 years, the mean ages of the donors measured in them, 70 and over at 80 years, the middle of the oldest skin donors; 0–12, 26–39 and 55–69 hold no group mean, so they are evaluated at their middle (6, 32.5 and 62 years) and their values are interpolated. No donor was aged 3–12 or 26–33 years, and none over 79 years for the layers. An independent count of fibroblast-like cells is constant from the second decade to 71–85 years ({cite:gunin2011dermis}); it counts a different thing and is not used. A second histology series of the same department gives the papillary thickness as a regression on age, 63.24 µm at birth and 0.361 µm more per year, and the reticular thickness as a curve with its maximum in mid-life ({cite:marcosgarces2014collagen}); both are shown beside the values for comparison and not used, because imaging of living skin finds the superficial dermis thinner with age, not thicker ({cite:pedrazzani2020lcoct}, {cite:boone2015hdoct}). **An age in years** takes the same lines at that age and adds one regression: the skin thickness of the forearm by ultrasound, falling by 0.0036 mm per year in men and 0.002 mm in women over 21 years and rising by 0.019 mm per year up to 20 years ({cite:tan1982ultrasound}; a second ultrasound study found 0.004 and 0.003 mm per year, {cite:escoffier1989mechanical}). It scales the dermis thickness of a measured body site from the median age of that site's volunteers (30 years for the men, 45 for the women, {cite:wang2025ultrasound}) to the chosen age; the growth line is used as a shape and joined to the adult line at 20 years (our construction). Histology of the inner arm gives a steeper loss, 12.8 µm per year ({cite:branchet1990thickness}), and the rate differs by site ({cite:wang2023density}), so the forearm line is an analogue for the other sites. The epidermis is not changed with age: one histology series found it thinning ({cite:branchet1990thickness}), another none between 20 and 68 years ({cite:sandbymoller2003epidermis}). The collagen area fraction by age is shown from its published regressions ({cite:marcosgarces2014collagen}); no value of the model takes it.",
   "senescent": {
    "source": "idda2020senescence",
    "oldest": 0.15
@@ -897,6 +897,22 @@ window.DRV_PARAMS = {
       "kind": "regression",
       "text": "regression on age, fitted for 0.08–95 y",
       "source": "marcosgarces2014collagen"
+     },
+     "hpap_fit": {
+      "value": 65.4,
+      "unit": "µm",
+      "title": "Papillary dermis thickness by a second series' regression, for comparison",
+      "kind": "regression",
+      "text": "regression on age, fitted for 0.08–95 y",
+      "source": "marcosgarces2014collagen"
+     },
+     "hret_fit": {
+      "value": 1988.0,
+      "unit": "µm",
+      "title": "Reticular dermis thickness by regression (periumbilical histology), for comparison",
+      "kind": "regression",
+      "text": "regression on age, fitted for 0.08–95 y",
+      "source": "marcosgarces2014collagen"
      }
     }
    },
@@ -986,6 +1002,22 @@ window.DRV_PARAMS = {
       "value": 72.0,
       "unit": "%",
       "title": "Collagen area fraction of the reticular dermis",
+      "kind": "regression",
+      "text": "regression on age, fitted for 0.08–95 y",
+      "source": "marcosgarces2014collagen"
+     },
+     "hpap_fit": {
+      "value": 70.0,
+      "unit": "µm",
+      "title": "Papillary dermis thickness by a second series' regression, for comparison",
+      "kind": "regression",
+      "text": "regression on age, fitted for 0.08–95 y",
+      "source": "marcosgarces2014collagen"
+     },
+     "hret_fit": {
+      "value": 2627.5,
+      "unit": "µm",
+      "title": "Reticular dermis thickness by regression (periumbilical histology), for comparison",
       "kind": "regression",
       "text": "regression on age, fitted for 0.08–95 y",
       "source": "marcosgarces2014collagen"
@@ -1081,6 +1113,22 @@ window.DRV_PARAMS = {
       "kind": "regression",
       "text": "regression on age, fitted for 0.08–95 y",
       "source": "marcosgarces2014collagen"
+     },
+     "hpap_fit": {
+      "value": 75.0,
+      "unit": "µm",
+      "title": "Papillary dermis thickness by a second series' regression, for comparison",
+      "kind": "regression",
+      "text": "regression on age, fitted for 0.08–95 y",
+      "source": "marcosgarces2014collagen"
+     },
+     "hret_fit": {
+      "value": 3070.4,
+      "unit": "µm",
+      "title": "Reticular dermis thickness by regression (periumbilical histology), for comparison",
+      "kind": "regression",
+      "text": "regression on age, fitted for 0.08–95 y",
+      "source": "marcosgarces2014collagen"
      }
     }
    },
@@ -1170,6 +1218,22 @@ window.DRV_PARAMS = {
       "value": 68.8,
       "unit": "%",
       "title": "Collagen area fraction of the reticular dermis",
+      "kind": "regression",
+      "text": "regression on age, fitted for 0.08–95 y",
+      "source": "marcosgarces2014collagen"
+     },
+     "hpap_fit": {
+      "value": 78.7,
+      "unit": "µm",
+      "title": "Papillary dermis thickness by a second series' regression, for comparison",
+      "kind": "regression",
+      "text": "regression on age, fitted for 0.08–95 y",
+      "source": "marcosgarces2014collagen"
+     },
+     "hret_fit": {
+      "value": 3221.6,
+      "unit": "µm",
+      "title": "Reticular dermis thickness by regression (periumbilical histology), for comparison",
       "kind": "regression",
       "text": "regression on age, fitted for 0.08–95 y",
       "source": "marcosgarces2014collagen"
@@ -1265,6 +1329,22 @@ window.DRV_PARAMS = {
       "kind": "regression",
       "text": "regression on age, fitted for 0.08–95 y",
       "source": "marcosgarces2014collagen"
+     },
+     "hpap_fit": {
+      "value": 85.6,
+      "unit": "µm",
+      "title": "Papillary dermis thickness by a second series' regression, for comparison",
+      "kind": "regression",
+      "text": "regression on age, fitted for 0.08–95 y",
+      "source": "marcosgarces2014collagen"
+     },
+     "hret_fit": {
+      "value": 3097.5,
+      "unit": "µm",
+      "title": "Reticular dermis thickness by regression (periumbilical histology), for comparison",
+      "kind": "regression",
+      "text": "regression on age, fitted for 0.08–95 y",
+      "source": "marcosgarces2014collagen"
      }
     }
    },
@@ -1354,6 +1434,22 @@ window.DRV_PARAMS = {
       "value": 66.6,
       "unit": "%",
       "title": "Collagen area fraction of the reticular dermis",
+      "kind": "regression",
+      "text": "regression on age, fitted for 0.08–95 y",
+      "source": "marcosgarces2014collagen"
+     },
+     "hpap_fit": {
+      "value": 92.1,
+      "unit": "µm",
+      "title": "Papillary dermis thickness by a second series' regression, for comparison",
+      "kind": "regression",
+      "text": "regression on age, fitted for 0.08–95 y",
+      "source": "marcosgarces2014collagen"
+     },
+     "hret_fit": {
+      "value": 2504.4,
+      "unit": "µm",
+      "title": "Reticular dermis thickness by regression (periumbilical histology), for comparison",
       "kind": "regression",
       "text": "regression on age, fitted for 0.08–95 y",
       "source": "marcosgarces2014collagen"
@@ -3017,6 +3113,212 @@ window.DRV_PARAMS = {
      61.3,
      61.3,
      61.3
+    ],
+    "hpap_fit": [
+     63.3,
+     63.6,
+     64.0,
+     64.3,
+     64.7,
+     65.0,
+     65.4,
+     65.8,
+     66.1,
+     66.5,
+     66.9,
+     67.2,
+     67.6,
+     67.9,
+     68.3,
+     68.7,
+     69.0,
+     69.4,
+     69.7,
+     70.1,
+     70.5,
+     70.8,
+     71.2,
+     71.5,
+     71.9,
+     72.3,
+     72.6,
+     73.0,
+     73.3,
+     73.7,
+     74.1,
+     74.4,
+     74.8,
+     75.2,
+     75.5,
+     75.9,
+     76.2,
+     76.6,
+     77.0,
+     77.3,
+     77.7,
+     78.0,
+     78.4,
+     78.8,
+     79.1,
+     79.5,
+     79.8,
+     80.2,
+     80.6,
+     80.9,
+     81.3,
+     81.7,
+     82.0,
+     82.4,
+     82.7,
+     83.1,
+     83.5,
+     83.8,
+     84.2,
+     84.5,
+     84.9,
+     85.3,
+     85.6,
+     86.0,
+     86.3,
+     86.7,
+     87.1,
+     87.4,
+     87.8,
+     88.1,
+     88.5,
+     88.9,
+     89.2,
+     89.6,
+     90.0,
+     90.3,
+     90.7,
+     91.0,
+     91.4,
+     91.8,
+     92.1,
+     92.5,
+     92.8,
+     93.2,
+     93.6,
+     93.9,
+     94.3,
+     94.6,
+     95.0,
+     95.4,
+     95.7,
+     96.1,
+     96.5,
+     96.8,
+     97.2,
+     97.5,
+     97.5,
+     97.5,
+     97.5,
+     97.5,
+     97.5
+    ],
+    "hret_fit": [
+     1609.3,
+     1671.5,
+     1737.6,
+     1802.4,
+     1865.7,
+     1927.5,
+     1988.0,
+     2047.0,
+     2104.6,
+     2160.8,
+     2215.5,
+     2268.9,
+     2320.8,
+     2371.2,
+     2420.3,
+     2467.9,
+     2514.1,
+     2558.9,
+     2602.2,
+     2644.1,
+     2684.6,
+     2723.7,
+     2761.3,
+     2797.5,
+     2832.3,
+     2865.7,
+     2897.6,
+     2928.1,
+     2957.2,
+     2984.8,
+     3011.1,
+     3035.9,
+     3059.2,
+     3081.2,
+     3101.7,
+     3120.8,
+     3138.5,
+     3154.7,
+     3169.6,
+     3183.0,
+     3194.9,
+     3205.5,
+     3214.6,
+     3222.3,
+     3228.5,
+     3233.4,
+     3236.8,
+     3238.8,
+     3239.3,
+     3238.5,
+     3236.2,
+     3232.5,
+     3227.3,
+     3220.8,
+     3212.8,
+     3203.3,
+     3192.5,
+     3180.2,
+     3166.5,
+     3151.4,
+     3134.8,
+     3116.9,
+     3097.5,
+     3076.6,
+     3054.4,
+     3030.7,
+     3005.6,
+     2979.1,
+     2951.1,
+     2921.7,
+     2890.9,
+     2858.7,
+     2825.0,
+     2789.9,
+     2753.4,
+     2715.5,
+     2676.1,
+     2635.3,
+     2593.1,
+     2549.4,
+     2504.4,
+     2457.9,
+     2409.9,
+     2360.6,
+     2309.8,
+     2257.6,
+     2204.0,
+     2148.9,
+     2092.5,
+     2034.6,
+     1975.2,
+     1914.5,
+     1852.3,
+     1788.7,
+     1723.6,
+     1657.2,
+     1657.2,
+     1657.2,
+     1657.2,
+     1657.2,
+     1657.2
     ]
    },
    "provenance": {
@@ -3287,6 +3589,52 @@ window.DRV_PARAMS = {
       "text": "held at 95 y, the end of the fitted ages 0.08–95 y",
       "source": "marcosgarces2014collagen"
      }
+    ],
+    "hpap_fit": [
+     {
+      "from": 0,
+      "to": 0,
+      "kind": "held",
+      "text": "held at 0.08 y, the end of the fitted ages 0.08–95 y",
+      "source": "marcosgarces2014collagen"
+     },
+     {
+      "from": 1,
+      "to": 95,
+      "kind": "regression",
+      "text": "regression on age, fitted for 0.08–95 y",
+      "source": "marcosgarces2014collagen"
+     },
+     {
+      "from": 96,
+      "to": 100,
+      "kind": "held",
+      "text": "held at 95 y, the end of the fitted ages 0.08–95 y",
+      "source": "marcosgarces2014collagen"
+     }
+    ],
+    "hret_fit": [
+     {
+      "from": 0,
+      "to": 0,
+      "kind": "held",
+      "text": "held at 0.08 y, the end of the fitted ages 0.08–95 y",
+      "source": "marcosgarces2014collagen"
+     },
+     {
+      "from": 1,
+      "to": 95,
+      "kind": "regression",
+      "text": "regression on age, fitted for 0.08–95 y",
+      "source": "marcosgarces2014collagen"
+     },
+     {
+      "from": 96,
+      "to": 100,
+      "kind": "held",
+      "text": "held at 95 y, the end of the fitted ages 0.08–95 y",
+      "source": "marcosgarces2014collagen"
+     }
     ]
    }
   },
@@ -3377,6 +3725,14 @@ window.DRV_PARAMS = {
    "collagen_ret": {
     "title": "Collagen area fraction of the reticular dermis",
     "source": "marcosgarces2014collagen"
+   },
+   "hpap_fit": {
+    "title": "Papillary dermis thickness by a second series' regression, for comparison",
+    "source": "marcosgarces2014collagen"
+   },
+   "hret_fit": {
+    "title": "Reticular dermis thickness by regression (periumbilical histology), for comparison",
+    "source": "marcosgarces2014collagen"
    }
   },
   "shown_titles": {
@@ -3387,6 +3743,14 @@ window.DRV_PARAMS = {
    "collagen_ret": {
     "title": "Collagen area fraction of the reticular dermis",
     "unit": "%"
+   },
+   "hpap_fit": {
+    "title": "Papillary dermis thickness by a second series' regression, for comparison",
+    "unit": "µm"
+   },
+   "hret_fit": {
+    "title": "Reticular dermis thickness by regression (periumbilical histology), for comparison",
+    "unit": "µm"
    }
   }
  },

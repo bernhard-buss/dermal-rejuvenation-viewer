@@ -93,10 +93,18 @@ so that Claude Code reads the same text; add and change notes here, not there.
   `basic` cases of `data/golden.json`. A key of the four earlier groups
   (`DP.presets.renamed`) is read from a link or file as its successor.
 - **The figure** (`drawBody`, first panel of the View column, folded state in
-  `drv_body_closed`): `bodySvg` draws a schematic body whose size, build and tone
+  `drv_body_closed`): `bodySvg` draws a body from `BODY_SHAPE`, three hand-drawn half outlines of the
+  same 46 points (a small child, a man, a woman) blended by age and sex in
+  `bodyOutline` and joined by a smooth closed curve; its size, build and tone
   follow age, sex and ethnicity as illustration only (state that wherever it is
-  described; none is a sourced value), marks the body site, and greys the body for
-  the skin model. The table underneath lists the tissue data of the selection with
+  described; none is a sourced value), draws every body site as a dashed area (`.bsite`, an ellipse clipped to the
+  outline, `data-site`; the dish is the skin model) and greys the body for the skin
+  model. `fillBody(hover)` fills what depends on the site: the layer column to scale
+  with its legend (`bodyColumn`, into `#bodyColumn`, which takes no pointer events
+  so that it cannot cover an area) and the table. Pointer or focus on an area is a
+  preview (`previewBody`: the panel only, never `S`), a click or Enter selects
+  (`setBasic("site", …)`); a full redraw happens only when the selection changes,
+  so the areas are not replaced under the pointer. The table underneath lists the tissue data of the selection with
   a badge per kind (`.kd-measured`, `-interpolated`, `-held`, `-regression`) and
   the source; values shown but not used by the model say so.
 - **Versions are for the people using the viewer.** `VERSION` (top of the

@@ -125,13 +125,18 @@ button.mini{padding:0 6px;font-size:12px;line-height:18px}
 .kd-held{color:var(--soft);border-color:#B8C0C4;border-style:dotted} .kd-regression{color:var(--terra);border-color:var(--terra)}
 .bp-head{cursor:pointer;user-select:none} .bp-head .chev{margin-left:auto;color:var(--soft);font-size:11px;padding-left:6px}
 .bp-sum{font-size:12px;color:var(--soft);font-weight:400;text-transform:none;letter-spacing:0;margin-left:6px}
-.bp-body{display:flex;gap:14px;align-items:flex-start;flex-wrap:wrap}
+.bp-body{display:block}
 .bodypanel.bp-closed{padding-bottom:6px} .bodypanel.bp-closed .bp-body{display:none}
-.bp-fig{flex:0 0 240px;max-width:100%} .bp-fig svg{width:100%;height:auto;display:block}
-.bp-data{flex:1 1 320px;min-width:0;font-size:12.5px}
+.bp-fig{max-width:520px;margin:0 auto 8px} .bp-fig svg{width:100%;height:auto;display:block}
+.bp-data{min-width:0;font-size:12.5px}
 .bp-data table{border-collapse:collapse;width:100%} .bp-data td{padding:4px 8px 4px 0;vertical-align:top;border-bottom:1px solid #F0ECE5}
 .bp-data td.v{white-space:nowrap;font-weight:600} .bp-data td.d{color:var(--soft)} .bp-data .yours{color:#5B420F;font-weight:500}
-.bp-data .note{margin-top:6px}
+.bp-data .note{margin-top:6px} .bp-data .bp-prev{margin:0 0 6px;color:var(--teal)}
+.bsite{fill:#2A6F75;fill-opacity:0;stroke:#2A6F75;stroke-width:1.2;stroke-dasharray:4 3;cursor:pointer;pointer-events:all;outline:none}
+#bodyColumn{pointer-events:none}
+.bsite:hover,.bsite:focus{fill-opacity:.28} .bsite.on{fill-opacity:.5;stroke-dasharray:none;stroke-width:1.6}
+.bsite.dish ellipse:first-of-type{fill:#EDE6DC;fill-opacity:1} .bsite.dish ellipse:last-of-type{fill:#D8CBBE;fill-opacity:1}
+.bsite.dish:hover ellipse:last-of-type,.bsite.dish:focus ellipse:last-of-type,.bsite.dish.on ellipse:last-of-type{fill:#2A6F75;fill-opacity:.5}
 @media (max-width:620px){ .bp-data tr{display:grid;grid-template-columns:1fr auto auto;gap:0 8px;border-bottom:1px solid #F0ECE5;padding:3px 0}
   .bp-data td{border-bottom:0;padding:1px 0} .bp-data td.d{grid-column:1 / -1} }
 .panel.off{display:none}
@@ -2234,60 +2239,106 @@ function setBasic(dim, v) {
 // with what kind of number it is (measured, interpolated, held, regression) and its source.
 const BODY_TONE = { "unspecified": ["#D8CBBE", "#A89888"], "African American": ["#8A5A3C", "#5E3B26"], "Caucasian": ["#F0D2BC", "#C09A80"],
   "Chinese": ["#E8C7A0", "#B8946C"], "Mexican": ["#C8946C", "#946844"] };
-function bodySvg(sel, a, st, v) {
-  const y = a.age, male = sel.sex === "male", f1 = x => x.toFixed(1);
-  const grow = y < 18 ? 0.34 + 0.66 * Math.pow(y / 18, 0.8) : y > 70 ? 1 - 0.03 * Math.min(1, (y - 70) / 20) : 1;   // height, schematic
-  const hf = y < 18 ? 0.25 - 0.117 * (y / 18) : 0.133;                 // the head as a share of the height
-  const t = Math.min(1, Math.max(0, (y - 10) / 6));                    // the build of the sexes differs from puberty on
-  const base = 388, h = 356 * grow, top = base - h, cx = 82, rh = h * hf / 2;
-  const sh = h * (0.225 + t * (male ? 0.04 : 0.005)), hip = h * (0.20 + t * (male ? -0.005 : 0.03)), waist = h * (0.185 + t * (male ? -0.005 : -0.035));
-  const yN = top + 2 * rh, ySh = yN + h * 0.035, yW = top + h * 0.43, yH = top + h * 0.52, yK = top + h * 0.75, yA = base - h * 0.02;
-  const arm = h * 0.05, leg = h * 0.076;
-  const [tone, line] = BODY_TONE[sel.ethnicity] || BODY_TONE.unspecified;
-  const limb = (pts, w) => { const d = pts.map((p, i) => (i ? "L" : "M") + f1(p[0]) + " " + f1(p[1])).join(" ");
-    return `<path d="${d}" fill="none" stroke="${line}" stroke-width="${f1(w + 2)}" stroke-linecap="round" stroke-linejoin="round"/><path d="${d}" fill="none" stroke="${tone}" stroke-width="${f1(w)}" stroke-linecap="round" stroke-linejoin="round"/>`; };
-  const side = s => limb([[cx + s * (sh / 2 - arm * 0.25), ySh + arm * 0.55], [cx + s * (sh / 2 + arm * 0.8), top + h * 0.40], [cx + s * (sh / 2 + arm * 1.15), top + h * 0.545]], arm) +
-    limb([[cx + s * hip * 0.25, yH], [cx + s * hip * 0.27, yK], [cx + s * hip * 0.26, yA]], leg) +
-    `<ellipse cx="${f1(cx + s * (hip * 0.26 + h * 0.018))}" cy="${f1(base - h * 0.008)}" rx="${f1(h * 0.045)}" ry="${f1(h * 0.015)}" fill="${tone}" stroke="${line}" stroke-width="1.2"/>`;
-  const torso = [[cx - sh / 2, ySh], [cx + sh / 2, ySh], [cx + waist / 2, yW], [cx + hip / 2, yH], [cx + hip / 2, yH + h * 0.035], [cx - hip / 2, yH + h * 0.035], [cx - hip / 2, yH], [cx - waist / 2, yW]]
-    .map(p => f1(p[0]) + "," + f1(p[1])).join(" ");
-  const figure = side(-1) + side(1) +
-    `<rect x="${f1(cx - rh * 0.3)}" y="${f1(yN - rh * 0.2)}" width="${f1(rh * 0.6)}" height="${f1(ySh - yN + rh * 0.35)}" fill="${tone}" stroke="${line}" stroke-width="1.2"/>` +
-    `<polygon points="${torso}" fill="${tone}" stroke="${line}" stroke-width="1.2" stroke-linejoin="round"/>` +
-    `<ellipse cx="${cx}" cy="${f1(top + rh)}" rx="${f1(rh * 0.82)}" ry="${f1(rh)}" fill="${tone}" stroke="${line}" stroke-width="1.2"/>`;
-  const at = { forehead: [cx, top + rh * 0.5], chest: [cx, ySh + h * 0.07], abdomen: [cx, yW + h * 0.015], back: [cx, ySh + h * 0.055],
-    upperarm: [cx + sh / 2 + arm * 0.35, ySh + h * 0.10], forearm: [cx + sh / 2 + arm * 0.98, top + h * 0.475],
-    thigh: [cx + hip * 0.26, yH + (yK - yH) * 0.5], leg: [cx + hip * 0.265, yK + (yA - yK) * 0.5], foot: [cx + hip * 0.26 + h * 0.018, base - h * 0.012] }[st.key];
-  const lx = 166, ink = "#1B2A33", soft = "#44525A", teal = "#2A6F75";
-  let mark;
-  if (at) {
-    const ly = Math.min(372, Math.max(24, at[1]));
-    mark = `<line x1="${f1(at[0] + 8)}" y1="${f1(at[1])}" x2="${lx - 6}" y2="${f1(ly)}" stroke="${teal}" stroke-width="1"/>` +
-      `<circle cx="${f1(at[0])}" cy="${f1(at[1])}" r="7.5" fill="#fff" fill-opacity=".55" stroke="${teal}" stroke-width="2"${st.key === "back" ? ' stroke-dasharray="3 2.5"' : ""}/><circle cx="${f1(at[0])}" cy="${f1(at[1])}" r="2.4" fill="${teal}"/>` +
-      `<text x="${lx}" y="${f1(ly - 2)}" font-size="13" font-weight="600" fill="${ink}">${esc(st.title)}${st.key === "back" ? " (behind)" : ""}</text>` +
-      `<text x="${lx}" y="${f1(ly + 14)}" font-size="12" fill="${soft}">dermis ${esc(fmt(v.H))} µm</text><text x="${lx}" y="${f1(ly + 29)}" font-size="12" fill="${soft}">epidermis ${esc(fmt(v.hep))} µm</text>`;
-  } else {                                                           // the skin model: a reconstructed tissue in a dish, not a place on the body
-    mark = `<ellipse cx="212" cy="342" rx="46" ry="11" fill="#EDE6DC" stroke="${soft}" stroke-width="1.2"/><ellipse cx="212" cy="338" rx="38" ry="7" fill="${BODY_TONE.unspecified[0]}" stroke="${BODY_TONE.unspecified[1]}" stroke-width="1"/>` +
-      `<circle cx="212" cy="338" r="2.4" fill="${teal}"/>` +
-      `<text x="${lx}" y="296" font-size="13" font-weight="600" fill="${ink}">Skin model</text><text x="${lx}" y="312" font-size="12" fill="${soft}">reconstructed tissue,</text><text x="${lx}" y="326" font-size="12" fill="${soft}">not a body site</text>`;
-  }
-  const who = `${sel.sex}, ${a.years !== null ? a.years + " years" : ageLabel(a) + " years"}${sel.ethnicity !== "unspecified" ? ", " + sel.ethnicity : ""}`;
-  return `<svg viewBox="0 0 280 400" role="img" aria-label="Schematic body: ${esc(who)}; ${esc(st.title)}">` +
-    `<line x1="14" y1="${base + 4}" x2="150" y2="${base + 4}" stroke="#D9D2C7" stroke-width="1.5"/>` +
-    `<g${at ? "" : ' opacity=".32"'}>${figure}</g>${mark}` +
-    `<text x="14" y="16" font-size="12" fill="${soft}">${esc(who)}</text></svg>`;
+// The outline of half a body, from the top of the head down the outer side, round the arm and the leg, to the
+// crotch: [half-width, height from the top], both in body heights. Three drawings with the same 46 points —
+// a small child, a man, a woman — so that any age and either sex is a blend of them. Drawn by hand as an
+// illustration; no proportion is taken from a source.
+const BODY_SHAPE = {
+  child: [[0, 0], [.045, .012], [.072, .055], [.078, .105], [.070, .150], [.052, .185], [.036, .208], [.040, .225], [.070, .240], [.105, .255],
+    [.125, .275], [.132, .310], [.134, .360], [.140, .420], [.150, .465], [.158, .510], [.168, .540], [.166, .572], [.152, .588], [.142, .562],
+    [.136, .515], [.126, .470], [.116, .425], [.110, .365], [.104, .305], [.106, .345], [.104, .420], [.103, .470], [.106, .520], [.108, .570],
+    [.104, .640], [.086, .740], [.078, .775], [.080, .830], [.068, .900], [.052, .950], [.068, .985], [.066, 1], [.018, 1], [.018, .962],
+    [.024, .900], [.028, .830], [.024, .775], [.022, .730], [.014, .660], [0, .600]],
+  male: [[0, 0], [.030, .008], [.046, .035], [.049, .065], [.044, .092], [.033, .112], [.026, .128], [.030, .150], [.060, .166], [.105, .178],
+    [.128, .200], [.136, .240], [.136, .300], [.140, .375], [.152, .430], [.160, .490], [.170, .530], [.168, .570], [.155, .588], [.146, .560],
+    [.140, .500], [.128, .440], [.116, .380], [.108, .310], [.100, .245], [.102, .290], [.092, .360], [.088, .410], [.094, .460], [.100, .520],
+    [.098, .600], [.080, .700], [.070, .740], [.074, .800], [.062, .880], [.046, .945], [.060, .985], [.058, 1], [.016, 1], [.016, .960],
+    [.022, .880], [.026, .800], [.022, .740], [.020, .680], [.012, .580], [0, .515]],
+  female: [[0, 0], [.028, .008], [.043, .035], [.046, .065], [.041, .092], [.031, .112], [.023, .128], [.026, .150], [.050, .166], [.090, .180],
+    [.110, .202], [.116, .240], [.116, .300], [.122, .375], [.134, .430], [.142, .488], [.151, .528], [.149, .566], [.138, .582], [.130, .556],
+    [.125, .498], [.114, .440], [.103, .380], [.095, .310], [.086, .245], [.094, .285], [.080, .335], [.070, .385], [.086, .440], [.108, .500],
+    [.106, .580], [.084, .690], [.068, .740], [.072, .800], [.058, .880], [.042, .945], [.054, .985], [.052, 1], [.014, 1], [.014, .960],
+    [.020, .880], [.024, .800], [.020, .740], [.016, .680], [.008, .580], [0, .520]]
+};
+function bodyOutline(sex, y) {                                       // the 46 points of one half for a sex and an age in years
+  const grown = Math.min(1, Math.max(0, (y - 1) / 17)), g = grown * grown * (3 - 2 * grown);   // child → adult
+  const sx = Math.min(1, Math.max(0, (y - 10) / 6));                 // the build of the sexes differs from puberty on
+  const C = BODY_SHAPE.child, M = BODY_SHAPE.male, F = BODY_SHAPE.female, A = sex === "male" ? M : F;
+  return C.map((c, i) => [0, 1].map(k => { const both = (M[i][k] + F[i][k]) / 2, adult = both + sx * (A[i][k] - both); return c[k] + g * (adult - c[k]); }));
 }
-function drawBody() {
-  if (!BASIC || !$("bodyFig")) return;
-  const sel = S.basic, a = ageEntry(sel), st = SITES.find(g => g.key === sel.site), v = basicValues(sel);
+let bodyHover = null, bodyGeo = { centre: {} };                    // the site under the pointer (a preview), and where each site lies in the drawing
+function bodySvg(sel, a) {
+  const y = a.age, male = sel.sex === "male", f1 = x => x.toFixed(1);
+  const sx = Math.min(1, Math.max(0, (y - 10) / 6));
+  const grow = (y < 18 ? 0.34 + 0.66 * Math.pow(y / 18, 0.8) : y > 70 ? 1 - 0.03 * Math.min(1, (y - 70) / 20) : 1) * (1 - 0.06 * sx * (male ? 0 : 1));   // height, schematic
+  const base = 384, h = 350 * grow, top = base - h, cx = 112;
+  const half = bodyOutline(sel.sex, y), X = p => cx + p[0] * h, Y = p => top + p[1] * h;
+  const ring = [...half, ...half.slice(1, -1).reverse().map(p => [-p[0], p[1]])].map(p => [X(p), Y(p)]);
+  const n = ring.length, at = i => ring[(i + n) % n];
+  let d = `M${f1(ring[0][0])} ${f1(ring[0][1])}`;                     // a smooth closed curve through the points
+  for (let i = 0; i < n; i++) {
+    const p0 = at(i - 1), p1 = at(i), p2 = at(i + 1), p3 = at(i + 2);
+    d += ` C${f1(p1[0] + (p2[0] - p0[0]) / 6)} ${f1(p1[1] + (p2[1] - p0[1]) / 6)} ${f1(p2[0] - (p3[0] - p1[0]) / 6)} ${f1(p2[1] - (p3[1] - p1[1]) / 6)} ${f1(p2[0])} ${f1(p2[1])}`;
+  }
+  const [tone, line] = BODY_TONE[sel.ethnicity] || BODY_TONE.unspecified;
+  const P = i => half[i - 1], mid = (i, j) => [(P(i)[0] + P(j)[0]) / 2, (P(i)[1] + P(j)[1]) / 2], wid = (i, j) => Math.abs(P(i)[0] - P(j)[0]) / 2 + 0.004;
+  const both = r => [r, [[-r[0][0], r[0][1]], r[1], r[2]]];           // a limb has the site on either side
+  const regions = {                                                  // where each body site lies: centre and radii, in body heights
+    forehead: [[[0, (P(2)[1] + P(4)[1]) / 2], P(4)[0] * 0.78, (P(4)[1] - P(1)[1]) * 0.36]],
+    back: [[[0, P(10)[1] + 0.016], P(10)[0] * 0.74, 0.017]],          // seen from the front: a band across the shoulders stands for it
+    chest: [[[0, (P(25)[1] + P(26)[1]) / 2 + 0.012], P(26)[0] * 0.80, 0.032]],
+    abdomen: [[[0, (P(27)[1] + P(28)[1]) / 2 + 0.012], P(28)[0] * 0.82, 0.04]],
+    upperarm: both([mid(13, 24), wid(13, 24), 0.05]), forearm: both([mid(15, 22), wid(15, 22), 0.045]),
+    thigh: both([[(P(31)[0] + P(45)[0]) / 2, 0.61], wid(31, 45), 0.06]), leg: both([[(P(34)[0] + P(42)[0]) / 2, 0.82], wid(34, 42), 0.055]),
+    foot: both([[(P(37)[0] + P(39)[0]) / 2, 0.986], wid(37, 39), 0.02]) };
+  bodyGeo = { centre: {}, cx, base };
+  let areas = "";
+  for (const st of SITES) {
+    const rs = regions[st.key]; if (!rs) continue;
+    bodyGeo.centre[st.key] = [X(rs[0][0]), Y(rs[0][0])];
+    areas += rs.map((r, i) => `<ellipse class="bsite${st.key === sel.site ? " on" : ""}" data-site="${st.key}" cx="${f1(X(r[0]))}" cy="${f1(Y(r[0]))}" rx="${f1(r[1] * h)}" ry="${f1(r[2] * h)}"${i ? "" : ` tabindex="0" role="button" aria-label="${esc(st.title)}: preview on hover, select with a click"`}><title>${esc(st.title)}${st.key === "back" ? " (behind)" : ""}</title></ellipse>`).join("");
+  }
+  const model = SITES.find(g => !g.measured);                        // the skin model: a tissue in a dish, selectable like a site
+  const dish = model ? `<g class="bsite dish${model.key === sel.site ? " on" : ""}" data-site="${model.key}" tabindex="0" role="button" aria-label="${esc(model.title)}: preview on hover, select with a click"><title>${esc(model.title)}</title><ellipse cx="${cx + 104}" cy="364" rx="30" ry="8"/><ellipse cx="${cx + 104}" cy="361" rx="24" ry="5"/></g>` : "";
+  if (model) bodyGeo.centre[model.key] = [cx + 104, 361];
+  const who = `${sel.sex}, ${a.years !== null ? a.years + " years" : ageLabel(a) + " years"}${sel.ethnicity !== "unspecified" ? ", " + sel.ethnicity : ""}`;
+  const onBody = SITES.some(g => g.key === sel.site && g.measured);
+  return `<svg viewBox="0 0 500 400" role="img" aria-label="Body: ${esc(who)}. The dashed areas are the body sites: hover for a preview, click to select.">` +
+    `<defs><clipPath id="bodyClip"><path d="${d}"/></clipPath></defs>` +
+    `<line x1="${cx - 68}" y1="${base + 3}" x2="${cx + 68}" y2="${base + 3}" stroke="#D9D2C7" stroke-width="1.5"/>` +
+    `<path d="${d}" fill="${tone}" stroke="${line}" stroke-width="1.3" stroke-linejoin="round"${onBody ? "" : ' opacity=".45"'}/>` +
+    `<g clip-path="url(#bodyClip)">${areas}</g>${dish}<g id="bodyColumn"></g>` +
+    `<text x="${cx}" y="14" font-size="12" fill="#44525A" text-anchor="middle">${esc(who)}</text></svg>`;
+}
+// Right of the body: the skin of a site as a column to scale, its legend beside it, top-aligned, tied to the site.
+function bodyColumn(st, v, preview) {
+  const f1 = x => x.toFixed(1), ink = "#1B2A33", soft = "#44525A", teal = "#2A6F75";
+  const layers = [["epidermis", v.hep, "#C98B74"], ["papillary dermis", Math.min(v.hpap, v.H), "#EBC9B5"], ["reticular dermis", Math.max(0, v.H - v.hpap), "#F6E6DA"]];
+  const total = layers.reduce((t, l) => t + l[1], 0), colH = 250, colX = 262, colW = 38, colY = 78, legX = colX + colW + 14;
+  let yy = colY, out = "";
+  for (const [, um, fill] of layers) { const hh = um / total * colH; out += `<rect x="${colX}" y="${f1(yy)}" width="${colW}" height="${f1(hh)}" fill="${fill}"/>`; yy += hh; }
+  out += `<rect x="${colX}" y="${colY}" width="${colW}" height="${colH}" fill="none" stroke="${soft}" stroke-width="1"/>` +
+    `<text x="${colX}" y="${colY - 24}" font-size="13" font-weight="600" fill="${ink}">${st.measured ? esc(st.title) + (st.key === "back" ? " (behind)" : "") : "Skin model"}${preview ? ` <tspan font-weight="400" fill="${teal}">· preview, click to select</tspan>` : ""}</text>` +
+    `<text x="${colX}" y="${colY - 9}" font-size="11.5" fill="${soft}">${st.measured ? "this skin, to scale" : "not a body site · to scale"}</text>` +
+    layers.map(([name, um, fill], i) => `<rect x="${legX}" y="${colY + 1 + i * 19}" width="10" height="10" fill="${fill}" stroke="${soft}" stroke-width=".6"/><text x="${legX + 16}" y="${colY + 10 + i * 19}" font-size="11.5" fill="${soft}">${name} ${esc(fmt(um))} µm</text>`).join("");
+  const c = bodyGeo.centre[st.key];
+  if (c) {                                                           // from the site to its skin
+    const bend = st.measured ? `L${colX - 22} ${f1(c[1])} L${colX - 22} ${colY + 10}` : `L${colX - 22} ${f1(c[1])} L${colX - 22} ${colY + 10}`;
+    out += `<path d="M${f1(c[0])} ${f1(c[1])} ${bend} L${colX - 5} ${colY + 10}" fill="none" stroke="${teal}" stroke-width="1" stroke-linejoin="round"${preview ? ' stroke-dasharray="3 3"' : ""}/>` +
+      `<path d="M${colX - 9} ${colY + 6} L${colX - 4} ${colY + 10} L${colX - 9} ${colY + 14}" fill="none" stroke="${teal}" stroke-width="1"/><circle cx="${f1(c[0])}" cy="${f1(c[1])}" r="2.6" fill="${teal}"/>`;
+  }
+  return out;
+}
+// What the panel shows: the selection, or — while the pointer is on another dashed area — that site as a
+// preview. A preview changes nothing but this panel; a click on the area selects the site.
+function fillBody(hover) {
+  const preview = !!hover && hover !== S.basic.site, sel = preview ? { ...S.basic, site: hover } : S.basic;
+  const a = ageEntry(sel), st = SITES.find(g => g.key === sel.site), v = basicValues(sel);
   if (!a || !st) return;
-  const closed = store.get("drv_body_closed") === "1";
-  $("bodyPanel").classList.toggle("bp-closed", closed); $("bodyHead").setAttribute("aria-expanded", closed ? "false" : "true");
-  const ch = $("bodyHead").querySelector(".chev"); if (ch) ch.textContent = closed ? "▸" : "▾";
-  $("bodySum").textContent = `${sel.sex} · ${a.years !== null ? a.years + " y" : ageLabel(a) + " y"} · ${st.title}${sel.ethnicity !== "unspecified" ? " · " + sel.ethnicity : ""}`;
-  $("bodyFig").innerHTML = bodySvg(sel, a, st, v);
+  $("bodySum").textContent = `${sel.sex} · ${a.years !== null ? a.years + " y" : ageLabel(a) + " y"} · ${st.title}${sel.ethnicity !== "unspecified" ? " · " + sel.ethnicity : ""}${preview ? " (preview)" : ""}`;
+  $("bodyColumn").innerHTML = bodyColumn(st, v, preview);
   const kd = p => `<span class="kd kd-${p.kind}" title="${esc(p.text)}">${p.kind}</span>`;
-  const yours = k => k && k in S.p && !near(S.p[k], v[k]) ? ` <span class="yours" title="You changed this advanced value by hand">· yours: ${fmt(S.p[k])}</span>` : "";
+  const yours = k => !preview && k && k in S.p && !near(S.p[k], v[k]) ? ` <span class="yours" title="You changed this advanced value by hand">· yours: ${fmt(S.p[k])}</span>` : "";
   const fac = a.factor[sel.sex], fit = DP.presets.fits.thickness, pv = a.provenance;
   const rows = [
     ["Dermis thickness", `${fmt(v.H)} µm`, st.measured ? kd(fac) : kd({ kind: "measured", text: "the reconstructed skin model" }),
@@ -2302,10 +2353,23 @@ function drawBody() {
       `p21-positive dermal cells, ${fmt(a.raw.p21)}× those of the youngest donors, scaled to ${fmt(100 * DP.presets.senescent.oldest)} % in the oldest; ${esc(pv.p21.text)} (${cite(pv.p21.source)})`, "fsen"],
     ...Object.entries(a.shown).map(([k, x]) => [x.title, `${fmt(x.value)} ${esc(x.unit)}`, kd(x), `${esc(x.text)} (${cite(x.source)}); shown only: no value of the model takes it`, null])
   ];
-  $("bodyData").innerHTML = `<table>${rows.map(r => `<tr><td>${r[0]}</td><td class="v">${r[1]}${yours(r[4])}</td><td>${r[2]}</td><td class="d">${r[3]}</td></tr>`).join("")}</table>
+  $("bodyData").innerHTML = (preview ? `<div class="note bp-prev"><b>Preview of ${esc(st.title)}.</b> Nothing is changed; click the area on the figure to set the model to this skin.</div>` : "") +
+    `<table>${rows.map(r => `<tr><td>${r[0]}</td><td class="v">${r[1]}${yours(r[4])}</td><td>${r[2]}</td><td class="d">${r[3]}</td></tr>`).join("")}</table>
     <div class="note"><b>From these the model takes</b> ${fmt(v.rpap)}× as many cells in the papillary as in the reticular dermis${yours("rpap")}, a cellularity of ${v.cells.toFixed(2)}× that of the oldest group${yours("cells")}, and the spread between donors (${fmt(100 * v.cvpap)} %, ${fmt(100 * v.cvret)} % and ${fmt(100 * v.cvhpap)} % of the papillary cells, the reticular cells and the papillary thickness).
-    <span class="kd kd-measured">measured</span> a group mean of donors · <span class="kd kd-interpolated">interpolated</span> on the straight line between two group means · <span class="kd kd-held">held</span> beyond the last mean, not extrapolated · <span class="kd kd-regression">regression</span> from a published fit on age. Size, build and skin tone of the figure are illustration only. <a href="#help/start/body" data-help="start/body">More</a></div>`;
+    <span class="kd kd-measured">measured</span> a group mean of donors · <span class="kd kd-interpolated">interpolated</span> on the straight line between two group means · <span class="kd kd-held">held</span> beyond the last mean, not extrapolated · <span class="kd kd-regression">regression</span> from a published fit on age. The dashed areas on the figure are the body sites: hover for a preview, click to select. Size, build and skin tone of the figure are illustration only. <a href="#help/start/body" data-help="start/body">More</a></div>`;
 }
+function drawBody() {
+  if (!BASIC || !$("bodyFig")) return;
+  const a = ageEntry(S.basic);
+  if (!a) return;
+  const closed = store.get("drv_body_closed") === "1";
+  $("bodyPanel").classList.toggle("bp-closed", closed); $("bodyHead").setAttribute("aria-expanded", closed ? "false" : "true");
+  const ch = $("bodyHead").querySelector(".chev"); if (ch) ch.textContent = closed ? "▸" : "▾";
+  bodyHover = null;
+  $("bodyFig").innerHTML = bodySvg(S.basic, a);
+  fillBody(null);
+}
+function previewBody(key) { if (key !== bodyHover) { bodyHover = key; fillBody(key); } }
 function toggleBody() { store.set("drv_body_closed", store.get("drv_body_closed") === "1" ? "0" : "1"); drawBody(); }
 function useBasic() { for (const k of customKeys()) S.p[k] = defaultOf(k); S.p.z0 = Math.min(S.p.z0, S.p.H - 20); S.p.zv = Math.min(S.p.zv, S.p.H); schedule(false); }
 function basicHtml() {
@@ -2417,6 +2481,15 @@ function buildControls() {
   $("mcParams").addEventListener("click", onClick);
   $("bodyHead").addEventListener("click", e => { if (!e.target.closest("a")) toggleBody(); });
   $("bodyHead").addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); toggleBody(); } });
+  // the figure: the dashed areas are the body sites — the pointer or the keyboard focus previews one, a click or Enter selects it
+  const siteOf = t => { const el = t && t.closest && t.closest("[data-site]"); return el ? el.dataset.site : null; };
+  const fig = $("bodyFig");
+  fig.addEventListener("mouseover", e => { const k = siteOf(e.target); if (k) previewBody(k); });
+  fig.addEventListener("mouseout", e => { if (siteOf(e.target) && !siteOf(e.relatedTarget)) previewBody(null); });
+  fig.addEventListener("focusin", e => { const k = siteOf(e.target); if (k) previewBody(k); });
+  fig.addEventListener("focusout", e => { if (siteOf(e.target) && !siteOf(e.relatedTarget)) previewBody(null); });
+  fig.addEventListener("click", e => { const k = siteOf(e.target); if (k) setBasic("site", k); });
+  fig.addEventListener("keydown", e => { const k = siteOf(e.target); if (k && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); setBasic("site", k); } });
   $("left").addEventListener("change", e => { const el = e.target; if (el.id === "ageYears") setBasic("years", el.value.trim()); else if (el.dataset && el.dataset.basic) setBasic(el.dataset.basic, el.value); });
   $("left").addEventListener("input", e => { const el = e.target; if (el.id === "ageYears" && (el.value.trim() === "" || isFinite(+el.value))) setBasic("years", el.value.trim()); });
   syncFolds();
@@ -2817,14 +2890,15 @@ const HELP = [
       <p><b>Custom values.</b> Move an advanced value by hand and it stays yours: changing the basic model afterwards leaves it as it is, and the step says <span class="cchip">custom</span> and lists what you changed and what the basic model would give, with a link to take its values again. The basic selection itself is kept, so whatever else it comes to influence still knows whose skin this is. ↺ on an advanced value goes back to the basic model's value, not to the file's.</p>
       <p>The choices travel with a shared link and with <b>Save YAML</b>; the pipeline takes them as <code>--age</code> or <code>--years</code>, <code>--sex</code>, <code>--site</code> and <code>--ethnicity</code>. A link or a file that still names one of the four earlier age groups is read as the group that replaced it (0–12, 13–25, 40–54 and 70+ for the earlier 0–12, 13–25, 26–54 and 55+).</p>
       <p>What the selection gives is shown at the top of the View column: <a href="#help/start/body" data-help="start/body">the figure</a>.</p>`],
-    ["body", "The figure: whose skin", () => `<p>The first panel of the <b>View</b> column shows whose skin the model is set for: a schematic body with the <b>body site</b> marked, and underneath the tissue data of the selection — dermis and epidermis thickness, papillary thickness, the cell counts of the two layers, the senescent share and the collagen area fraction — each with a badge and its source. Click the title to fold the panel away.</p>
+    ["body", "The figure: whose skin", () => `<p>The first panel of the <b>View</b> column shows whose skin the model is set for: on the left a body with the <b>body site</b> tinted, on the right the layers of that skin drawn to scale with their thicknesses (epidermis, papillary and reticular dermis), and underneath the tissue data of the selection — dermis and epidermis thickness, papillary thickness, the cell counts of the two layers, the senescent share and the collagen area fraction — each with a badge and its source. Click the title to fold the panel away.</p>
+      <p><b>The figure is a control.</b> The dashed areas are the body sites, and the dish beside the feet is the skin model. Point at an area and the panel shows that skin as a <b>preview</b>: the column, the thicknesses and the table change, the model does not. Click the area (or focus it with the keyboard and press Enter) and the body site of step 1 is set to it. On a limb the site is drawn on both sides; the back is seen from the front, so a band across the shoulders stands for it.</p>
       <p><b>The badges</b> say what kind of number a value is:</p>
       <ul><li><span class="kd kd-measured">measured</span> — a group mean of donors, at the mean age of those donors (or anywhere within their ages beyond the outermost mean), or a value measured at the body site.</li>
       <li><span class="kd kd-interpolated">interpolated</span> — on the straight line between two measured group means. No donor of that age was measured; hover over the badge for the two groups.</li>
       <li><span class="kd kd-held">held</span> — beyond the youngest or the oldest group mean the value is kept, never extrapolated.</li>
       <li><span class="kd kd-regression">regression</span> — from a published fit on age, inside the ages it was fitted for: the skin thickness that scales the dermis of a body site (${cite("tan1982ultrasound")}) and the collagen area fraction (${cite("marcosgarces2014collagen")}).</li></ul>
-      <p>The <b>collagen area fraction</b> is shown only: no value of the model takes it. A value marked <span class="cchip">yours</span> is an advanced value you changed by hand; the table then shows what the basic model would give.</p>
-      <p><b>The figure is an illustration.</b> Its size and proportions follow the age, its build the sex and its tone the ethnicity; none of these is taken from a source, and none sets a value. Ethnicity in particular sets nothing: ${renderNote((DP.basic || { ethnicity: { note: "" } }).ethnicity.note)} The <b>skin model</b> is a reconstructed tissue in a dish, not a place on the body, so the figure is greyed and neither the sex nor the age changes its thickness. How the age groups were derived: <a href="#help/model/age" data-help="model/age">Age of the skin</a>.</p>`],
+      <p>The <b>collagen area fraction</b> is shown only: no value of the model takes it. So are the last two rows, the papillary and the reticular thickness by the regressions of a second histology series (${cite("marcosgarces2014collagen")}): they stand beside the values in use for comparison. For the papillary dermis the two differ, and imaging of living skin finds the opposite trend with age (${cite("pedrazzani2020lcoct")}, ${cite("boone2015hdoct")}); see <a href="#help/model/age" data-help="model/age">Age of the skin</a>. A value marked <span class="cchip">yours</span> is an advanced value you changed by hand; the table then shows what the basic model would give.</p>
+      <p><b>The figure is an illustration.</b> Its outline is a blend of three hand-drawn bodies, a small child, a man and a woman: its size and proportions follow the age, its build the sex (from puberty on) and its tone the ethnicity; none of these is taken from a source, and none sets a value. Ethnicity in particular sets nothing: ${renderNote((DP.basic || { ethnicity: { note: "" } }).ethnicity.note)} The <b>skin model</b> is a reconstructed tissue in a dish, not a place on the body, so the figure is greyed and neither the sex nor the age changes its thickness. How the age groups were derived: <a href="#help/model/age" data-help="model/age">Age of the skin</a>.</p>`],
     ["steps", "The steps of the design", () => `<p>The controls on the left describe the design, top down in the order you would decide it:</p>
       <ol>${(DP.groups || []).filter(g => (g.place || "design") === "design").map(g => `<li><b>${esc(g.title)}</b> — ${renderNote(g.note)}</li>`).join("")}</ol>
       <p>One step is open at a time: click a step's title to switch. A closed step shows how many of its values differ from their defaults, so a link someone shares with you cannot hide what it changed. Inside a step, the few values that usually matter come first and the rest fold away behind <b>▾ n more</b>; the fold opens itself when a folded value is not at its default.</p>
@@ -3136,7 +3210,7 @@ window.__drv = {
   scaffold: () => scaffoldPlan(S.p, geoPattern()),
   scFiles, paramsYaml, applyFile, readYamlish,
   stateQuery, syncUrl, readUrlState, resetParam, isDefault,
-  basicValues, ageEntry, setBasic, basic: () => ({ ...S.basic }),
+  basicValues, ageEntry, setBasic, basic: () => ({ ...S.basic }), previewBody,
   openHelp, closeHelp, helpTargets: () => [...document.querySelectorAll("[data-help]")].map(a => a.dataset.help)
 };
 
