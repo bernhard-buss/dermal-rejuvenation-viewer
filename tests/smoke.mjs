@@ -114,6 +114,33 @@ if (!errors.length) {
     ctx.applyFile(yaml, "parameters.yaml");
   } catch (e) { errors.push("Save YAML: " + (e.stack || e).toString().split("\n")[0]); }
 }
+// The basic model: the viewer looks its values up in the exported table and must give, selection for
+// selection, what dermsim.params.basic_values gives (golden.json, "basic"): every age group, a spread
+// of ages in years, both sexes, the skin model and measured body sites, and the earlier group keys.
+if (!errors.length) {
+  try {
+    const golden = JSON.parse(readFileSync(new URL("../data/golden.json", import.meta.url), "utf8")).basic || [];
+    if (!golden.length) errors.push("golden.json has no cases of the basic model");
+    const drv = ctx.window.__drv, renamed = ctx.window.DRV_PARAMS.presets.renamed || {};
+    let bad = 0;
+    for (const c of golden) {
+      const sel = { ...ctx.window.DRV_PARAMS.basic.defaults, years: "", ...c.sel };
+      if (renamed[sel.age]) sel.age = renamed[sel.age];
+      if (sel.years !== "") sel.years = String(sel.years);
+      const got = drv.basicValues(sel);
+      for (const [k, v] of Object.entries(c.values)) if (got[k] !== v && bad++ < 5) errors.push(`basic model ${JSON.stringify(c.sel)}: ${k} = ${got[k]}, the pipeline gives ${v}`);
+      if (Object.keys(got).length !== Object.keys(c.values).length && bad++ < 5) errors.push(`basic model ${JSON.stringify(c.sel)}: sets ${Object.keys(got)} instead of ${Object.keys(c.values)}`);
+    }
+    // an age in years decides its group, travels in the address, and an earlier group key is read as its successor
+    drv.setBasic("years", "47");
+    if (drv.basic().age !== "age40to54" || !/(^|&)years=47(&|$)/.test(drv.stateQuery()) || /(^|&)age=/.test(drv.stateQuery())) errors.push("an age of 47 years should select the group 40–54 and travel as years=47 only: " + drv.stateQuery());
+    drv.setBasic("age", "age13to25");
+    if (drv.basic().years !== "" || !/(^|&)age=age13to25(&|$)/.test(drv.stateQuery())) errors.push("choosing a group should clear the age in years: " + drv.stateQuery());
+    drv.setBasic("age", ctx.window.DRV_PARAMS.basic.defaults.age);
+    if (drv.stateQuery() !== "") errors.push("back at the default selection the address should be empty: " + drv.stateQuery());
+    if (!/<svg/.test(byId("bodyFig").innerHTML) || !/Papillary dermis thickness/.test(byId("bodyData").innerHTML)) errors.push("the figure of whose skin or its data table was not drawn");
+  } catch (e) { errors.push("basic model: " + (e.stack || e).toString().split("\n").slice(0, 2).join(" | ")); }
+}
 // DRV_PACK_OUT=DIR writes the hand-off pack of the default design, so the pipeline's test suite
 // can compare it byte for byte with `python -m dermsim scaffold --out`.
 if (!errors.length && process.env.DRV_PACK_OUT) {

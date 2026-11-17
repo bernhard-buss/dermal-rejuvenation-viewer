@@ -116,6 +116,24 @@ footer{flex:none;padding:4px 18px 6px}
 .cchip{font-size:10.5px;color:#5B420F;background:var(--amber-bg);border:1px solid #D9A74A;border-radius:999px;padding:0 7px;text-transform:none;letter-spacing:0;font-weight:500}
 .cchip[hidden]{display:none}
 .subpanel{border-bottom:1px solid #F0ECE5;padding-bottom:6px;margin-bottom:8px}
+.yrs{font-size:12.5px;color:var(--soft)} .yrs input{width:58px;font:inherit;font-size:13px;padding:1px 4px;border:1px solid var(--rule);border-radius:6px;background:#fff}
+button.mini{padding:0 6px;font-size:12px;line-height:18px}
+.seg[data-basic="age"]{display:flex;flex:1 1 100%} .seg[data-basic="age"] button{flex:1;padding:3px 2px;white-space:nowrap;font-size:12.5px}
+.brow.age .blab{width:auto;flex:1 1 100%}
+.kd{font-size:10.5px;padding:0 6px;border-radius:999px;border:1px solid;white-space:nowrap;line-height:16px;display:inline-block;cursor:help}
+.kd-measured{color:var(--teal);border-color:var(--teal)} .kd-interpolated{color:var(--teal);border-color:var(--teal);border-style:dashed}
+.kd-held{color:var(--soft);border-color:#B8C0C4;border-style:dotted} .kd-regression{color:var(--terra);border-color:var(--terra)}
+.bp-head{cursor:pointer;user-select:none} .bp-head .chev{margin-left:auto;color:var(--soft);font-size:11px;padding-left:6px}
+.bp-sum{font-size:12px;color:var(--soft);font-weight:400;text-transform:none;letter-spacing:0;margin-left:6px}
+.bp-body{display:flex;gap:14px;align-items:flex-start;flex-wrap:wrap}
+.bodypanel.bp-closed{padding-bottom:6px} .bodypanel.bp-closed .bp-body{display:none}
+.bp-fig{flex:0 0 240px;max-width:100%} .bp-fig svg{width:100%;height:auto;display:block}
+.bp-data{flex:1 1 320px;min-width:0;font-size:12.5px}
+.bp-data table{border-collapse:collapse;width:100%} .bp-data td{padding:4px 8px 4px 0;vertical-align:top;border-bottom:1px solid #F0ECE5}
+.bp-data td.v{white-space:nowrap;font-weight:600} .bp-data td.d{color:var(--soft)} .bp-data .yours{color:#5B420F;font-weight:500}
+.bp-data .note{margin-top:6px}
+@media (max-width:620px){ .bp-data tr{display:grid;grid-template-columns:1fr auto auto;gap:0 8px;border-bottom:1px solid #F0ECE5;padding:3px 0}
+  .bp-data td{border-bottom:0;padding:1px 0} .bp-data td.d{grid-column:1 / -1} }
 .panel.off{display:none}
 button.warn{color:var(--terra);border-color:var(--terra)}
 .badge{font-size:10.5px;padding:0 6px;border-radius:999px;border:1px solid;cursor:pointer;text-decoration:none;white-space:nowrap;line-height:16px}
@@ -232,6 +250,10 @@ a.cite{text-decoration:none;border-bottom:1px dotted var(--teal)}
 <main>
   <section id="left" data-col="model"></section>
   <section class="stage" data-col="view">
+    <div class="panel bodypanel" id="bodyPanel">
+      <h2 class="bp-head" id="bodyHead" tabindex="0" role="button" aria-expanded="true" aria-controls="bodyBody">Whose skin <a class="hl" href="#help/start/body" data-help="start/body" title="Help: the figure and its data">ⓘ</a><span class="bp-sum" id="bodySum"></span><span class="chev" aria-hidden="true">▾</span></h2>
+      <div class="bp-body" id="bodyBody"><div class="bp-fig" id="bodyFig"></div><div class="bp-data" id="bodyData"></div></div>
+    </div>
     <div class="panel">
       <div class="toolbar">
         <span>Show</span>
@@ -327,7 +349,7 @@ a.cite{text-decoration:none;border-bottom:1px dotted var(--teal)}
 <script src="data/parameters.js"></script>
 <script>
 "use strict";
-const VERSION = "0.13.0";
+const VERSION = "0.14.0";
 const $ = id => document.getElementById(id);
 function esc(s) { return String(s).replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); }
 
@@ -344,7 +366,7 @@ const SOURCES = DP.sources, SIGNAL = DP.signal;
 const link = s => s.doi ? `https://doi.org/${s.doi}` : s.pmid ? `https://pubmed.ncbi.nlm.nih.gov/${s.pmid}/` : s.url;
 const cite = key => SOURCES[key] ? `<a class="cite" href="#help/refs/${key}" data-help="refs/${key}">${esc(SOURCES[key].short)}</a>`
   : (console.warn("missing source", key), `<b style="color:#A9472F">[missing source: ${esc(key)}]</b>`);
-const renderNote = t => esc(t).replace(/\{cite:([a-z0-9]+)\}/g, (_, k) => cite(k))
+const renderNote = t => esc(t).replace(/\*\*([^*]+)\*\*/g, "<b>$1</b>").replace(/\{cite:([a-z0-9]+)\}/g, (_, k) => cite(k))
   .replace(/\{help:([a-z0-9_\/-]+)\|([^}]*)\}/g, (_, h, txt) => `<a href="#help/${h}" data-help="${h}">${txt}</a>`);
 // status: "src" sourced value · "ana" analogue (published, related system or quantity) ·
 // "ph" placeholder (no checked source yet) · "des" design choice or view setting.
@@ -1362,7 +1384,7 @@ if (worker) {
 const S = { p: {}, pattern: "hex", mode: "window", edit: false, custom: [], zvLinked: true, seed: 7, scTile: true,
   opt: { mode: "both", res: null, list: [], idx: -1, before: null, running: false, current: null },
   mc: { res: null, ref: null, key: null, running: false, overlay: false, front: null, frontRunning: false } };
-function resetParams() { for (const d of PARAMS) S.p[d.key] = d.def; S.basic = { ...((DP.basic && DP.basic.defaults) || {}) }; S.pattern = "hex"; S.custom = []; S.zvLinked = true; }
+function resetParams() { for (const d of PARAMS) S.p[d.key] = d.def; S.basic = { ...((DP.basic && DP.basic.defaults) || {}), years: "" }; S.pattern = "hex"; S.custom = []; S.zvLinked = true; }
 resetParams();
 const geoPattern = () => S.pattern === "square" ? "square" : "hex";
 
@@ -2145,13 +2167,39 @@ const groupSliders = g => {                                        // primary va
 // body site and sex: dermis and epidermis thickness), computed by dermsim.params from measurements.
 // An advanced value moved by hand stays as it is when the selection changes ("custom"), and the
 // selection itself is kept, for whatever else it may come to influence.
-const AGES = (DP.presets && DP.presets.groups) || [], SITES = (DP.sites && DP.sites.groups) || [], BASIC = DP.basic || null;
+const AGES = (DP.presets && DP.presets.groups) || [], YEARS = (DP.presets && DP.presets.years) || null, AGE_RENAMED = (DP.presets && DP.presets.renamed) || {};
+const SITES = (DP.sites && DP.sites.groups) || [], BASIC = DP.basic ? { ...DP.basic, defaults: { ...DP.basic.defaults, years: "" } } : null;
 const BASIC_KEYS = new Set(BASIC ? [...BASIC.sets.age, ...BASIC.sets.site] : []);
-const ageLabel = g => g.title.replace(/ years and over$/, "+").replace(/ years$/, "");
+const ageLabel = g => g.short || g.title;
+// An age in years is a whole number from 0 to the oldest age of the table; "" means: the group decides.
+const yearsOf = sel => (YEARS && sel.years !== "" && sel.years != null && isFinite(+sel.years)) ? Math.min(YEARS.max, Math.max(0, Math.round(+sel.years))) : null;
+// What the age of a selection gives: one of the six groups, or one whole year of age. Both are looked up:
+// dermsim.params computed them (group means joined by straight lines, a published regression for the
+// thickness), together with what kind of number each is.
+function ageEntry(sel) {
+  const y = yearsOf(sel);
+  if (y === null) {
+    const g = AGES.find(g => g.key === sel.age);
+    if (!g) return null;
+    const raw = {}; for (const q in g.raw) raw[q] = g.raw[q].value;
+    return { ...g, raw, years: null, age: g.at, label: ageLabel(g) };
+  }
+  const run = k => YEARS.provenance[k].find(r => y >= r.from && y <= r.to);
+  const values = {}, raw = {}, provenance = {}, shown = {};
+  for (const k in YEARS.values) values[k] = YEARS.values[k][y];
+  for (const q in YEARS.raw) { raw[q] = YEARS.raw[q][y]; provenance[q] = run(q); }
+  for (const k in YEARS.shown) shown[k] = { value: YEARS.shown[k][y], ...DP.presets.shown_titles[k], ...run(k) };
+  return { key: YEARS.group[y], years: y, age: y, label: y + " y", values, raw, provenance, shown,
+    factor: { female: { value: YEARS.factor.female[y], ...run("factor_female") }, male: { value: YEARS.factor.male[y], ...run("factor_male") } } };
+}
 function basicValues(sel) {                                        // as dermsim.params.basic_values
-  const out = {}, a = AGES.find(g => g.key === sel.age), st = SITES.find(g => g.key === sel.site);
+  const out = {}, a = ageEntry(sel), st = SITES.find(g => g.key === sel.site), sex = st && st.values[sel.sex] ? sel.sex : BASIC.defaults.sex;
   if (a) Object.assign(out, a.values);
-  if (st) Object.assign(out, st.values[sel.sex] || st.values[BASIC.defaults.sex]);
+  if (st) {
+    const v = { ...st.values[sex] };
+    if (st.measured && a) v.H = Math.round(v.H * a.factor[sex].value * 10) / 10;   // the dermis of a body site, scaled to the age
+    Object.assign(out, v);
+  }
   return out;
 }
 const near = (a, b) => Math.abs(a - b) <= 1e-9 * Math.max(1, Math.abs(b));
@@ -2161,14 +2209,104 @@ function defaultOf(key) {                                          // the basic 
 }
 const customKeys = () => [...BASIC_KEYS].filter(k => k in S.p && !near(S.p[k], defaultOf(k)));
 function setBasic(dim, v) {
-  if (!BASIC || S.basic[dim] === v) return;
+  if (!BASIC) return;
+  const next = { ...S.basic };
+  if (dim === "years") {                                           // an age in years also decides the group; "" gives the group back
+    if (v !== "" && !isFinite(+v)) return;
+    next.years = v === "" || !YEARS ? "" : String(Math.min(YEARS.max, Math.max(0, Math.round(+v))));
+    if (next.years !== "") next.age = YEARS.group[+next.years];
+  } else {
+    next[dim] = v;
+    if (dim === "age") next.years = "";
+  }
+  if (Object.keys(next).every(k => next[k] === S.basic[k])) return;
   const before = basicValues(S.basic);
-  S.basic = { ...S.basic, [dim]: v };
+  S.basic = next;
   const after = basicValues(S.basic);
   for (const [k, x] of Object.entries(after)) if (before[k] === undefined || near(S.p[k], before[k])) S.p[k] = x;   // custom values stay
   S.p.z0 = Math.min(S.p.z0, S.p.H - 20); S.p.zv = Math.min(S.p.zv, S.p.H);
   schedule(false);
 }
+// --- the figure: whose skin ------------------------------------------------------------------------
+// A schematic body for the selection. Its size and proportions follow the age and its build the sex, as an
+// illustration only (no body measure is taken from a source), and so is the skin tone for the ethnicity,
+// which sets no value. The marker is the body site. Underneath: the tissue data of the selection, each
+// with what kind of number it is (measured, interpolated, held, regression) and its source.
+const BODY_TONE = { "unspecified": ["#D8CBBE", "#A89888"], "African American": ["#8A5A3C", "#5E3B26"], "Caucasian": ["#F0D2BC", "#C09A80"],
+  "Chinese": ["#E8C7A0", "#B8946C"], "Mexican": ["#C8946C", "#946844"] };
+function bodySvg(sel, a, st, v) {
+  const y = a.age, male = sel.sex === "male", f1 = x => x.toFixed(1);
+  const grow = y < 18 ? 0.34 + 0.66 * Math.pow(y / 18, 0.8) : y > 70 ? 1 - 0.03 * Math.min(1, (y - 70) / 20) : 1;   // height, schematic
+  const hf = y < 18 ? 0.25 - 0.117 * (y / 18) : 0.133;                 // the head as a share of the height
+  const t = Math.min(1, Math.max(0, (y - 10) / 6));                    // the build of the sexes differs from puberty on
+  const base = 388, h = 356 * grow, top = base - h, cx = 82, rh = h * hf / 2;
+  const sh = h * (0.225 + t * (male ? 0.04 : 0.005)), hip = h * (0.20 + t * (male ? -0.005 : 0.03)), waist = h * (0.185 + t * (male ? -0.005 : -0.035));
+  const yN = top + 2 * rh, ySh = yN + h * 0.035, yW = top + h * 0.43, yH = top + h * 0.52, yK = top + h * 0.75, yA = base - h * 0.02;
+  const arm = h * 0.05, leg = h * 0.076;
+  const [tone, line] = BODY_TONE[sel.ethnicity] || BODY_TONE.unspecified;
+  const limb = (pts, w) => { const d = pts.map((p, i) => (i ? "L" : "M") + f1(p[0]) + " " + f1(p[1])).join(" ");
+    return `<path d="${d}" fill="none" stroke="${line}" stroke-width="${f1(w + 2)}" stroke-linecap="round" stroke-linejoin="round"/><path d="${d}" fill="none" stroke="${tone}" stroke-width="${f1(w)}" stroke-linecap="round" stroke-linejoin="round"/>`; };
+  const side = s => limb([[cx + s * (sh / 2 - arm * 0.25), ySh + arm * 0.55], [cx + s * (sh / 2 + arm * 0.8), top + h * 0.40], [cx + s * (sh / 2 + arm * 1.15), top + h * 0.545]], arm) +
+    limb([[cx + s * hip * 0.25, yH], [cx + s * hip * 0.27, yK], [cx + s * hip * 0.26, yA]], leg) +
+    `<ellipse cx="${f1(cx + s * (hip * 0.26 + h * 0.018))}" cy="${f1(base - h * 0.008)}" rx="${f1(h * 0.045)}" ry="${f1(h * 0.015)}" fill="${tone}" stroke="${line}" stroke-width="1.2"/>`;
+  const torso = [[cx - sh / 2, ySh], [cx + sh / 2, ySh], [cx + waist / 2, yW], [cx + hip / 2, yH], [cx + hip / 2, yH + h * 0.035], [cx - hip / 2, yH + h * 0.035], [cx - hip / 2, yH], [cx - waist / 2, yW]]
+    .map(p => f1(p[0]) + "," + f1(p[1])).join(" ");
+  const figure = side(-1) + side(1) +
+    `<rect x="${f1(cx - rh * 0.3)}" y="${f1(yN - rh * 0.2)}" width="${f1(rh * 0.6)}" height="${f1(ySh - yN + rh * 0.35)}" fill="${tone}" stroke="${line}" stroke-width="1.2"/>` +
+    `<polygon points="${torso}" fill="${tone}" stroke="${line}" stroke-width="1.2" stroke-linejoin="round"/>` +
+    `<ellipse cx="${cx}" cy="${f1(top + rh)}" rx="${f1(rh * 0.82)}" ry="${f1(rh)}" fill="${tone}" stroke="${line}" stroke-width="1.2"/>`;
+  const at = { forehead: [cx, top + rh * 0.5], chest: [cx, ySh + h * 0.07], abdomen: [cx, yW + h * 0.015], back: [cx, ySh + h * 0.055],
+    upperarm: [cx + sh / 2 + arm * 0.35, ySh + h * 0.10], forearm: [cx + sh / 2 + arm * 0.98, top + h * 0.475],
+    thigh: [cx + hip * 0.26, yH + (yK - yH) * 0.5], leg: [cx + hip * 0.265, yK + (yA - yK) * 0.5], foot: [cx + hip * 0.26 + h * 0.018, base - h * 0.012] }[st.key];
+  const lx = 166, ink = "#1B2A33", soft = "#44525A", teal = "#2A6F75";
+  let mark;
+  if (at) {
+    const ly = Math.min(372, Math.max(24, at[1]));
+    mark = `<line x1="${f1(at[0] + 8)}" y1="${f1(at[1])}" x2="${lx - 6}" y2="${f1(ly)}" stroke="${teal}" stroke-width="1"/>` +
+      `<circle cx="${f1(at[0])}" cy="${f1(at[1])}" r="7.5" fill="#fff" fill-opacity=".55" stroke="${teal}" stroke-width="2"${st.key === "back" ? ' stroke-dasharray="3 2.5"' : ""}/><circle cx="${f1(at[0])}" cy="${f1(at[1])}" r="2.4" fill="${teal}"/>` +
+      `<text x="${lx}" y="${f1(ly - 2)}" font-size="13" font-weight="600" fill="${ink}">${esc(st.title)}${st.key === "back" ? " (behind)" : ""}</text>` +
+      `<text x="${lx}" y="${f1(ly + 14)}" font-size="12" fill="${soft}">dermis ${esc(fmt(v.H))} µm</text><text x="${lx}" y="${f1(ly + 29)}" font-size="12" fill="${soft}">epidermis ${esc(fmt(v.hep))} µm</text>`;
+  } else {                                                           // the skin model: a reconstructed tissue in a dish, not a place on the body
+    mark = `<ellipse cx="212" cy="342" rx="46" ry="11" fill="#EDE6DC" stroke="${soft}" stroke-width="1.2"/><ellipse cx="212" cy="338" rx="38" ry="7" fill="${BODY_TONE.unspecified[0]}" stroke="${BODY_TONE.unspecified[1]}" stroke-width="1"/>` +
+      `<circle cx="212" cy="338" r="2.4" fill="${teal}"/>` +
+      `<text x="${lx}" y="296" font-size="13" font-weight="600" fill="${ink}">Skin model</text><text x="${lx}" y="312" font-size="12" fill="${soft}">reconstructed tissue,</text><text x="${lx}" y="326" font-size="12" fill="${soft}">not a body site</text>`;
+  }
+  const who = `${sel.sex}, ${a.years !== null ? a.years + " years" : ageLabel(a) + " years"}${sel.ethnicity !== "unspecified" ? ", " + sel.ethnicity : ""}`;
+  return `<svg viewBox="0 0 280 400" role="img" aria-label="Schematic body: ${esc(who)}; ${esc(st.title)}">` +
+    `<line x1="14" y1="${base + 4}" x2="150" y2="${base + 4}" stroke="#D9D2C7" stroke-width="1.5"/>` +
+    `<g${at ? "" : ' opacity=".32"'}>${figure}</g>${mark}` +
+    `<text x="14" y="16" font-size="12" fill="${soft}">${esc(who)}</text></svg>`;
+}
+function drawBody() {
+  if (!BASIC || !$("bodyFig")) return;
+  const sel = S.basic, a = ageEntry(sel), st = SITES.find(g => g.key === sel.site), v = basicValues(sel);
+  if (!a || !st) return;
+  const closed = store.get("drv_body_closed") === "1";
+  $("bodyPanel").classList.toggle("bp-closed", closed); $("bodyHead").setAttribute("aria-expanded", closed ? "false" : "true");
+  const ch = $("bodyHead").querySelector(".chev"); if (ch) ch.textContent = closed ? "▸" : "▾";
+  $("bodySum").textContent = `${sel.sex} · ${a.years !== null ? a.years + " y" : ageLabel(a) + " y"} · ${st.title}${sel.ethnicity !== "unspecified" ? " · " + sel.ethnicity : ""}`;
+  $("bodyFig").innerHTML = bodySvg(sel, a, st, v);
+  const kd = p => `<span class="kd kd-${p.kind}" title="${esc(p.text)}">${p.kind}</span>`;
+  const yours = k => k && k in S.p && !near(S.p[k], v[k]) ? ` <span class="yours" title="You changed this advanced value by hand">· yours: ${fmt(S.p[k])}</span>` : "";
+  const fac = a.factor[sel.sex], fit = DP.presets.fits.thickness, pv = a.provenance;
+  const rows = [
+    ["Dermis thickness", `${fmt(v.H)} µm`, st.measured ? kd(fac) : kd({ kind: "measured", text: "the reconstructed skin model" }),
+      st.measured ? `${fmt(st.values[sel.sex].H)} µm by ultrasound at this site in ${sel.sex} volunteers of median age ${fit.reference[sel.sex]} y (${cite(DP.sites.source)}), × ${fac.value.toFixed(3)} for the age: ${esc(fac.text)} (${cite(fit.source)})`
+        : `the group's reconstructed skin model (${cite("roy2024implanting")}); not a body site, so not scaled with age`, "H"],
+    ["Epidermis thickness", `${fmt(v.hep)} µm`, kd({ kind: "measured", text: st.measured ? "measured at this site" : "the value used for the skin model" }),
+      st.measured ? `by ultrasound at this site (${cite(DP.sites.source)}); not changed with age` : `forearm epidermis by histology (${cite("sandbymoller2003epidermis")})`, "hep"],
+    ["Papillary dermis thickness", `${fmt(v.hpap)} µm`, kd(pv.hpap), `${esc(pv.hpap.text)} (${cite(pv.hpap.source)})`, "hpap"],
+    ["Cells, papillary dermis", `${fmt(a.raw.cells_pap)} / mm²`, kd(pv.cells_pap), `all nuclei per mm² of section; ${esc(pv.cells_pap.text)} (${cite(pv.cells_pap.source)})`, null],
+    ["Cells, reticular dermis", `${fmt(a.raw.cells_ret)} / mm²`, kd(pv.cells_ret), `${esc(pv.cells_ret.text)} (${cite(pv.cells_ret.source)})`, null],
+    ["Senescent share of cells", `${fmt(100 * v.fsen)} %`, kd(pv.p21),
+      `p21-positive dermal cells, ${fmt(a.raw.p21)}× those of the youngest donors, scaled to ${fmt(100 * DP.presets.senescent.oldest)} % in the oldest; ${esc(pv.p21.text)} (${cite(pv.p21.source)})`, "fsen"],
+    ...Object.entries(a.shown).map(([k, x]) => [x.title, `${fmt(x.value)} ${esc(x.unit)}`, kd(x), `${esc(x.text)} (${cite(x.source)}); shown only: no value of the model takes it`, null])
+  ];
+  $("bodyData").innerHTML = `<table>${rows.map(r => `<tr><td>${r[0]}</td><td class="v">${r[1]}${yours(r[4])}</td><td>${r[2]}</td><td class="d">${r[3]}</td></tr>`).join("")}</table>
+    <div class="note"><b>From these the model takes</b> ${fmt(v.rpap)}× as many cells in the papillary as in the reticular dermis${yours("rpap")}, a cellularity of ${v.cells.toFixed(2)}× that of the oldest group${yours("cells")}, and the spread between donors (${fmt(100 * v.cvpap)} %, ${fmt(100 * v.cvret)} % and ${fmt(100 * v.cvhpap)} % of the papillary cells, the reticular cells and the papillary thickness).
+    <span class="kd kd-measured">measured</span> a group mean of donors · <span class="kd kd-interpolated">interpolated</span> on the straight line between two group means · <span class="kd kd-held">held</span> beyond the last mean, not extrapolated · <span class="kd kd-regression">regression</span> from a published fit on age. Size, build and skin tone of the figure are illustration only. <a href="#help/start/body" data-help="start/body">More</a></div>`;
+}
+function toggleBody() { store.set("drv_body_closed", store.get("drv_body_closed") === "1" ? "0" : "1"); drawBody(); }
 function useBasic() { for (const k of customKeys()) S.p[k] = defaultOf(k); S.p.z0 = Math.min(S.p.z0, S.p.H - 20); S.p.zv = Math.min(S.p.zv, S.p.H); schedule(false); }
 function basicHtml() {
   if (!BASIC) return "";
@@ -2176,7 +2314,8 @@ function basicHtml() {
   const sel = (dim, opts) => `<select data-basic="${dim}" aria-label="${dim}">${opts.map(([k, t]) => `<option value="${esc(k)}">${esc(t)}</option>`).join("")}</select>`;
   return `<h3 class="subhead">Basic <a class="hl" href="#help/start/presets" data-help="start/presets" title="Help: the basic model">ⓘ</a></h3>
     <div class="basic">
-      <div class="brow"><span class="blab">Age</span>${seg("age", AGES.map(g => [g.key, ageLabel(g), g.title]))}</div>
+      <div class="brow age"><span class="blab">Age</span>${seg("age", AGES.map(g => [g.key, ageLabel(g), g.title + ", taken at " + fmt(g.at) + " years"]))}</div>
+      <div class="brow"><label class="yrs" title="An age in years: the values are taken at that age, between the measured group means">or exactly <input type="number" id="ageYears" min="0" max="${YEARS ? YEARS.max : 100}" step="1" inputmode="numeric" placeholder="–" aria-label="Age in years"> years</label><button class="mini" id="ageYearsClear" title="Back to the age group" aria-label="Clear the age in years" hidden>×</button></div>
       <div class="brow"><span class="blab">Sex</span>${seg("sex", BASIC.sex.map(x => [x, x]))}<span class="note" id="sexNote" title="The skin model is a reconstructed tissue, the same for both sexes; at a measured body site the sex sets the dermis and epidermis thickness" hidden>sets nothing for the skin model</span></div>
       <div class="brow"><span class="blab">Body site</span>${sel("site", SITES.map(g => [g.key, g.title]))}</div>
       <div class="brow"><span class="blab">Ethnicity</span>${sel("ethnicity", BASIC.ethnicity.options.map(x => [x, x]))}<span class="note" title="No checked source gives tissue values by ethnicity; the choice is kept with the selection">sets nothing</span></div>
@@ -2192,10 +2331,14 @@ function syncBasic() {
     if (el.tagName === "SELECT") el.value = S.basic[dim];
     else for (const b of el.querySelectorAll("button")) b.classList.toggle("on", b.dataset.v === S.basic[dim]);
   }
-  const a = AGES.find(g => g.key === S.basic.age), st = SITES.find(g => g.key === S.basic.site), v = basicValues(S.basic);
-  $("basicNote").innerHTML = (a ? `<b>${esc(ageLabel(a))}</b>: papillary dermis ${fmt(v.hpap)} µm, ${fmt(v.rpap)}× the reticular cells, cellularity ${v.cells.toFixed(2)}×, senescent ${fmt(100 * v.fsen)} % (${cite(DP.presets.source)}${DP.presets.senescent ? ", " + cite(DP.presets.senescent.source) : ""}). ` : "") +
-    (st ? `<b>${esc(st.title)}</b>${st.measured ? `, ${esc(S.basic.sex)}` : ""}: dermis ${fmt(v.H)} µm, epidermis ${fmt(v.hep)} µm (${st.measured ? cite(DP.sites.source) : cite("roy2024implanting")}). ` : "") +
+  const a = ageEntry(S.basic), st = SITES.find(g => g.key === S.basic.site), v = basicValues(S.basic);
+  if ($("ageYears")) { if (document.activeElement !== $("ageYears")) $("ageYears").value = S.basic.years; $("ageYearsClear").hidden = S.basic.years === ""; }
+  const kd = q => `<span class="kd kd-${a.provenance[q].kind}" title="${esc(a.provenance[q].text)}">${a.provenance[q].kind}</span>`;
+  const grp = a && AGES.find(g => g.key === a.key);
+  $("basicNote").innerHTML = (a ? `<b>${a.years !== null ? a.years + " years" : esc(grp.title)}</b> ${a.years !== null ? `(group ${esc(ageLabel(grp))})` : `(taken at ${fmt(a.age)} y)`}: papillary dermis ${fmt(v.hpap)} µm ${kd("hpap")}, ${fmt(v.rpap)}× the reticular cells, cellularity ${v.cells.toFixed(2)}×, senescent ${fmt(100 * v.fsen)} % ${kd("p21")} (${cite(DP.presets.source)}${DP.presets.senescent ? ", " + cite(DP.presets.senescent.source) : ""}). ` : "") +
+    (st ? `<b>${esc(st.title)}</b>${st.measured ? `, ${esc(S.basic.sex)}` : ""}: dermis ${fmt(v.H)} µm${st.measured && a ? ` (${fmt(st.values[S.basic.sex].H)} µm × ${a.factor[S.basic.sex].value.toFixed(3)} for the age, ${cite(DP.presets.fits.thickness.source)})` : ""}, epidermis ${fmt(v.hep)} µm (${st.measured ? cite(DP.sites.source) : cite("roy2024implanting")}). ` : "") +
     `<a href="#help/start/presets" data-help="start/presets">What each choice sets</a>`;
+  drawBody();
   if ($("sexNote")) $("sexNote").hidden = !st || st.measured;
   const cus = customKeys();
   $("advChip").hidden = !cus.length;
@@ -2262,6 +2405,7 @@ function buildControls() {
     const bb = e.target.closest("[data-basic] button");
     if (bb) { setBasic(bb.parentElement.dataset.basic, bb.dataset.v); return; }
     if (e.target.closest("#useBasic")) { e.preventDefault(); useBasic(); return; }
+    if (e.target.closest("#ageYearsClear")) { setBasic("years", ""); return; }
     const fb = e.target.closest("button.foldbtn");
     if (!fb) return;
     const k = fb.dataset.step;
@@ -2271,7 +2415,10 @@ function buildControls() {
   };
   $("left").addEventListener("click", onClick);
   $("mcParams").addEventListener("click", onClick);
-  $("left").addEventListener("change", e => { const el = e.target; if (el.dataset && el.dataset.basic) setBasic(el.dataset.basic, el.value); });
+  $("bodyHead").addEventListener("click", e => { if (!e.target.closest("a")) toggleBody(); });
+  $("bodyHead").addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); toggleBody(); } });
+  $("left").addEventListener("change", e => { const el = e.target; if (el.id === "ageYears") setBasic("years", el.value.trim()); else if (el.dataset && el.dataset.basic) setBasic(el.dataset.basic, el.value); });
+  $("left").addEventListener("input", e => { const el = e.target; if (el.id === "ageYears" && (el.value.trim() === "" || isFinite(+el.value))) setBasic("years", el.value.trim()); });
   syncFolds();
 }
 // the section titles switch sections (a click on an ⓘ inside one opens its help instead)
@@ -2380,7 +2527,7 @@ const RENAMED = DP.renamed || {};
 const sig4 = v => +(+v).toPrecision(4);
 function stateQuery() {
   const q = new URLSearchParams();
-  for (const [k, v] of Object.entries(S.basic)) if (BASIC && v !== BASIC.defaults[k]) q.set(k, v);
+  for (const [k, v] of Object.entries(S.basic)) if (BASIC && v !== BASIC.defaults[k] && !(k === "age" && S.basic.years !== "")) q.set(k, v);   // an age in years implies its group
   for (const def of PARAMS) if (!isDefault(def.key)) q.set(def.key, sig4(S.p[def.key]));
   if (S.pattern !== "hex") q.set("pattern", S.pattern);
   if (S.mode !== "window") q.set("show", S.mode === "resp" ? "response" : "concentration");
@@ -2397,7 +2544,14 @@ function readUrlState() {
   for (const [old, now] of Object.entries(RENAMED)) if (q.has(old) && !q.has(now)) q.set(now, q.get(old));
   if (BASIC) {                                                     // the basic selection first: it sets the advanced values
     const ok = { age: AGES.map(g => g.key), sex: BASIC.sex, site: SITES.map(g => g.key), ethnicity: BASIC.ethnicity.options };
-    for (const k of Object.keys(ok)) if (q.has(k) && ok[k].includes(q.get(k))) S.basic[k] = q.get(k);
+    for (const k of Object.keys(ok)) {
+      const val = k === "age" && AGE_RENAMED[q.get(k)] ? AGE_RENAMED[q.get(k)] : q.get(k);   // a key of the four earlier groups: its successor
+      if (q.has(k) && ok[k].includes(val)) S.basic[k] = val;
+    }
+    if (YEARS && q.has("years") && q.get("years").trim() !== "" && isFinite(+q.get("years"))) {
+      S.basic.years = String(Math.min(YEARS.max, Math.max(0, Math.round(+q.get("years")))));
+      S.basic.age = YEARS.group[+S.basic.years];
+    }
     Object.assign(S.p, basicValues(S.basic));
   }
   for (const def of PARAMS) if (q.has(def.key)) { const v = parseFloat(q.get(def.key)); if (isFinite(v)) S.p[def.key] = Math.min(def.max, Math.max(def.min, v)); }
@@ -2473,7 +2627,7 @@ function paramsYaml() {
     L.push(`    status: ${d.status}`, `    sources: [${d.src.join(", ")}]`, `    note: ${yblock(d.note_raw, 6)}`);
   }
   L.push("", "design:", `  pattern: ${S.pattern}`, `  show: ${S.mode}`);
-  if (BASIC) L.push("  basic:", ...Object.entries(S.basic).map(([k, v]) => `    ${k}: ${yq(v)}`));
+  if (BASIC) L.push("  basic:", ...Object.entries(S.basic).filter(([, v]) => v !== "").map(([k, v]) => `    ${k}: ${k === "years" ? +v : yq(v)}`));
   if (S.pattern === "custom" && S.custom.length)
     L.push("  sites:", ...S.custom.map(s => `    - [${[s[0], s[1], s[2] ?? S.p.z0].map(v => Math.round(v)).join(", ")}]`));
   L.push("", "sources:");
@@ -2547,7 +2701,12 @@ function applyFile(text, name) {
   if (BASIC) {                                                     // the file's values are complete; its selection says which are custom
     const b = des.basic || {}, ok = { age: AGES.map(g => g.key), sex: BASIC.sex, site: SITES.map(g => g.key), ethnicity: BASIC.ethnicity.options };
     S.basic = { ...BASIC.defaults };
+    if (AGE_RENAMED[b.age]) b.age = AGE_RENAMED[b.age];
     for (const k of Object.keys(ok)) if (ok[k].includes(b[k])) S.basic[k] = b[k];
+    if (YEARS && b.years !== undefined && b.years !== "" && isFinite(+b.years)) {
+      S.basic.years = String(Math.min(YEARS.max, Math.max(0, Math.round(+b.years))));
+      S.basic.age = YEARS.group[+S.basic.years];
+    }
   }
   if (["hex", "square", "random", "custom"].includes(des.pattern)) S.pattern = des.pattern;
   const show = { concentration: "log", response: "resp" }[des.show] || des.show;
@@ -2652,11 +2811,20 @@ const HELP = [
       <p>The papillary / reticular boundary is the modelled one (at the papillary thickness of step 1), and the curve on the right shows how the decay length changes with depth — see <a href="#help/model/layers" data-help="model/layers">A dermis with depth</a>. The epidermis, the hypodermis and the fibres are drawn schematically: the model covers the dermis only, with no flux through the junction. With the uniform dermis switched on the boundary goes back to a schematic one.</p>`],
     ["edit", "Editing implant sites", () => `<p>Press <b>Edit sites</b>, then click the map to add a site <b>at the slice depth</b>, drag a site to move it, and shift-click a site to remove it. Editing turns the pattern into <i>custom</i>: from then on only the sites in view count, and each keeps its own depth (move the slice depth to place sites at other depths). Choose a lattice again under <i>Pattern</i> to go back.</p>`],
     ["presets", "The basic model: age, sex, body site", () => `<p>Step 1, <b>Whose skin</b>, starts with the <b>basic model</b>: a few choices that set the <b>advanced</b> tissue values below them from measurements.</p>
-      <ul><li><b>Age</b> sets the layers and cells of the dermis — papillary thickness, how many more cells the papillary dermis holds than the reticular, the overall cellularity, how much these differ between donors — from one morphometric study of four age groups (${cite("arnalforne2024dermis")}), and the senescent share from how p21-positive dermal cells rise with age (${cite("idda2020senescence")}; our mapping of its age groups onto these — it has no donors under 13, so children get the youngest group's share, an assumption). The senescent share is one of the advanced values of this step; it acts in the <a href="#help/metrics/robust" data-help="metrics/robust">Robustness</a> analysis, not on the maps. <b>55+</b> is the default. See <a href="#help/model/age" data-help="model/age">Age of the skin</a>.</li>
-      <li><b>Body site</b> and <b>sex</b> set the dermis thickness and the epidermis thickness. ${renderNote((DP.sites || { note: "" }).note)} <b>Male</b> is the default sex and the skin model the default site, so the sex sets nothing until you pick a body site.</li>
+      <ul><li><b>Age</b> is one of six groups, or an <b>exact age in years</b>. It sets the layers and cells of the dermis — papillary thickness, how many more cells the papillary dermis holds than the reticular, the overall cellularity, how much these differ between donors — and the senescent share, from group means measured in donors of known ages (${cite("arnalforne2024dermis")}, ${cite("idda2020senescence")}); at a measured body site it also scales the dermis thickness by a published regression on age (${cite("tan1982ultrasound")}). Every value says what it is: <span class="kd kd-measured">measured</span> at a group mean, <span class="kd kd-interpolated">interpolated</span> between two means, <span class="kd kd-held">held</span> beyond the last one, or from a <span class="kd kd-regression">regression</span>. The senescent share is one of the advanced values of this step; it acts in the <a href="#help/metrics/robust" data-help="metrics/robust">Robustness</a> analysis, not on the maps. <b>70+</b> is the default; it gives the values that <i>55+</i> gave before. How the groups were derived and what each rests on: <a href="#help/model/age" data-help="model/age">Age of the skin</a>.</li>
+      <li><b>Body site</b> and <b>sex</b> set the dermis thickness and the epidermis thickness. ${renderNote((DP.sites || { note: "" }).note)} <b>Male</b> is the default sex and the skin model the default site, so the sex sets nothing until you pick a body site. The dermis thickness of a site is the measured one at the median age of its volunteers (30 years for the men, 45 for the women), scaled to the age you chose.</li>
       <li><b>Ethnicity</b> is kept with the selection, but sets nothing: ${renderNote((DP.basic || { ethnicity: { note: "" } }).ethnicity.note)}</li></ul>
       <p><b>Custom values.</b> Move an advanced value by hand and it stays yours: changing the basic model afterwards leaves it as it is, and the step says <span class="cchip">custom</span> and lists what you changed and what the basic model would give, with a link to take its values again. The basic selection itself is kept, so whatever else it comes to influence still knows whose skin this is. ↺ on an advanced value goes back to the basic model's value, not to the file's.</p>
-      <p>The choices travel with a shared link and with <b>Save YAML</b>; the pipeline takes them as <code>--age</code>, <code>--sex</code>, <code>--site</code> and <code>--ethnicity</code>.</p>`],
+      <p>The choices travel with a shared link and with <b>Save YAML</b>; the pipeline takes them as <code>--age</code> or <code>--years</code>, <code>--sex</code>, <code>--site</code> and <code>--ethnicity</code>. A link or a file that still names one of the four earlier age groups is read as the group that replaced it (0–12, 13–25, 40–54 and 70+ for the earlier 0–12, 13–25, 26–54 and 55+).</p>
+      <p>What the selection gives is shown at the top of the View column: <a href="#help/start/body" data-help="start/body">the figure</a>.</p>`],
+    ["body", "The figure: whose skin", () => `<p>The first panel of the <b>View</b> column shows whose skin the model is set for: a schematic body with the <b>body site</b> marked, and underneath the tissue data of the selection — dermis and epidermis thickness, papillary thickness, the cell counts of the two layers, the senescent share and the collagen area fraction — each with a badge and its source. Click the title to fold the panel away.</p>
+      <p><b>The badges</b> say what kind of number a value is:</p>
+      <ul><li><span class="kd kd-measured">measured</span> — a group mean of donors, at the mean age of those donors (or anywhere within their ages beyond the outermost mean), or a value measured at the body site.</li>
+      <li><span class="kd kd-interpolated">interpolated</span> — on the straight line between two measured group means. No donor of that age was measured; hover over the badge for the two groups.</li>
+      <li><span class="kd kd-held">held</span> — beyond the youngest or the oldest group mean the value is kept, never extrapolated.</li>
+      <li><span class="kd kd-regression">regression</span> — from a published fit on age, inside the ages it was fitted for: the skin thickness that scales the dermis of a body site (${cite("tan1982ultrasound")}) and the collagen area fraction (${cite("marcosgarces2014collagen")}).</li></ul>
+      <p>The <b>collagen area fraction</b> is shown only: no value of the model takes it. A value marked <span class="cchip">yours</span> is an advanced value you changed by hand; the table then shows what the basic model would give.</p>
+      <p><b>The figure is an illustration.</b> Its size and proportions follow the age, its build the sex and its tone the ethnicity; none of these is taken from a source, and none sets a value. Ethnicity in particular sets nothing: ${renderNote((DP.basic || { ethnicity: { note: "" } }).ethnicity.note)} The <b>skin model</b> is a reconstructed tissue in a dish, not a place on the body, so the figure is greyed and neither the sex nor the age changes its thickness. How the age groups were derived: <a href="#help/model/age" data-help="model/age">Age of the skin</a>.</p>`],
     ["steps", "The steps of the design", () => `<p>The controls on the left describe the design, top down in the order you would decide it:</p>
       <ol>${(DP.groups || []).filter(g => (g.place || "design") === "design").map(g => `<li><b>${esc(g.title)}</b> — ${renderNote(g.note)}</li>`).join("")}</ol>
       <p>One step is open at a time: click a step's title to switch. A closed step shows how many of its values differ from their defaults, so a link someone shares with you cannot hide what it changed. Inside a step, the few values that usually matter come first and the rest fold away behind <b>▾ n more</b>; the fold opens itself when a folded value is not at its default.</p>
@@ -2724,13 +2892,17 @@ const HELP = [
       <li>A stack at 200 / 500 / 800 µm (hexagonal, 300 µm apart, 10⁵ cells per site secreting 300 pg/10⁶ cells/day): three-dimensional finite volumes put 36 % of the host cells in the window and 23 % above the ceiling; depth-resolved 35 % and 23 %; averaged 60 % and 14 %.</li></ul>
       <p>The Coverage panel shows what the other of the two would say for your design, so you can see where they part; <code>python -m dermsim tissue --fv</code> prints the comparison with the finite volumes.</p>
       <p>What the depth-resolved model does not settle: the junction values of the profile — diffusion at the junction and the depth of the slow zone — are placeholders, and the result moves with them.</p>`],
-    ["age", "Age of the skin", () => { const ag = (DP.presets && DP.presets.groups) || [];
-      return `<p>One study measured the layers of photoprotected periumbilical skin in four age groups, from 25 autopsies (${cite("arnalforne2024dermis")}): with age the papillary dermis grows thicker, and both layers hold fewer cells. The <b>Age</b> choices of the basic model take its four groups, children included, and set, for each:</p>
-      <table><tr><th>Age</th><th>papillary dermis</th><th>papillary ÷ reticular cells</th><th>cellularity</th><th>donor spread (papillary · reticular cells · thickness)</th></tr>
-      ${ag.map(g => `<tr><td>${esc(g.title)}${g.reference ? " (default)" : ""}</td><td>${g.values.hpap} µm</td><td>${g.values.rpap}×</td><td>${g.values.cells.toFixed(2)}×</td><td>${[g.values.cvpap, g.values.cvret, g.values.cvhpap].map(v => (100 * v).toFixed(0) + " %").join(" · ")}</td></tr>`).join("")}</table>
-      <p>All of it is computed by the pipeline from the study's means and standard deviations, not typed: the thickness as measured, the density ratio of the two layers' cell counts, the <b>cellularity</b> as the depth-averaged count over the model's dermis relative to the default group, and the donor spread as standard deviation over mean (n = ${ag.map(g => g.n).join(", ")} donors).</p>
+    ["age", "Age of the skin", () => { const pr = DP.presets || { groups: [], derivation: "", anchors: {} }, ag = pr.groups;
+      const kinds = g => ["hpap", "cells_pap", "cells_ret", "p21"].map(q => `<span class="kd kd-${g.provenance[q].kind}" title="${esc(g.provenance[q].text)}">${g.provenance[q].kind}</span>`);
+      const donors = b => b.points.map(p => `${fmt(p.span[0])}–${fmt(p.span[1])} y (n = ${p.n}, placed at ${fmt(p.age)} y)`).join("; ");
+      return `<p>The <b>Age</b> of the basic model is one of six groups, or an exact age in years. This is how the groups came about, what each rests on, and where a value is interpolated or comes from a regression.</p>
+      ${pr.derivation.split(/(?=\*\*What each group rests on|\*\*An age in years)/).map(t => `<p>${renderNote(t)}</p>`).join("")}
+      <table><tr><th>Age group</th><th>taken at</th><th>papillary dermis</th><th>papillary ÷ reticular cells</th><th>cellularity</th><th>senescent</th><th>dermis of a body site, women · men</th><th>thickness · papillary cells · reticular cells · senescence</th></tr>
+      ${ag.map(g => `<tr><td>${esc(g.title)}${g.reference ? " (default)" : ""}</td><td>${fmt(g.at)} y</td><td>${g.values.hpap} µm</td><td>${g.values.rpap}×</td><td>${g.values.cells.toFixed(2)}×</td><td>${fmt(100 * g.values.fsen)} %</td><td>× ${g.factor.female.value.toFixed(3)} · × ${g.factor.male.value.toFixed(3)}</td><td>${kinds(g).join(" ")}</td></tr>`).join("")}</table>
+      <p><b>What was measured.</b> ${pr.anchors.layers ? `${esc(pr.anchors.layers.title)}: donors aged ${donors(pr.anchors.layers)} (${cite(pr.anchors.layers.source)}). ${esc(pr.anchors.p21.title)}: donors aged ${donors(pr.anchors.p21)} (${cite(pr.anchors.p21.source)}).` : ""} Everything else in the table is computed by the pipeline from these means and their standard deviations, not typed: the density ratio of the two layers' cell counts, the <b>cellularity</b> as the depth-averaged count over the model's dermis relative to the default group, the donor spread as standard deviation over mean, and the senescent share as the p21 ratio scaled to ${pr.senescent ? fmt(100 * pr.senescent.oldest) : "15"} % in the oldest donors.</p>
+      <p><b>An exact age</b> uses the same straight lines at that age, so between two groups of donors it is an interpolation and beyond the outermost it is held; it does not make the data finer than they are (five to ten donors per group mean). The <a href="#help/start/body" data-help="start/body">figure</a> shows, value by value, which it is.</p>
       <p>The cellularity scales the <i>uptake</i> part of the decay, because uptake follows the density of consuming cells (${cite("oyleryaniv2017niches")}); the chemical part does not change. More cells, shorter λ: younger skin holds on to the signal more tightly. Two caveats make these values analogues: the counts are all nuclei per mm² of a section, not fibroblasts per mm³, and they come from one body site.</p>
-      <p>Ageing also blunts the cells' response (${cite("liao2026chromatin")}); by how much is not measured, so the aged-cell factor s_age stays a placeholder that the presets leave alone. No checked layer values were found for photo-aged skin, so there is no preset for it.</p>`; }],
+      <p>Ageing also blunts the cells' response (${cite("liao2026chromatin")}); by how much is not measured, so the aged-cell factor s_age stays a placeholder that the age leaves alone. No checked layer values were found for photo-aged skin, so there is no choice for it.</p>`; }],
     ["variation", "Patients and tissue vary", () => `<p>The maps show one average tissue. The <a href="#help/metrics/robust" data-help="metrics/robust">Robustness</a> panel asks how a design fares in many random ones; the values at its top say how much they vary. One random tissue (a <i>realisation</i>) is drawn in this order:</p>
       <ol><li><b>A donor.</b> Papillary and reticular cellularity and papillary thickness are drawn from log-normals with the spread measured between donors of one age group (${cite("arnalforne2024dermis")}); each donor therefore has its own decay length per injection level.</li>
       <li><b>Variation within the dermis</b>: two random fields, for the cell density (scaling the uptake) and the diffusion coefficient, log-normal with mean 1 and a correlation length. Not measured — FRAP found only marginal variation of diffusion within and between the layers (${cite("romgens2015diffusion")}) — so both are <span class="badge b-ph">placeholder</span>s, off by default.</li>
@@ -2964,6 +3136,7 @@ window.__drv = {
   scaffold: () => scaffoldPlan(S.p, geoPattern()),
   scFiles, paramsYaml, applyFile, readYamlish,
   stateQuery, syncUrl, readUrlState, resetParam, isDefault,
+  basicValues, ageEntry, setBasic, basic: () => ({ ...S.basic }),
   openHelp, closeHelp, helpTargets: () => [...document.querySelectorAll("[data-help]")].map(a => a.dataset.help)
 };
 

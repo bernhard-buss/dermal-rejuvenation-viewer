@@ -13241,5 +13241,3397 @@
     }
    }
   ]
- }
+ },
+ "basic": [
+  {
+   "sel": {
+    "age": "age0to12",
+    "sex": "female",
+    "site": "model"
+   },
+   "values": {
+    "hpap": 75.36,
+    "rpap": 3.71,
+    "cells": 3.381,
+    "cvpap": 0.162,
+    "cvret": 0.502,
+    "cvhpap": 0.157,
+    "fsen": 0.019,
+    "H": 2000.0,
+    "hep": 75.0
+   }
+  },
+  {
+   "sel": {
+    "age": "age0to12",
+    "sex": "female",
+    "site": "forearm"
+   },
+   "values": {
+    "hpap": 75.36,
+    "rpap": 3.71,
+    "cells": 3.381,
+    "cvpap": 0.162,
+    "cvret": 0.502,
+    "cvhpap": 0.157,
+    "fsen": 0.019,
+    "H": 1071.1,
+    "hep": 120.1
+   }
+  },
+  {
+   "sel": {
+    "age": "age0to12",
+    "sex": "male",
+    "site": "model"
+   },
+   "values": {
+    "hpap": 75.36,
+    "rpap": 3.71,
+    "cells": 3.381,
+    "cvpap": 0.162,
+    "cvret": 0.502,
+    "cvhpap": 0.157,
+    "fsen": 0.019,
+    "H": 2000.0,
+    "hep": 75.0
+   }
+  },
+  {
+   "sel": {
+    "age": "age0to12",
+    "sex": "male",
+    "site": "forearm"
+   },
+   "values": {
+    "hpap": 75.36,
+    "rpap": 3.71,
+    "cells": 3.381,
+    "cvpap": 0.162,
+    "cvret": 0.502,
+    "cvhpap": 0.157,
+    "fsen": 0.019,
+    "H": 1306.2,
+    "hep": 115.9
+   }
+  },
+  {
+   "sel": {
+    "age": "age13to25",
+    "sex": "female",
+    "site": "model"
+   },
+   "values": {
+    "hpap": 70.95,
+    "rpap": 9.62,
+    "cells": 1.259,
+    "cvpap": 0.188,
+    "cvret": 0.136,
+    "cvhpap": 0.066,
+    "fsen": 0.019,
+    "H": 2000.0,
+    "hep": 75.0
+   }
+  },
+  {
+   "sel": {
+    "age": "age13to25",
+    "sex": "female",
+    "site": "forearm"
+   },
+   "values": {
+    "hpap": 70.95,
+    "rpap": 9.62,
+    "cells": 1.259,
+    "cvpap": 0.188,
+    "cvret": 0.136,
+    "cvhpap": 0.066,
+    "fsen": 0.019,
+    "H": 1463.1,
+    "hep": 120.1
+   }
+  },
+  {
+   "sel": {
+    "age": "age13to25",
+    "sex": "male",
+    "site": "model"
+   },
+   "values": {
+    "hpap": 70.95,
+    "rpap": 9.62,
+    "cells": 1.259,
+    "cvpap": 0.188,
+    "cvret": 0.136,
+    "cvhpap": 0.066,
+    "fsen": 0.019,
+    "H": 2000.0,
+    "hep": 75.0
+   }
+  },
+  {
+   "sel": {
+    "age": "age13to25",
+    "sex": "male",
+    "site": "forearm"
+   },
+   "values": {
+    "hpap": 70.95,
+    "rpap": 9.62,
+    "cells": 1.259,
+    "cvpap": 0.188,
+    "cvret": 0.136,
+    "cvhpap": 0.066,
+    "fsen": 0.019,
+    "H": 1784.4,
+    "hep": 115.9
+   }
+  },
+  {
+   "sel": {
+    "age": "age26to39",
+    "sex": "female",
+    "site": "model"
+   },
+   "values": {
+    "hpap": 73.18,
+    "rpap": 9.16,
+    "cells": 1.222,
+    "cvpap": 0.192,
+    "cvret": 0.319,
+    "cvhpap": 0.133,
+    "fsen": 0.031,
+    "H": 2000.0,
+    "hep": 75.0
+   }
+  },
+  {
+   "sel": {
+    "age": "age26to39",
+    "sex": "female",
+    "site": "forearm"
+   },
+   "values": {
+    "hpap": 73.18,
+    "rpap": 9.16,
+    "cells": 1.222,
+    "cvpap": 0.192,
+    "cvret": 0.319,
+    "cvhpap": 0.133,
+    "fsen": 0.031,
+    "H": 1460.9,
+    "hep": 120.1
+   }
+  },
+  {
+   "sel": {
+    "age": "age26to39",
+    "sex": "male",
+    "site": "model"
+   },
+   "values": {
+    "hpap": 73.18,
+    "rpap": 9.16,
+    "cells": 1.222,
+    "cvpap": 0.192,
+    "cvret": 0.319,
+    "cvhpap": 0.133,
+    "fsen": 0.031,
+    "H": 2000.0,
+    "hep": 75.0
+   }
+  },
+  {
+   "sel": {
+    "age": "age26to39",
+    "sex": "male",
+    "site": "forearm"
+   },
+   "values": {
+    "hpap": 73.18,
+    "rpap": 9.16,
+    "cells": 1.222,
+    "cvpap": 0.192,
+    "cvret": 0.319,
+    "cvhpap": 0.133,
+    "fsen": 0.031,
+    "H": 1757.8,
+    "hep": 115.9
+   }
+  },
+  {
+   "sel": {
+    "age": "age40to54",
+    "sex": "female",
+    "site": "model"
+   },
+   "values": {
+    "hpap": 74.85,
+    "rpap": 8.8,
+    "cells": 1.193,
+    "cvpap": 0.196,
+    "cvret": 0.461,
+    "cvhpap": 0.18,
+    "fsen": 0.047,
+    "H": 2000.0,
+    "hep": 75.0
+   }
+  },
+  {
+   "sel": {
+    "age": "age40to54",
+    "sex": "female",
+    "site": "forearm"
+   },
+   "values": {
+    "hpap": 74.85,
+    "rpap": 8.8,
+    "cells": 1.193,
+    "cvpap": 0.196,
+    "cvret": 0.461,
+    "cvhpap": 0.18,
+    "fsen": 0.047,
+    "H": 1422.7,
+    "hep": 120.1
+   }
+  },
+  {
+   "sel": {
+    "age": "age40to54",
+    "sex": "male",
+    "site": "model"
+   },
+   "values": {
+    "hpap": 74.85,
+    "rpap": 8.8,
+    "cells": 1.193,
+    "cvpap": 0.196,
+    "cvret": 0.461,
+    "cvhpap": 0.18,
+    "fsen": 0.047,
+    "H": 2000.0,
+    "hep": 75.0
+   }
+  },
+  {
+   "sel": {
+    "age": "age40to54",
+    "sex": "male",
+    "site": "forearm"
+   },
+   "values": {
+    "hpap": 74.85,
+    "rpap": 8.8,
+    "cells": 1.193,
+    "cvpap": 0.196,
+    "cvret": 0.461,
+    "cvhpap": 0.18,
+    "fsen": 0.047,
+    "H": 1691.7,
+    "hep": 115.9
+   }
+  },
+  {
+   "sel": {
+    "age": "age55to69",
+    "sex": "female",
+    "site": "model"
+   },
+   "values": {
+    "hpap": 94.59,
+    "rpap": 10.31,
+    "cells": 1.05,
+    "cvpap": 0.174,
+    "cvret": 0.384,
+    "cvhpap": 0.206,
+    "fsen": 0.1,
+    "H": 2000.0,
+    "hep": 75.0
+   }
+  },
+  {
+   "sel": {
+    "age": "age55to69",
+    "sex": "female",
+    "site": "forearm"
+   },
+   "values": {
+    "hpap": 94.59,
+    "rpap": 10.31,
+    "cells": 1.05,
+    "cvpap": 0.174,
+    "cvret": 0.384,
+    "cvhpap": 0.206,
+    "fsen": 0.1,
+    "H": 1352.4,
+    "hep": 120.1
+   }
+  },
+  {
+   "sel": {
+    "age": "age55to69",
+    "sex": "male",
+    "site": "model"
+   },
+   "values": {
+    "hpap": 94.59,
+    "rpap": 10.31,
+    "cells": 1.05,
+    "cvpap": 0.174,
+    "cvret": 0.384,
+    "cvhpap": 0.206,
+    "fsen": 0.1,
+    "H": 2000.0,
+    "hep": 75.0
+   }
+  },
+  {
+   "sel": {
+    "age": "age55to69",
+    "sex": "male",
+    "site": "forearm"
+   },
+   "values": {
+    "hpap": 94.59,
+    "rpap": 10.31,
+    "cells": 1.05,
+    "cvpap": 0.174,
+    "cvret": 0.384,
+    "cvhpap": 0.206,
+    "fsen": 0.1,
+    "H": 1569.8,
+    "hep": 115.9
+   }
+  },
+  {
+   "sel": {
+    "age": "age70up",
+    "sex": "female",
+    "site": "model"
+   },
+   "values": {
+    "hpap": 101.2,
+    "rpap": 11.01,
+    "cells": 1.0,
+    "cvpap": 0.166,
+    "cvret": 0.348,
+    "cvhpap": 0.212,
+    "fsen": 0.15,
+    "H": 2000.0,
+    "hep": 75.0
+   }
+  },
+  {
+   "sel": {
+    "age": "age70up",
+    "sex": "female",
+    "site": "forearm"
+   },
+   "values": {
+    "hpap": 101.2,
+    "rpap": 11.01,
+    "cells": 1.0,
+    "cvpap": 0.166,
+    "cvret": 0.348,
+    "cvhpap": 0.212,
+    "fsen": 0.15,
+    "H": 1286.3,
+    "hep": 120.1
+   }
+  },
+  {
+   "sel": {
+    "age": "age70up",
+    "sex": "male",
+    "site": "model"
+   },
+   "values": {
+    "hpap": 101.2,
+    "rpap": 11.01,
+    "cells": 1.0,
+    "cvpap": 0.166,
+    "cvret": 0.348,
+    "cvhpap": 0.212,
+    "fsen": 0.15,
+    "H": 2000.0,
+    "hep": 75.0
+   }
+  },
+  {
+   "sel": {
+    "age": "age70up",
+    "sex": "male",
+    "site": "forearm"
+   },
+   "values": {
+    "hpap": 101.2,
+    "rpap": 11.01,
+    "cells": 1.0,
+    "cvpap": 0.166,
+    "cvret": 0.348,
+    "cvhpap": 0.212,
+    "fsen": 0.15,
+    "H": 1455.2,
+    "hep": 115.9
+   }
+  },
+  {
+   "sel": {
+    "years": 0,
+    "sex": "female",
+    "site": "model"
+   },
+   "values": {
+    "hpap": 77.18,
+    "rpap": 3.12,
+    "cells": 4.258,
+    "cvpap": 0.154,
+    "cvret": 0.54,
+    "cvhpap": 0.192,
+    "fsen": 0.019,
+    "H": 2000.0,
+    "hep": 75.0
+   }
+  },
+  {
+   "sel": {
+    "years": 0,
+    "sex": "female",
+    "site": "abdomen"
+   },
+   "values": {
+    "hpap": 77.18,
+    "rpap": 3.12,
+    "cells": 4.258,
+    "cvpap": 0.154,
+    "cvret": 0.54,
+    "cvhpap": 0.192,
+    "fsen": 0.019,
+    "H": 1426.5,
+    "hep": 109.7
+   }
+  },
+  {
+   "sel": {
+    "years": 0,
+    "sex": "female",
+    "site": "back"
+   },
+   "values": {
+    "hpap": 77.18,
+    "rpap": 3.12,
+    "cells": 4.258,
+    "cvpap": 0.154,
+    "cvret": 0.54,
+    "cvhpap": 0.192,
+    "fsen": 0.019,
+    "H": 1830.8,
+    "hep": 118.6
+   }
+  },
+  {
+   "sel": {
+    "years": 0,
+    "sex": "female",
+    "site": "foot"
+   },
+   "values": {
+    "hpap": 77.18,
+    "rpap": 3.12,
+    "cells": 4.258,
+    "cvpap": 0.154,
+    "cvret": 0.54,
+    "cvhpap": 0.192,
+    "fsen": 0.019,
+    "H": 654.8,
+    "hep": 114.3
+   }
+  },
+  {
+   "sel": {
+    "years": 0,
+    "sex": "male",
+    "site": "model"
+   },
+   "values": {
+    "hpap": 77.18,
+    "rpap": 3.12,
+    "cells": 4.258,
+    "cvpap": 0.154,
+    "cvret": 0.54,
+    "cvhpap": 0.192,
+    "fsen": 0.019,
+    "H": 2000.0,
+    "hep": 75.0
+   }
+  },
+  {
+   "sel": {
+    "years": 0,
+    "sex": "male",
+    "site": "abdomen"
+   },
+   "values": {
+    "hpap": 77.18,
+    "rpap": 3.12,
+    "cells": 4.258,
+    "cvpap": 0.154,
+    "cvret": 0.54,
+    "cvhpap": 0.192,
+    "fsen": 0.019,
+    "H": 1508.0,
+    "hep": 110.2
+   }
+  },
+  {
+   "sel": {
+    "years": 0,
+    "sex": "male",
+    "site": "back"
+   },
+   "values": {
+    "hpap": 77.18,
+    "rpap": 3.12,
+    "cells": 4.258,
+    "cvpap": 0.154,
+    "cvret": 0.54,
+    "cvhpap": 0.192,
+    "fsen": 0.019,
+    "H": 1767.4,
+    "hep": 118.2
+   }
+  },
+  {
+   "sel": {
+    "years": 0,
+    "sex": "male",
+    "site": "foot"
+   },
+   "values": {
+    "hpap": 77.18,
+    "rpap": 3.12,
+    "cells": 4.258,
+    "cvpap": 0.154,
+    "cvret": 0.54,
+    "cvhpap": 0.192,
+    "fsen": 0.019,
+    "H": 748.4,
+    "hep": 115.0
+   }
+  },
+  {
+   "sel": {
+    "years": 1,
+    "sex": "female",
+    "site": "model"
+   },
+   "values": {
+    "hpap": 77.11,
+    "rpap": 3.14,
+    "cells": 4.223,
+    "cvpap": 0.154,
+    "cvret": 0.538,
+    "cvhpap": 0.191,
+    "fsen": 0.019,
+    "H": 2000.0,
+    "hep": 75.0
+   }
+  },
+  {
+   "sel": {
+    "years": 1,
+    "sex": "female",
+    "site": "abdomen"
+   },
+   "values": {
+    "hpap": 77.11,
+    "rpap": 3.14,
+    "cells": 4.223,
+    "cvpap": 0.154,
+    "cvret": 0.538,
+    "cvhpap": 0.191,
+    "fsen": 0.019,
+    "H": 1476.7,
+    "hep": 109.7
+   }
+  },
+  {
+   "sel": {
+    "years": 1,
+    "sex": "female",
+    "site": "back"
+   },
+   "values": {
+    "hpap": 77.11,
+    "rpap": 3.14,
+    "cells": 4.223,
+    "cvpap": 0.154,
+    "cvret": 0.538,
+    "cvhpap": 0.191,
+    "fsen": 0.019,
+    "H": 1895.2,
+    "hep": 118.6
+   }
+  },
+  {
+   "sel": {
+    "years": 1,
+    "sex": "female",
+    "site": "foot"
+   },
+   "values": {
+    "hpap": 77.11,
+    "rpap": 3.14,
+    "cells": 4.223,
+    "cvpap": 0.154,
+    "cvret": 0.538,
+    "cvhpap": 0.191,
+    "fsen": 0.019,
+    "H": 677.8,
+    "hep": 114.3
+   }
+  },
+  {
+   "sel": {
+    "years": 1,
+    "sex": "male",
+    "site": "model"
+   },
+   "values": {
+    "hpap": 77.11,
+    "rpap": 3.14,
+    "cells": 4.223,
+    "cvpap": 0.154,
+    "cvret": 0.538,
+    "cvhpap": 0.191,
+    "fsen": 0.019,
+    "H": 2000.0,
+    "hep": 75.0
+   }
+  },
+  {
+   "sel": {
+    "years": 1,
+    "sex": "male",
+    "site": "abdomen"
+   },
+   "values": {
+    "hpap": 77.11,
+    "rpap": 3.14,
+    "cells": 4.223,
+    "cvpap": 0.154,
+    "cvret": 0.538,
+    "cvhpap": 0.191,
+    "fsen": 0.019,
+    "H": 1561.1,
+    "hep": 110.2
+   }
+  },
+  {
+   "sel": {
+    "years": 1,
+    "sex": "male",
+    "site": "back"
+   },
+   "values": {
+    "hpap": 77.11,
+    "rpap": 3.14,
+    "cells": 4.223,
+    "cvpap": 0.154,
+    "cvret": 0.538,
+    "cvhpap": 0.191,
+    "fsen": 0.019,
+    "H": 1829.6,
+    "hep": 118.2
+   }
+  },
+  {
+   "sel": {
+    "years": 1,
+    "sex": "male",
+    "site": "foot"
+   },
+   "values": {
+    "hpap": 77.11,
+    "rpap": 3.14,
+    "cells": 4.223,
+    "cvpap": 0.154,
+    "cvret": 0.538,
+    "cvhpap": 0.191,
+    "fsen": 0.019,
+    "H": 774.8,
+    "hep": 115.0
+   }
+  },
+  {
+   "sel": {
+    "years": 7,
+    "sex": "female",
+    "site": "model"
+   },
+   "values": {
+    "hpap": 75.01,
+    "rpap": 3.87,
+    "cells": 3.213,
+    "cvpap": 0.164,
+    "cvret": 0.493,
+    "cvhpap": 0.15,
+    "fsen": 0.019,
+    "H": 2000.0,
+    "hep": 75.0
+   }
+  },
+  {
+   "sel": {
+    "years": 7,
+    "sex": "female",
+    "site": "abdomen"
+   },
+   "values": {
+    "hpap": 75.01,
+    "rpap": 3.87,
+    "cells": 3.213,
+    "cvpap": 0.164,
+    "cvret": 0.493,
+    "cvhpap": 0.15,
+    "fsen": 0.019,
+    "H": 1777.7,
+    "hep": 109.7
+   }
+  },
+  {
+   "sel": {
+    "years": 7,
+    "sex": "female",
+    "site": "back"
+   },
+   "values": {
+    "hpap": 75.01,
+    "rpap": 3.87,
+    "cells": 3.213,
+    "cvpap": 0.164,
+    "cvret": 0.493,
+    "cvhpap": 0.15,
+    "fsen": 0.019,
+    "H": 2281.5,
+    "hep": 118.6
+   }
+  },
+  {
+   "sel": {
+    "years": 7,
+    "sex": "female",
+    "site": "foot"
+   },
+   "values": {
+    "hpap": 75.01,
+    "rpap": 3.87,
+    "cells": 3.213,
+    "cvpap": 0.164,
+    "cvret": 0.493,
+    "cvhpap": 0.15,
+    "fsen": 0.019,
+    "H": 816.0,
+    "hep": 114.3
+   }
+  },
+  {
+   "sel": {
+    "years": 7,
+    "sex": "male",
+    "site": "model"
+   },
+   "values": {
+    "hpap": 75.01,
+    "rpap": 3.87,
+    "cells": 3.213,
+    "cvpap": 0.164,
+    "cvret": 0.493,
+    "cvhpap": 0.15,
+    "fsen": 0.019,
+    "H": 2000.0,
+    "hep": 75.0
+   }
+  },
+  {
+   "sel": {
+    "years": 7,
+    "sex": "male",
+    "site": "abdomen"
+   },
+   "values": {
+    "hpap": 75.01,
+    "rpap": 3.87,
+    "cells": 3.213,
+    "cvpap": 0.164,
+    "cvret": 0.493,
+    "cvhpap": 0.15,
+    "fsen": 0.019,
+    "H": 1879.6,
+    "hep": 110.2
+   }
+  },
+  {
+   "sel": {
+    "years": 7,
+    "sex": "male",
+    "site": "back"
+   },
+   "values": {
+    "hpap": 75.01,
+    "rpap": 3.87,
+    "cells": 3.213,
+    "cvpap": 0.164,
+    "cvret": 0.493,
+    "cvhpap": 0.15,
+    "fsen": 0.019,
+    "H": 2202.8,
+    "hep": 118.2
+   }
+  },
+  {
+   "sel": {
+    "years": 7,
+    "sex": "male",
+    "site": "foot"
+   },
+   "values": {
+    "hpap": 75.01,
+    "rpap": 3.87,
+    "cells": 3.213,
+    "cvpap": 0.164,
+    "cvret": 0.493,
+    "cvhpap": 0.15,
+    "fsen": 0.019,
+    "H": 932.9,
+    "hep": 115.0
+   }
+  },
+  {
+   "sel": {
+    "years": 13,
+    "sex": "female",
+    "site": "model"
+   },
+   "values": {
+    "hpap": 72.91,
+    "rpap": 5.38,
+    "cells": 2.202,
+    "cvpap": 0.175,
+    "cvret": 0.399,
+    "cvhpap": 0.108,
+    "fsen": 0.019,
+    "H": 2000.0,
+    "hep": 75.0
+   }
+  },
+  {
+   "sel": {
+    "years": 13,
+    "sex": "female",
+    "site": "abdomen"
+   },
+   "values": {
+    "hpap": 72.91,
+    "rpap": 5.38,
+    "cells": 2.202,
+    "cvpap": 0.175,
+    "cvret": 0.399,
+    "cvhpap": 0.108,
+    "fsen": 0.019,
+    "H": 2078.9,
+    "hep": 109.7
+   }
+  },
+  {
+   "sel": {
+    "years": 13,
+    "sex": "female",
+    "site": "back"
+   },
+   "values": {
+    "hpap": 72.91,
+    "rpap": 5.38,
+    "cells": 2.202,
+    "cvpap": 0.175,
+    "cvret": 0.399,
+    "cvhpap": 0.108,
+    "fsen": 0.019,
+    "H": 2668.1,
+    "hep": 118.6
+   }
+  },
+  {
+   "sel": {
+    "years": 13,
+    "sex": "female",
+    "site": "foot"
+   },
+   "values": {
+    "hpap": 72.91,
+    "rpap": 5.38,
+    "cells": 2.202,
+    "cvpap": 0.175,
+    "cvret": 0.399,
+    "cvhpap": 0.108,
+    "fsen": 0.019,
+    "H": 954.3,
+    "hep": 114.3
+   }
+  },
+  {
+   "sel": {
+    "years": 13,
+    "sex": "male",
+    "site": "model"
+   },
+   "values": {
+    "hpap": 72.91,
+    "rpap": 5.38,
+    "cells": 2.202,
+    "cvpap": 0.175,
+    "cvret": 0.399,
+    "cvhpap": 0.108,
+    "fsen": 0.019,
+    "H": 2000.0,
+    "hep": 75.0
+   }
+  },
+  {
+   "sel": {
+    "years": 13,
+    "sex": "male",
+    "site": "abdomen"
+   },
+   "values": {
+    "hpap": 72.91,
+    "rpap": 5.38,
+    "cells": 2.202,
+    "cvpap": 0.175,
+    "cvret": 0.399,
+    "cvhpap": 0.108,
+    "fsen": 0.019,
+    "H": 2198.0,
+    "hep": 110.2
+   }
+  },
+  {
+   "sel": {
+    "years": 13,
+    "sex": "male",
+    "site": "back"
+   },
+   "values": {
+    "hpap": 72.91,
+    "rpap": 5.38,
+    "cells": 2.202,
+    "cvpap": 0.175,
+    "cvret": 0.399,
+    "cvhpap": 0.108,
+    "fsen": 0.019,
+    "H": 2576.1,
+    "hep": 118.2
+   }
+  },
+  {
+   "sel": {
+    "years": 13,
+    "sex": "male",
+    "site": "foot"
+   },
+   "values": {
+    "hpap": 72.91,
+    "rpap": 5.38,
+    "cells": 2.202,
+    "cvpap": 0.175,
+    "cvret": 0.399,
+    "cvhpap": 0.108,
+    "fsen": 0.019,
+    "H": 1090.9,
+    "hep": 115.0
+   }
+  },
+  {
+   "sel": {
+    "years": 19,
+    "sex": "female",
+    "site": "model"
+   },
+   "values": {
+    "hpap": 71.01,
+    "rpap": 9.61,
+    "cells": 1.258,
+    "cvpap": 0.188,
+    "cvret": 0.142,
+    "cvhpap": 0.068,
+    "fsen": 0.019,
+    "H": 2000.0,
+    "hep": 75.0
+   }
+  },
+  {
+   "sel": {
+    "years": 19,
+    "sex": "female",
+    "site": "abdomen"
+   },
+   "values": {
+    "hpap": 71.01,
+    "rpap": 9.61,
+    "cells": 1.258,
+    "cvpap": 0.188,
+    "cvret": 0.142,
+    "cvhpap": 0.068,
+    "fsen": 0.019,
+    "H": 2379.9,
+    "hep": 109.7
+   }
+  },
+  {
+   "sel": {
+    "years": 19,
+    "sex": "female",
+    "site": "back"
+   },
+   "values": {
+    "hpap": 71.01,
+    "rpap": 9.61,
+    "cells": 1.258,
+    "cvpap": 0.188,
+    "cvret": 0.142,
+    "cvhpap": 0.068,
+    "fsen": 0.019,
+    "H": 3054.4,
+    "hep": 118.6
+   }
+  },
+  {
+   "sel": {
+    "years": 19,
+    "sex": "female",
+    "site": "foot"
+   },
+   "values": {
+    "hpap": 71.01,
+    "rpap": 9.61,
+    "cells": 1.258,
+    "cvpap": 0.188,
+    "cvret": 0.142,
+    "cvhpap": 0.068,
+    "fsen": 0.019,
+    "H": 1092.4,
+    "hep": 114.3
+   }
+  },
+  {
+   "sel": {
+    "years": 19,
+    "sex": "male",
+    "site": "model"
+   },
+   "values": {
+    "hpap": 71.01,
+    "rpap": 9.61,
+    "cells": 1.258,
+    "cvpap": 0.188,
+    "cvret": 0.142,
+    "cvhpap": 0.068,
+    "fsen": 0.019,
+    "H": 2000.0,
+    "hep": 75.0
+   }
+  },
+  {
+   "sel": {
+    "years": 19,
+    "sex": "male",
+    "site": "abdomen"
+   },
+   "values": {
+    "hpap": 71.01,
+    "rpap": 9.61,
+    "cells": 1.258,
+    "cvpap": 0.188,
+    "cvret": 0.142,
+    "cvhpap": 0.068,
+    "fsen": 0.019,
+    "H": 2516.3,
+    "hep": 110.2
+   }
+  },
+  {
+   "sel": {
+    "years": 19,
+    "sex": "male",
+    "site": "back"
+   },
+   "values": {
+    "hpap": 71.01,
+    "rpap": 9.61,
+    "cells": 1.258,
+    "cvpap": 0.188,
+    "cvret": 0.142,
+    "cvhpap": 0.068,
+    "fsen": 0.019,
+    "H": 2949.1,
+    "hep": 118.2
+   }
+  },
+  {
+   "sel": {
+    "years": 19,
+    "sex": "male",
+    "site": "foot"
+   },
+   "values": {
+    "hpap": 71.01,
+    "rpap": 9.61,
+    "cells": 1.258,
+    "cvpap": 0.188,
+    "cvret": 0.142,
+    "cvhpap": 0.068,
+    "fsen": 0.019,
+    "H": 1248.8,
+    "hep": 115.0
+   }
+  },
+  {
+   "sel": {
+    "years": 20,
+    "sex": "female",
+    "site": "model"
+   },
+   "values": {
+    "hpap": 71.17,
+    "rpap": 9.58,
+    "cells": 1.256,
+    "cvpap": 0.188,
+    "cvret": 0.154,
+    "cvhpap": 0.072,
+    "fsen": 0.019,
+    "H": 2000.0,
+    "hep": 75.0
+   }
+  },
+  {
+   "sel": {
+    "years": 20,
+    "sex": "female",
+    "site": "abdomen"
+   },
+   "values": {
+    "hpap": 71.17,
+    "rpap": 9.58,
+    "cells": 1.256,
+    "cvpap": 0.188,
+    "cvret": 0.154,
+    "cvhpap": 0.072,
+    "fsen": 0.019,
+    "H": 2430.1,
+    "hep": 109.7
+   }
+  },
+  {
+   "sel": {
+    "years": 20,
+    "sex": "female",
+    "site": "back"
+   },
+   "values": {
+    "hpap": 71.17,
+    "rpap": 9.58,
+    "cells": 1.256,
+    "cvpap": 0.188,
+    "cvret": 0.154,
+    "cvhpap": 0.072,
+    "fsen": 0.019,
+    "H": 3118.9,
+    "hep": 118.6
+   }
+  },
+  {
+   "sel": {
+    "years": 20,
+    "sex": "female",
+    "site": "foot"
+   },
+   "values": {
+    "hpap": 71.17,
+    "rpap": 9.58,
+    "cells": 1.256,
+    "cvpap": 0.188,
+    "cvret": 0.154,
+    "cvhpap": 0.072,
+    "fsen": 0.019,
+    "H": 1115.5,
+    "hep": 114.3
+   }
+  },
+  {
+   "sel": {
+    "years": 20,
+    "sex": "male",
+    "site": "model"
+   },
+   "values": {
+    "hpap": 71.17,
+    "rpap": 9.58,
+    "cells": 1.256,
+    "cvpap": 0.188,
+    "cvret": 0.154,
+    "cvhpap": 0.072,
+    "fsen": 0.019,
+    "H": 2000.0,
+    "hep": 75.0
+   }
+  },
+  {
+   "sel": {
+    "years": 20,
+    "sex": "male",
+    "site": "abdomen"
+   },
+   "values": {
+    "hpap": 71.17,
+    "rpap": 9.58,
+    "cells": 1.256,
+    "cvpap": 0.188,
+    "cvret": 0.154,
+    "cvhpap": 0.072,
+    "fsen": 0.019,
+    "H": 2569.3,
+    "hep": 110.2
+   }
+  },
+  {
+   "sel": {
+    "years": 20,
+    "sex": "male",
+    "site": "back"
+   },
+   "values": {
+    "hpap": 71.17,
+    "rpap": 9.58,
+    "cells": 1.256,
+    "cvpap": 0.188,
+    "cvret": 0.154,
+    "cvhpap": 0.072,
+    "fsen": 0.019,
+    "H": 3011.3,
+    "hep": 118.2
+   }
+  },
+  {
+   "sel": {
+    "years": 20,
+    "sex": "male",
+    "site": "foot"
+   },
+   "values": {
+    "hpap": 71.17,
+    "rpap": 9.58,
+    "cells": 1.256,
+    "cvpap": 0.188,
+    "cvret": 0.154,
+    "cvhpap": 0.072,
+    "fsen": 0.019,
+    "H": 1275.2,
+    "hep": 115.0
+   }
+  },
+  {
+   "sel": {
+    "years": 21,
+    "sex": "female",
+    "site": "model"
+   },
+   "values": {
+    "hpap": 71.34,
+    "rpap": 9.54,
+    "cells": 1.253,
+    "cvpap": 0.188,
+    "cvret": 0.167,
+    "cvhpap": 0.077,
+    "fsen": 0.019,
+    "H": 2000.0,
+    "hep": 75.0
+   }
+  },
+  {
+   "sel": {
+    "years": 21,
+    "sex": "female",
+    "site": "abdomen"
+   },
+   "values": {
+    "hpap": 71.34,
+    "rpap": 9.54,
+    "cells": 1.253,
+    "cvpap": 0.188,
+    "cvret": 0.167,
+    "cvhpap": 0.077,
+    "fsen": 0.019,
+    "H": 2424.2,
+    "hep": 109.7
+   }
+  },
+  {
+   "sel": {
+    "years": 21,
+    "sex": "female",
+    "site": "back"
+   },
+   "values": {
+    "hpap": 71.34,
+    "rpap": 9.54,
+    "cells": 1.253,
+    "cvpap": 0.188,
+    "cvret": 0.167,
+    "cvhpap": 0.077,
+    "fsen": 0.019,
+    "H": 3111.3,
+    "hep": 118.6
+   }
+  },
+  {
+   "sel": {
+    "years": 21,
+    "sex": "female",
+    "site": "foot"
+   },
+   "values": {
+    "hpap": 71.34,
+    "rpap": 9.54,
+    "cells": 1.253,
+    "cvpap": 0.188,
+    "cvret": 0.167,
+    "cvhpap": 0.077,
+    "fsen": 0.019,
+    "H": 1112.8,
+    "hep": 114.3
+   }
+  },
+  {
+   "sel": {
+    "years": 21,
+    "sex": "male",
+    "site": "model"
+   },
+   "values": {
+    "hpap": 71.34,
+    "rpap": 9.54,
+    "cells": 1.253,
+    "cvpap": 0.188,
+    "cvret": 0.167,
+    "cvhpap": 0.077,
+    "fsen": 0.019,
+    "H": 2000.0,
+    "hep": 75.0
+   }
+  },
+  {
+   "sel": {
+    "years": 21,
+    "sex": "male",
+    "site": "abdomen"
+   },
+   "values": {
+    "hpap": 71.34,
+    "rpap": 9.54,
+    "cells": 1.253,
+    "cvpap": 0.188,
+    "cvret": 0.167,
+    "cvhpap": 0.077,
+    "fsen": 0.019,
+    "H": 2560.4,
+    "hep": 110.2
+   }
+  },
+  {
+   "sel": {
+    "years": 21,
+    "sex": "male",
+    "site": "back"
+   },
+   "values": {
+    "hpap": 71.34,
+    "rpap": 9.54,
+    "cells": 1.253,
+    "cvpap": 0.188,
+    "cvret": 0.167,
+    "cvhpap": 0.077,
+    "fsen": 0.019,
+    "H": 3000.8,
+    "hep": 118.2
+   }
+  },
+  {
+   "sel": {
+    "years": 21,
+    "sex": "male",
+    "site": "foot"
+   },
+   "values": {
+    "hpap": 71.34,
+    "rpap": 9.54,
+    "cells": 1.253,
+    "cvpap": 0.188,
+    "cvret": 0.167,
+    "cvhpap": 0.077,
+    "fsen": 0.019,
+    "H": 1270.8,
+    "hep": 115.0
+   }
+  },
+  {
+   "sel": {
+    "years": 30,
+    "sex": "female",
+    "site": "model"
+   },
+   "values": {
+    "hpap": 72.78,
+    "rpap": 9.24,
+    "cells": 1.229,
+    "cvpap": 0.191,
+    "cvret": 0.285,
+    "cvhpap": 0.121,
+    "fsen": 0.028,
+    "H": 2000.0,
+    "hep": 75.0
+   }
+  },
+  {
+   "sel": {
+    "years": 30,
+    "sex": "female",
+    "site": "abdomen"
+   },
+   "values": {
+    "hpap": 72.78,
+    "rpap": 9.24,
+    "cells": 1.229,
+    "cvpap": 0.191,
+    "cvret": 0.285,
+    "cvhpap": 0.121,
+    "fsen": 0.028,
+    "H": 2371.0,
+    "hep": 109.7
+   }
+  },
+  {
+   "sel": {
+    "years": 30,
+    "sex": "female",
+    "site": "back"
+   },
+   "values": {
+    "hpap": 72.78,
+    "rpap": 9.24,
+    "cells": 1.229,
+    "cvpap": 0.191,
+    "cvret": 0.285,
+    "cvhpap": 0.121,
+    "fsen": 0.028,
+    "H": 3043.0,
+    "hep": 118.6
+   }
+  },
+  {
+   "sel": {
+    "years": 30,
+    "sex": "female",
+    "site": "foot"
+   },
+   "values": {
+    "hpap": 72.78,
+    "rpap": 9.24,
+    "cells": 1.229,
+    "cvpap": 0.191,
+    "cvret": 0.285,
+    "cvhpap": 0.121,
+    "fsen": 0.028,
+    "H": 1088.4,
+    "hep": 114.3
+   }
+  },
+  {
+   "sel": {
+    "years": 30,
+    "sex": "male",
+    "site": "model"
+   },
+   "values": {
+    "hpap": 72.78,
+    "rpap": 9.24,
+    "cells": 1.229,
+    "cvpap": 0.191,
+    "cvret": 0.285,
+    "cvhpap": 0.121,
+    "fsen": 0.028,
+    "H": 2000.0,
+    "hep": 75.0
+   }
+  },
+  {
+   "sel": {
+    "years": 30,
+    "sex": "male",
+    "site": "abdomen"
+   },
+   "values": {
+    "hpap": 72.78,
+    "rpap": 9.24,
+    "cells": 1.229,
+    "cvpap": 0.191,
+    "cvret": 0.285,
+    "cvhpap": 0.121,
+    "fsen": 0.028,
+    "H": 2480.3,
+    "hep": 110.2
+   }
+  },
+  {
+   "sel": {
+    "years": 30,
+    "sex": "male",
+    "site": "back"
+   },
+   "values": {
+    "hpap": 72.78,
+    "rpap": 9.24,
+    "cells": 1.229,
+    "cvpap": 0.191,
+    "cvret": 0.285,
+    "cvhpap": 0.121,
+    "fsen": 0.028,
+    "H": 2906.9,
+    "hep": 118.2
+   }
+  },
+  {
+   "sel": {
+    "years": 30,
+    "sex": "male",
+    "site": "foot"
+   },
+   "values": {
+    "hpap": 72.78,
+    "rpap": 9.24,
+    "cells": 1.229,
+    "cvpap": 0.191,
+    "cvret": 0.285,
+    "cvhpap": 0.121,
+    "fsen": 0.028,
+    "H": 1231.0,
+    "hep": 115.0
+   }
+  },
+  {
+   "sel": {
+    "years": 39,
+    "sex": "female",
+    "site": "model"
+   },
+   "values": {
+    "hpap": 74.22,
+    "rpap": 8.93,
+    "cells": 1.204,
+    "cvpap": 0.194,
+    "cvret": 0.407,
+    "cvhpap": 0.163,
+    "fsen": 0.041,
+    "H": 2000.0,
+    "hep": 75.0
+   }
+  },
+  {
+   "sel": {
+    "years": 39,
+    "sex": "female",
+    "site": "abdomen"
+   },
+   "values": {
+    "hpap": 74.22,
+    "rpap": 8.93,
+    "cells": 1.204,
+    "cvpap": 0.194,
+    "cvret": 0.407,
+    "cvhpap": 0.163,
+    "fsen": 0.041,
+    "H": 2317.6,
+    "hep": 109.7
+   }
+  },
+  {
+   "sel": {
+    "years": 39,
+    "sex": "female",
+    "site": "back"
+   },
+   "values": {
+    "hpap": 74.22,
+    "rpap": 8.93,
+    "cells": 1.204,
+    "cvpap": 0.194,
+    "cvret": 0.407,
+    "cvhpap": 0.163,
+    "fsen": 0.041,
+    "H": 2974.5,
+    "hep": 118.6
+   }
+  },
+  {
+   "sel": {
+    "years": 39,
+    "sex": "female",
+    "site": "foot"
+   },
+   "values": {
+    "hpap": 74.22,
+    "rpap": 8.93,
+    "cells": 1.204,
+    "cvpap": 0.194,
+    "cvret": 0.407,
+    "cvhpap": 0.163,
+    "fsen": 0.041,
+    "H": 1063.8,
+    "hep": 114.3
+   }
+  },
+  {
+   "sel": {
+    "years": 39,
+    "sex": "male",
+    "site": "model"
+   },
+   "values": {
+    "hpap": 74.22,
+    "rpap": 8.93,
+    "cells": 1.204,
+    "cvpap": 0.194,
+    "cvret": 0.407,
+    "cvhpap": 0.163,
+    "fsen": 0.041,
+    "H": 2000.0,
+    "hep": 75.0
+   }
+  },
+  {
+   "sel": {
+    "years": 39,
+    "sex": "male",
+    "site": "abdomen"
+   },
+   "values": {
+    "hpap": 74.22,
+    "rpap": 8.93,
+    "cells": 1.204,
+    "cvpap": 0.194,
+    "cvret": 0.407,
+    "cvhpap": 0.163,
+    "fsen": 0.041,
+    "H": 2400.2,
+    "hep": 110.2
+   }
+  },
+  {
+   "sel": {
+    "years": 39,
+    "sex": "male",
+    "site": "back"
+   },
+   "values": {
+    "hpap": 74.22,
+    "rpap": 8.93,
+    "cells": 1.204,
+    "cvpap": 0.194,
+    "cvret": 0.407,
+    "cvhpap": 0.163,
+    "fsen": 0.041,
+    "H": 2813.0,
+    "hep": 118.2
+   }
+  },
+  {
+   "sel": {
+    "years": 39,
+    "sex": "male",
+    "site": "foot"
+   },
+   "values": {
+    "hpap": 74.22,
+    "rpap": 8.93,
+    "cells": 1.204,
+    "cvpap": 0.194,
+    "cvret": 0.407,
+    "cvhpap": 0.163,
+    "fsen": 0.041,
+    "H": 1191.2,
+    "hep": 115.0
+   }
+  },
+  {
+   "sel": {
+    "years": 40,
+    "sex": "female",
+    "site": "model"
+   },
+   "values": {
+    "hpap": 74.38,
+    "rpap": 8.9,
+    "cells": 1.201,
+    "cvpap": 0.195,
+    "cvret": 0.421,
+    "cvhpap": 0.167,
+    "fsen": 0.043,
+    "H": 2000.0,
+    "hep": 75.0
+   }
+  },
+  {
+   "sel": {
+    "years": 40,
+    "sex": "female",
+    "site": "abdomen"
+   },
+   "values": {
+    "hpap": 74.38,
+    "rpap": 8.9,
+    "cells": 1.201,
+    "cvpap": 0.195,
+    "cvret": 0.421,
+    "cvhpap": 0.167,
+    "fsen": 0.043,
+    "H": 2311.7,
+    "hep": 109.7
+   }
+  },
+  {
+   "sel": {
+    "years": 40,
+    "sex": "female",
+    "site": "back"
+   },
+   "values": {
+    "hpap": 74.38,
+    "rpap": 8.9,
+    "cells": 1.201,
+    "cvpap": 0.195,
+    "cvret": 0.421,
+    "cvhpap": 0.167,
+    "fsen": 0.043,
+    "H": 2966.9,
+    "hep": 118.6
+   }
+  },
+  {
+   "sel": {
+    "years": 40,
+    "sex": "female",
+    "site": "foot"
+   },
+   "values": {
+    "hpap": 74.38,
+    "rpap": 8.9,
+    "cells": 1.201,
+    "cvpap": 0.195,
+    "cvret": 0.421,
+    "cvhpap": 0.167,
+    "fsen": 0.043,
+    "H": 1061.1,
+    "hep": 114.3
+   }
+  },
+  {
+   "sel": {
+    "years": 40,
+    "sex": "male",
+    "site": "model"
+   },
+   "values": {
+    "hpap": 74.38,
+    "rpap": 8.9,
+    "cells": 1.201,
+    "cvpap": 0.195,
+    "cvret": 0.421,
+    "cvhpap": 0.167,
+    "fsen": 0.043,
+    "H": 2000.0,
+    "hep": 75.0
+   }
+  },
+  {
+   "sel": {
+    "years": 40,
+    "sex": "male",
+    "site": "abdomen"
+   },
+   "values": {
+    "hpap": 74.38,
+    "rpap": 8.9,
+    "cells": 1.201,
+    "cvpap": 0.195,
+    "cvret": 0.421,
+    "cvhpap": 0.167,
+    "fsen": 0.043,
+    "H": 2391.3,
+    "hep": 110.2
+   }
+  },
+  {
+   "sel": {
+    "years": 40,
+    "sex": "male",
+    "site": "back"
+   },
+   "values": {
+    "hpap": 74.38,
+    "rpap": 8.9,
+    "cells": 1.201,
+    "cvpap": 0.195,
+    "cvret": 0.421,
+    "cvhpap": 0.167,
+    "fsen": 0.043,
+    "H": 2802.5,
+    "hep": 118.2
+   }
+  },
+  {
+   "sel": {
+    "years": 40,
+    "sex": "male",
+    "site": "foot"
+   },
+   "values": {
+    "hpap": 74.38,
+    "rpap": 8.9,
+    "cells": 1.201,
+    "cvpap": 0.195,
+    "cvret": 0.421,
+    "cvhpap": 0.167,
+    "fsen": 0.043,
+    "H": 1186.8,
+    "hep": 115.0
+   }
+  },
+  {
+   "sel": {
+    "years": 45,
+    "sex": "female",
+    "site": "model"
+   },
+   "values": {
+    "hpap": 77.02,
+    "rpap": 8.93,
+    "cells": 1.178,
+    "cvpap": 0.194,
+    "cvret": 0.454,
+    "cvhpap": 0.184,
+    "fsen": 0.052,
+    "H": 2000.0,
+    "hep": 75.0
+   }
+  },
+  {
+   "sel": {
+    "years": 45,
+    "sex": "female",
+    "site": "abdomen"
+   },
+   "values": {
+    "hpap": 77.02,
+    "rpap": 8.93,
+    "cells": 1.178,
+    "cvpap": 0.194,
+    "cvret": 0.454,
+    "cvhpap": 0.184,
+    "fsen": 0.052,
+    "H": 2282.0,
+    "hep": 109.7
+   }
+  },
+  {
+   "sel": {
+    "years": 45,
+    "sex": "female",
+    "site": "back"
+   },
+   "values": {
+    "hpap": 77.02,
+    "rpap": 8.93,
+    "cells": 1.178,
+    "cvpap": 0.194,
+    "cvret": 0.454,
+    "cvhpap": 0.184,
+    "fsen": 0.052,
+    "H": 2928.8,
+    "hep": 118.6
+   }
+  },
+  {
+   "sel": {
+    "years": 45,
+    "sex": "female",
+    "site": "foot"
+   },
+   "values": {
+    "hpap": 77.02,
+    "rpap": 8.93,
+    "cells": 1.178,
+    "cvpap": 0.194,
+    "cvret": 0.454,
+    "cvhpap": 0.184,
+    "fsen": 0.052,
+    "H": 1047.5,
+    "hep": 114.3
+   }
+  },
+  {
+   "sel": {
+    "years": 45,
+    "sex": "male",
+    "site": "model"
+   },
+   "values": {
+    "hpap": 77.02,
+    "rpap": 8.93,
+    "cells": 1.178,
+    "cvpap": 0.194,
+    "cvret": 0.454,
+    "cvhpap": 0.184,
+    "fsen": 0.052,
+    "H": 2000.0,
+    "hep": 75.0
+   }
+  },
+  {
+   "sel": {
+    "years": 45,
+    "sex": "male",
+    "site": "abdomen"
+   },
+   "values": {
+    "hpap": 77.02,
+    "rpap": 8.93,
+    "cells": 1.178,
+    "cvpap": 0.194,
+    "cvret": 0.454,
+    "cvhpap": 0.184,
+    "fsen": 0.052,
+    "H": 2346.6,
+    "hep": 110.2
+   }
+  },
+  {
+   "sel": {
+    "years": 45,
+    "sex": "male",
+    "site": "back"
+   },
+   "values": {
+    "hpap": 77.02,
+    "rpap": 8.93,
+    "cells": 1.178,
+    "cvpap": 0.194,
+    "cvret": 0.454,
+    "cvhpap": 0.184,
+    "fsen": 0.052,
+    "H": 2750.2,
+    "hep": 118.2
+   }
+  },
+  {
+   "sel": {
+    "years": 45,
+    "sex": "male",
+    "site": "foot"
+   },
+   "values": {
+    "hpap": 77.02,
+    "rpap": 8.93,
+    "cells": 1.178,
+    "cvpap": 0.194,
+    "cvret": 0.454,
+    "cvhpap": 0.184,
+    "fsen": 0.052,
+    "H": 1164.6,
+    "hep": 115.0
+   }
+  },
+  {
+   "sel": {
+    "years": 55,
+    "sex": "female",
+    "site": "model"
+   },
+   "values": {
+    "hpap": 87.35,
+    "rpap": 9.67,
+    "cells": 1.103,
+    "cvpap": 0.183,
+    "cvret": 0.416,
+    "cvhpap": 0.198,
+    "fsen": 0.08,
+    "H": 2000.0,
+    "hep": 75.0
+   }
+  },
+  {
+   "sel": {
+    "years": 55,
+    "sex": "female",
+    "site": "abdomen"
+   },
+   "values": {
+    "hpap": 87.35,
+    "rpap": 9.67,
+    "cells": 1.103,
+    "cvpap": 0.183,
+    "cvret": 0.416,
+    "cvhpap": 0.198,
+    "fsen": 0.08,
+    "H": 2222.7,
+    "hep": 109.7
+   }
+  },
+  {
+   "sel": {
+    "years": 55,
+    "sex": "female",
+    "site": "back"
+   },
+   "values": {
+    "hpap": 87.35,
+    "rpap": 9.67,
+    "cells": 1.103,
+    "cvpap": 0.183,
+    "cvret": 0.416,
+    "cvhpap": 0.198,
+    "fsen": 0.08,
+    "H": 2852.7,
+    "hep": 118.6
+   }
+  },
+  {
+   "sel": {
+    "years": 55,
+    "sex": "female",
+    "site": "foot"
+   },
+   "values": {
+    "hpap": 87.35,
+    "rpap": 9.67,
+    "cells": 1.103,
+    "cvpap": 0.183,
+    "cvret": 0.416,
+    "cvhpap": 0.198,
+    "fsen": 0.08,
+    "H": 1020.3,
+    "hep": 114.3
+   }
+  },
+  {
+   "sel": {
+    "years": 55,
+    "sex": "male",
+    "site": "model"
+   },
+   "values": {
+    "hpap": 87.35,
+    "rpap": 9.67,
+    "cells": 1.103,
+    "cvpap": 0.183,
+    "cvret": 0.416,
+    "cvhpap": 0.198,
+    "fsen": 0.08,
+    "H": 2000.0,
+    "hep": 75.0
+   }
+  },
+  {
+   "sel": {
+    "years": 55,
+    "sex": "male",
+    "site": "abdomen"
+   },
+   "values": {
+    "hpap": 87.35,
+    "rpap": 9.67,
+    "cells": 1.103,
+    "cvpap": 0.183,
+    "cvret": 0.416,
+    "cvhpap": 0.198,
+    "fsen": 0.08,
+    "H": 2257.6,
+    "hep": 110.2
+   }
+  },
+  {
+   "sel": {
+    "years": 55,
+    "sex": "male",
+    "site": "back"
+   },
+   "values": {
+    "hpap": 87.35,
+    "rpap": 9.67,
+    "cells": 1.103,
+    "cvpap": 0.183,
+    "cvret": 0.416,
+    "cvhpap": 0.198,
+    "fsen": 0.08,
+    "H": 2645.9,
+    "hep": 118.2
+   }
+  },
+  {
+   "sel": {
+    "years": 55,
+    "sex": "male",
+    "site": "foot"
+   },
+   "values": {
+    "hpap": 87.35,
+    "rpap": 9.67,
+    "cells": 1.103,
+    "cvpap": 0.183,
+    "cvret": 0.416,
+    "cvhpap": 0.198,
+    "fsen": 0.08,
+    "H": 1120.5,
+    "hep": 115.0
+   }
+  },
+  {
+   "sel": {
+    "years": 62,
+    "sex": "female",
+    "site": "model"
+   },
+   "values": {
+    "hpap": 94.59,
+    "rpap": 10.31,
+    "cells": 1.05,
+    "cvpap": 0.174,
+    "cvret": 0.384,
+    "cvhpap": 0.206,
+    "fsen": 0.1,
+    "H": 2000.0,
+    "hep": 75.0
+   }
+  },
+  {
+   "sel": {
+    "years": 62,
+    "sex": "female",
+    "site": "abdomen"
+   },
+   "values": {
+    "hpap": 94.59,
+    "rpap": 10.31,
+    "cells": 1.05,
+    "cvpap": 0.174,
+    "cvret": 0.384,
+    "cvhpap": 0.206,
+    "fsen": 0.1,
+    "H": 2181.1,
+    "hep": 109.7
+   }
+  },
+  {
+   "sel": {
+    "years": 62,
+    "sex": "female",
+    "site": "back"
+   },
+   "values": {
+    "hpap": 94.59,
+    "rpap": 10.31,
+    "cells": 1.05,
+    "cvpap": 0.174,
+    "cvret": 0.384,
+    "cvhpap": 0.206,
+    "fsen": 0.1,
+    "H": 2799.3,
+    "hep": 118.6
+   }
+  },
+  {
+   "sel": {
+    "years": 62,
+    "sex": "female",
+    "site": "foot"
+   },
+   "values": {
+    "hpap": 94.59,
+    "rpap": 10.31,
+    "cells": 1.05,
+    "cvpap": 0.174,
+    "cvret": 0.384,
+    "cvhpap": 0.206,
+    "fsen": 0.1,
+    "H": 1001.2,
+    "hep": 114.3
+   }
+  },
+  {
+   "sel": {
+    "years": 62,
+    "sex": "male",
+    "site": "model"
+   },
+   "values": {
+    "hpap": 94.59,
+    "rpap": 10.31,
+    "cells": 1.05,
+    "cvpap": 0.174,
+    "cvret": 0.384,
+    "cvhpap": 0.206,
+    "fsen": 0.1,
+    "H": 2000.0,
+    "hep": 75.0
+   }
+  },
+  {
+   "sel": {
+    "years": 62,
+    "sex": "male",
+    "site": "abdomen"
+   },
+   "values": {
+    "hpap": 94.59,
+    "rpap": 10.31,
+    "cells": 1.05,
+    "cvpap": 0.174,
+    "cvret": 0.384,
+    "cvhpap": 0.206,
+    "fsen": 0.1,
+    "H": 2195.1,
+    "hep": 110.2
+   }
+  },
+  {
+   "sel": {
+    "years": 62,
+    "sex": "male",
+    "site": "back"
+   },
+   "values": {
+    "hpap": 94.59,
+    "rpap": 10.31,
+    "cells": 1.05,
+    "cvpap": 0.174,
+    "cvret": 0.384,
+    "cvhpap": 0.206,
+    "fsen": 0.1,
+    "H": 2572.6,
+    "hep": 118.2
+   }
+  },
+  {
+   "sel": {
+    "years": 62,
+    "sex": "male",
+    "site": "foot"
+   },
+   "values": {
+    "hpap": 94.59,
+    "rpap": 10.31,
+    "cells": 1.05,
+    "cvpap": 0.174,
+    "cvret": 0.384,
+    "cvhpap": 0.206,
+    "fsen": 0.1,
+    "H": 1089.4,
+    "hep": 115.0
+   }
+  },
+  {
+   "sel": {
+    "years": 68,
+    "sex": "female",
+    "site": "model"
+   },
+   "values": {
+    "hpap": 100.79,
+    "rpap": 10.96,
+    "cells": 1.003,
+    "cvpap": 0.167,
+    "cvret": 0.35,
+    "cvhpap": 0.211,
+    "fsen": 0.116,
+    "H": 2000.0,
+    "hep": 75.0
+   }
+  },
+  {
+   "sel": {
+    "years": 68,
+    "sex": "female",
+    "site": "abdomen"
+   },
+   "values": {
+    "hpap": 100.79,
+    "rpap": 10.96,
+    "cells": 1.003,
+    "cvpap": 0.167,
+    "cvret": 0.35,
+    "cvhpap": 0.211,
+    "fsen": 0.116,
+    "H": 2145.8,
+    "hep": 109.7
+   }
+  },
+  {
+   "sel": {
+    "years": 68,
+    "sex": "female",
+    "site": "back"
+   },
+   "values": {
+    "hpap": 100.79,
+    "rpap": 10.96,
+    "cells": 1.003,
+    "cvpap": 0.167,
+    "cvret": 0.35,
+    "cvhpap": 0.211,
+    "fsen": 0.116,
+    "H": 2754.0,
+    "hep": 118.6
+   }
+  },
+  {
+   "sel": {
+    "years": 68,
+    "sex": "female",
+    "site": "foot"
+   },
+   "values": {
+    "hpap": 100.79,
+    "rpap": 10.96,
+    "cells": 1.003,
+    "cvpap": 0.167,
+    "cvret": 0.35,
+    "cvhpap": 0.211,
+    "fsen": 0.116,
+    "H": 985.0,
+    "hep": 114.3
+   }
+  },
+  {
+   "sel": {
+    "years": 68,
+    "sex": "male",
+    "site": "model"
+   },
+   "values": {
+    "hpap": 100.79,
+    "rpap": 10.96,
+    "cells": 1.003,
+    "cvpap": 0.167,
+    "cvret": 0.35,
+    "cvhpap": 0.211,
+    "fsen": 0.116,
+    "H": 2000.0,
+    "hep": 75.0
+   }
+  },
+  {
+   "sel": {
+    "years": 68,
+    "sex": "male",
+    "site": "abdomen"
+   },
+   "values": {
+    "hpap": 100.79,
+    "rpap": 10.96,
+    "cells": 1.003,
+    "cvpap": 0.167,
+    "cvret": 0.35,
+    "cvhpap": 0.211,
+    "fsen": 0.116,
+    "H": 2141.7,
+    "hep": 110.2
+   }
+  },
+  {
+   "sel": {
+    "years": 68,
+    "sex": "male",
+    "site": "back"
+   },
+   "values": {
+    "hpap": 100.79,
+    "rpap": 10.96,
+    "cells": 1.003,
+    "cvpap": 0.167,
+    "cvret": 0.35,
+    "cvhpap": 0.211,
+    "fsen": 0.116,
+    "H": 2510.1,
+    "hep": 118.2
+   }
+  },
+  {
+   "sel": {
+    "years": 68,
+    "sex": "male",
+    "site": "foot"
+   },
+   "values": {
+    "hpap": 100.79,
+    "rpap": 10.96,
+    "cells": 1.003,
+    "cvpap": 0.167,
+    "cvret": 0.35,
+    "cvhpap": 0.211,
+    "fsen": 0.116,
+    "H": 1063.0,
+    "hep": 115.0
+   }
+  },
+  {
+   "sel": {
+    "years": 70,
+    "sex": "female",
+    "site": "model"
+   },
+   "values": {
+    "hpap": 101.2,
+    "rpap": 11.01,
+    "cells": 1.0,
+    "cvpap": 0.166,
+    "cvret": 0.348,
+    "cvhpap": 0.212,
+    "fsen": 0.122,
+    "H": 2000.0,
+    "hep": 75.0
+   }
+  },
+  {
+   "sel": {
+    "years": 70,
+    "sex": "female",
+    "site": "abdomen"
+   },
+   "values": {
+    "hpap": 101.2,
+    "rpap": 11.01,
+    "cells": 1.0,
+    "cvpap": 0.166,
+    "cvret": 0.348,
+    "cvhpap": 0.212,
+    "fsen": 0.122,
+    "H": 2133.9,
+    "hep": 109.7
+   }
+  },
+  {
+   "sel": {
+    "years": 70,
+    "sex": "female",
+    "site": "back"
+   },
+   "values": {
+    "hpap": 101.2,
+    "rpap": 11.01,
+    "cells": 1.0,
+    "cvpap": 0.166,
+    "cvret": 0.348,
+    "cvhpap": 0.212,
+    "fsen": 0.122,
+    "H": 2738.7,
+    "hep": 118.6
+   }
+  },
+  {
+   "sel": {
+    "years": 70,
+    "sex": "female",
+    "site": "foot"
+   },
+   "values": {
+    "hpap": 101.2,
+    "rpap": 11.01,
+    "cells": 1.0,
+    "cvpap": 0.166,
+    "cvret": 0.348,
+    "cvhpap": 0.212,
+    "fsen": 0.122,
+    "H": 979.5,
+    "hep": 114.3
+   }
+  },
+  {
+   "sel": {
+    "years": 70,
+    "sex": "male",
+    "site": "model"
+   },
+   "values": {
+    "hpap": 101.2,
+    "rpap": 11.01,
+    "cells": 1.0,
+    "cvpap": 0.166,
+    "cvret": 0.348,
+    "cvhpap": 0.212,
+    "fsen": 0.122,
+    "H": 2000.0,
+    "hep": 75.0
+   }
+  },
+  {
+   "sel": {
+    "years": 70,
+    "sex": "male",
+    "site": "abdomen"
+   },
+   "values": {
+    "hpap": 101.2,
+    "rpap": 11.01,
+    "cells": 1.0,
+    "cvpap": 0.166,
+    "cvret": 0.348,
+    "cvhpap": 0.212,
+    "fsen": 0.122,
+    "H": 2123.9,
+    "hep": 110.2
+   }
+  },
+  {
+   "sel": {
+    "years": 70,
+    "sex": "male",
+    "site": "back"
+   },
+   "values": {
+    "hpap": 101.2,
+    "rpap": 11.01,
+    "cells": 1.0,
+    "cvpap": 0.166,
+    "cvret": 0.348,
+    "cvhpap": 0.212,
+    "fsen": 0.122,
+    "H": 2489.2,
+    "hep": 118.2
+   }
+  },
+  {
+   "sel": {
+    "years": 70,
+    "sex": "male",
+    "site": "foot"
+   },
+   "values": {
+    "hpap": 101.2,
+    "rpap": 11.01,
+    "cells": 1.0,
+    "cvpap": 0.166,
+    "cvret": 0.348,
+    "cvhpap": 0.212,
+    "fsen": 0.122,
+    "H": 1054.1,
+    "hep": 115.0
+   }
+  },
+  {
+   "sel": {
+    "years": 79,
+    "sex": "female",
+    "site": "model"
+   },
+   "values": {
+    "hpap": 101.2,
+    "rpap": 11.01,
+    "cells": 1.0,
+    "cvpap": 0.166,
+    "cvret": 0.348,
+    "cvhpap": 0.212,
+    "fsen": 0.147,
+    "H": 2000.0,
+    "hep": 75.0
+   }
+  },
+  {
+   "sel": {
+    "years": 79,
+    "sex": "female",
+    "site": "abdomen"
+   },
+   "values": {
+    "hpap": 101.2,
+    "rpap": 11.01,
+    "cells": 1.0,
+    "cvpap": 0.166,
+    "cvret": 0.348,
+    "cvhpap": 0.212,
+    "fsen": 0.147,
+    "H": 2080.5,
+    "hep": 109.7
+   }
+  },
+  {
+   "sel": {
+    "years": 79,
+    "sex": "female",
+    "site": "back"
+   },
+   "values": {
+    "hpap": 101.2,
+    "rpap": 11.01,
+    "cells": 1.0,
+    "cvpap": 0.166,
+    "cvret": 0.348,
+    "cvhpap": 0.212,
+    "fsen": 0.147,
+    "H": 2670.2,
+    "hep": 118.6
+   }
+  },
+  {
+   "sel": {
+    "years": 79,
+    "sex": "female",
+    "site": "foot"
+   },
+   "values": {
+    "hpap": 101.2,
+    "rpap": 11.01,
+    "cells": 1.0,
+    "cvpap": 0.166,
+    "cvret": 0.348,
+    "cvhpap": 0.212,
+    "fsen": 0.147,
+    "H": 955.0,
+    "hep": 114.3
+   }
+  },
+  {
+   "sel": {
+    "years": 79,
+    "sex": "male",
+    "site": "model"
+   },
+   "values": {
+    "hpap": 101.2,
+    "rpap": 11.01,
+    "cells": 1.0,
+    "cvpap": 0.166,
+    "cvret": 0.348,
+    "cvhpap": 0.212,
+    "fsen": 0.147,
+    "H": 2000.0,
+    "hep": 75.0
+   }
+  },
+  {
+   "sel": {
+    "years": 79,
+    "sex": "male",
+    "site": "abdomen"
+   },
+   "values": {
+    "hpap": 101.2,
+    "rpap": 11.01,
+    "cells": 1.0,
+    "cvpap": 0.166,
+    "cvret": 0.348,
+    "cvhpap": 0.212,
+    "fsen": 0.147,
+    "H": 2043.8,
+    "hep": 110.2
+   }
+  },
+  {
+   "sel": {
+    "years": 79,
+    "sex": "male",
+    "site": "back"
+   },
+   "values": {
+    "hpap": 101.2,
+    "rpap": 11.01,
+    "cells": 1.0,
+    "cvpap": 0.166,
+    "cvret": 0.348,
+    "cvhpap": 0.212,
+    "fsen": 0.147,
+    "H": 2395.3,
+    "hep": 118.2
+   }
+  },
+  {
+   "sel": {
+    "years": 79,
+    "sex": "male",
+    "site": "foot"
+   },
+   "values": {
+    "hpap": 101.2,
+    "rpap": 11.01,
+    "cells": 1.0,
+    "cvpap": 0.166,
+    "cvret": 0.348,
+    "cvhpap": 0.212,
+    "fsen": 0.147,
+    "H": 1014.3,
+    "hep": 115.0
+   }
+  },
+  {
+   "sel": {
+    "years": 80,
+    "sex": "female",
+    "site": "model"
+   },
+   "values": {
+    "hpap": 101.2,
+    "rpap": 11.01,
+    "cells": 1.0,
+    "cvpap": 0.166,
+    "cvret": 0.348,
+    "cvhpap": 0.212,
+    "fsen": 0.15,
+    "H": 2000.0,
+    "hep": 75.0
+   }
+  },
+  {
+   "sel": {
+    "years": 80,
+    "sex": "female",
+    "site": "abdomen"
+   },
+   "values": {
+    "hpap": 101.2,
+    "rpap": 11.01,
+    "cells": 1.0,
+    "cvpap": 0.166,
+    "cvret": 0.348,
+    "cvhpap": 0.212,
+    "fsen": 0.15,
+    "H": 2074.6,
+    "hep": 109.7
+   }
+  },
+  {
+   "sel": {
+    "years": 80,
+    "sex": "female",
+    "site": "back"
+   },
+   "values": {
+    "hpap": 101.2,
+    "rpap": 11.01,
+    "cells": 1.0,
+    "cvpap": 0.166,
+    "cvret": 0.348,
+    "cvhpap": 0.212,
+    "fsen": 0.15,
+    "H": 2662.6,
+    "hep": 118.6
+   }
+  },
+  {
+   "sel": {
+    "years": 80,
+    "sex": "female",
+    "site": "foot"
+   },
+   "values": {
+    "hpap": 101.2,
+    "rpap": 11.01,
+    "cells": 1.0,
+    "cvpap": 0.166,
+    "cvret": 0.348,
+    "cvhpap": 0.212,
+    "fsen": 0.15,
+    "H": 952.3,
+    "hep": 114.3
+   }
+  },
+  {
+   "sel": {
+    "years": 80,
+    "sex": "male",
+    "site": "model"
+   },
+   "values": {
+    "hpap": 101.2,
+    "rpap": 11.01,
+    "cells": 1.0,
+    "cvpap": 0.166,
+    "cvret": 0.348,
+    "cvhpap": 0.212,
+    "fsen": 0.15,
+    "H": 2000.0,
+    "hep": 75.0
+   }
+  },
+  {
+   "sel": {
+    "years": 80,
+    "sex": "male",
+    "site": "abdomen"
+   },
+   "values": {
+    "hpap": 101.2,
+    "rpap": 11.01,
+    "cells": 1.0,
+    "cvpap": 0.166,
+    "cvret": 0.348,
+    "cvhpap": 0.212,
+    "fsen": 0.15,
+    "H": 2034.8,
+    "hep": 110.2
+   }
+  },
+  {
+   "sel": {
+    "years": 80,
+    "sex": "male",
+    "site": "back"
+   },
+   "values": {
+    "hpap": 101.2,
+    "rpap": 11.01,
+    "cells": 1.0,
+    "cvpap": 0.166,
+    "cvret": 0.348,
+    "cvhpap": 0.212,
+    "fsen": 0.15,
+    "H": 2384.8,
+    "hep": 118.2
+   }
+  },
+  {
+   "sel": {
+    "years": 80,
+    "sex": "male",
+    "site": "foot"
+   },
+   "values": {
+    "hpap": 101.2,
+    "rpap": 11.01,
+    "cells": 1.0,
+    "cvpap": 0.166,
+    "cvret": 0.348,
+    "cvhpap": 0.212,
+    "fsen": 0.15,
+    "H": 1009.9,
+    "hep": 115.0
+   }
+  },
+  {
+   "sel": {
+    "years": 85,
+    "sex": "female",
+    "site": "model"
+   },
+   "values": {
+    "hpap": 101.2,
+    "rpap": 11.01,
+    "cells": 1.0,
+    "cvpap": 0.166,
+    "cvret": 0.348,
+    "cvhpap": 0.212,
+    "fsen": 0.15,
+    "H": 2000.0,
+    "hep": 75.0
+   }
+  },
+  {
+   "sel": {
+    "years": 85,
+    "sex": "female",
+    "site": "abdomen"
+   },
+   "values": {
+    "hpap": 101.2,
+    "rpap": 11.01,
+    "cells": 1.0,
+    "cvpap": 0.166,
+    "cvret": 0.348,
+    "cvhpap": 0.212,
+    "fsen": 0.15,
+    "H": 2044.9,
+    "hep": 109.7
+   }
+  },
+  {
+   "sel": {
+    "years": 85,
+    "sex": "female",
+    "site": "back"
+   },
+   "values": {
+    "hpap": 101.2,
+    "rpap": 11.01,
+    "cells": 1.0,
+    "cvpap": 0.166,
+    "cvret": 0.348,
+    "cvhpap": 0.212,
+    "fsen": 0.15,
+    "H": 2624.5,
+    "hep": 118.6
+   }
+  },
+  {
+   "sel": {
+    "years": 85,
+    "sex": "female",
+    "site": "foot"
+   },
+   "values": {
+    "hpap": 101.2,
+    "rpap": 11.01,
+    "cells": 1.0,
+    "cvpap": 0.166,
+    "cvret": 0.348,
+    "cvhpap": 0.212,
+    "fsen": 0.15,
+    "H": 938.7,
+    "hep": 114.3
+   }
+  },
+  {
+   "sel": {
+    "years": 85,
+    "sex": "male",
+    "site": "model"
+   },
+   "values": {
+    "hpap": 101.2,
+    "rpap": 11.01,
+    "cells": 1.0,
+    "cvpap": 0.166,
+    "cvret": 0.348,
+    "cvhpap": 0.212,
+    "fsen": 0.15,
+    "H": 2000.0,
+    "hep": 75.0
+   }
+  },
+  {
+   "sel": {
+    "years": 85,
+    "sex": "male",
+    "site": "abdomen"
+   },
+   "values": {
+    "hpap": 101.2,
+    "rpap": 11.01,
+    "cells": 1.0,
+    "cvpap": 0.166,
+    "cvret": 0.348,
+    "cvhpap": 0.212,
+    "fsen": 0.15,
+    "H": 1990.2,
+    "hep": 110.2
+   }
+  },
+  {
+   "sel": {
+    "years": 85,
+    "sex": "male",
+    "site": "back"
+   },
+   "values": {
+    "hpap": 101.2,
+    "rpap": 11.01,
+    "cells": 1.0,
+    "cvpap": 0.166,
+    "cvret": 0.348,
+    "cvhpap": 0.212,
+    "fsen": 0.15,
+    "H": 2332.5,
+    "hep": 118.2
+   }
+  },
+  {
+   "sel": {
+    "years": 85,
+    "sex": "male",
+    "site": "foot"
+   },
+   "values": {
+    "hpap": 101.2,
+    "rpap": 11.01,
+    "cells": 1.0,
+    "cvpap": 0.166,
+    "cvret": 0.348,
+    "cvhpap": 0.212,
+    "fsen": 0.15,
+    "H": 987.8,
+    "hep": 115.0
+   }
+  },
+  {
+   "sel": {
+    "years": 86,
+    "sex": "female",
+    "site": "model"
+   },
+   "values": {
+    "hpap": 101.2,
+    "rpap": 11.01,
+    "cells": 1.0,
+    "cvpap": 0.166,
+    "cvret": 0.348,
+    "cvhpap": 0.212,
+    "fsen": 0.15,
+    "H": 2000.0,
+    "hep": 75.0
+   }
+  },
+  {
+   "sel": {
+    "years": 86,
+    "sex": "female",
+    "site": "abdomen"
+   },
+   "values": {
+    "hpap": 101.2,
+    "rpap": 11.01,
+    "cells": 1.0,
+    "cvpap": 0.166,
+    "cvret": 0.348,
+    "cvhpap": 0.212,
+    "fsen": 0.15,
+    "H": 2044.9,
+    "hep": 109.7
+   }
+  },
+  {
+   "sel": {
+    "years": 86,
+    "sex": "female",
+    "site": "back"
+   },
+   "values": {
+    "hpap": 101.2,
+    "rpap": 11.01,
+    "cells": 1.0,
+    "cvpap": 0.166,
+    "cvret": 0.348,
+    "cvhpap": 0.212,
+    "fsen": 0.15,
+    "H": 2624.5,
+    "hep": 118.6
+   }
+  },
+  {
+   "sel": {
+    "years": 86,
+    "sex": "female",
+    "site": "foot"
+   },
+   "values": {
+    "hpap": 101.2,
+    "rpap": 11.01,
+    "cells": 1.0,
+    "cvpap": 0.166,
+    "cvret": 0.348,
+    "cvhpap": 0.212,
+    "fsen": 0.15,
+    "H": 938.7,
+    "hep": 114.3
+   }
+  },
+  {
+   "sel": {
+    "years": 86,
+    "sex": "male",
+    "site": "model"
+   },
+   "values": {
+    "hpap": 101.2,
+    "rpap": 11.01,
+    "cells": 1.0,
+    "cvpap": 0.166,
+    "cvret": 0.348,
+    "cvhpap": 0.212,
+    "fsen": 0.15,
+    "H": 2000.0,
+    "hep": 75.0
+   }
+  },
+  {
+   "sel": {
+    "years": 86,
+    "sex": "male",
+    "site": "abdomen"
+   },
+   "values": {
+    "hpap": 101.2,
+    "rpap": 11.01,
+    "cells": 1.0,
+    "cvpap": 0.166,
+    "cvret": 0.348,
+    "cvhpap": 0.212,
+    "fsen": 0.15,
+    "H": 1990.2,
+    "hep": 110.2
+   }
+  },
+  {
+   "sel": {
+    "years": 86,
+    "sex": "male",
+    "site": "back"
+   },
+   "values": {
+    "hpap": 101.2,
+    "rpap": 11.01,
+    "cells": 1.0,
+    "cvpap": 0.166,
+    "cvret": 0.348,
+    "cvhpap": 0.212,
+    "fsen": 0.15,
+    "H": 2332.5,
+    "hep": 118.2
+   }
+  },
+  {
+   "sel": {
+    "years": 86,
+    "sex": "male",
+    "site": "foot"
+   },
+   "values": {
+    "hpap": 101.2,
+    "rpap": 11.01,
+    "cells": 1.0,
+    "cvpap": 0.166,
+    "cvret": 0.348,
+    "cvhpap": 0.212,
+    "fsen": 0.15,
+    "H": 987.8,
+    "hep": 115.0
+   }
+  },
+  {
+   "sel": {
+    "years": 100,
+    "sex": "female",
+    "site": "model"
+   },
+   "values": {
+    "hpap": 101.2,
+    "rpap": 11.01,
+    "cells": 1.0,
+    "cvpap": 0.166,
+    "cvret": 0.348,
+    "cvhpap": 0.212,
+    "fsen": 0.15,
+    "H": 2000.0,
+    "hep": 75.0
+   }
+  },
+  {
+   "sel": {
+    "years": 100,
+    "sex": "female",
+    "site": "abdomen"
+   },
+   "values": {
+    "hpap": 101.2,
+    "rpap": 11.01,
+    "cells": 1.0,
+    "cvpap": 0.166,
+    "cvret": 0.348,
+    "cvhpap": 0.212,
+    "fsen": 0.15,
+    "H": 2044.9,
+    "hep": 109.7
+   }
+  },
+  {
+   "sel": {
+    "years": 100,
+    "sex": "female",
+    "site": "back"
+   },
+   "values": {
+    "hpap": 101.2,
+    "rpap": 11.01,
+    "cells": 1.0,
+    "cvpap": 0.166,
+    "cvret": 0.348,
+    "cvhpap": 0.212,
+    "fsen": 0.15,
+    "H": 2624.5,
+    "hep": 118.6
+   }
+  },
+  {
+   "sel": {
+    "years": 100,
+    "sex": "female",
+    "site": "foot"
+   },
+   "values": {
+    "hpap": 101.2,
+    "rpap": 11.01,
+    "cells": 1.0,
+    "cvpap": 0.166,
+    "cvret": 0.348,
+    "cvhpap": 0.212,
+    "fsen": 0.15,
+    "H": 938.7,
+    "hep": 114.3
+   }
+  },
+  {
+   "sel": {
+    "years": 100,
+    "sex": "male",
+    "site": "model"
+   },
+   "values": {
+    "hpap": 101.2,
+    "rpap": 11.01,
+    "cells": 1.0,
+    "cvpap": 0.166,
+    "cvret": 0.348,
+    "cvhpap": 0.212,
+    "fsen": 0.15,
+    "H": 2000.0,
+    "hep": 75.0
+   }
+  },
+  {
+   "sel": {
+    "years": 100,
+    "sex": "male",
+    "site": "abdomen"
+   },
+   "values": {
+    "hpap": 101.2,
+    "rpap": 11.01,
+    "cells": 1.0,
+    "cvpap": 0.166,
+    "cvret": 0.348,
+    "cvhpap": 0.212,
+    "fsen": 0.15,
+    "H": 1990.2,
+    "hep": 110.2
+   }
+  },
+  {
+   "sel": {
+    "years": 100,
+    "sex": "male",
+    "site": "back"
+   },
+   "values": {
+    "hpap": 101.2,
+    "rpap": 11.01,
+    "cells": 1.0,
+    "cvpap": 0.166,
+    "cvret": 0.348,
+    "cvhpap": 0.212,
+    "fsen": 0.15,
+    "H": 2332.5,
+    "hep": 118.2
+   }
+  },
+  {
+   "sel": {
+    "years": 100,
+    "sex": "male",
+    "site": "foot"
+   },
+   "values": {
+    "hpap": 101.2,
+    "rpap": 11.01,
+    "cells": 1.0,
+    "cvpap": 0.166,
+    "cvret": 0.348,
+    "cvhpap": 0.212,
+    "fsen": 0.15,
+    "H": 987.8,
+    "hep": 115.0
+   }
+  },
+  {
+   "sel": {
+    "age": "child"
+   },
+   "values": {
+    "hpap": 75.36,
+    "rpap": 3.71,
+    "cells": 3.381,
+    "cvpap": 0.162,
+    "cvret": 0.502,
+    "cvhpap": 0.157,
+    "fsen": 0.019,
+    "H": 2000.0,
+    "hep": 75.0
+   }
+  },
+  {
+   "sel": {
+    "age": "young"
+   },
+   "values": {
+    "hpap": 70.95,
+    "rpap": 9.62,
+    "cells": 1.259,
+    "cvpap": 0.188,
+    "cvret": 0.136,
+    "cvhpap": 0.066,
+    "fsen": 0.019,
+    "H": 2000.0,
+    "hep": 75.0
+   }
+  },
+  {
+   "sel": {
+    "age": "adult"
+   },
+   "values": {
+    "hpap": 74.85,
+    "rpap": 8.8,
+    "cells": 1.193,
+    "cvpap": 0.196,
+    "cvret": 0.461,
+    "cvhpap": 0.18,
+    "fsen": 0.047,
+    "H": 2000.0,
+    "hep": 75.0
+   }
+  },
+  {
+   "sel": {
+    "age": "aged"
+   },
+   "values": {
+    "hpap": 101.2,
+    "rpap": 11.01,
+    "cells": 1.0,
+    "cvpap": 0.166,
+    "cvret": 0.348,
+    "cvhpap": 0.212,
+    "fsen": 0.15,
+    "H": 2000.0,
+    "hep": 75.0
+   }
+  },
+  {
+   "sel": {},
+   "values": {
+    "hpap": 101.2,
+    "rpap": 11.01,
+    "cells": 1.0,
+    "cvpap": 0.166,
+    "cvret": 0.348,
+    "cvhpap": 0.212,
+    "fsen": 0.15,
+    "H": 2000.0,
+    "hep": 75.0
+   }
+  }
+ ]
 }

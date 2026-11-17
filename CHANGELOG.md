@@ -2,6 +2,15 @@
 
 Newest version first. Each entry says what you can do or see differently.
 
+## 0.14.0 — 2026-11-17
+
+- **Six age groups instead of four:** 0–12, 13–25, 26–39, 40–54, 55–69 and 70+. They follow from where the age-resolved studies set their borders. Each group says what it rests on: 13–25 and 40–54 hold donors that were measured; 0–12, 26–39 and 55–69 lie between measured groups and are interpolated; 70+ is held at the oldest donors. *70+* is the default and gives exactly what *55+* gave. A link or file that names an earlier group still opens (26–54 as 40–54, 55+ as 70+).
+- **An exact age in years.** Under the age groups you can type an age from 0 to 100. The values are then taken at that age, on the straight lines between the measured group means; beyond the youngest and oldest donors they are held, never extrapolated. The age travels in the link (`years=62`).
+- **The dermis of a body site now follows the age.** The site table was measured in men of a median age of 30 and women of 45 years; a published ultrasound regression scales it to the age you choose (forearm, men: 1 774 µm at 30 years, 1 455 µm in the 70+ group). The skin model is not a body site and stays at 2 mm; the epidermis is not changed with age. Designs with a body site therefore get a different dermis thickness than before.
+- **Whose skin, as a figure.** The View column starts with a schematic body: the body site is marked, and underneath are the tissue data of your selection (dermis, epidermis, papillary dermis, cell counts, senescent share, collagen area fraction), each with a badge — measured, interpolated, held or regression — and its source. Size, build and skin tone of the figure are illustration only; the collagen fraction is shown and sets nothing.
+- **Changed values.** The senescent share is now placed at the ages of the skin donors actually measured (19–30, 41–46 and 70–90 years): 3.1 % for 26–39, 4.7 % for 40–54 and 10 % for 55–69 (earlier 4.8 % for 26–54). 26–39 and 55–69 have interpolated layers (papillary dermis 73 and 95 µm).
+- Help: *Age of the skin* explains how the groups were derived, lists every study that set a border and shows what was measured; *The figure* explains the badges.
+
 ## 0.13.0 — 2026-11-11
 
 - **The senescent share of the host cells is now part of *Whose skin*.** It moved from the Robustness panel to the advanced values of step 1, next to the other values of the tissue, and it still follows the **age** you pick (1.9 % up to 25 years, 4.8 % at 26–54, 15 % at 55+). It acts where it did: in the Robustness analysis.

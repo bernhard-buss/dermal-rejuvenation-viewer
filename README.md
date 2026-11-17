@@ -25,9 +25,13 @@ models: Roy B, Pekec T, Yuan L, Shivashankar GV. *Aging Cell* 2024;23:e14032,
   away, and the Coverage panel shows where they part. Below
   the dermis the signal may continue (open), be cleared (absorbing) or be
   reflected (closed).
-- A **basic tissue model** — age, sex, body site, ethnicity — sets the advanced
-  tissue values from measurements (layers and cells by age; dermis and epidermis
-  thickness at ten body sites by sex); a value changed by hand stays yours.
+- A **basic tissue model** — age (six groups or an exact age in years), sex, body
+  site, ethnicity — sets the advanced tissue values from measurements (layers,
+  cells and senescent share by age; dermis and epidermis thickness at ten body
+  sites by sex, the dermis scaled to the age); a value changed by hand stays yours.
+  The **View** column starts with a schematic body: the site marked, and the tissue
+  data of the selection, each marked as measured, interpolated, held or from a
+  regression, with its source.
 - Three panes — **Model** (five numbered steps: whose skin, what the cells make,
   how you inject, the device, what you look at), **View** (map and cross-section)
   and **Analysis** — side by side under one title bar on a desktop window, as tabs

@@ -82,8 +82,23 @@ so that Claude Code reads the same text; add and change notes here, not there.
   `DP.basic`). `defaultOf(key)` is the basic model's value for the keys it sets,
   so `isDefault`, ↺ and the default tick follow the selection; a value moved by hand
   is *custom* (`customKeys()`) and survives a change of the selection (`setBasic`).
-  The selection travels in links (`age`, `sex`, `site`, `ethnicity`) and in Save
-  YAML (`design.basic`).
+  The selection travels in links (`age`, `years`, `sex`, `site`, `ethnicity`) and in
+  Save YAML (`design.basic`). **Age** is one of six groups or an age in years
+  (`S.basic.years`, a string; "" means the group decides; a year also sets
+  `S.basic.age` to its group and is the only one of the two written to a link). The
+  viewer computes no age value: `ageEntry(sel)` looks the group up in
+  `DP.presets.groups` or the whole year in `DP.presets.years` (values, thickness
+  factor by sex, shown data, and the kind and wording of each as runs of ages), all
+  computed by `dermsim.params`. `tests/smoke.mjs` checks `basicValues` against the
+  `basic` cases of `data/golden.json`. A key of the four earlier groups
+  (`DP.presets.renamed`) is read from a link or file as its successor.
+- **The figure** (`drawBody`, first panel of the View column, folded state in
+  `drv_body_closed`): `bodySvg` draws a schematic body whose size, build and tone
+  follow age, sex and ethnicity as illustration only (state that wherever it is
+  described; none is a sourced value), marks the body site, and greys the body for
+  the skin model. The table underneath lists the tissue data of the selection with
+  a badge per kind (`.kd-measured`, `-interpolated`, `-held`, `-regression`) and
+  the source; values shown but not used by the model say so.
 - **Versions are for the people using the viewer.** `VERSION` (top of the
   script) and `CHANGELOG.md` change only for user-facing changes:
   - a new feature, or a change in what the viewer computes or shows (including
