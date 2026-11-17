@@ -2,6 +2,13 @@
 
 Newest version first. Each entry says what you can do or see differently.
 
+## 0.16.0 — 2026-11-17
+
+- **The epidermis of a body site now follows the age.** It is scaled from the median age of the site table's volunteers (men 30, women 45 years) to the age you choose, by the mean thickness that optical coherence tomography finds at 20–40 and at 60–80 years: on the forearm a man's epidermis is 116 µm at 30 years and 99 µm in the 70+ group. Forehead, chest, back, forearm and leg use their own measurement; abdomen, upper arm, thigh and foot were not measured by age and take the mean of the six measured sites, marked as an analogue. The skin model is not a body site and stays at 75 µm, so the defaults do not change. Needle lengths of designs with a body site change by up to 22 µm.
+- **Why, although several studies found no change:** what thins is the mean thickness, because the ridges of the junction to the dermis flatten; the layer above the tips of the papillae keeps its thickness, ultrasound cannot resolve a change of 10 µm, and one study that called it constant had two to six cases per decade. Help › *Age of the skin* has the argument and its sources; the figure's table shows the factor, its kind and its source.
+- **Fixed: the figure of *Whose skin* no longer jumps** when you point at or select another body site. The panel's header is one line and always names your selection; a preview is marked beside the figure and in the line under it, which is always there.
+- The line that repeated sex, age and ethnicity above the body is gone: the header says it once.
+
 ## 0.15.0 — 2026-11-17
 
 - **Eleven more studies behind the age and the sex of the skin.** Help › *Age of the skin* now also names the series that were read after the age groups were set, each checked against its full text: ultrasound of the whole skin by age (unchanged from 27 to 70 years, thinner after), children against adults, the forearm and the face of women by decade, the epidermis by optical coherence tomography, collagen types by age, and the transcriptome age clusters of skin fibroblasts. None moves a border or a value. The note on body site and sex adds two ultrasound series that find the whole skin thicker in men, and three that find a woman's skin collagen following the years since the menopause more than her age.

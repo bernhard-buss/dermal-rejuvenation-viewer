@@ -88,7 +88,8 @@ so that Claude Code reads the same text; add and change notes here, not there.
   `S.basic.age` to its group and is the only one of the two written to a link). The
   viewer computes no age value: `ageEntry(sel)` looks the group up in
   `DP.presets.groups` or the whole year in `DP.presets.years` (values, thickness
-  factor by sex, shown data, and the kind and wording of each as runs of ages), all
+  factor by sex for the dermis and by sex and body site for the epidermis
+  (`efactor`), shown data, and the kind and wording of each as runs of ages), all
   computed by `dermsim.params`. `tests/smoke.mjs` checks `basicValues` against the
   `basic` cases of `data/golden.json`. A key of the four earlier groups
   (`DP.presets.renamed`) is read from a link or file as its successor.
