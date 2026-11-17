@@ -794,7 +794,7 @@
   "default": "age70up",
   "source": "arnalforne2024dermis",
   "note": "Layers and cells from photoprotected periumbilical skin, 25 autopsies in four age groups; total cellularity is all nuclei per mm² of section ({cite:arnalforne2024dermis}, Table 5). The senescent share from p21-positive dermal cells in three groups of skin donors ({cite:idda2020senescence}). Only the tissue changes; the signal, the thresholds and the design stay as they are.",
-  "derivation": "**How the six groups were derived.** The age cut-offs of every age-resolved study in the project were laid over each other, and a cut was kept where studies of several quantities agree; no cut-off was moved. **12 | 13** and **25 | 26** are the group borders of the one histology study that measured the papillary dermis and the cell counts by age ({cite:arnalforne2024dermis}); growth of the skin ends at about 20 years ({cite:tan1982ultrasound}, {cite:diridollou2001ageing}). **39 | 40** is where the studies of senescent cells ({cite:idda2020senescence}, {cite:dimri1995biomarker}), of the superficial dermis by optical imaging ({cite:pedrazzani2020lcoct}, {cite:boone2015hdoct}) and of the dermis by ultrasound ({cite:wang2023density}) set a border. **54 | 55** is again the histology study's border ({cite:arnalforne2024dermis}). **69 | 70** is where p16-positive dermal cells jump ({cite:ressler2006p16}), where senescence staining separates the old donors ({cite:dimri1995biomarker}), where cell counts are binned ({cite:andrew1964dermis}, {cite:gunin2011dermis}) and about where ultrasound shows the skin thinning ({cite:derigal1989ultrasound}, {cite:escoffier1989mechanical}). **What each group rests on.** Papillary thickness and cell counts were measured in donors aged 0.1–2, 13–25, 34–54 and 58–79 years, five to ten each, and are published as group means only ({cite:arnalforne2024dermis}); p21-positive dermal cells in skin donors aged 19–30, 41–46 and 70–90 years, five each ({cite:idda2020senescence}). A group mean is placed at the mean age of its donors (the middle of their age range where only the range is published) and the means are joined by straight lines; beyond the youngest and the oldest mean the value is held, never extrapolated. Each group is evaluated at one age: 13–25 at 18.6 years and 40–54 at 42.9 years, the mean ages of the donors measured in them, 70 and over at 80 years, the middle of the oldest skin donors; 0–12, 26–39 and 55–69 hold no group mean, so they are evaluated at their middle (6, 32.5 and 62 years) and their values are interpolated. No donor was aged 3–12 or 26–33 years, and none over 79 years for the layers. An independent count of fibroblast-like cells is constant from the second decade to 71–85 years ({cite:gunin2011dermis}); it counts a different thing and is not used. A second histology series of the same department gives the papillary thickness as a regression on age, 63.24 µm at birth and 0.361 µm more per year, and the reticular thickness as a curve with its maximum in mid-life ({cite:marcosgarces2014collagen}); both are shown beside the values for comparison and not used, because imaging of living skin finds the superficial dermis thinner with age, not thicker ({cite:pedrazzani2020lcoct}, {cite:boone2015hdoct}). **An age in years** takes the same lines at that age and adds one regression: the skin thickness of the forearm by ultrasound, falling by 0.0036 mm per year in men and 0.002 mm in women over 21 years and rising by 0.019 mm per year up to 20 years ({cite:tan1982ultrasound}; a second ultrasound study found 0.004 and 0.003 mm per year, {cite:escoffier1989mechanical}). It scales the dermis thickness of a measured body site from the median age of that site's volunteers (30 years for the men, 45 for the women, {cite:wang2025ultrasound}) to the chosen age; the growth line is used as a shape and joined to the adult line at 20 years (our construction). Histology of the inner arm gives a steeper loss, 12.8 µm per year ({cite:branchet1990thickness}), and the rate differs by site ({cite:wang2023density}), so the forearm line is an analogue for the other sites. The epidermis is not changed with age: one histology series found it thinning ({cite:branchet1990thickness}), another none between 20 and 68 years ({cite:sandbymoller2003epidermis}). The collagen area fraction by age is shown from its published regressions ({cite:marcosgarces2014collagen}); no value of the model takes it.",
+  "derivation": "**How the six groups were derived.** The age cut-offs of every age-resolved study in the project were laid over each other, and a cut was kept where studies of several quantities agree; no cut-off was moved. **12 | 13** and **25 | 26** are the group borders of the one histology study that measured the papillary dermis and the cell counts by age ({cite:arnalforne2024dermis}); growth of the skin ends at about 20 years ({cite:tan1982ultrasound}, {cite:diridollou2001ageing}). **39 | 40** is where the studies of senescent cells ({cite:idda2020senescence}, {cite:dimri1995biomarker}), of the superficial dermis by optical imaging ({cite:pedrazzani2020lcoct}, {cite:boone2015hdoct}) and of the dermis by ultrasound ({cite:wang2023density}) set a border. **54 | 55** is again the histology study's border ({cite:arnalforne2024dermis}). **69 | 70** is where p16-positive dermal cells jump ({cite:ressler2006p16}), where senescence staining separates the old donors ({cite:dimri1995biomarker}), where cell counts are binned ({cite:andrew1964dermis}, {cite:gunin2011dermis}) and about where ultrasound shows the skin thinning ({cite:derigal1989ultrasound}, {cite:escoffier1989mechanical}). **Further series**, read after the groups were set, move none of these borders. Ultrasound finds the whole skin unchanged from 27 to 70 years and thinner after ({cite:lasagni1995echographic}), thinner over 60 than at 27–31 years at most sites with few of the differences significant ({cite:seidenari1994echography}), and the dermis of the arm within 6 % between four age groups ({cite:crisan2012ultrasound}). Children aged 2–13 have 78 % of the forearm skin thickness of adults aged 25–40 ({cite:seidenari2000children}), which is what the growth line used here gives. On the face the series disagree: thicker with age ({cite:takema1994facial}, {cite:crisan2012ultrasound}), thinner ({cite:seidenari1994echography}) or unchanged ({cite:lasagni1995echographic}); the forearm line is applied to the forehead as to every other site, an analogue without support there. The share of type III collagen is constant from 14 to 65 years and rises after ({cite:lovell1987collagen}). The transcriptome of skin fibroblasts clusters into the ages 1–15, 16–26, 27–60, 61–85 and 86–96 years ({cite:braunger2024aging}): beside the two young borders, silent on the others. **What each group rests on.** Papillary thickness and cell counts were measured in donors aged 0.1–2, 13–25, 34–54 and 58–79 years, five to ten each, and are published as group means only ({cite:arnalforne2024dermis}); p21-positive dermal cells in skin donors aged 19–30, 41–46 and 70–90 years, five each ({cite:idda2020senescence}). A group mean is placed at the mean age of its donors (the middle of their age range where only the range is published) and the means are joined by straight lines; beyond the youngest and the oldest mean the value is held, never extrapolated. Each group is evaluated at one age: 13–25 at 18.6 years and 40–54 at 42.9 years, the mean ages of the donors measured in them, 70 and over at 80 years, the middle of the oldest skin donors; 0–12, 26–39 and 55–69 hold no group mean, so they are evaluated at their middle (6, 32.5 and 62 years) and their values are interpolated. No donor was aged 3–12 or 26–33 years, and none over 79 years for the layers. An independent count of fibroblast-like cells is constant from the second decade to 71–85 years ({cite:gunin2011dermis}); it counts a different thing and is not used. A second histology series of the same department gives the papillary thickness as a regression on age, 63.24 µm at birth and 0.361 µm more per year, and the reticular thickness as a curve with its maximum in mid-life ({cite:marcosgarces2014collagen}); both are shown beside the values for comparison and not used, because imaging of living skin finds the superficial dermis thinner with age, not thicker ({cite:pedrazzani2020lcoct}, {cite:boone2015hdoct}). **An age in years** takes the same lines at that age and adds one regression: the skin thickness of the forearm by ultrasound, falling by 0.0036 mm per year in men and 0.002 mm in women over 21 years and rising by 0.019 mm per year up to 20 years ({cite:tan1982ultrasound}; a second ultrasound study found 0.004 and 0.003 mm per year, {cite:escoffier1989mechanical}). It scales the dermis thickness of a measured body site from the median age of that site's volunteers (30 years for the men, 45 for the women, {cite:wang2025ultrasound}) to the chosen age; the growth line is used as a shape and joined to the adult line at 20 years (our construction). Histology of the inner arm gives a steeper loss, 12.8 µm per year ({cite:branchet1990thickness}), and the rate differs by site ({cite:wang2023density}), so the forearm line is an analogue for the other sites. The epidermis is not changed with age: one histology series found it thinning ({cite:branchet1990thickness}), another none between 20 and 68 years ({cite:sandbymoller2003epidermis}); optical coherence tomography finds it 9 to 15 µm thinner at 60–80 than at 20–40 years at six sites ({cite:gambichler2006epidermis}), ultrasound unchanged ({cite:crisan2012ultrasound}), so this is an open point. The collagen area fraction by age is shown from its published regressions ({cite:marcosgarces2014collagen}); no value of the model takes it.",
   "senescent": {
    "source": "idda2020senescence",
    "oldest": 0.15
@@ -3755,7 +3755,7 @@
  "sites": {
   "default": "model",
   "source": "wang2025ultrasound",
-  "note": "Dermis and epidermis by very-high-frequency ultrasound in 74 healthy adults (41 men, 33 women) at West China Hospital ({cite:wang2025ultrasound}). The dermis was thicker in men except on the back; the epidermis did not differ between the sexes. Two other ultrasound studies also found the dermis thicker in men at most sites ({cite:wang2023density}, {cite:firooz2017echodensity}). The sex sets these two thicknesses and nothing else. Dermal cells differed only slightly or negligibly between men and women ({cite:quaglino1996dermis}), and no checked source gives the cell density, the papillary thickness or the senescent share by sex. Women have the denser dermis — a higher volume fraction of collagen fibres except in the second and third decades of life ({cite:vitellaro1994stereology}) and a higher echo density ({cite:firooz2017echodensity}, {cite:wang2023density}) — with less collagen in total ({cite:shuster1975collagen}); no value of the model takes that. The skin model is the group's reconstructed aged skin, 2 mm of dermis ({cite:roy2024implanting}), with the forearm epidermis of a histology study ({cite:sandbymoller2003epidermis}); it is the same for both sexes.",
+  "note": "Dermis and epidermis by very-high-frequency ultrasound in 74 healthy adults (41 men, 33 women) at West China Hospital ({cite:wang2025ultrasound}). The dermis was thicker in men except on the back; the epidermis did not differ between the sexes. Two other ultrasound studies also found the dermis thicker in men at most sites ({cite:wang2023density}, {cite:firooz2017echodensity}), and two more the whole skin ({cite:lasagni1995echographic}, {cite:seidenari1994echography}). The sex sets these two thicknesses and nothing else. Dermal cells differed only slightly or negligibly between men and women ({cite:quaglino1996dermis}), and no checked source gives the cell density, the papillary thickness or the senescent share by sex. Women have the denser dermis — a higher volume fraction of collagen fibres except in the second and third decades of life ({cite:vitellaro1994stereology}) and a higher echo density ({cite:firooz2017echodensity}, {cite:wang2023density}) — with less collagen in total ({cite:shuster1975collagen}), and in women the collagen follows the years since the menopause more than the age ({cite:brincat1985thickness}, {cite:castelobranco1992hrt}, {cite:affinito1999hypoestrogenism}); no value of the model takes that. The skin model is the group's reconstructed aged skin, 2 mm of dermis ({cite:roy2024implanting}), with the forearm epidermis of a histology study ({cite:sandbymoller2003epidermis}); it is the same for both sexes.",
   "n": {
    "male": 41,
    "female": 33
@@ -3975,6 +3975,13 @@
    "checked": "abstract",
    "what": "The SASP induces paracrine senescence in normal cells, in culture and in vivo; TGF-β family ligands play a major role among its components."
   },
+  "affinito1999hypoestrogenism": {
+   "short": "Affinito et al. 1999",
+   "cite": "Affinito P, Palomba S, Sorrentino C, et al.. Effects of postmenopausal hypoestrogenism on skin collagen. Maturitas. 1999;33:239–247.",
+   "doi": "10.1016/s0378-5122(99)00077-8",
+   "checked": "full text",
+   "what": "Collagen types I and III by immunohistochemistry in skin biopsies of 32 women aged 28–68 years, 14 before and 18 after the menopause: both types and their ratio are lower after the menopause (type I 5.79 ± 0.75 against 2.69 ± 0.73 % of the area) and correlate with the years since the menopause."
+  },
   "andrew1964dermis": {
    "short": "Andrew et al. 1964",
    "cite": "Andrew W, Behnke RH, Sato T. Changes with advancing age in the cell population of human dermis. Gerontologia. 1964;10:1–19.",
@@ -4010,6 +4017,13 @@
    "checked": "full text",
    "what": "Histology of the upper inner arm, 34 women and 30 men aged 20–80: epidermal thickness 61.85 − 0.40 × age µm (r = −0.565), total dermal thickness falling by 12.8 µm per year (r = −0.473), about 6 % of the extrapolated zero-age thickness per decade; the superficial dermis biphasic around 50 years."
   },
+  "braunger2024aging": {
+   "short": "Braunger et al. 2024",
+   "cite": "Braunger JM, Cammarata LV, Sornapudi TR, et al.. Transcriptional changes are tightly coupled to chromatin reorganization during cellular aging. Aging Cell. 2024;23:e14056.",
+   "doi": "10.1111/acel.14056",
+   "checked": "full text",
+   "what": "RNA-seq of skin fibroblasts from 133 individuals aged 1 to 96 years: hierarchical clustering of the transcriptomes gives five age groups, 1–15, 16–26, 27–60, 61–85 and 86–96 years."
+  },
   "braverman1997microcirculation": {
    "short": "Braverman 1997",
    "cite": "Braverman IM. The Cutaneous Microcirculation: Ultrastructure and Microanatomical Organization. Microcirculation. 1997;4:329–340.",
@@ -4017,12 +4031,26 @@
    "checked": "abstract",
    "what": "The cutaneous microcirculation is two horizontal plexuses, one 1–1.5 mm below the skin surface and the other at the dermal–subcutaneous junction, connected by ascending arterioles and descending venules."
   },
+  "brincat1985thickness": {
+   "short": "Brincat et al. 1985",
+   "cite": "Brincat M, Moniz CJ, Studd JWW, et al.. Long‐term effects of the menopause and sex hormones on skin thickness. BJOG: An International Journal of Obstetrics & Gynaecology. 1985;92:256–259.",
+   "doi": "10.1111/j.1471-0528.1985.tb01091.x",
+   "checked": "full text",
+   "what": "Thigh skin collagen of 77 untreated postmenopausal women correlates with the years since the menopause (ρ = 0.38) and not with chronological age."
+  },
   "burton2011hmts": {
    "short": "Burton et al. 2011",
    "cite": "Burton SA, Ng CY, Simmers R, et al.. Rapid Intradermal Delivery of Liquid Formulations Using a Hollow Microstructured Array. Pharmaceutical Research. 2011;28:31–40.",
    "doi": "10.1007/s11095-010-0177-8",
    "checked": "abstract and full text",
    "what": "A hollow microneedle device of 1.27 cm² carries eighteen 500–900 µm microstructures with 10–40 µm cannulae; the 900 µm structures penetrated swine skin to 612 µm on average and the device delivered 300–1500 µL intradermally."
+  },
+  "castelobranco1992hrt": {
+   "short": "Castelo-Branco et al. 1992",
+   "cite": "Castelo-Branco C, Duran M, González-Merlo J. Skin collagen changes related to age and hormone replacement therapy. Maturitas. 1992;15:113–119.",
+   "doi": "10.1016/0378-5122(92)90245-y",
+   "checked": "full text",
+   "what": "Skin collagen per protein in abdominal biopsies of 76 women by decade of age: 117.2, 117.7, 119.6, 114.2 and 108.0 µg/mg from the 20s to the 60s; it falls beyond the 40s and after the menopause."
   },
   "chopra2015face": {
    "short": "Chopra et al. 2015",
@@ -4044,6 +4072,13 @@
    "doi": "10.1007/s11095-020-02887-9",
    "checked": "abstract",
    "what": "Two-photon-polymerised microneedle templates of 900–1300 µm height, 300–500 µm base width and 100–500 µm interspacing: sharp conical and pyramidal needles inserted to 64–90 % of their height in skin models."
+  },
+  "crisan2012ultrasound": {
+   "short": "Crisan et al. 2012",
+   "cite": "Crisan M, Lupsor M, Crisan D, et al.. Ultrasonographic assessment of skin structure according to age. Indian Journal of Dermatology, Venereology, and Leprology. 2012;78:519.",
+   "doi": "10.4103/0378-6323.98096",
+   "checked": "full text",
+   "what": "20 MHz ultrasound of 160 subjects in four age groups (under 20, 21–40, 41–60, 61–80 years) at the dorsal forearm, the medial arm and the cheekbone: the dermis is thickest at 21–40 years on all sites (dorsal forearm 1.209, 1.279, 1.256 and 1.220 mm), the epidermis at similar values."
   },
   "derigal1989ultrasound": {
    "short": "de Rigal et al. 1989",
@@ -4107,6 +4142,13 @@
    "doi": "10.1073/pnas.94.23.12258",
    "checked": "abstract",
    "what": "A single cell communicates by a soluble signal within a domain of about 250 µm, within 10–30 min; one dimensionless group governs it."
+  },
+  "gambichler2006epidermis": {
+   "short": "Gambichler et al. 2006",
+   "cite": "Gambichler T, Matip R, Moussa G, et al.. In vivo data of epidermal thickness evaluated by optical coherence tomography: Effects of age, gender, skin type, and anatomic site. Journal of Dermatological Science. 2006;44:145–152.",
+   "doi": "10.1016/j.jdermsci.2006.09.008",
+   "checked": "full text",
+   "what": "Optical coherence tomography of the epidermis at six sites in 71 Caucasians aged 20–40 or 60–80 years: thinner in the older group at every site (forearm 71.8 ± 10 against 60.8 ± 7.4 µm), no difference between the sexes except on the forehead of the older group, none by skin type."
   },
   "ghahary1998igf1": {
    "short": "Ghahary et al. 1998",
@@ -4192,6 +4234,13 @@
    "checked": "abstract",
    "what": "Decay lengths of topically applied small permeants in dermis 210–920 µm (capillary clearance 0.9–14 × 10⁻⁴ s⁻¹)."
   },
+  "lasagni1995echographic": {
+   "short": "Lasagni & Seidenari 1995",
+   "cite": "Lasagni C, Seidenari S. Echographic assessment of age‐dependent variations of skin thickness. Skin Research and Technology. 1995;1:81–85.",
+   "doi": "10.1111/j.1600-0846.1995.tb00022.x",
+   "checked": "full text",
+   "what": "20 MHz ultrasound of 162 subjects aged 27 to 90 years at six sites: skin thickness 1.48, 1.42, 1.48 and 1.42 mm at 27–31, 40–50, 60–70 and 70–90 years, the last significantly lower; men 1.55, women 1.37 mm."
+  },
   "laurent2007needlelength": {
    "short": "Laurent et al. 2007",
    "cite": "Laurent A, Mistretta F, Bottigioli D, et al.. Echographic measurement of skin thickness in adults by high frequency ultrasound to assess the appropriate microneedle length for intradermal delivery of vaccines. Vaccine. 2007;25:6423–6430.",
@@ -4219,6 +4268,13 @@
    "doi": "10.1088/0960-1317/12/5/312",
    "checked": "abstract",
    "what": "A constant-volume-injection coating gave SU-8 50 films up to 1.5 mm thick in a single coating, measured at 494.32 ± 17.13 µm for a nominal 500 µm film (n = 7), uniform to better than 3.1 % over 10 × 10 cm²."
+  },
+  "lovell1987collagen": {
+   "short": "Lovell et al. 1987",
+   "cite": "Lovell CR, Smolenski KA, Duance VC, et al.. Type I and III collagen content and fibre distribution in normal human skin during ageing. British Journal of Dermatology. 1987;117:419–428.",
+   "doi": "10.1111/j.1365-2133.1987.tb04921.x",
+   "checked": "full text",
+   "what": "Abdominal skin of 30 subjects aged 0 to 90 years: the collagen concentration does not vary with age; type III is 18 to 21.5 % of types I plus III between 14 and 65 years and more variable, up to 31 %, from 65 years."
   },
   "marcosgarces2014collagen": {
    "short": "Marcos‐Garcés et al. 2014",
@@ -4374,6 +4430,20 @@
    "checked": "abstract",
    "what": "Biopsies from three body sites of 71 volunteers, measured microscopically: stratum corneum 18.3 ± 4.9 µm and cellular epidermis 56.6 ± 11.5 µm at the dorsal forearm (shoulder 11.0 and 70.3 µm, buttock 14.9 and 81.5 µm). Body site explains most of the variation."
   },
+  "seidenari1994echography": {
+   "short": "Seidenari et al. 1994",
+   "cite": "Seidenari S, Pagnoni A, Di Nardo A, et al.. Echographic evaluation with image analysis of normal skin: variations according to age and sex. Skin pharmacology : the official journal of the Skin Pharmacology Society. 1994;7:201–9.",
+   "pmid": "8024801",
+   "checked": "full text",
+   "what": "20 MHz ultrasound at six sites in 24 subjects aged 27–31 and 24 over 60 years: the skin is thinner in the elderly except at the lower back in men and the volar forearm in women, significantly at four of twelve comparisons; thicker in men except at the lower back of the young."
+  },
+  "seidenari2000children": {
+   "short": "Seidenari et al. 2000",
+   "cite": "Seidenari S, Giusti G, Bertoni L, et al.. Thickness and Echogenicity of the Skin in Children as Assessed by 20-MHz Ultrasound. Dermatology. 2000;201:218–222.",
+   "doi": "10.1159/000018491",
+   "checked": "full text",
+   "what": "20 MHz ultrasound at eight sites in 42 children aged 2–13 and 30 adults aged 25–40 years: the children's skin is thinner at every site (volar forearm 1.01 ± 0.16 against 1.30 ± 0.24 mm) and thickens with age."
+  },
   "serpero2006polyp": {
    "short": "Serpero et al. 2006",
    "cite": "Serpero L, Petecchia L, Sabatini F, et al.. The effect of transforming growth factor (TGF)-β1 and (TGF)-β2 on nasal polyp fibroblast activities involved upper airway remodeling: Modulation by fluticasone propionate. Immunology Letters. 2006;105:61–67.",
@@ -4408,6 +4478,13 @@
    "doi": "10.1038/micronano.2016.49",
    "checked": "abstract and full text",
    "what": "Inclined and rotated UV lithography through circular mask patterns forms needle-shaped exposure-dose distributions in a negative epoxy resist, so needle heights and contours can be varied from the same mask patterns by the inclination angle and dose; heights of 330–900 µm at a 1200 µm pitch were made, with tip radii of curvature of 12 µm."
+  },
+  "takema1994facial": {
+   "short": "Takema et al. 1994",
+   "cite": "Takema Y, Yorimoto Y, Kawai M, et al.. Age-related changes in the elastic properties and thickness of human facial skin. British Journal of Dermatology. 1994;131:641–648.",
+   "doi": "10.1111/j.1365-2133.1994.tb04975.x",
+   "checked": "full text",
+   "what": "20 MHz ultrasound in 170 women aged 17 to 76 years by decade: forearm skin thins with age (1.06 to 0.86 mm, r = −0.567), the skin of the forehead and the cheek thickens."
   },
   "tan1982ultrasound": {
    "short": "Tan et al. 1982",

@@ -132,7 +132,7 @@ button.mini{padding:0 6px;font-size:12px;line-height:18px}
 .bp-data table{border-collapse:collapse;width:100%} .bp-data td{padding:4px 8px 4px 0;vertical-align:top;border-bottom:1px solid #F0ECE5}
 .bp-data td.v{white-space:nowrap;font-weight:600} .bp-data td.d{color:var(--soft)} .bp-data .yours{color:#5B420F;font-weight:500}
 .bp-data .note{margin-top:6px} .bp-data .bp-prev{margin:0 0 6px;color:var(--teal)}
-.bsite{fill:#2A6F75;fill-opacity:0;stroke:#2A6F75;stroke-width:1.2;stroke-dasharray:4 3;cursor:pointer;pointer-events:all;outline:none}
+.bsite{fill:var(--site,#2A6F75);fill-opacity:0;stroke:var(--site,#2A6F75);stroke-width:1.2;stroke-dasharray:4 3;cursor:pointer;pointer-events:all;outline:none}
 #bodyColumn{pointer-events:none}
 .bsite:hover,.bsite:focus{fill-opacity:.28} .bsite.on{fill-opacity:.5;stroke-dasharray:none;stroke-width:1.6}
 .bsite.dish ellipse:first-of-type{fill:#EDE6DC;fill-opacity:1} .bsite.dish ellipse:last-of-type{fill:#D8CBBE;fill-opacity:1}
@@ -354,7 +354,7 @@ a.cite{text-decoration:none;border-bottom:1px dotted var(--teal)}
 <script src="data/parameters.js"></script>
 <script>
 "use strict";
-const VERSION = "0.14.0";
+const VERSION = "0.15.0";
 const $ = id => document.getElementById(id);
 function esc(s) { return String(s).replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); }
 
@@ -2237,8 +2237,10 @@ function setBasic(dim, v) {
 // illustration only (no body measure is taken from a source), and so is the skin tone for the ethnicity,
 // which sets no value. The marker is the body site. Underneath: the tissue data of the selection, each
 // with what kind of number it is (measured, interpolated, held, regression) and its source.
-const BODY_TONE = { "unspecified": ["#D8CBBE", "#A89888"], "African American": ["#8A5A3C", "#5E3B26"], "Caucasian": ["#F0D2BC", "#C09A80"],
-  "Chinese": ["#E8C7A0", "#B8946C"], "Mexican": ["#C8946C", "#946844"] };
+// Skin tone, outline and the colour of the dashed site areas on it. The areas need a contrast of at least 3 : 1 with the
+// tone (teal has 1.0 on the darkest and 2.2 on the brown tone), so a dark skin gets light areas and a brown one darker teal.
+const BODY_TONE = { "unspecified": ["#D8CBBE", "#A89888", "#2A6F75"], "African American": ["#8A5A3C", "#5E3B26", "#E6F6F4"], "Caucasian": ["#F0D2BC", "#C09A80", "#2A6F75"],
+  "Chinese": ["#E8C7A0", "#B8946C", "#2A6F75"], "Mexican": ["#C8946C", "#946844", "#143C40"] };
 // The outline of half a body, from the top of the head down the outer side, round the arm and the leg, to the
 // crotch: [half-width, height from the top], both in body heights. Three drawings with the same 46 points —
 // a small child, a man, a woman — so that any age and either sex is a blend of them. Drawn by hand as an
@@ -2280,7 +2282,7 @@ function bodySvg(sel, a) {
     const p0 = at(i - 1), p1 = at(i), p2 = at(i + 1), p3 = at(i + 2);
     d += ` C${f1(p1[0] + (p2[0] - p0[0]) / 6)} ${f1(p1[1] + (p2[1] - p0[1]) / 6)} ${f1(p2[0] - (p3[0] - p1[0]) / 6)} ${f1(p2[1] - (p3[1] - p1[1]) / 6)} ${f1(p2[0])} ${f1(p2[1])}`;
   }
-  const [tone, line] = BODY_TONE[sel.ethnicity] || BODY_TONE.unspecified;
+  const [tone, line, siteCol] = BODY_TONE[sel.ethnicity] || BODY_TONE.unspecified;
   const P = i => half[i - 1], mid = (i, j) => [(P(i)[0] + P(j)[0]) / 2, (P(i)[1] + P(j)[1]) / 2], wid = (i, j) => Math.abs(P(i)[0] - P(j)[0]) / 2 + 0.004;
   const both = r => [r, [[-r[0][0], r[0][1]], r[1], r[2]]];           // a limb has the site on either side
   const regions = {                                                  // where each body site lies: centre and radii, in body heights
@@ -2307,7 +2309,7 @@ function bodySvg(sel, a) {
     `<defs><clipPath id="bodyClip"><path d="${d}"/></clipPath></defs>` +
     `<line x1="${cx - 68}" y1="${base + 3}" x2="${cx + 68}" y2="${base + 3}" stroke="#D9D2C7" stroke-width="1.5"/>` +
     `<path d="${d}" fill="${tone}" stroke="${line}" stroke-width="1.3" stroke-linejoin="round"${onBody ? "" : ' opacity=".45"'}/>` +
-    `<g clip-path="url(#bodyClip)">${areas}</g>${dish}<g id="bodyColumn"></g>` +
+    `<g clip-path="url(#bodyClip)" style="--site:${siteCol}">${areas}</g>${dish}<g id="bodyColumn"></g>` +
     `<text x="${cx}" y="14" font-size="12" fill="#44525A" text-anchor="middle">${esc(who)}</text></svg>`;
 }
 // Right of the body: the skin of a site as a column to scale, its legend beside it, top-aligned, tied to the site.
@@ -2324,8 +2326,10 @@ function bodyColumn(st, v, preview) {
   const c = bodyGeo.centre[st.key];
   if (c) {                                                           // from the site to its skin
     const bend = st.measured ? `L${colX - 22} ${f1(c[1])} L${colX - 22} ${colY + 10}` : `L${colX - 22} ${f1(c[1])} L${colX - 22} ${colY + 10}`;
-    out += `<path d="M${f1(c[0])} ${f1(c[1])} ${bend} L${colX - 5} ${colY + 10}" fill="none" stroke="${teal}" stroke-width="1" stroke-linejoin="round"${preview ? ' stroke-dasharray="3 3"' : ""}/>` +
-      `<path d="M${colX - 9} ${colY + 6} L${colX - 4} ${colY + 10} L${colX - 9} ${colY + 14}" fill="none" stroke="${teal}" stroke-width="1"/><circle cx="${f1(c[0])}" cy="${f1(c[1])}" r="2.6" fill="${teal}"/>`;
+    const way = `M${f1(c[0])} ${f1(c[1])} ${bend} L${colX - 5} ${colY + 10}`;   // a light halo keeps the line readable where it crosses a dark skin
+    out += `<path d="${way}" fill="none" stroke="#fff" stroke-opacity=".8" stroke-width="3.2" stroke-linejoin="round"/>` +
+      `<path d="${way}" fill="none" stroke="${teal}" stroke-width="1" stroke-linejoin="round"${preview ? ' stroke-dasharray="3 3"' : ""}/>` +
+      `<path d="M${colX - 9} ${colY + 6} L${colX - 4} ${colY + 10} L${colX - 9} ${colY + 14}" fill="none" stroke="${teal}" stroke-width="1"/><circle cx="${f1(c[0])}" cy="${f1(c[1])}" r="3" fill="${teal}" stroke="#fff" stroke-width="1.2"/>`;
   }
   return out;
 }

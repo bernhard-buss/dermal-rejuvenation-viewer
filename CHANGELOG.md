@@ -2,6 +2,12 @@
 
 Newest version first. Each entry says what you can do or see differently.
 
+## 0.15.0 — 2026-11-17
+
+- **Eleven more studies behind the age and the sex of the skin.** Help › *Age of the skin* now also names the series that were read after the age groups were set, each checked against its full text: ultrasound of the whole skin by age (unchanged from 27 to 70 years, thinner after), children against adults, the forearm and the face of women by decade, the epidermis by optical coherence tomography, collagen types by age, and the transcriptome age clusters of skin fibroblasts. None moves a border or a value. The note on body site and sex adds two ultrasound series that find the whole skin thicker in men, and three that find a woman's skin collagen following the years since the menopause more than her age.
+- **Two open points are now stated where they apply:** the epidermis is kept constant with age although one imaging study finds it 9 to 15 µm thinner at 60–80 than at 20–40 years; and the forehead is scaled with age by the forearm line although the studies of facial skin disagree on the direction.
+- **Fixed: the dashed body sites were hard to see on the darker skin tones.** On the *African American* tone they are now light, on the *Mexican* tone a darker teal (the usual teal had almost no contrast there); the line from the site to its skin layers has a light edge where it crosses the body.
+
 ## 0.14.0 — 2026-11-17
 
 - **Six age groups instead of four:** 0–12, 13–25, 26–39, 40–54, 55–69 and 70+. They follow from where the age-resolved studies set their borders. Each group says what it rests on: 13–25 and 40–54 hold donors that were measured; 0–12, 26–39 and 55–69 lie between measured groups and are interpolated; 70+ is held at the oldest donors. *70+* is the default and gives exactly what *55+* gave. A link or file that names an earlier group still opens (26–54 as 40–54, 55+ as 70+).
