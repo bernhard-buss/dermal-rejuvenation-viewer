@@ -133,7 +133,9 @@ so that Claude Code reads the same text; add and change notes here, not there.
   skin-type buttons (`.seg.pt`) are drawn in `BODY_TONE` with `PT_INK` text (contrast 5.4 : 1 or more).
   The skin patch (`bodyColumn`) is drawn from `basicSpread(sel)`, which mirrors
   `dermsim.params.basic_spread` (mean ± 1 SD per layer, rounded to 0.1 halves up in both languages;
-  `tests/smoke.mjs` compares it with `golden.json`): left edge −1 SD, middle third the mean, right edge +1 SD.
+  `tests/smoke.mjs` compares it with `golden.json`): left edge −1 SD, middle third the mean, right edge +1 SD. Every patch is drawn to one depth,
+  `DP.sites.depth_max` (`dermsim.params.depth_max`: the deepest epidermis plus dermis at +1 SD over every
+  site, sex, whole year and ethnic group that sets a value), with a millimetre ruler on its left.
 - **Versions are for the people using the viewer.** `VERSION` (top of the
   script) and `CHANGELOG.md` change only for user-facing changes:
   - a new feature, or a change in what the viewer computes or shows (including

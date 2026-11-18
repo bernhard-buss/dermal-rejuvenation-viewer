@@ -17309,6 +17309,13 @@ window.DRV_PARAMS = {
     "source": "gambichler2006epidermis",
     "text": "SD 13.7 % of the mean: the median CV of the 12 groups at 6 sites (this site was not measured), one OCT study"
    }
+  },
+  "depth_max": {
+   "value": 3821.9,
+   "site": "back",
+   "sex": "female",
+   "years": 20,
+   "ethnicity": "European"
   }
  },
  "basic": {

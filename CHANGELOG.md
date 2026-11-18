@@ -2,6 +2,10 @@
 
 Newest version first. Each entry says what you can do or see differently.
 
+## 0.18.1 — 2026-11-18
+
+- **Fixed: skin patches of different sites can now be compared.** Each patch used to be stretched to the full height, so a 0.7 mm eyelid looked as deep as a 3.5 mm back. Every patch is now drawn to one depth scale, the deepest skin the model gives (3.82 mm: a woman's back at 20 years, mean plus one standard deviation), with a millimetre ruler beside it; the line from the body site now enters the patch from above, past the ruler.
+
 ## 0.18.0 — 2026-11-18
 
 - **Ethnicity has seven groups, and *unspecified* is gone.** European (the default; most of the model's sources measured European skin), East Asian, Southeast Asian, South Asian, Middle Eastern, African or African-American, Latin American — the groups under which the labels of the sources fall. As with sex *either*, there is no average person: *unspecified* was only the mix the sources happened to measure. A link or file with an earlier choice is read as its group (Caucasian as European, Chinese as East Asian, African American as African or African-American, Mexican as Latin American, unspecified as European).

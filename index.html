@@ -358,7 +358,7 @@ a.cite{text-decoration:none;border-bottom:1px dotted var(--teal)}
 <script src="data/parameters.js"></script>
 <script>
 "use strict";
-const VERSION = "0.18.0";
+const VERSION = "0.18.1";
 const $ = id => document.getElementById(id);
 function esc(s) { return String(s).replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); }
 
@@ -2480,14 +2480,16 @@ function faceSvg(sel, a) {
 }
 // Right of the body: the skin of a site as a patch to scale, its legend beside it, top-aligned, tied to the site. The
 // patch shows how much the layers differ between persons (claim K117): its left edge is every layer at the mean − 1 SD,
-// its right edge at the mean + 1 SD, and the middle third the mean, flat so that it can be read.
+// its right edge at the mean + 1 SD, and the middle third the mean, flat so that it can be read. Every patch is drawn to
+// one depth, the deepest skin of the basic model (DP.sites.depth_max), so that sites and persons compare; a ruler in mm.
 function bodyColumn(st, v, preview, sp) {
   const f1 = x => x.toFixed(1), ink = "#1B2A33", soft = "#44525A", teal = "#2A6F75";
   const colX = 244, colW = 100, colY = 78, colH = 250, legX = colX + colW + 11, cut = [0, 0.33, 0.67, 1], at = ["lo", "mean", "mean", "hi"];
   const val = (k, w) => sp[k] ? sp[k][w] : v[k];
   const thick = (k, w) => k === "hep" ? val("hep", w) : k === "hpap" ? Math.min(val("hpap", w), val("H", w)) : Math.max(0, val("H", w) - Math.min(val("hpap", w), val("H", w)));
   const layers = [["epidermis", "hep", "#C98B74"], ["papillary dermis", "hpap", "#EBC9B5"], ["reticular dermis", "ret", "#F6E6DA"]];
-  const total = Math.max(...at.map(w => layers.reduce((s, l) => s + thick(l[1], w), 0))), y = d => colY + d / total * colH;
+  const own = Math.max(...at.map(w => layers.reduce((s, l) => s + thick(l[1], w), 0)));
+  const total = Math.max(own, (DP.sites && DP.sites.depth_max && DP.sites.depth_max.value) || own), y = d => colY + d / total * colH;
   const xs = cut.map(c => colX + c * colW);
   let out = "", depth = at.map(() => 0), bottom = "";
   for (const [, k, fill] of layers) {
@@ -2499,10 +2501,16 @@ function bodyColumn(st, v, preview, sp) {
   out += `<polygon points="${f1(xs[0])},${colY} ${f1(xs[3])},${colY} ${bottom.split(" ").reverse().join(" ")}" fill="none" stroke="${soft}" stroke-width="1" stroke-linejoin="round"/>` +
     `<line x1="${f1(xs[1])}" y1="${colY}" x2="${f1(xs[1])}" y2="${f1(y(depth[1]))}" stroke="${soft}" stroke-width=".6" stroke-dasharray="2 2" opacity=".7"/>` +
     `<line x1="${f1(xs[2])}" y1="${colY}" x2="${f1(xs[2])}" y2="${f1(y(depth[2]))}" stroke="${soft}" stroke-width=".6" stroke-dasharray="2 2" opacity=".7"/>`;
-  const ly = colY + colH + 13, spreadAny = Object.keys(sp).length > 0;
+  const ly = y(Math.max(...depth)) + 13, spreadAny = Object.keys(sp).length > 0;
+  out += `<line x1="${colX - 4}" y1="${colY}" x2="${colX - 4}" y2="${colY + colH}" stroke="${soft}" stroke-width=".7" opacity=".6"/>`;   // the depth ruler, in mm
+  for (let mm = 0; mm * 1000 <= total + 1e-6; mm += 0.5) {
+    const yy = f1(y(mm * 1000)), major = mm === Math.round(mm);
+    out += `<line x1="${colX - (major ? 8 : 6)}" y1="${yy}" x2="${colX - 4}" y2="${yy}" stroke="${soft}" stroke-width=".7" opacity=".7"/>` +
+      (major ? `<text x="${colX - 10}" y="${f1(y(mm * 1000) + 3.5)}" font-size="9.5" fill="${soft}" text-anchor="end">${mm}${mm === Math.floor(total / 1000) ? " mm" : ""}</text>` : "");
+  }
   if (spreadAny) out += [["−SD", xs[0], "start"], ["mean", (xs[1] + xs[2]) / 2, "middle"], ["+SD", xs[3], "end"]].map(([s, x, an]) => `<text x="${f1(x)}" y="${ly}" font-size="10" fill="${soft}" text-anchor="${an}">${s}</text>`).join("");
   out += `<text x="${colX}" y="${colY - 24}" font-size="13" font-weight="600" fill="${ink}">${st.measured ? esc(st.title) + (st.key === "back" ? " (behind)" : "") : "Skin model"}${preview ? ` <tspan font-weight="400" fill="${teal}">· preview, click to select</tspan>` : ""}</text>` +
-    `<text x="${colX}" y="${colY - 9}" font-size="11.5" fill="${soft}">${st.measured ? "this skin, to scale: mean ± 1 SD" : "not a body site · to scale"}</text>`;
+    `<text x="${colX}" y="${colY - 9}" font-size="11.5" fill="${soft}">${st.measured ? "mean ± 1 SD, one depth scale for all" : "not a body site · same depth scale"}</text>`;
   const range = (k, lo, hi) => lo === hi ? (k === "hpap" ? "" : "one tissue, no spread") : `${fmt(lo)}–${fmt(hi)} µm`;
   const rows = layers.map(([name, k, fill]) => [name, fill, thick(k, "mean"), range(k, thick(k, "lo"), thick(k, "hi"))]);
   rows.push(["dermis in all", null, val("H", "mean"), range("H", val("H", "lo"), val("H", "hi"))]);
@@ -2512,11 +2520,11 @@ function bodyColumn(st, v, preview, sp) {
       (r ? `<text x="${legX + 16}" y="${yy + 23}" font-size="10.5" fill="${soft}">${esc(r)}</text>` : ""); }).join("");
   const c = bodyGeo.centre[st.key];
   if (c) {                                                           // from the site to its skin
-    const bend = `L${colX - 22} ${f1(c[1])} L${colX - 22} ${colY + 10}`;
-    const way = `M${f1(c[0])} ${f1(c[1])} ${bend} L${colX - 5} ${colY + 10}`;   // a light halo keeps the line readable where it crosses a dark skin
+    const bend = `L${colX - 40} ${f1(c[1])} L${colX - 40} ${colY - 16}`;   // round the ruler, into the patch from above
+    const way = `M${f1(c[0])} ${f1(c[1])} ${bend} L${colX - 5} ${colY - 16}`;   // a light halo keeps the line readable where it crosses a dark skin
     out += `<path d="${way}" fill="none" stroke="#fff" stroke-opacity=".8" stroke-width="3.2" stroke-linejoin="round"/>` +
       `<path d="${way}" fill="none" stroke="${teal}" stroke-width="1" stroke-linejoin="round"${preview ? ' stroke-dasharray="3 3"' : ""}/>` +
-      `<path d="M${colX - 9} ${colY + 6} L${colX - 4} ${colY + 10} L${colX - 9} ${colY + 14}" fill="none" stroke="${teal}" stroke-width="1"/><circle cx="${f1(c[0])}" cy="${f1(c[1])}" r="3" fill="${teal}" stroke="#fff" stroke-width="1.2"/>`;
+      `<path d="M${colX - 9} ${colY - 20} L${colX - 4} ${colY - 16} L${colX - 9} ${colY - 12}" fill="none" stroke="${teal}" stroke-width="1"/><circle cx="${f1(c[0])}" cy="${f1(c[1])}" r="3" fill="${teal}" stroke="#fff" stroke-width="1.2"/>`;
   }
   return out;
 }
@@ -3118,7 +3126,7 @@ const HELP = [
       <p>What the selection gives is shown at the top of the View column: <a href="#help/start/body" data-help="start/body">the figure</a>.</p>`],
     ["body", "The figure: whose skin", () => `<p>The first panel of the <b>View</b> column shows whose skin the model is set for: on the left a body with the <b>body site</b> tinted, on the right the layers of that skin drawn to scale with their thicknesses (epidermis, papillary and reticular dermis), and underneath the tissue data of the selection — dermis and epidermis thickness, papillary thickness, the cell counts of the two layers, the senescent share and the collagen area fraction — each with a badge and its source. Click the title to fold the panel away.</p>
       <p><b>The figure is a control.</b> The dashed areas are the body sites, and the dish beside the feet is the skin model. Point at an area and the panel shows that skin as a <b>preview</b>: the column, the thicknesses and the table change, the model does not. Click the area (or focus it with the keyboard and press Enter) and the body site of step 1 is set to it. On a limb the site is drawn on both sides; the back is seen from the front, so a band across the shoulders stands for it. <b>The head zooms in to the face</b>: a click on it shows the face and neck with their own dashed areas, used the same way, and <b>‹ Body</b> goes back; a facial site you select is shown on the face. See <a href="#help/start/face" data-help="start/face">The face</a>.</p>
-      <p><b>The skin patch</b> is drawn to scale and shows how much the layers differ between persons: its left edge is every layer at the mean minus one standard deviation, its right edge at the mean plus one, and the flat middle third is the mean, so that it can be read. One standard deviation either side holds about two thirds of persons if the thickness is normally distributed. The legend and the table give the numbers. The sources report means and standard deviations between persons, almost never the thinnest and the thickest person, so the patch shows these and not a minimum and maximum. Where the spread comes from: the dermis from the site table's standard deviation by sex (${cite(DP.sites.source)}, ${cite("hoffmann1994sonography")}), scaled with the age like the mean; the papillary dermis from the histology groups at the age (${cite("arnalforne2024dermis")}); the epidermis from one imaging study with standard deviations by site and age (${cite("gambichler2006epidermis")}), because the pooled values give the uncertainty of a mean, not how much people differ. The skin model is one tissue and has no spread. The three ranges are not joint: a person with a thin dermis need not have a thin epidermis.</p>
+      <p><b>The skin patch</b> is drawn to scale and shows how much the layers differ between persons: its left edge is every layer at the mean minus one standard deviation, its right edge at the mean plus one, and the flat middle third is the mean, so that it can be read. One standard deviation either side holds about two thirds of persons if the thickness is normally distributed. Every patch is drawn to the same depth scale, the deepest skin the basic model gives (${DP.sites && DP.sites.depth_max ? `${fmt(DP.sites.depth_max.value / 1000)} mm, epidermis and dermis at the mean plus one standard deviation, on the ${esc((SITES.find(g => g.key === DP.sites.depth_max.site) || { title: "" }).title.toLowerCase())} of ${esc(DP.sites.depth_max.sex === "female" ? "a woman" : "a man")} of ${DP.sites.depth_max.years} years` : "over all sites"}), with a ruler in millimetres beside it, so that sites, ages and persons can be compared by eye. The legend and the table give the numbers. The sources report means and standard deviations between persons, almost never the thinnest and the thickest person, so the patch shows these and not a minimum and maximum. Where the spread comes from: the dermis from the site table's standard deviation by sex (${cite(DP.sites.source)}, ${cite("hoffmann1994sonography")}), scaled with the age like the mean; the papillary dermis from the histology groups at the age (${cite("arnalforne2024dermis")}); the epidermis from one imaging study with standard deviations by site and age (${cite("gambichler2006epidermis")}), because the pooled values give the uncertainty of a mean, not how much people differ. The skin model is one tissue and has no spread. The three ranges are not joint: a person with a thin dermis need not have a thin epidermis.</p>
       <p><b>The badges</b> say what kind of number a value is:</p>
       <ul><li><span class="kd kd-measured">measured</span> — a group mean of donors, at the mean age of those donors (or anywhere within their ages beyond the outermost mean), or a value measured at the body site.</li>
       <li><span class="kd kd-interpolated">interpolated</span> — on the straight line between two measured group means. No donor of that age was measured; hover over the badge for the two groups.</li>
