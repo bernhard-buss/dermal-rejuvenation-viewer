@@ -123,6 +123,17 @@ so that Claude Code reads the same text; add and change notes here, not there.
   related site) and the source, each site's own study (`source`, `reference`) for
   the dermis; values shown but not used by the model say so. The site picker of step
   1 groups the sites (`siteSelect`: the skin model, Body, Face and neck).
+  Ethnicity and skin type are two choices of step 1: the ethnicity sets only the factor
+  the export carries (`DP.basic.ethnicity_factor`, read through `ethFactor`; an earlier
+  ethnicity is read as its group through `ethOf`), the skin type (`phototype`) sets nothing
+  and gives the figure its tone and hair (`BODY_TONE`, `HAIR`, keyed I–VI). Choosing an ethnicity sets the
+  skin type it suggests (`ptSuggested`, from `DP.basic.phototype_suggested`, computed by
+  `dermsim.params.phototype_suggested`; at the start too, unless a link or file gives one); a skin type
+  chosen afterwards stays, and the address carries it only where it differs from the suggestion. The
+  skin-type buttons (`.seg.pt`) are drawn in `BODY_TONE` with `PT_INK` text (contrast 5.4 : 1 or more).
+  The skin patch (`bodyColumn`) is drawn from `basicSpread(sel)`, which mirrors
+  `dermsim.params.basic_spread` (mean ± 1 SD per layer, rounded to 0.1 halves up in both languages;
+  `tests/smoke.mjs` compares it with `golden.json`): left edge −1 SD, middle third the mean, right edge +1 SD.
 - **Versions are for the people using the viewer.** `VERSION` (top of the
   script) and `CHANGELOG.md` change only for user-facing changes:
   - a new feature, or a change in what the viewer computes or shows (including

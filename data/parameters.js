@@ -16716,6 +16716,10 @@ window.DRV_PARAMS = {
      }
     },
     "region": "face",
+    "sd": {
+     "female": 591.7,
+     "male": 501.9
+    },
     "source": "wang2025ultrasound",
     "reference": {
      "female": 45,
@@ -16737,6 +16741,10 @@ window.DRV_PARAMS = {
      }
     },
     "region": "body",
+    "sd": {
+     "female": 523.7,
+     "male": 475.4
+    },
     "source": "wang2025ultrasound",
     "reference": {
      "female": 45,
@@ -16758,6 +16766,10 @@ window.DRV_PARAMS = {
      }
     },
     "region": "body",
+    "sd": {
+     "female": 514.8,
+     "male": 555.3
+    },
     "source": "wang2025ultrasound",
     "reference": {
      "female": 45,
@@ -16779,6 +16791,10 @@ window.DRV_PARAMS = {
      }
     },
     "region": "body",
+    "sd": {
+     "female": 417.0,
+     "male": 376.5
+    },
     "source": "wang2025ultrasound",
     "reference": {
      "female": 45,
@@ -16800,6 +16816,10 @@ window.DRV_PARAMS = {
      }
     },
     "region": "body",
+    "sd": {
+     "female": 349.5,
+     "male": 409.9
+    },
     "source": "wang2025ultrasound",
     "reference": {
      "female": 45,
@@ -16821,6 +16841,10 @@ window.DRV_PARAMS = {
      }
     },
     "region": "body",
+    "sd": {
+     "female": 576.1,
+     "male": 670.8
+    },
     "source": "wang2025ultrasound",
     "reference": {
      "female": 45,
@@ -16842,6 +16866,10 @@ window.DRV_PARAMS = {
      }
     },
     "region": "body",
+    "sd": {
+     "female": 390.2,
+     "male": 546.3
+    },
     "source": "wang2025ultrasound",
     "reference": {
      "female": 45,
@@ -16863,6 +16891,10 @@ window.DRV_PARAMS = {
      }
     },
     "region": "body",
+    "sd": {
+     "female": 396.5,
+     "male": 511.8
+    },
     "source": "wang2025ultrasound",
     "reference": {
      "female": 45,
@@ -16884,6 +16916,10 @@ window.DRV_PARAMS = {
      }
     },
     "region": "body",
+    "sd": {
+     "female": 233.8,
+     "male": 298.7
+    },
     "source": "wang2025ultrasound",
     "reference": {
      "female": 45,
@@ -16903,6 +16939,10 @@ window.DRV_PARAMS = {
      }
     },
     "region": "face",
+    "sd": {
+     "female": 300.0,
+     "male": 280.0
+    },
     "source": "hoffmann1994sonography",
     "reference": {
      "female": 47,
@@ -16922,6 +16962,10 @@ window.DRV_PARAMS = {
      }
     },
     "region": "face",
+    "sd": {
+     "female": 320.0,
+     "male": 160.0
+    },
     "source": "hoffmann1994sonography",
     "reference": {
      "female": 47,
@@ -16941,6 +16985,10 @@ window.DRV_PARAMS = {
      }
     },
     "region": "face",
+    "sd": {
+     "female": 230.0,
+     "male": 200.0
+    },
     "source": "hoffmann1994sonography",
     "reference": {
      "female": 47,
@@ -16960,6 +17008,10 @@ window.DRV_PARAMS = {
      }
     },
     "region": "face",
+    "sd": {
+     "female": 290.0,
+     "male": 450.0
+    },
     "source": "hoffmann1994sonography",
     "reference": {
      "female": 47,
@@ -16979,6 +17031,10 @@ window.DRV_PARAMS = {
      }
     },
     "region": "face",
+    "sd": {
+     "female": 290.0,
+     "male": 250.0
+    },
     "source": "hoffmann1994sonography",
     "reference": {
      "female": 47,
@@ -16998,6 +17054,10 @@ window.DRV_PARAMS = {
      }
     },
     "region": "face",
+    "sd": {
+     "female": 290.0,
+     "male": 330.0
+    },
     "source": "hoffmann1994sonography",
     "reference": {
      "female": 47,
@@ -17017,6 +17077,10 @@ window.DRV_PARAMS = {
      }
     },
     "region": "face",
+    "sd": {
+     "female": 310.0,
+     "male": 460.0
+    },
     "source": "hoffmann1994sonography",
     "reference": {
      "female": 47,
@@ -17036,6 +17100,10 @@ window.DRV_PARAMS = {
      }
     },
     "region": "face",
+    "sd": {
+     "female": 490.0,
+     "male": 480.0
+    },
     "source": "hoffmann1994sonography",
     "reference": {
      "female": 47,
@@ -17055,6 +17123,10 @@ window.DRV_PARAMS = {
      }
     },
     "region": "face",
+    "sd": {
+     "female": 220.0,
+     "male": 210.0
+    },
     "source": "hoffmann1994sonography",
     "reference": {
      "female": 47,
@@ -17074,6 +17146,10 @@ window.DRV_PARAMS = {
      }
     },
     "region": "face",
+    "sd": {
+     "female": 560.0,
+     "male": 480.0
+    },
     "source": "hoffmann1994sonography",
     "reference": {
      "female": 47,
@@ -17093,6 +17169,10 @@ window.DRV_PARAMS = {
      }
     },
     "region": "face",
+    "sd": {
+     "female": 240.0,
+     "male": 330.0
+    },
     "source": "hoffmann1994sonography",
     "reference": {
      "female": 47,
@@ -17112,20 +17192,132 @@ window.DRV_PARAMS = {
      }
     },
     "region": "face",
+    "sd": {
+     "female": 190.0,
+     "male": 220.0
+    },
     "source": "hoffmann1994sonography",
     "reference": {
      "female": 47,
      "male": 32
     }
    }
-  ]
+  ],
+  "epidermis_cv": {
+   "forehead": {
+    "value": 0.1098,
+    "source": "gambichler2006epidermis",
+    "text": "SD 11.0 % of the mean: the mean CV of the two age groups at the forehead site, one OCT study"
+   },
+   "chest": {
+    "value": 0.1185,
+    "source": "gambichler2006epidermis",
+    "text": "SD 11.8 % of the mean: the mean CV of the two age groups at the pectoral site, one OCT study"
+   },
+   "abdomen": {
+    "value": 0.1372,
+    "source": "gambichler2006epidermis",
+    "text": "SD 13.7 % of the mean: the median CV of the 12 groups at 6 sites (this site was not measured), one OCT study"
+   },
+   "upperarm": {
+    "value": 0.1372,
+    "source": "gambichler2006epidermis",
+    "text": "SD 13.7 % of the mean: the median CV of the 12 groups at 6 sites (this site was not measured), one OCT study"
+   },
+   "forearm": {
+    "value": 0.1305,
+    "source": "gambichler2006epidermis",
+    "text": "SD 13.0 % of the mean: the mean CV of the two age groups at the forearm site, one OCT study"
+   },
+   "back": {
+    "value": 0.1461,
+    "source": "gambichler2006epidermis",
+    "text": "SD 14.6 % of the mean: the mean CV of the two age groups at the scapular site, one OCT study"
+   },
+   "thigh": {
+    "value": 0.1372,
+    "source": "gambichler2006epidermis",
+    "text": "SD 13.7 % of the mean: the median CV of the 12 groups at 6 sites (this site was not measured), one OCT study"
+   },
+   "leg": {
+    "value": 0.1531,
+    "source": "gambichler2006epidermis",
+    "text": "SD 15.3 % of the mean: the mean CV of the two age groups at the calf site, one OCT study"
+   },
+   "foot": {
+    "value": 0.1372,
+    "source": "gambichler2006epidermis",
+    "text": "SD 13.7 % of the mean: the median CV of the 12 groups at 6 sites (this site was not measured), one OCT study"
+   },
+   "temple": {
+    "value": 0.1372,
+    "source": "gambichler2006epidermis",
+    "text": "SD 13.7 % of the mean: the median CV of the 12 groups at 6 sites (this site was not measured), one OCT study"
+   },
+   "uppereyelid": {
+    "value": 0.1372,
+    "source": "gambichler2006epidermis",
+    "text": "SD 13.7 % of the mean: the median CV of the 12 groups at 6 sites (this site was not measured), one OCT study"
+   },
+   "lowereyelid": {
+    "value": 0.1372,
+    "source": "gambichler2006epidermis",
+    "text": "SD 13.7 % of the mean: the median CV of the 12 groups at 6 sites (this site was not measured), one OCT study"
+   },
+   "noseroot": {
+    "value": 0.1372,
+    "source": "gambichler2006epidermis",
+    "text": "SD 13.7 % of the mean: the median CV of the 12 groups at 6 sites (this site was not measured), one OCT study"
+   },
+   "cheek": {
+    "value": 0.1372,
+    "source": "gambichler2006epidermis",
+    "text": "SD 13.7 % of the mean: the median CV of the 12 groups at 6 sites (this site was not measured), one OCT study"
+   },
+   "nasolabial": {
+    "value": 0.1372,
+    "source": "gambichler2006epidermis",
+    "text": "SD 13.7 % of the mean: the median CV of the 12 groups at 6 sites (this site was not measured), one OCT study"
+   },
+   "upperlip": {
+    "value": 0.1372,
+    "source": "gambichler2006epidermis",
+    "text": "SD 13.7 % of the mean: the median CV of the 12 groups at 6 sites (this site was not measured), one OCT study"
+   },
+   "lowerlip": {
+    "value": 0.1372,
+    "source": "gambichler2006epidermis",
+    "text": "SD 13.7 % of the mean: the median CV of the 12 groups at 6 sites (this site was not measured), one OCT study"
+   },
+   "mouthcorner": {
+    "value": 0.1372,
+    "source": "gambichler2006epidermis",
+    "text": "SD 13.7 % of the mean: the median CV of the 12 groups at 6 sites (this site was not measured), one OCT study"
+   },
+   "chin": {
+    "value": 0.1372,
+    "source": "gambichler2006epidermis",
+    "text": "SD 13.7 % of the mean: the median CV of the 12 groups at 6 sites (this site was not measured), one OCT study"
+   },
+   "preauricular": {
+    "value": 0.1372,
+    "source": "gambichler2006epidermis",
+    "text": "SD 13.7 % of the mean: the median CV of the 12 groups at 6 sites (this site was not measured), one OCT study"
+   },
+   "neck": {
+    "value": 0.1372,
+    "source": "gambichler2006epidermis",
+    "text": "SD 13.7 % of the mean: the median CV of the 12 groups at 6 sites (this site was not measured), one OCT study"
+   }
+  }
  },
  "basic": {
   "defaults": {
    "age": "age70up",
    "sex": "male",
    "site": "model",
-   "ethnicity": "unspecified"
+   "ethnicity": "European",
+   "phototype": "III"
   },
   "sex": [
    "female",
@@ -17133,14 +17325,192 @@ window.DRV_PARAMS = {
   ],
   "ethnicity": {
    "options": [
-    "unspecified",
-    "African American",
-    "Caucasian",
-    "Chinese",
-    "Mexican"
+    "European",
+    "East Asian",
+    "Southeast Asian",
+    "South Asian",
+    "Middle Eastern",
+    "African or African-American",
+    "Latin American"
    ],
    "source": "querleux2009ethnic",
-   "note": "In about 400 women of four ethnic groups living in the same environment, papillary dermis thickness appeared quite constant irrespective of age or ethnic group ({cite:querleux2009ethnic}), and no checked source gives other tissue values by ethnicity, so the choice sets nothing in the current model."
+   "renamed": {
+    "unspecified": "European",
+    "Caucasian": "European",
+    "Chinese": "East Asian",
+    "African American": "African or African-American",
+    "Mexican": "Latin American"
+   },
+   "note": "The groups under which the sources' labels fall (Caucasian, French, German; Chinese, Japanese, Korean; Thai; Indian; Turkish, Iranian; African American, African; Mexican, Brazilian, Hispanic). The dermis thickness does not differ between ethnic groups measured the same way ({cite:querleux2009ethnic}, {cite:whitmore2000caliper}, {cite:mercurio2016brazilian}), nor does the papillary dermis below the papillae ({cite:querleux2009ethnic}); cell density and senescent share were never measured by group. The one difference in a model value that the skin type does not explain is the facial epidermis of East Asian skin, thicker at the cheekbone by the same method ({cite:assi2024asian}, against {cite:bonnier2023lcoct}): the choice East Asian sets the epidermis of the cheek; every other choice sets nothing. European is the default because most of the model's sources measured European skin.",
+   "phototypes": {
+    "European": [
+     {
+      "source": "gambichler2006epidermis",
+      "n": 71,
+      "percent": {
+       "I": 3,
+       "II": 57,
+       "III": 40
+      }
+     },
+     {
+      "source": "mercurio2016brazilian",
+      "count": {
+       "II": 8,
+       "III": 28,
+       "IV": 5
+      }
+     },
+     {
+      "source": "muizzuddin2010barrier",
+      "range": [
+       "II",
+       "III"
+      ]
+     },
+     {
+      "source": "langton2017dermal",
+      "range": [
+       "I",
+       "II"
+      ]
+     }
+    ],
+    "East Asian": [
+     {
+      "source": "chan2018asian",
+      "range": [
+       "III",
+       "IV"
+      ]
+     },
+     {
+      "source": "muizzuddin2010barrier",
+      "range": [
+       "III",
+       "IV"
+      ]
+     },
+     {
+      "source": "jeong2023facial",
+      "range": [
+       "III",
+       "IV"
+      ]
+     }
+    ],
+    "South Asian": [
+     {
+      "source": "chan2018asian",
+      "range": [
+       "IV",
+       "V"
+      ]
+     }
+    ],
+    "Middle Eastern": [
+     {
+      "source": "ince2015dermal",
+      "count": {
+       "III": 17,
+       "IV": 33
+      }
+     }
+    ],
+    "African or African-American": [
+     {
+      "source": "taylor2002color",
+      "range": [
+       "IV",
+       "VI"
+      ]
+     },
+     {
+      "source": "muizzuddin2010barrier",
+      "range": [
+       "IV",
+       "VI"
+      ]
+     },
+     {
+      "source": "langton2019color",
+      "range": [
+       "V",
+       "VI"
+      ]
+     },
+     {
+      "source": "langton2017dermal",
+      "range": [
+       "VI",
+       "VI"
+      ]
+     }
+    ],
+    "Latin American": [
+     {
+      "source": "mercurio2016brazilian",
+      "count": {
+       "II": 7,
+       "III": 29,
+       "IV": 5
+      }
+     },
+     {
+      "source": "taylor2002color",
+      "range": [
+       "IV",
+       "VI"
+      ]
+     }
+    ]
+   },
+   "epidermis": {
+    "East Asian": {
+     "cheek": {
+      "source": "assi2024asian",
+      "against": "bonnier2023lcoct",
+      "area": "cheekbone",
+      "asian": {
+       "sc": [
+        13.4,
+        13.2,
+        13.9,
+        13.6,
+        13.6
+       ],
+       "ve": [
+        55.8,
+        52.7,
+        56.5,
+        52.0,
+        53.3
+       ]
+      },
+      "increase": {
+       "sc": 9.6,
+       "ve": 15.4
+      }
+     }
+    }
+   }
+  },
+  "phototype": {
+   "options": [
+    "I",
+    "II",
+    "III",
+    "IV",
+    "V",
+    "VI"
+   ],
+   "labels": {
+    "IV": "olive",
+    "V": "brown",
+    "VI": "black"
+   },
+   "source": "taylor2002color",
+   "note": "The Fitzpatrick skin phototype rates skin by its reaction to sunlight, burning against tanning, and correlates the colour of skin with it; it was developed for white skin, and skin of colour was later divided into type IV (olive), V (brown) and VI (black) ({cite:taylor2002color}). What differs with pigment is the junction of epidermis and dermis: denser papillae in darker skin, and a slower loss of them with age ({cite:lagarrigue2012papilla}, {cite:querleux2009ethnic}). The model has neither a junction nor sun exposure, so the skin type sets nothing yet; it is kept with the selection and colours the figure. The ethnicity suggests a skin type when it is chosen, from the types the sources report for that group ({cite:gambichler2006epidermis}, {cite:mercurio2016brazilian}, {cite:muizzuddin2010barrier}, {cite:chan2018asian}, {cite:ince2015dermal}, {cite:langton2019color}): III for European skin, the default. A skin type chosen afterwards stays."
   },
   "sets": {
    "age": [
@@ -17171,7 +17541,74 @@ window.DRV_PARAMS = {
     "H",
     "hep"
    ],
-   "ethnicity": []
+   "ethnicity": [
+    "hep"
+   ],
+   "phototype": []
+  },
+  "ethnicity_factor": {
+   "East Asian": {
+    "cheek": {
+     "value": 1.1419,
+     "source": "assi2024asian",
+     "against": "bonnier2023lcoct",
+     "text": "× 1.142 for East Asian skin: the cheekbone epidermis of that group against European skin by the same method, stratum corneum 13.54 and viable epidermis 54.06 µm, 9.6 % and 15.4 % thicker on average"
+    }
+   }
+  },
+  "phototype_suggested": {
+   "European": {
+    "value": "III",
+    "sources": [
+     "gambichler2006epidermis",
+     "mercurio2016brazilian",
+     "muizzuddin2010barrier",
+     "langton2017dermal"
+    ],
+    "text": "the median type of the cohorts counted (112 persons)"
+   },
+   "East Asian": {
+    "value": "III",
+    "sources": [
+     "chan2018asian",
+     "muizzuddin2010barrier",
+     "jeong2023facial"
+    ],
+    "text": "the middle of the types III–IV the sources give"
+   },
+   "Southeast Asian": null,
+   "South Asian": {
+    "value": "IV",
+    "sources": [
+     "chan2018asian"
+    ],
+    "text": "the middle of the types IV–V the sources give"
+   },
+   "Middle Eastern": {
+    "value": "IV",
+    "sources": [
+     "ince2015dermal"
+    ],
+    "text": "the median type of the cohorts counted (50 persons)"
+   },
+   "African or African-American": {
+    "value": "V",
+    "sources": [
+     "taylor2002color",
+     "muizzuddin2010barrier",
+     "langton2019color",
+     "langton2017dermal"
+    ],
+    "text": "the middle of the types IV–VI the sources give"
+   },
+   "Latin American": {
+    "value": "III",
+    "sources": [
+     "mercurio2016brazilian",
+     "taylor2002color"
+    ],
+    "text": "the median type of the cohorts counted (41 persons)"
+   }
   }
  },
  "sources": {
@@ -17203,12 +17640,26 @@ window.DRV_PARAMS = {
    "checked": "abstract",
    "what": "With intrinsic ageing the papillary (not the reticular) dermis becomes thicker; total cellularity and vascularisation fall in both."
   },
+  "assi2024asian": {
+   "short": "Ali et al. 2024",
+   "cite": "Ali A, Colombe L, Mélanie P, et al.. Comparison of facial skin ageing in healthy Asian and Caucasian females quantified by in vivo line‐field confocal optical coherence tomography 3D imaging. Skin Research and Technology. 2024;30:e13643.",
+   "doi": "10.1111/srt.13643",
+   "checked": "full text",
+   "what": "LC-OCT of 109 Asian women aged 20–70 years in China against 100 Caucasian women of the same method in France: at the cheekbone the viable epidermis is 15.4 % and the stratum corneum 9.6 % thicker on average across the age groups; at the temple and the mandible only in two and one of five age groups."
+  },
   "belyakov2005skin": {
    "short": "Belyakov et al. 2005",
    "cite": "Belyakov OV, Mitchell SA, Parikh D, et al.. Biological effects in unirradiated human tissue induced by radiation damage up to 1 mm away. Proceedings of the National Academy of Sciences. 2005;102:14203–14208.",
    "doi": "10.1073/pnas.0505020102",
    "checked": "abstract",
    "what": "In a 3D normal human tissue model, unirradiated cells up to 1 mm from irradiated cells showed more micronuclei (1.7-fold) and apoptosis (2.8-fold)."
+  },
+  "bonnier2023lcoct": {
+   "short": "Bonnier et al. 2023",
+   "cite": "Bonnier F, Pedrazzani M, Fischman S, et al.. Line-field confocal optical coherence tomography coupled with artificial intelligence algorithms to identify quantitative biomarkers of facial skin ageing. Scientific Reports. 2023;13:13881.",
+   "doi": "10.1038/s41598-023-40340-0",
+   "checked": "full text",
+   "what": "LC-OCT with artificial intelligence in 100 healthy Caucasian women aged 20–70 years at the temple, cheekbone and mandible: the comparison cohort of the Asian study."
   },
   "boone2015hdoct": {
    "short": "Boone et al. 2015",
@@ -17258,6 +17709,13 @@ window.DRV_PARAMS = {
    "doi": "10.1016/0378-5122(92)90245-y",
    "checked": "full text",
    "what": "Skin collagen per protein in abdominal biopsies of 76 women by decade of age: 117.2, 117.7, 119.6, 114.2 and 108.0 µg/mg from the 20s to the 60s; it falls beyond the 40s and after the menopause."
+  },
+  "chan2018asian": {
+   "short": "Chan et al. 2019",
+   "cite": "Chan IL, Cohen S, da Cunha MG, et al.. Characteristics and management of Asian skin. International Journal of Dermatology. 2019;58:131–143.",
+   "doi": "10.1111/ijd.14153",
+   "checked": "full text",
+   "what": "Review of Asian skin: phototypes from type III to IV in Chinese and Japanese and type IV and V in Indian and Pakistani people."
   },
   "chopra2015face": {
    "short": "Chopra et al. 2015",
@@ -17427,6 +17885,13 @@ window.DRV_PARAMS = {
    "checked": "full text",
    "what": "In human dermis p21-positive cells increased with age, up to 15 % of cells in donors over 65; p16 was almost undetectable in the dermis."
   },
+  "ince2015dermal": {
+   "short": "Ince et al. 2015",
+   "cite": "Ince B, Dadaci M, Oltulu P, et al.. Effect of Dermal Thickness on Scars in Women with Type III–IV Fitzpatrick Skin. Aesthetic Plastic Surgery. 2015;39:318–324.",
+   "doi": "10.1007/s00266-015-0466-z",
+   "checked": "full text",
+   "what": "Breast skin of 50 Turkish women of Fitzpatrick type III–IV, 33 of them type IV: dermal thickness 4.99 mm on average, not associated with the skin type."
+  },
   "jeong2023facial": {
    "short": "Jeong et al. 2023",
    "cite": "Jeong KM, Seo JY, Kim A, et al.. Ultrasonographic analysis of facial skin thickness in relation to age, site, sex, and body mass index. Skin Research and Technology. 2023;29:e13426.",
@@ -17468,6 +17933,27 @@ window.DRV_PARAMS = {
    "doi": "10.1016/j.ijpharm.2007.06.020",
    "checked": "abstract",
    "what": "Decay lengths of topically applied small permeants in dermis 210–920 µm (capillary clearance 0.9–14 × 10⁻⁴ s⁻¹)."
+  },
+  "lagarrigue2012papilla": {
+   "short": "Lagarrigue et al. 2012",
+   "cite": "Lagarrigue SG, George J, Questel E, et al.. In vivo quantification of epidermis pigmentation and dermis papilla density with reflectance confocal microscopy: variations with age and skin phototype. Experimental Dermatology. 2012;21:281–286.",
+   "doi": "10.1111/j.1600-0625.2012.01451.x",
+   "checked": "full text",
+   "what": "Reflectance confocal microscopy of 111 women of phototypes I–VI: dermal papillae per image 3.6 in types I–II and 7.1 in V–VI, falling with age, by 83 % in types I–II and 36 % in V–VI between 18–25 and above 65 years."
+  },
+  "langton2017dermal": {
+   "short": "Langton et al. 2017",
+   "cite": "Langton AK, Graham HK, McConnell JC, et al.. Organization of the dermal matrix impacts the biomechanical properties of skin. British Journal of Dermatology. 2017;177:818–827.",
+   "doi": "10.1111/bjd.15353",
+   "checked": "full text",
+   "what": "Young black African or African-Caribbean (phototype VI) against white Northern European (phototypes I–II) volunteers: the dermal–epidermal junction is more convoluted in the black skin, most at the sun-exposed forearm."
+  },
+  "langton2019color": {
+   "short": "Langton et al. 2019",
+   "cite": "Langton AK, Alessi S, Hann M, et al.. Aging in Skin of Color: Disruption to Elastic Fiber Organization Is Detrimental to Skin’s Biomechanical Function. Journal of Investigative Dermatology. 2019;139:779–788.",
+   "doi": "10.1016/j.jid.2018.10.026",
+   "checked": "full text",
+   "what": "Black African-American volunteers of phototype V–VI, young and aged: the epidermis thins and the junction flattens with age, less at the protected buttock."
   },
   "lasagni1995echographic": {
    "short": "Lasagni & Seidenari 1995",
@@ -17553,12 +18039,26 @@ window.DRV_PARAMS = {
    "checked": "full text",
    "what": "24 MHz ultrasound at eight facial sites in 118 adults: forehead dermis 1.17 mm in men and 0.86 mm in women; in women it falls with age (r = −0.284), in men it does not."
   },
+  "mercurio2016brazilian": {
+   "short": "Mercurio et al. 2016",
+   "cite": "Mercurio DG, Jdid R, Morizot F, et al.. Morphological, structural and biophysical properties of French and Brazilian photoaged skin. British Journal of Dermatology. 2016;174:553–561.",
+   "doi": "10.1111/bjd.14280",
+   "checked": "full text",
+   "what": "41 French and 41 Brazilian women aged 40–65 years, confocal microscopy and ultrasound at the face and the forearm: viable epidermis and dermis not significantly different between the two groups."
+  },
   "miller2003density": {
    "short": "Miller et al. 2003",
    "cite": "Miller CC, Godeau G, Lebreton‐DeCoster C, et al.. Validation of a morphometric method for evaluating fibroblast numbers in normal and pathologic tissues. Experimental Dermatology. 2003;12:403–411.",
    "doi": "10.1034/j.1600-0625.2003.00023.x",
    "checked": "abstract",
    "what": "Mid-dermis fibroblast counts of 2100–4100 per mm³ in normal donors."
+  },
+  "muizzuddin2010barrier": {
+   "short": "Muizzuddin et al. 2010",
+   "cite": "Muizzuddin N, Hellemans L, Van Overloop L, et al.. Structural and functional differences in barrier properties of African American, Caucasian and East Asian skin. Journal of Dermatological Science. 2010;59:123–128.",
+   "doi": "10.1016/j.jdermsci.2010.06.003",
+   "checked": "full text",
+   "what": "Barrier of the cheek and arm in 73 African American (pigment type IV–VI), 119 Caucasian (II–III) and 149 East Asian (III–IV) women aged 18–45 years."
   },
   "munavalli2013azficel": {
    "short": "Munavalli et al. 2013",
@@ -17763,6 +18263,13 @@ window.DRV_PARAMS = {
    "checked": "page image",
    "what": "Pulsed-ultrasound skin thickness (epidermis and dermis) of the flexor forearm against age: males over 21 years 1.11 − 0.0036 × age mm (r = −0.52, n = 99), females over 21 years 0.86 − 0.002 × age mm (r = −0.38, n = 119); up to 20 years, both sexes, 0.54 + 0.019 × age mm (r = 0.77, n = 43)."
   },
+  "taylor2002color": {
+   "short": "Taylor 2002",
+   "cite": "Taylor SC. Skin of color: Biology, structure, function, and implications for dermatologic disease. Journal of the American Academy of Dermatology. 2002;46:S41–S62.",
+   "doi": "10.1067/mjd.2002.120790",
+   "checked": "full text",
+   "what": "Review of skin of colour: the Fitzpatrick phototype system rates skin by its reaction to sunlight and correlates its colour with burning or tanning; developed for white skin; skin of colour divided into types IV (olive), V (brown) and VI (black), which rarely or never burn and tan readily."
+  },
   "urban2023isoforms": {
    "short": "Urban et al. 2023",
    "cite": "Urban L, Čoma M, Lacina L, et al.. Heterogeneous response to TGF-β1/3 isoforms in fibroblasts of different origins: implications for wound healing and tumorigenesis. Histochemistry and Cell Biology. 2023;160:541–554.",
@@ -17811,6 +18318,13 @@ window.DRV_PARAMS = {
    "doi": "10.1038/s41598-018-36009-8",
    "checked": "abstract",
    "what": "Ex vivo human skin, 70–2000 kDa dextrans: dermal diffusivities 1–20 µm²/s, lowest at the dermal–epidermal junction (0.7–3 µm²/s)."
+  },
+  "whitmore2000caliper": {
+   "short": "Whitmore & Sago 2000",
+   "cite": "Whitmore SE, Sago NJG. Caliper-measured skin thickness is similar in white and black women. Journal of the American Academy of Dermatology. 2000;42:76–79.",
+   "doi": "10.1016/s0190-9622(00)90012-4",
+   "checked": "full text",
+   "what": "Caliper skin thickness of the sun-protected volar forearm in 86 white and 40 black women aged 20–69 years: 1.41 against 1.39 mm, no difference by race in any age band or in the multivariate model."
   },
   "williams2004postbake": {
    "short": "Williams & Wang 2004",

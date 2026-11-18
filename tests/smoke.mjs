@@ -130,6 +130,10 @@ if (!errors.length) {
       const got = drv.basicValues(sel);
       for (const [k, v] of Object.entries(c.values)) if (got[k] !== v && bad++ < 5) errors.push(`basic model ${JSON.stringify(c.sel)}: ${k} = ${got[k]}, the pipeline gives ${v}`);
       if (Object.keys(got).length !== Object.keys(c.values).length && bad++ < 5) errors.push(`basic model ${JSON.stringify(c.sel)}: sets ${Object.keys(got)} instead of ${Object.keys(c.values)}`);
+      const sp = drv.basicSpread(sel);                               // the spread between persons, as dermsim.params.basic_spread (claim K117)
+      for (const [k, s] of Object.entries(c.spread || {})) for (const f of ["mean", "sd", "lo", "hi"])
+        if (!sp[k] || sp[k][f] !== s[f]) { if (bad++ < 5) errors.push(`spread ${JSON.stringify(c.sel)}: ${k}.${f} = ${sp[k] && sp[k][f]}, the pipeline gives ${s[f]}`); }
+      if (Object.keys(sp).length !== Object.keys(c.spread || {}).length && bad++ < 5) errors.push(`spread ${JSON.stringify(c.sel)}: layers ${Object.keys(sp)} instead of ${Object.keys(c.spread || {})}`);
     }
     // an age in years decides its group, travels in the address, and an earlier group key is read as its successor
     drv.setBasic("years", "47");
@@ -146,6 +150,17 @@ if (!errors.length) {
     if (drv.bodyView() !== "face" || (byId("bodyFig").innerHTML.match(/data-site="/g) || []).length < faceSites.length) errors.push("a facial site should show the face with all its areas");
     drv.zoomBody("body");
     if (drv.bodyView() !== "body" || !/data-zoom="face"/.test(byId("bodyFig").innerHTML) || drv.basic().site !== "cheek") errors.push("back to the body should keep the selection and show the head as the way into the face");
+    // the ethnicity suggests the skin type; a skin type chosen afterwards stays and changes nothing else
+    const sug = ctx.window.DRV_PARAMS.basic.phototype_suggested;
+    drv.setBasic("ethnicity", "African or African-American");
+    if (drv.basic().phototype !== sug["African or African-American"].value) errors.push("choosing an ethnicity should set the skin type it suggests");
+    if (/(^|&)phototype=/.test(drv.stateQuery())) errors.push("the suggested skin type should not travel in the address: " + drv.stateQuery());
+    drv.setBasic("phototype", "II");
+    if (drv.basic().ethnicity !== "African or African-American" || !/(^|&)phototype=II(&|$)/.test(drv.stateQuery())) errors.push("a skin type chosen by hand should stay and travel: " + drv.stateQuery());
+    drv.setBasic("ethnicity", "Southeast Asian");
+    if (drv.basic().phototype !== "II") errors.push("a group without a suggestion should leave the skin type as it is");
+    drv.setBasic("ethnicity", ctx.window.DRV_PARAMS.basic.defaults.ethnicity);
+    if (drv.basic().phototype !== ctx.window.DRV_PARAMS.basic.defaults.phototype) errors.push("the default ethnicity should give the default skin type");
     drv.setBasic("site", ctx.window.DRV_PARAMS.basic.defaults.site); drv.drawBody();
     if (drv.bodyView() !== "body") errors.push("the skin model should show the body");
   } catch (e) { errors.push("basic model: " + (e.stack || e).toString().split("\n").slice(0, 2).join(" | ")); }

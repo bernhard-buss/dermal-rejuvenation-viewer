@@ -130,7 +130,7 @@ button.mini{padding:0 6px;font-size:12px;line-height:18px}
 .bp-fig{max-width:520px;margin:0 auto 8px} .bp-fig svg{width:100%;height:auto;display:block}
 .bp-data{min-width:0;font-size:12.5px}
 .bp-data table{border-collapse:collapse;width:100%} .bp-data td{padding:4px 8px 4px 0;vertical-align:top;border-bottom:1px solid #F0ECE5}
-.bp-data td.v{white-space:nowrap;font-weight:600} .bp-data td.d{color:var(--soft)} .bp-data .yours{color:#5B420F;font-weight:500}
+.bp-data td.v{white-space:nowrap;font-weight:600} .bp-data td.v .rng{font-weight:400;color:var(--soft);font-size:11.5px} .bp-data td.d{color:var(--soft)} .bp-data .yours{color:#5B420F;font-weight:500}
 .bp-data .note{margin-top:6px} .bp-data .bp-state{margin:0 0 6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis} .bp-data .bp-state.bp-prev{color:var(--teal)} @media (hover:none){.bp-data .bp-state{white-space:normal}}   /* always there, always one line */
 .bsite{fill:var(--site,#2A6F75);fill-opacity:0;stroke:var(--site,#2A6F75);stroke-width:1.2;stroke-dasharray:4 3;cursor:pointer;pointer-events:all;outline:none}
 #bodyColumn{pointer-events:none}
@@ -156,6 +156,8 @@ button.warn{color:var(--terra);border-color:var(--terra)}
 .seg button{border-radius:0;margin-left:-1px}
 .seg button:first-child{border-radius:6px 0 0 6px;margin-left:0}
 .seg button:last-child{border-radius:0 6px 6px 0}
+.seg.pt button{min-width:32px;font-weight:600;border-color:#B9AE9F} .seg.pt button.on{box-shadow:inset 0 0 0 2px #fff,0 0 0 2px var(--teal);position:relative;z-index:1}
+.seg.pt button.sug{text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:3px}
 canvas{display:block;width:100%;height:auto;border-radius:8px}
 .stage canvas{background:#E8E3DA;touch-action:none}
 #map.editing{cursor:crosshair}
@@ -356,7 +358,7 @@ a.cite{text-decoration:none;border-bottom:1px dotted var(--teal)}
 <script src="data/parameters.js"></script>
 <script>
 "use strict";
-const VERSION = "0.17.0";
+const VERSION = "0.18.0";
 const $ = id => document.getElementById(id);
 function esc(s) { return String(s).replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); }
 
@@ -2169,12 +2171,16 @@ const groupSliders = g => {                                        // primary va
   return open.map(slider).join("") + (rest.length ? `<div class="fold" id="fold_${g.key}" hidden>${rest.map(slider).join("")}</div>
       <button class="foldbtn" id="foldbtn_${g.key}" data-step="${g.key}" aria-expanded="false" aria-controls="fold_${g.key}"></button>` : "");
 };
-// --- the basic model of step 1: age, sex, body site, ethnicity ------------------------------------
+// --- the basic model of step 1: age, sex, body site, ethnicity, skin phototype -------------------
 // A selection sets the advanced tissue values (age: layers, cells, donor spread, senescent share;
 // body site and sex: dermis and epidermis thickness), computed by dermsim.params from measurements.
 // An advanced value moved by hand stays as it is when the selection changes ("custom"), and the
 // selection itself is kept, for whatever else it may come to influence.
 const AGES = (DP.presets && DP.presets.groups) || [], YEARS = (DP.presets && DP.presets.years) || null, AGE_RENAMED = (DP.presets && DP.presets.renamed) || {};
+const ETH_RENAMED = (DP.basic && DP.basic.ethnicity.renamed) || {};   // the five ethnicities used until 2026-11-18, read as their groups
+const ethOf = e => ETH_RENAMED[e] || e;
+const ptSuggested = eth => { const s = DP.basic && DP.basic.phototype_suggested && DP.basic.phototype_suggested[ethOf(eth)]; return s ? s.value : null; };   // null: no source gives one
+const ptLabel = p => { const l = DP.basic && DP.basic.phototype.labels && DP.basic.phototype.labels[p]; return l ? `${p} (${l})` : p; };
 const SITES = (DP.sites && DP.sites.groups) || [], BASIC = DP.basic ? { ...DP.basic, defaults: { ...DP.basic.defaults, years: "" } } : null;
 const BASIC_KEYS = new Set(BASIC ? [...BASIC.sets.age, ...BASIC.sets.site] : []);
 const ageLabel = g => g.short || g.title;
@@ -2202,6 +2208,7 @@ function ageEntry(sel) {
   return { key: YEARS.group[y], years: y, age: y, label: y + " y", values, raw, provenance, shown, sitefactor, epidermis,
     factor: { female: { value: YEARS.factor.female[y], ...run("factor_female") }, male: { value: YEARS.factor.male[y], ...run("factor_male") } } };
 }
+const ethFactor = (eth, site) => { const f = BASIC && BASIC.ethnicity_factor && BASIC.ethnicity_factor[ethOf(eth)]; return (f && f[site]) || null; };   // as dermsim.params.ethnicity_factor
 const siteFactor = (a, sex, site) => (a.sitefactor && a.sitefactor[sex] && a.sitefactor[sex][site]) || a.factor[sex];   // the site's own regression, else the forearm's
 function basicValues(sel) {                                        // as dermsim.params.basic_values
   const out = {}, a = ageEntry(sel), st = SITES.find(g => g.key === sel.site), sex = st && st.values[sel.sex] ? sel.sex : BASIC.defaults.sex;
@@ -2210,10 +2217,23 @@ function basicValues(sel) {                                        // as dermsim
     const v = { ...st.values[sex] };
     if (st.measured && a) {                                         // a body site: the dermis scaled to the age, the epidermis the pooled value of the site at the age
       v.H = Math.round(v.H * siteFactor(a, sex, st.key).value * 10) / 10;
-      const ep = a.epidermis && a.epidermis[st.key];
-      if (ep) v.hep = ep.value;
+      const ep = a.epidermis && a.epidermis[st.key], ef = ethFactor(sel.ethnicity, st.key);
+      if (ep) v.hep = ef ? Math.round(ep.value * ef.value * 10) / 10 : ep.value;
     }
     Object.assign(out, v);
+  }
+  return out;
+}
+function basicSpread(sel) {                                       // as dermsim.params.basic_spread: mean ± 1 SD between persons, per layer (claim K117)
+  const v = basicValues(sel), a = ageEntry(sel), st = SITES.find(g => g.key === sel.site), out = {}, r1 = x => Math.floor(x * 10 + 0.5) / 10;   // halves up, as the pipeline
+  const one = (k, mean, sd, text, source) => { sd = r1(sd); out[k] = { mean, sd, lo: r1(Math.max(0, mean - sd)), hi: r1(mean + sd), text, source }; };
+  const hpap = v.hpap !== undefined ? v.hpap : PDEF.hpap.def, cv = v.cvhpap !== undefined ? v.cvhpap : PDEF.cvhpap.def;
+  one("hpap", hpap, hpap * cv, `SD ${(100 * cv).toFixed(1)} % of the mean: the donors of the histology groups at this age`, DP.presets && DP.presets.anchors.layers.source);
+  if (st && st.measured && a) {
+    const sex = st.values[sel.sex] ? sel.sex : BASIC.defaults.sex, fac = siteFactor(a, sex, st.key).value;
+    one("H", v.H, st.sd[sex] * fac, `SD ${fmt(st.sd[sex])} µm between the ${sex} volunteers at this site, × ${fac.toFixed(3)} for the age`, st.source || DP.sites.source);
+    const ec = DP.sites.epidermis_cv && DP.sites.epidermis_cv[st.key];
+    if (ec) one("hep", v.hep, v.hep * ec.value, ec.text, ec.source);
   }
   return out;
 }
@@ -2233,6 +2253,7 @@ function setBasic(dim, v) {
   } else {
     next[dim] = v;
     if (dim === "age") next.years = "";
+    if (dim === "ethnicity" && ptSuggested(v)) next.phototype = ptSuggested(v);   // the ethnicity suggests the skin type; a skin type chosen later stays
   }
   if (Object.keys(next).every(k => next[k] === S.basic[k])) return;
   const before = basicValues(S.basic);
@@ -2244,13 +2265,13 @@ function setBasic(dim, v) {
 }
 // --- the figure: whose skin ------------------------------------------------------------------------
 // A schematic body for the selection. Its size and proportions follow the age and its build the sex, as an
-// illustration only (no body measure is taken from a source), and so is the skin tone for the ethnicity,
+// illustration only (no body measure is taken from a source), and so is the skin tone for the skin phototype,
 // which sets no value. The marker is the body site. Underneath: the tissue data of the selection, each
 // with what kind of number it is (measured, interpolated, held, regression) and its source.
 // Skin tone, outline and the colour of the dashed site areas on it. The areas need a contrast of at least 3 : 1 with the
 // tone (teal has 1.0 on the darkest and 2.2 on the brown tone), so a dark skin gets light areas and a brown one darker teal.
-const BODY_TONE = { "unspecified": ["#D8CBBE", "#A89888", "#2A6F75"], "African American": ["#8A5A3C", "#5E3B26", "#E6F6F4"], "Caucasian": ["#F0D2BC", "#C09A80", "#2A6F75"],
-  "Chinese": ["#E8C7A0", "#B8946C", "#2A6F75"], "Mexican": ["#C8946C", "#946844", "#143C40"] };
+const BODY_TONE = { I: ["#F4DCCB", "#C9A48C", "#2A6F75"], II: ["#EBCAB0", "#BE967A", "#2A6F75"], III: ["#DDB794", "#AD8763", "#2A6F75"],
+  IV: ["#C29B6C", "#8F6B42", "#143C40"], V: ["#8E5F3F", "#5E3B26", "#E6F6F4"], VI: ["#583826", "#3A2418", "#E6F6F4"] };
 // The outline of half a body, from the top of the head down the outer side, round the arm and the leg, to the
 // crotch: [half-width, height from the top], both in body heights. Three drawings with the same 46 points —
 // a small child, a man, a woman — so that any age and either sex is a blend of them. Drawn by hand as an
@@ -2293,7 +2314,7 @@ function bodySvg(sel, a) {
     const p0 = at(i - 1), p1 = at(i), p2 = at(i + 1), p3 = at(i + 2);
     d += ` C${f1(p1[0] + (p2[0] - p0[0]) / 6)} ${f1(p1[1] + (p2[1] - p0[1]) / 6)} ${f1(p2[0] - (p3[0] - p1[0]) / 6)} ${f1(p2[1] - (p3[1] - p1[1]) / 6)} ${f1(p2[0])} ${f1(p2[1])}`;
   }
-  const [tone, line, siteCol] = BODY_TONE[sel.ethnicity] || BODY_TONE.unspecified;
+  const [tone, line, siteCol] = BODY_TONE[sel.phototype] || BODY_TONE.III;
   const P = i => half[i - 1], mid = (i, j) => [(P(i)[0] + P(j)[0]) / 2, (P(i)[1] + P(j)[1]) / 2], wid = (i, j) => Math.abs(P(i)[0] - P(j)[0]) / 2 + 0.004;
   const both = r => [r, [[-r[0][0], r[0][1]], r[1], r[2]]];           // a limb has the site on either side
   const regions = {                                                  // where each body site lies: centre and radii, in body heights
@@ -2318,7 +2339,7 @@ function bodySvg(sel, a) {
   const model = SITES.find(g => !g.measured);                        // the skin model: a tissue in a dish, selectable like a site
   const dish = model ? `<g class="bsite dish${model.key === sel.site ? " on" : ""}" data-site="${model.key}" tabindex="0" role="button" aria-label="${esc(model.title)}: preview on hover, select with a click"><title>${esc(model.title)}</title><ellipse cx="${cx + 104}" cy="364" rx="30" ry="8"/><ellipse cx="${cx + 104}" cy="361" rx="24" ry="5"/></g>` : "";
   if (model) bodyGeo.centre[model.key] = [cx + 104, 361];
-  const who = `${sel.sex}, ${a.years !== null ? a.years + " years" : ageLabel(a) + " years"}${sel.ethnicity !== "unspecified" ? ", " + sel.ethnicity : ""}`;
+  const who = `${sel.sex}, ${a.years !== null ? a.years + " years" : ageLabel(a) + " years"}, ${ethOf(sel.ethnicity)}, skin type ${sel.phototype}`;
   const onBody = SITES.some(g => g.key === sel.site && g.measured);
   return `<svg viewBox="0 24 500 376" role="img" aria-label="Body: ${esc(who)}. The dashed areas are the body sites: hover for a preview, click to select.">` +
     `<defs><clipPath id="bodyClip"><path d="${d}"/></clipPath></defs>` +
@@ -2330,7 +2351,7 @@ function bodySvg(sel, a) {
 // The face view: a face and neck, front view, with the facial areas as dashed areas — the same control as the body
 // (hover previews, a click selects), reached by a click on the head and left by the button "Body". As the body, the
 // outline is a blend of three hand-drawn halves (a child, a man, a woman) by age and sex; hair, brows, lips and the
-// lines of age follow sex and age, the tone the ethnicity. All of it is illustration only; where an area lies
+// lines of age follow sex and age, skin tone and hair the skin phototype. All of it is illustration only; where an area lies
 // follows the names of its source (claim K75).
 const FACE_AREAS = {                                               // centre offset from the midline (both sides where dx > 0), centre height, radii
   forehead: [0, 111, 38, 14], temple: [62, 140, 6.5, 12], uppereyelid: [28, 143.5, 12, 3.6], lowereyelid: [28, 160.5, 11.5, 3.2], noseroot: [0, 150, 5.5, 9],
@@ -2356,13 +2377,14 @@ function closedCurve(ring) {                                       // a smooth c
   return d + " Z";
 }
 const mixHex = (a, b, t) => "#" + [1, 3, 5].map(i => Math.round(parseInt(a.slice(i, i + 2), 16) * (1 - t) + parseInt(b.slice(i, i + 2), 16) * t).toString(16).padStart(2, "0")).join("");
-const HAIR = { "unspecified": "#4A3A2E", "African American": "#1F1916", "Caucasian": "#6A4A33", "Chinese": "#1C1917", "Mexican": "#2A201B" };
+const PT_INK = { I: "#1B2A33", II: "#1B2A33", III: "#1B2A33", IV: "#1B2A33", V: "#FFFFFF", VI: "#FFFFFF" };   // text on each tone: contrast 5.4 : 1 or more
+const HAIR = { I: "#8A6440", II: "#6A4A33", III: "#4A3A2E", IV: "#2E231C", V: "#1F1916", VI: "#1A1512" };   // by skin type, illustration only
 function faceSvg(sel, a) {
   const cx = 112, y = a.age, f1 = x => x.toFixed(1), male = sel.sex === "male";
   const adult = Math.min(1, Math.max(0, (y - 12) / 6)), man = male ? adult : 0, woman = male ? 0 : adult;   // the features of the sexes grow in from puberty
   const old = Math.min(1, Math.max(0, (y - 40) / 40));               // lines of age, from 40 to 80 years
-  const [tone, line, siteCol] = BODY_TONE[sel.ethnicity] || BODY_TONE.unspecified;
-  const hair = mixHex(HAIR[sel.ethnicity] || HAIR.unspecified, "#B9B4AD", Math.min(1, Math.max(0, (y - 45) / 35)));
+  const [tone, line, siteCol] = BODY_TONE[sel.phototype] || BODY_TONE.III;
+  const hair = mixHex(HAIR[sel.phototype] || HAIR.III, "#B9B4AD", Math.min(1, Math.max(0, (y - 45) / 35)));
   const deep = mixHex(tone, "#2A1A12", 0.45), lip = mixHex(tone, male ? "#9A5A50" : "#B04F58", male ? 0.35 : 0.5), lipLine = mixHex(lip, "#3A1E1A", 0.45);
   const half = faceOutline(sel.sex, y);
   const headD = closedCurve([...half, ...half.slice(1, -1).reverse().map(p => [-p[0], p[1]])].map(p => [cx + p[0], p[1]]));
@@ -2446,7 +2468,7 @@ function faceSvg(sel, a) {
     bodyGeo.centre[st.key] = [xs[0], ay];
     areas += xs.map((x, i) => `<ellipse class="bsite${st.key === sel.site ? " on" : ""}" data-site="${st.key}" cx="${f1(x)}" cy="${ay}" rx="${rx}" ry="${ry}"${i ? "" : ` tabindex="0" role="button" aria-label="${esc(st.title)}: preview on hover, select with a click"`}><title>${esc(st.title)}</title></ellipse>`).join("");
   }
-  const who = `${sel.sex}, ${a.years !== null ? a.years + " years" : ageLabel(a) + " years"}${sel.ethnicity !== "unspecified" ? ", " + sel.ethnicity : ""}`;
+  const who = `${sel.sex}, ${a.years !== null ? a.years + " years" : ageLabel(a) + " years"}, ${ethOf(sel.ethnicity)}, skin type ${sel.phototype}`;
   return `<svg viewBox="0 24 500 376" role="img" aria-label="Face and neck: ${esc(who)}. The dashed areas are the facial areas: hover for a preview, click to select.">` +
     `<defs>${shade}<clipPath id="headClip"><path d="${headD}"/></clipPath><clipPath id="neckClip"><path d="${neckD}"/></clipPath><clipPath id="faceClip"><path d="${headD}"/><path d="${neckD}"/></clipPath></defs>` +
     backHair + `<path d="${neckD}" fill="${tone}" stroke="${line}" stroke-width="1.2" stroke-linejoin="round"/><g clip-path="url(#neckClip)">${neckShade}</g>` + ears +
@@ -2456,20 +2478,41 @@ function faceSvg(sel, a) {
     `<g class="bzoom" data-zoom="body" tabindex="0" role="button" aria-label="Back to the body"><rect x="8" y="32" width="64" height="22" rx="11"/><text x="40" y="47" text-anchor="middle">‹ Body</text></g>` +
     `<g id="bodyColumn"></g></svg>`;
 }
-// Right of the body: the skin of a site as a column to scale, its legend beside it, top-aligned, tied to the site.
-function bodyColumn(st, v, preview) {
+// Right of the body: the skin of a site as a patch to scale, its legend beside it, top-aligned, tied to the site. The
+// patch shows how much the layers differ between persons (claim K117): its left edge is every layer at the mean − 1 SD,
+// its right edge at the mean + 1 SD, and the middle third the mean, flat so that it can be read.
+function bodyColumn(st, v, preview, sp) {
   const f1 = x => x.toFixed(1), ink = "#1B2A33", soft = "#44525A", teal = "#2A6F75";
-  const layers = [["epidermis", v.hep, "#C98B74"], ["papillary dermis", Math.min(v.hpap, v.H), "#EBC9B5"], ["reticular dermis", Math.max(0, v.H - v.hpap), "#F6E6DA"]];
-  const total = layers.reduce((t, l) => t + l[1], 0), colH = 250, colX = 262, colW = 38, colY = 78, legX = colX + colW + 14;
-  let yy = colY, out = "";
-  for (const [, um, fill] of layers) { const hh = um / total * colH; out += `<rect x="${colX}" y="${f1(yy)}" width="${colW}" height="${f1(hh)}" fill="${fill}"/>`; yy += hh; }
-  out += `<rect x="${colX}" y="${colY}" width="${colW}" height="${colH}" fill="none" stroke="${soft}" stroke-width="1"/>` +
-    `<text x="${colX}" y="${colY - 24}" font-size="13" font-weight="600" fill="${ink}">${st.measured ? esc(st.title) + (st.key === "back" ? " (behind)" : "") : "Skin model"}${preview ? ` <tspan font-weight="400" fill="${teal}">· preview, click to select</tspan>` : ""}</text>` +
-    `<text x="${colX}" y="${colY - 9}" font-size="11.5" fill="${soft}">${st.measured ? "this skin, to scale" : "not a body site · to scale"}</text>` +
-    layers.map(([name, um, fill], i) => `<rect x="${legX}" y="${colY + 1 + i * 19}" width="10" height="10" fill="${fill}" stroke="${soft}" stroke-width=".6"/><text x="${legX + 16}" y="${colY + 10 + i * 19}" font-size="11.5" fill="${soft}">${name} ${esc(fmt(um))} µm</text>`).join("");
+  const colX = 244, colW = 100, colY = 78, colH = 250, legX = colX + colW + 11, cut = [0, 0.33, 0.67, 1], at = ["lo", "mean", "mean", "hi"];
+  const val = (k, w) => sp[k] ? sp[k][w] : v[k];
+  const thick = (k, w) => k === "hep" ? val("hep", w) : k === "hpap" ? Math.min(val("hpap", w), val("H", w)) : Math.max(0, val("H", w) - Math.min(val("hpap", w), val("H", w)));
+  const layers = [["epidermis", "hep", "#C98B74"], ["papillary dermis", "hpap", "#EBC9B5"], ["reticular dermis", "ret", "#F6E6DA"]];
+  const total = Math.max(...at.map(w => layers.reduce((s, l) => s + thick(l[1], w), 0))), y = d => colY + d / total * colH;
+  const xs = cut.map(c => colX + c * colW);
+  let out = "", depth = at.map(() => 0), bottom = "";
+  for (const [, k, fill] of layers) {
+    const top = depth.slice(); depth = depth.map((d, i) => d + thick(k, at[i]));
+    const pts = [...xs.map((x, i) => `${f1(x)},${f1(y(top[i]))}`), ...xs.map((x, i) => `${f1(x)},${f1(y(depth[i]))}`).reverse()];
+    out += `<polygon points="${pts.join(" ")}" fill="${fill}"/>`;
+  }
+  bottom = xs.map((x, i) => `${f1(x)},${f1(y(depth[i]))}`).join(" ");
+  out += `<polygon points="${f1(xs[0])},${colY} ${f1(xs[3])},${colY} ${bottom.split(" ").reverse().join(" ")}" fill="none" stroke="${soft}" stroke-width="1" stroke-linejoin="round"/>` +
+    `<line x1="${f1(xs[1])}" y1="${colY}" x2="${f1(xs[1])}" y2="${f1(y(depth[1]))}" stroke="${soft}" stroke-width=".6" stroke-dasharray="2 2" opacity=".7"/>` +
+    `<line x1="${f1(xs[2])}" y1="${colY}" x2="${f1(xs[2])}" y2="${f1(y(depth[2]))}" stroke="${soft}" stroke-width=".6" stroke-dasharray="2 2" opacity=".7"/>`;
+  const ly = colY + colH + 13, spreadAny = Object.keys(sp).length > 0;
+  if (spreadAny) out += [["−SD", xs[0], "start"], ["mean", (xs[1] + xs[2]) / 2, "middle"], ["+SD", xs[3], "end"]].map(([s, x, an]) => `<text x="${f1(x)}" y="${ly}" font-size="10" fill="${soft}" text-anchor="${an}">${s}</text>`).join("");
+  out += `<text x="${colX}" y="${colY - 24}" font-size="13" font-weight="600" fill="${ink}">${st.measured ? esc(st.title) + (st.key === "back" ? " (behind)" : "") : "Skin model"}${preview ? ` <tspan font-weight="400" fill="${teal}">· preview, click to select</tspan>` : ""}</text>` +
+    `<text x="${colX}" y="${colY - 9}" font-size="11.5" fill="${soft}">${st.measured ? "this skin, to scale: mean ± 1 SD" : "not a body site · to scale"}</text>`;
+  const range = (k, lo, hi) => lo === hi ? (k === "hpap" ? "" : "one tissue, no spread") : `${fmt(lo)}–${fmt(hi)} µm`;
+  const rows = layers.map(([name, k, fill]) => [name, fill, thick(k, "mean"), range(k, thick(k, "lo"), thick(k, "hi"))]);
+  rows.push(["dermis in all", null, val("H", "mean"), range("H", val("H", "lo"), val("H", "hi"))]);
+  out += rows.map(([name, fill, mean, r], i) => { const yy = colY + i * 31;
+    return (fill ? `<rect x="${legX}" y="${yy + 1}" width="10" height="10" fill="${fill}" stroke="${soft}" stroke-width=".6"/>` : "") +
+      `<text x="${legX + 16}" y="${yy + 10}" font-size="11" fill="${ink}">${name} ${esc(fmt(mean))} µm</text>` +
+      (r ? `<text x="${legX + 16}" y="${yy + 23}" font-size="10.5" fill="${soft}">${esc(r)}</text>` : ""); }).join("");
   const c = bodyGeo.centre[st.key];
   if (c) {                                                           // from the site to its skin
-    const bend = st.measured ? `L${colX - 22} ${f1(c[1])} L${colX - 22} ${colY + 10}` : `L${colX - 22} ${f1(c[1])} L${colX - 22} ${colY + 10}`;
+    const bend = `L${colX - 22} ${f1(c[1])} L${colX - 22} ${colY + 10}`;
     const way = `M${f1(c[0])} ${f1(c[1])} ${bend} L${colX - 5} ${colY + 10}`;   // a light halo keeps the line readable where it crosses a dark skin
     out += `<path d="${way}" fill="none" stroke="#fff" stroke-opacity=".8" stroke-width="3.2" stroke-linejoin="round"/>` +
       `<path d="${way}" fill="none" stroke="${teal}" stroke-width="1" stroke-linejoin="round"${preview ? ' stroke-dasharray="3 3"' : ""}/>` +
@@ -2484,8 +2527,9 @@ function fillBody(hover) {
   const a = ageEntry(sel), st = SITES.find(g => g.key === sel.site), v = basicValues(sel);
   if (!a || !st) return;
   const own = SITES.find(g => g.key === S.basic.site) || st;         // the header names the selection, also during a preview: it must not change height
-  $("bodySum").textContent = $("bodySum").title = `${S.basic.sex} · ${a.years !== null ? a.years + " y" : ageLabel(a) + " y"} · ${own.title}${S.basic.ethnicity !== "unspecified" ? " · " + S.basic.ethnicity : ""}`;
-  $("bodyColumn").innerHTML = bodyColumn(st, v, preview);
+  $("bodySum").textContent = $("bodySum").title = `${S.basic.sex} · ${a.years !== null ? a.years + " y" : ageLabel(a) + " y"} · ${own.title} · ${S.basic.ethnicity} · type ${S.basic.phototype}`;
+  const sp = basicSpread(sel);
+  $("bodyColumn").innerHTML = bodyColumn(st, v, preview, sp);
   const kd = p => `<span class="kd kd-${p.kind}" title="${esc(p.text)}">${p.kind}</span>`;
   const yours = k => !preview && k && k in S.p && !near(S.p[k], v[k]) ? ` <span class="yours" title="You changed this advanced value by hand">· yours: ${fmt(S.p[k])}</span>` : "";
   const fac = siteFactor(a, sel.sex, st.key), fit = DP.presets.fits.thickness, pv = a.provenance, ep = st.measured && a.epidermis && a.epidermis[st.key];
@@ -2494,7 +2538,7 @@ function fillBody(hover) {
       st.measured ? `${fmt(st.values[sel.sex].H)} µm by ultrasound at this site in ${sel.sex} volunteers of median age ${(st.reference || fit.reference)[sel.sex]} y (${cite(st.source || DP.sites.source)}), × ${fac.value.toFixed(3)} for the age: ${esc(fac.text)} (${cite(fac.source)})`
         : `the group's reconstructed skin model (${cite("roy2024implanting")}); not a body site, so not scaled with age`, "H"],
     ["Epidermis thickness", `${fmt(v.hep)} µm`, ep ? kd(ep) : kd({ kind: "measured", text: st.measured ? "measured at this site" : "the value used for the skin model" }),
-      ep ? `${esc(ep.text)} (${cite(ep.source)})${st.values[sel.sex].hep !== undefined ? `. The ultrasound of the site table reads ${fmt(st.values[sel.sex].hep)} µm here, an entry echo, and is not used` : ""}`
+      ep ? `${esc(ep.text)} (${cite(ep.source)})${ethFactor(sel.ethnicity, st.key) ? `; ${esc(ethFactor(sel.ethnicity, st.key).text)} (${cite(ethFactor(sel.ethnicity, st.key).source)} against ${cite(ethFactor(sel.ethnicity, st.key).against)})` : ""}${st.values[sel.sex].hep !== undefined ? `. The ultrasound of the site table reads ${fmt(st.values[sel.sex].hep)} µm here, an entry echo, and is not used` : ""}`
         : st.measured ? `by ultrasound at this site (${cite(DP.sites.source)})` : `forearm epidermis by histology (${cite("sandbymoller2003epidermis")}); not a body site, so not scaled with age`, "hep"],
     ["Papillary dermis thickness", `${fmt(v.hpap)} µm`, kd(pv.hpap), `${esc(pv.hpap.text)} (${cite(pv.hpap.source)})`, "hpap"],
     ["Cells, papillary dermis", `${fmt(a.raw.cells_pap)} / mm²`, kd(pv.cells_pap), `all nuclei per mm² of section; ${esc(pv.cells_pap.text)} (${cite(pv.cells_pap.source)})`, null],
@@ -2505,7 +2549,7 @@ function fillBody(hover) {
   ];
   $("bodyData").innerHTML = (preview ? `<div class="note bp-state bp-prev"><b>Preview</b> of the area under the pointer. Nothing is changed until you click it.</div>`
     : `<div class="note bp-state"><b>The selected skin.</b> Point at a dashed area to preview another, click to select it.</div>`) +
-    `<table>${rows.map(r => `<tr><td>${r[0]}</td><td class="v">${r[1]}${yours(r[4])}</td><td>${r[2]}</td><td class="d">${r[3]}</td></tr>`).join("")}</table>
+    `<table>${rows.map(r => `<tr><td>${r[0]}</td><td class="v">${r[1]}${yours(r[4])}${sp[r[4]] ? `<br><span class="rng" title="mean ± 1 SD between persons">${fmt(sp[r[4]].lo)}–${fmt(sp[r[4]].hi)}</span>` : ""}</td><td>${r[2]}</td><td class="d">${r[3]}${sp[r[4]] ? `. Between persons, mean ± 1 SD: ${fmt(sp[r[4]].lo)}–${fmt(sp[r[4]].hi)} µm; ${esc(sp[r[4]].text)}${sp[r[4]].source ? ` (${cite(sp[r[4]].source)})` : ""}` : ""}</td></tr>`).join("")}</table>
     ${st.region === "face" ? `<div class="note"><b>The face.</b> Dermis by sex from ultrasound (${cite(st.source || DP.sites.source)}); other ultrasound series find the facial dermis about half as thick (${cite("meng2022facial")}, ${cite("jeong2023facial")}), so read the level with care, the order of the areas less so. The papillary dermis, the cells and the senescent share are those of the age: no source gives them by facial area. Sun damage, fat, muscle and vessels are not in the model. <a href="#help/start/face" data-help="start/face">More</a></div>` : ""}
     <div class="note"><b>From these the model takes</b> ${fmt(v.rpap)}× as many cells in the papillary as in the reticular dermis${yours("rpap")}, a cellularity of ${v.cells.toFixed(2)}× that of the oldest group${yours("cells")}, and the spread between donors (${fmt(100 * v.cvpap)} %, ${fmt(100 * v.cvret)} % and ${fmt(100 * v.cvhpap)} % of the papillary cells, the reticular cells and the papillary thickness).
     <span class="kd kd-measured">measured</span> a group mean of donors · <span class="kd kd-interpolated">interpolated</span> on the straight line between two group means · <span class="kd kd-held">held</span> beyond the last mean, not extrapolated · <span class="kd kd-regression">regression</span> from a published fit on age · <span class="kd kd-analogue">analogue</span> from a related site. The dashed areas on the figure are the body sites, and a click on the head zooms in to the face: hover for a preview, click to select. Size, build and skin tone of the figure are illustration only. <a href="#help/start/body" data-help="start/body">More</a></div>`;
@@ -2547,7 +2591,8 @@ function basicHtml() {
       <div class="brow"><label class="yrs" title="An age in years: the values are taken at that age, between the measured group means">or exactly <input type="number" id="ageYears" min="0" max="${YEARS ? YEARS.max : 100}" step="1" inputmode="numeric" placeholder="–" aria-label="Age in years"> years</label><button class="mini" id="ageYearsClear" title="Back to the age group" aria-label="Clear the age in years" hidden>×</button></div>
       <div class="brow"><span class="blab">Sex</span>${seg("sex", BASIC.sex.map(x => [x, x]))}<span class="note" id="sexNote" title="The skin model is a reconstructed tissue, the same for both sexes; at a measured body site the sex sets the dermis and epidermis thickness" hidden>sets nothing for the skin model</span></div>
       <div class="brow"><span class="blab">Body site</span>${siteSelect()}</div>
-      <div class="brow"><span class="blab">Ethnicity</span>${sel("ethnicity", BASIC.ethnicity.options.map(x => [x, x]))}<span class="note" title="No checked source gives tissue values by ethnicity; the choice is kept with the selection">sets nothing</span></div>
+      <div class="brow"><span class="blab">Ethnicity</span>${sel("ethnicity", BASIC.ethnicity.options.map(x => [x, x]))}<span class="note" id="ethNote" title="The dermis does not differ between ethnic groups measured the same way; East Asian skin has the thicker epidermis at the cheekbone by the same method"></span></div>
+      <div class="brow"><span class="blab">Skin type</span><span class="seg pt" data-basic="phototype" role="group" aria-label="Skin type (Fitzpatrick phototype)">${BASIC.phototype.options.map(x => { const [tone] = BODY_TONE[x] || BODY_TONE.III, ink = PT_INK[x] || "#1B2A33"; return `<button data-v="${esc(x)}" style="background:${tone};color:${ink}" title="Skin type ${esc(ptLabel(x))}; the colour is an illustration, not a measured one">${esc(x)}</button>`; }).join("")}</span><span class="note" id="ptNote"></span></div>
       <div class="note" id="basicNote"></div>
     </div>
     <h3 class="subhead">Advanced <span class="cchip" id="advChip" hidden>custom</span></h3>
@@ -2560,14 +2605,19 @@ function syncBasic() {
     if (el.tagName === "SELECT") el.value = S.basic[dim];
     else for (const b of el.querySelectorAll("button")) b.classList.toggle("on", b.dataset.v === S.basic[dim]);
   }
-  const a = ageEntry(S.basic), st = SITES.find(g => g.key === S.basic.site), v = basicValues(S.basic);
+  const a = ageEntry(S.basic), st = SITES.find(g => g.key === S.basic.site), v = basicValues(S.basic), spr = basicSpread(S.basic);
   if ($("ageYears")) { if (document.activeElement !== $("ageYears")) $("ageYears").value = S.basic.years; $("ageYearsClear").hidden = S.basic.years === ""; }
   const kd = q => `<span class="kd kd-${a.provenance[q].kind}" title="${esc(a.provenance[q].text)}">${a.provenance[q].kind}</span>`;
   const grp = a && AGES.find(g => g.key === a.key);
   $("basicNote").innerHTML = (a ? `<b>${a.years !== null ? a.years + " years" : esc(grp.title)}</b> ${a.years !== null ? `(group ${esc(ageLabel(grp))})` : `(taken at ${fmt(a.age)} y)`}: papillary dermis ${fmt(v.hpap)} µm ${kd("hpap")}, ${fmt(v.rpap)}× the reticular cells, cellularity ${v.cells.toFixed(2)}×, senescent ${fmt(100 * v.fsen)} % ${kd("p21")} (${cite(DP.presets.source)}${DP.presets.senescent ? ", " + cite(DP.presets.senescent.source) : ""}). ` : "") +
-    (st ? `<b>${esc(st.title)}</b>${st.measured ? `, ${esc(S.basic.sex)}` : ""}: dermis ${fmt(v.H)} µm${st.measured && a ? ` (${fmt(st.values[S.basic.sex].H)} µm, ${cite(st.source || DP.sites.source)}, × ${siteFactor(a, S.basic.sex, st.key).value.toFixed(3)} for the age, ${cite(siteFactor(a, S.basic.sex, st.key).source)})` : ""}, epidermis ${fmt(v.hep)} µm (${st.measured && a && a.epidermis && a.epidermis[st.key] ? cite(a.epidermis[st.key].source) : cite("roy2024implanting")}). ` : "") +
+    (st ? `<b>${esc(st.title)}</b>${st.measured ? `, ${esc(S.basic.sex)}` : ""}: dermis ${fmt(v.H)} µm${st.measured && spr.H ? ` [${fmt(spr.H.lo)}–${fmt(spr.H.hi)} between persons]` : ""}${st.measured && a ? ` (${fmt(st.values[S.basic.sex].H)} µm, ${cite(st.source || DP.sites.source)}, × ${siteFactor(a, S.basic.sex, st.key).value.toFixed(3)} for the age, ${cite(siteFactor(a, S.basic.sex, st.key).source)})` : ""}, epidermis ${fmt(v.hep)} µm (${st.measured && a && a.epidermis && a.epidermis[st.key] ? cite(a.epidermis[st.key].source) : cite("roy2024implanting")}${st.measured && ethFactor(S.basic.ethnicity, st.key) ? `, × ${ethFactor(S.basic.ethnicity, st.key).value.toFixed(3)} for ${esc(S.basic.ethnicity)} skin, ${cite(ethFactor(S.basic.ethnicity, st.key).source)}` : ""}). ` : "") +
     `<a href="#help/start/presets" data-help="start/presets">What each choice sets</a>`;
   drawBody();
+  const sug = ptSuggested(S.basic.ethnicity), sugTxt = DP.basic.phototype_suggested && DP.basic.phototype_suggested[ethOf(S.basic.ethnicity)];
+  for (const b of document.querySelectorAll('.seg.pt button')) b.classList.toggle("sug", b.dataset.v === sug);
+  if ($("ptNote")) { $("ptNote").textContent = (sug ? `suggested for ${S.basic.ethnicity}: ${sug}` : `no type known for ${S.basic.ethnicity}`) + " · sets nothing yet";
+    $("ptNote").title = sug ? `${sugTxt.text} (${sugTxt.sources.join(", ")}); claims K115, K116. What differs with the skin type is the junction of epidermis and dermis, which the model does not have yet` : "No source gives a skin type for this group; the skin type stays as you choose it"; }
+  if ($("ethNote")) $("ethNote").textContent = ethFactor(S.basic.ethnicity, "cheek") ? (S.basic.site === "cheek" ? "sets the epidermis here" : "sets the cheek's epidermis only") : "sets nothing";
   if ($("sexNote")) $("sexNote").hidden = !st || st.measured;
   const cus = customKeys();
   $("advChip").hidden = !cus.length;
@@ -2771,7 +2821,8 @@ const RENAMED = DP.renamed || {};
 const sig4 = v => +(+v).toPrecision(4);
 function stateQuery() {
   const q = new URLSearchParams();
-  for (const [k, v] of Object.entries(S.basic)) if (BASIC && v !== BASIC.defaults[k] && !(k === "age" && S.basic.years !== "")) q.set(k, v);   // an age in years implies its group
+  const expect = k => k === "phototype" ? (ptSuggested(S.basic.ethnicity) || BASIC.defaults.phototype) : BASIC.defaults[k];   // the skin type the ethnicity suggests is implied
+  for (const [k, v] of Object.entries(S.basic)) if (BASIC && v !== expect(k) && !(k === "age" && S.basic.years !== "")) q.set(k, v);   // an age in years implies its group
   for (const def of PARAMS) if (!isDefault(def.key)) q.set(def.key, sig4(S.p[def.key]));
   if (S.pattern !== "hex") q.set("pattern", S.pattern);
   if (S.mode !== "window") q.set("show", S.mode === "resp" ? "response" : "concentration");
@@ -2787,15 +2838,16 @@ function readUrlState() {
   const q = new URLSearchParams(location.search);
   for (const [old, now] of Object.entries(RENAMED)) if (q.has(old) && !q.has(now)) q.set(now, q.get(old));
   if (BASIC) {                                                     // the basic selection first: it sets the advanced values
-    const ok = { age: AGES.map(g => g.key), sex: BASIC.sex, site: SITES.map(g => g.key), ethnicity: BASIC.ethnicity.options };
+    const ok = { age: AGES.map(g => g.key), sex: BASIC.sex, site: SITES.map(g => g.key), ethnicity: BASIC.ethnicity.options, phototype: BASIC.phototype.options };
     for (const k of Object.keys(ok)) {
-      const val = k === "age" && AGE_RENAMED[q.get(k)] ? AGE_RENAMED[q.get(k)] : q.get(k);   // a key of the four earlier groups: its successor
+      const val = k === "age" && AGE_RENAMED[q.get(k)] ? AGE_RENAMED[q.get(k)] : k === "ethnicity" ? ethOf(q.get(k)) : q.get(k);   // an earlier age group or ethnicity: its successor
       if (q.has(k) && ok[k].includes(val)) S.basic[k] = val;
     }
     if (YEARS && q.has("years") && q.get("years").trim() !== "" && isFinite(+q.get("years"))) {
       S.basic.years = String(Math.min(YEARS.max, Math.max(0, Math.round(+q.get("years")))));
       S.basic.age = YEARS.group[+S.basic.years];
     }
+    if (!q.has("phototype") && ptSuggested(S.basic.ethnicity)) S.basic.phototype = ptSuggested(S.basic.ethnicity);
     Object.assign(S.p, basicValues(S.basic));
   }
   for (const def of PARAMS) if (q.has(def.key)) { const v = parseFloat(q.get(def.key)); if (isFinite(v)) S.p[def.key] = Math.min(def.max, Math.max(def.min, v)); }
@@ -2943,10 +2995,12 @@ function applyFile(text, name) {
   S.p.z0 = Math.min(S.p.z0, S.p.H - 20); S.p.zv = Math.min(S.p.zv, S.p.H);
   const des = data.design || {};
   if (BASIC) {                                                     // the file's values are complete; its selection says which are custom
-    const b = des.basic || {}, ok = { age: AGES.map(g => g.key), sex: BASIC.sex, site: SITES.map(g => g.key), ethnicity: BASIC.ethnicity.options };
+    const b = des.basic || {}, ok = { age: AGES.map(g => g.key), sex: BASIC.sex, site: SITES.map(g => g.key), ethnicity: BASIC.ethnicity.options, phototype: BASIC.phototype.options };
     S.basic = { ...BASIC.defaults };
     if (AGE_RENAMED[b.age]) b.age = AGE_RENAMED[b.age];
+    if (b.ethnicity) b.ethnicity = ethOf(b.ethnicity);
     for (const k of Object.keys(ok)) if (ok[k].includes(b[k])) S.basic[k] = b[k];
+    if (!b.phototype && ptSuggested(S.basic.ethnicity)) S.basic.phototype = ptSuggested(S.basic.ethnicity);
     if (YEARS && b.years !== undefined && b.years !== "" && isFinite(+b.years)) {
       S.basic.years = String(Math.min(YEARS.max, Math.max(0, Math.round(+b.years))));
       S.basic.age = YEARS.group[+S.basic.years];
@@ -3057,12 +3111,14 @@ const HELP = [
     ["presets", "The basic model: age, sex, body site", () => `<p>Step 1, <b>Whose skin</b>, starts with the <b>basic model</b>: a few choices that set the <b>advanced</b> tissue values below them from measurements.</p>
       <ul><li><b>Age</b> is one of six groups, or an <b>exact age in years</b>. It sets the layers and cells of the dermis — papillary thickness, how many more cells the papillary dermis holds than the reticular, the overall cellularity, how much these differ between donors — and the senescent share, from group means measured in donors of known ages (${cite("arnalforne2024dermis")}, ${cite("idda2020senescence")}); at a measured body site it also scales the dermis thickness by a published regression on age (${cite("tan1982ultrasound")}). Every value says what it is: <span class="kd kd-measured">measured</span> at a group mean, <span class="kd kd-interpolated">interpolated</span> between two means, <span class="kd kd-held">held</span> beyond the last one, or from a <span class="kd kd-regression">regression</span>. The senescent share is one of the advanced values of this step; it acts in the <a href="#help/metrics/robust" data-help="metrics/robust">Robustness</a> analysis, not on the maps. <b>70+</b> is the default; it gives the values that <i>55+</i> gave before. How the groups were derived and what each rests on: <a href="#help/model/age" data-help="model/age">Age of the skin</a>.</li>
       <li><b>Body site</b> and <b>sex</b> set the dermis thickness and the epidermis thickness. ${renderNote((DP.sites || { note: "" }).note)} <b>Male</b> is the default sex and the skin model the default site, so the sex sets nothing until you pick a body site. The dermis thickness of a site is the measured one at the median age of its volunteers (30 years for the men, 45 for the women), scaled to the age you chose. The forehead has an age regression of its own (${cite("denda1990facial")}), because on the face the studies disagree and the forearm line has no support there. The epidermis thickness of a site is not the ultrasound value, which is an entry echo and reads too high: it is the pooled value of that site at the chosen age from a meta-analysis of histology, optical coherence tomography and confocal microscopy (${cite("lintzeri2022epidermis")}), the same for both sexes. The skin model is not a body site and takes neither.</li>
-      <li><b>Ethnicity</b> is kept with the selection, but sets nothing: ${renderNote((DP.basic || { ethnicity: { note: "" } }).ethnicity.note)}</li></ul>
+      <li><b>Ethnicity</b>: ${renderNote(DP.basic.ethnicity.note)} A link or file with one of the five earlier choices is read as its group (unspecified and Caucasian as European, Chinese as East Asian, African American as African or African-American, Mexican as Latin American).</li>
+      <li><b>Skin type</b>: ${renderNote(DP.basic.phototype.note)} Each button shows the type in a colour of its own, an illustration; the type the chosen ethnicity suggests is underlined. Choosing an ethnicity sets the skin type to its suggestion; choosing a skin type afterwards changes nothing else (${BASIC.ethnicity.options.map(g => `${esc(g)} ${ptSuggested(g) || "—"}`).join(", ")}).</li></ul>
       <p><b>Custom values.</b> Move an advanced value by hand and it stays yours: changing the basic model afterwards leaves it as it is, and the step says <span class="cchip">custom</span> and lists what you changed and what the basic model would give, with a link to take its values again. The basic selection itself is kept, so whatever else it comes to influence still knows whose skin this is. ↺ on an advanced value goes back to the basic model's value, not to the file's.</p>
-      <p>The choices travel with a shared link and with <b>Save YAML</b>; the pipeline takes them as <code>--age</code> or <code>--years</code>, <code>--sex</code>, <code>--site</code> and <code>--ethnicity</code>. A link or a file that still names one of the four earlier age groups is read as the group that replaced it (0–12, 13–25, 40–54 and 70+ for the earlier 0–12, 13–25, 26–54 and 55+).</p>
+      <p>The choices travel with a shared link and with <b>Save YAML</b>; the pipeline takes them as <code>--age</code> or <code>--years</code>, <code>--sex</code>, <code>--site</code>, <code>--ethnicity</code> and <code>--phototype</code>. A link or a file that still names one of the four earlier age groups is read as the group that replaced it (0–12, 13–25, 40–54 and 70+ for the earlier 0–12, 13–25, 26–54 and 55+).</p>
       <p>What the selection gives is shown at the top of the View column: <a href="#help/start/body" data-help="start/body">the figure</a>.</p>`],
     ["body", "The figure: whose skin", () => `<p>The first panel of the <b>View</b> column shows whose skin the model is set for: on the left a body with the <b>body site</b> tinted, on the right the layers of that skin drawn to scale with their thicknesses (epidermis, papillary and reticular dermis), and underneath the tissue data of the selection — dermis and epidermis thickness, papillary thickness, the cell counts of the two layers, the senescent share and the collagen area fraction — each with a badge and its source. Click the title to fold the panel away.</p>
       <p><b>The figure is a control.</b> The dashed areas are the body sites, and the dish beside the feet is the skin model. Point at an area and the panel shows that skin as a <b>preview</b>: the column, the thicknesses and the table change, the model does not. Click the area (or focus it with the keyboard and press Enter) and the body site of step 1 is set to it. On a limb the site is drawn on both sides; the back is seen from the front, so a band across the shoulders stands for it. <b>The head zooms in to the face</b>: a click on it shows the face and neck with their own dashed areas, used the same way, and <b>‹ Body</b> goes back; a facial site you select is shown on the face. See <a href="#help/start/face" data-help="start/face">The face</a>.</p>
+      <p><b>The skin patch</b> is drawn to scale and shows how much the layers differ between persons: its left edge is every layer at the mean minus one standard deviation, its right edge at the mean plus one, and the flat middle third is the mean, so that it can be read. One standard deviation either side holds about two thirds of persons if the thickness is normally distributed. The legend and the table give the numbers. The sources report means and standard deviations between persons, almost never the thinnest and the thickest person, so the patch shows these and not a minimum and maximum. Where the spread comes from: the dermis from the site table's standard deviation by sex (${cite(DP.sites.source)}, ${cite("hoffmann1994sonography")}), scaled with the age like the mean; the papillary dermis from the histology groups at the age (${cite("arnalforne2024dermis")}); the epidermis from one imaging study with standard deviations by site and age (${cite("gambichler2006epidermis")}), because the pooled values give the uncertainty of a mean, not how much people differ. The skin model is one tissue and has no spread. The three ranges are not joint: a person with a thin dermis need not have a thin epidermis.</p>
       <p><b>The badges</b> say what kind of number a value is:</p>
       <ul><li><span class="kd kd-measured">measured</span> — a group mean of donors, at the mean age of those donors (or anywhere within their ages beyond the outermost mean), or a value measured at the body site.</li>
       <li><span class="kd kd-interpolated">interpolated</span> — on the straight line between two measured group means. No donor of that age was measured; hover over the badge for the two groups.</li>
@@ -3070,7 +3126,7 @@ const HELP = [
       <li><span class="kd kd-regression">regression</span> — from a published fit on age, inside the ages it was fitted for: the skin thickness that scales the dermis of a body site (${cite("tan1982ultrasound")}; the forehead and the cheek by their own, ${cite("denda1990facial")}) and the collagen area fraction (${cite("marcosgarces2014collagen")}).</li>
       <li><span class="kd kd-analogue">analogue</span> — not measured at this site: taken from a related one and scaled where a source gives the ratio. The epidermis of the facial areas other than the forehead and the cheek is one (see <a href="#help/start/face" data-help="start/face">The face</a>).</li></ul>
       <p>The <b>collagen area fraction</b> is shown only: no value of the model takes it. So are the last two rows, the papillary and the reticular thickness by the regressions of a second histology series (${cite("marcosgarces2014collagen")}): they stand beside the values in use for comparison. For the papillary dermis the two differ, and imaging of living skin finds the opposite trend with age (${cite("pedrazzani2020lcoct")}, ${cite("boone2015hdoct")}); see <a href="#help/model/age" data-help="model/age">Age of the skin</a>. A value marked <span class="cchip">yours</span> is an advanced value you changed by hand; the table then shows what the basic model would give.</p>
-      <p><b>The figure is an illustration.</b> Its outline is a blend of three hand-drawn bodies, a small child, a man and a woman: its size and proportions follow the age, its build the sex (from puberty on) and its tone the ethnicity; none of these is taken from a source, and none sets a value. Ethnicity in particular sets nothing: ${renderNote((DP.basic || { ethnicity: { note: "" } }).ethnicity.note)} The <b>skin model</b> is a reconstructed tissue in a dish, not a place on the body, so the figure is greyed and neither the sex nor the age changes its thickness. How the age groups were derived: <a href="#help/model/age" data-help="model/age">Age of the skin</a>.</p>`],
+      <p><b>The figure is an illustration.</b> Its outline is a blend of three hand-drawn bodies, a small child, a man and a woman: its size and proportions follow the age, its build the sex (from puberty on) and its tone and hair the skin type; none of these is taken from a source, and none sets a value. The skin type in particular sets nothing yet: ${renderNote(DP.basic.phototype.note)} The <b>skin model</b> is a reconstructed tissue in a dish, not a place on the body, so the figure is greyed and neither the sex nor the age changes its thickness. How the age groups were derived: <a href="#help/model/age" data-help="model/age">Age of the skin</a>.</p>`],
     ["face", "The face", () => { const fs = SITES.filter(g => g.region === "face"); return `<p><b>The face and neck</b> are ${fs.length} body sites of their own: ${fs.map(g => esc(g.title).toLowerCase()).join(", ")}. Click the head of the figure to see them on a face, or pick one under <b>Body site</b> in step 1.</p>
       <p><b>Dermis.</b> The forehead is the site table's (${cite(DP.sites.source)}). The other twelve come from a second ultrasound study that measured the dermis by sex at the head and neck in 20 men and 20 women aged 15 to 76 years (${cite("hoffmann1994sonography")}); its forehead agrees with the site table's within 10 %, so the face sits on the same scale as the body. That study could not measure the outer corner of the eye or the wing and bridge of the nose, and no study gives the glabella, the nasal tip or the jaw as dermis by sex, so they are not offered. The dermis follows the age from the median ages of those volunteers (32 years for the men, 47 for the women): forehead and cheek by regressions measured there, the temple, eyelids and root of the nose by the forehead's, the folds, lips, corner of the mouth, chin and the area in front of the ear by the cheek's (${cite("denda1990facial")}), the neck by the forearm line, as the body sites.</p>
       <p><b>The level is the weak point.</b> Other ultrasound series find the facial dermis about half as thick, around 1 mm on the forehead (${cite("meng2022facial")}, ${cite("jeong2023facial")}). The order of the areas — eyelids thinnest, chin, lips and nose thickest — agrees across studies; the level does not. A needle length on the face is as uncertain as that level.</p>
@@ -3086,7 +3142,7 @@ const HELP = [
       <p>reproduces exactly what you were looking at — and so do <code>optimize</code>, <code>time</code>, <code>sweep</code> and <code>scaffold</code>. Useful for attaching a design to an email or a lab notebook, for keeping several variants side by side, and for taking a design from the browser into the pipeline without typing numbers.</p>
       <p><b>Load YAML</b> reads such a file back, and also the pipeline's own <code>config/parameters.yaml</code> or a plain JSON file of <code>key: value</code> pairs. Only the values, the pattern, the colouring and the sites are taken; labels, sources and notes always come from this build of the viewer, so a file cannot put an unchecked source on screen. Values outside a slider's range are clamped and unknown names are ignored — the button says how many of each. A file saved before a parameter was renamed loads as well: the old name is read as the new one, and the next <b>Save YAML</b> writes the new names.</p>`],
     ["share", "Sharing a view", () => `<p>The address in your browser always holds the current view: every value that differs from its default (all sliders), the pattern, the colouring and, for a custom layout, the position and depth of every site. <b>Copy link</b> copies it; whoever opens the link sees the same view. A link to a help entry (e.g. <code>#help/model/window</code>) can be added at the end and opens that entry. For a file you can keep or hand to the pipeline, use <a href="#help/start/yaml" data-help="start/yaml">Save YAML</a>.</p>
-      <p>Address parameters: ${PARAMS.map(p => `<code>${p.key}</code>`).join(", ")} (each in the unit of its slider), <code>age</code>, <code>sex</code>, <code>site</code>, <code>ethnicity</code>, <code>pattern</code> (hex, square, random, custom), <code>show=concentration</code> or <code>show=response</code>, <code>scaffold=patch</code>, and <code>sites=x,y,z;…</code> in µm for custom layouts. Values outside a slider's range are clamped to it. A link made before a parameter was renamed still opens: the old name is read (${Object.entries(RENAMED).map(([o, nw]) => `<code>${o}</code> as <code>${nw}</code>`).join(", ") || "none so far"}) and the address is rewritten with the new one.</p>`],
+      <p>Address parameters: ${PARAMS.map(p => `<code>${p.key}</code>`).join(", ")} (each in the unit of its slider), <code>age</code>, <code>sex</code>, <code>site</code>, <code>ethnicity</code>, <code>phototype</code>, <code>pattern</code> (hex, square, random, custom), <code>show=concentration</code> or <code>show=response</code>, <code>scaffold=patch</code>, and <code>sites=x,y,z;…</code> in µm for custom layouts. Values outside a slider's range are clamped to it. A link made before a parameter was renamed still opens: the old name is read (${Object.entries(RENAMED).map(([o, nw]) => `<code>${o}</code> as <code>${nw}</code>`).join(", ") || "none so far"}) and the address is rewritten with the new one.</p>`],
     ["status", "What the badges mean", () => `<p>Every value carries a badge; click it for its entry under <a href="#help/params" data-help="params">Parameters</a>.</p>
       <table><tr><td><span class="badge b-src">source</span></td><td>the default is a published value, checked against the source (abstract or full text) and listed under <a href="#help/refs" data-help="refs">References</a></td></tr>
       <tr><td><span class="badge b-ana">analogue</span></td><td>published value, checked against the source, but measured in a related system (other cells, another signal, another set-up) or as a related quantity (all nuclei instead of fibroblasts only); used until the value itself is measured in aged human dermis</td></tr>
@@ -3387,7 +3443,7 @@ window.__drv = {
   scaffold: () => scaffoldPlan(S.p, geoPattern()),
   scFiles, paramsYaml, applyFile, readYamlish,
   stateQuery, syncUrl, readUrlState, resetParam, isDefault,
-  basicValues, ageEntry, setBasic, basic: () => ({ ...S.basic }), previewBody, faceAreas: () => Object.keys(FACE_AREAS), bodyView: () => bodyView, zoomBody, drawBody,
+  basicValues, ageEntry, setBasic, basic: () => ({ ...S.basic }), previewBody, faceAreas: () => Object.keys(FACE_AREAS), bodyView: () => bodyView, zoomBody, drawBody, basicSpread,
   openHelp, closeHelp, helpTargets: () => [...document.querySelectorAll("[data-help]")].map(a => a.dataset.help)
 };
 
