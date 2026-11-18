@@ -13276,7 +13276,7 @@
     "cvhpap": 0.157,
     "fsen": 0.019,
     "H": 1071.1,
-    "hep": 127.7
+    "hep": 80.6
    }
   },
   {
@@ -13312,7 +13312,7 @@
     "cvhpap": 0.157,
     "fsen": 0.019,
     "H": 1306.2,
-    "hep": 116.6
+    "hep": 80.6
    }
   },
   {
@@ -13348,7 +13348,7 @@
     "cvhpap": 0.066,
     "fsen": 0.019,
     "H": 1463.1,
-    "hep": 127.7
+    "hep": 80.6
    }
   },
   {
@@ -13384,7 +13384,7 @@
     "cvhpap": 0.066,
     "fsen": 0.019,
     "H": 1784.4,
-    "hep": 116.6
+    "hep": 80.6
    }
   },
   {
@@ -13420,7 +13420,7 @@
     "cvhpap": 0.133,
     "fsen": 0.031,
     "H": 1460.9,
-    "hep": 125.8
+    "hep": 77.8
    }
   },
   {
@@ -13456,7 +13456,7 @@
     "cvhpap": 0.133,
     "fsen": 0.031,
     "H": 1757.8,
-    "hep": 114.9
+    "hep": 77.8
    }
   },
   {
@@ -13492,7 +13492,7 @@
     "cvhpap": 0.18,
     "fsen": 0.047,
     "H": 1422.7,
-    "hep": 121.1
+    "hep": 72.4
    }
   },
   {
@@ -13528,7 +13528,7 @@
     "cvhpap": 0.18,
     "fsen": 0.047,
     "H": 1691.7,
-    "hep": 110.5
+    "hep": 72.4
    }
   },
   {
@@ -13564,7 +13564,7 @@
     "cvhpap": 0.206,
     "fsen": 0.1,
     "H": 1352.4,
-    "hep": 112.3
+    "hep": 63.6
    }
   },
   {
@@ -13600,7 +13600,7 @@
     "cvhpap": 0.206,
     "fsen": 0.1,
     "H": 1569.8,
-    "hep": 102.5
+    "hep": 63.6
    }
   },
   {
@@ -13636,7 +13636,7 @@
     "cvhpap": 0.212,
     "fsen": 0.15,
     "H": 1286.3,
-    "hep": 108.1
+    "hep": 63.6
    }
   },
   {
@@ -13672,7 +13672,7 @@
     "cvhpap": 0.212,
     "fsen": 0.15,
     "H": 1455.2,
-    "hep": 98.7
+    "hep": 63.6
    }
   },
   {
@@ -13708,7 +13708,7 @@
     "cvhpap": 0.192,
     "fsen": 0.019,
     "H": 1426.5,
-    "hep": 116.8
+    "hep": 83.0
    }
   },
   {
@@ -13726,7 +13726,7 @@
     "cvhpap": 0.192,
     "fsen": 0.019,
     "H": 1830.8,
-    "hep": 128.3
+    "hep": 78.1
    }
   },
   {
@@ -13744,7 +13744,7 @@
     "cvhpap": 0.192,
     "fsen": 0.019,
     "H": 654.8,
-    "hep": 121.7
+    "hep": 170.2
    }
   },
   {
@@ -13761,8 +13761,80 @@
     "cvret": 0.54,
     "cvhpap": 0.192,
     "fsen": 0.019,
-    "H": 1312.1,
-    "hep": 101.5
+    "H": 1332.5,
+    "hep": 82.8
+   }
+  },
+  {
+   "sel": {
+    "years": 0,
+    "sex": "female",
+    "site": "cheek"
+   },
+   "values": {
+    "hpap": 77.18,
+    "rpap": 3.12,
+    "cells": 4.258,
+    "cvpap": 0.154,
+    "cvret": 0.54,
+    "cvhpap": 0.192,
+    "fsen": 0.019,
+    "H": 1200.4,
+    "hep": 70.3
+   }
+  },
+  {
+   "sel": {
+    "years": 0,
+    "sex": "female",
+    "site": "uppereyelid"
+   },
+   "values": {
+    "hpap": 77.18,
+    "rpap": 3.12,
+    "cells": 4.258,
+    "cvpap": 0.154,
+    "cvret": 0.54,
+    "cvhpap": 0.192,
+    "fsen": 0.019,
+    "H": 408.9,
+    "hep": 41.8
+   }
+  },
+  {
+   "sel": {
+    "years": 0,
+    "sex": "female",
+    "site": "upperlip"
+   },
+   "values": {
+    "hpap": 77.18,
+    "rpap": 3.12,
+    "cells": 4.258,
+    "cvpap": 0.154,
+    "cvret": 0.54,
+    "cvhpap": 0.192,
+    "fsen": 0.019,
+    "H": 1343.9,
+    "hep": 97.4
+   }
+  },
+  {
+   "sel": {
+    "years": 0,
+    "sex": "female",
+    "site": "neck"
+   },
+   "values": {
+    "hpap": 77.18,
+    "rpap": 3.12,
+    "cells": 4.258,
+    "cvpap": 0.154,
+    "cvret": 0.54,
+    "cvhpap": 0.192,
+    "fsen": 0.019,
+    "H": 797.9,
+    "hep": 73.0
    }
   },
   {
@@ -13798,7 +13870,7 @@
     "cvhpap": 0.192,
     "fsen": 0.019,
     "H": 1508.0,
-    "hep": 110.9
+    "hep": 83.0
    }
   },
   {
@@ -13816,7 +13888,7 @@
     "cvhpap": 0.192,
     "fsen": 0.019,
     "H": 1767.4,
-    "hep": 119.1
+    "hep": 78.1
    }
   },
   {
@@ -13834,7 +13906,7 @@
     "cvhpap": 0.192,
     "fsen": 0.019,
     "H": 748.4,
-    "hep": 115.7
+    "hep": 170.2
    }
   },
   {
@@ -13851,8 +13923,80 @@
     "cvret": 0.54,
     "cvhpap": 0.192,
     "fsen": 0.019,
-    "H": 1337.0,
-    "hep": 101.5
+    "H": 1320.3,
+    "hep": 82.8
+   }
+  },
+  {
+   "sel": {
+    "years": 0,
+    "sex": "male",
+    "site": "cheek"
+   },
+   "values": {
+    "hpap": 77.18,
+    "rpap": 3.12,
+    "cells": 4.258,
+    "cvpap": 0.154,
+    "cvret": 0.54,
+    "cvhpap": 0.192,
+    "fsen": 0.019,
+    "H": 1365.9,
+    "hep": 70.3
+   }
+  },
+  {
+   "sel": {
+    "years": 0,
+    "sex": "male",
+    "site": "uppereyelid"
+   },
+   "values": {
+    "hpap": 77.18,
+    "rpap": 3.12,
+    "cells": 4.258,
+    "cvpap": 0.154,
+    "cvret": 0.54,
+    "cvhpap": 0.192,
+    "fsen": 0.019,
+    "H": 355.9,
+    "hep": 41.8
+   }
+  },
+  {
+   "sel": {
+    "years": 0,
+    "sex": "male",
+    "site": "upperlip"
+   },
+   "values": {
+    "hpap": 77.18,
+    "rpap": 3.12,
+    "cells": 4.258,
+    "cvpap": 0.154,
+    "cvret": 0.54,
+    "cvhpap": 0.192,
+    "fsen": 0.019,
+    "H": 1488.4,
+    "hep": 97.4
+   }
+  },
+  {
+   "sel": {
+    "years": 0,
+    "sex": "male",
+    "site": "neck"
+   },
+   "values": {
+    "hpap": 77.18,
+    "rpap": 3.12,
+    "cells": 4.258,
+    "cvpap": 0.154,
+    "cvret": 0.54,
+    "cvhpap": 0.192,
+    "fsen": 0.019,
+    "H": 808.4,
+    "hep": 73.0
    }
   },
   {
@@ -13888,7 +14032,7 @@
     "cvhpap": 0.191,
     "fsen": 0.019,
     "H": 1476.7,
-    "hep": 116.8
+    "hep": 83.0
    }
   },
   {
@@ -13906,7 +14050,7 @@
     "cvhpap": 0.191,
     "fsen": 0.019,
     "H": 1895.2,
-    "hep": 128.3
+    "hep": 78.1
    }
   },
   {
@@ -13924,7 +14068,7 @@
     "cvhpap": 0.191,
     "fsen": 0.019,
     "H": 677.8,
-    "hep": 121.7
+    "hep": 170.2
    }
   },
   {
@@ -13941,8 +14085,80 @@
     "cvret": 0.538,
     "cvhpap": 0.191,
     "fsen": 0.019,
-    "H": 1358.3,
-    "hep": 101.5
+    "H": 1379.3,
+    "hep": 82.8
+   }
+  },
+  {
+   "sel": {
+    "years": 1,
+    "sex": "female",
+    "site": "cheek"
+   },
+   "values": {
+    "hpap": 77.11,
+    "rpap": 3.14,
+    "cells": 4.223,
+    "cvpap": 0.154,
+    "cvret": 0.538,
+    "cvhpap": 0.191,
+    "fsen": 0.019,
+    "H": 1242.6,
+    "hep": 70.3
+   }
+  },
+  {
+   "sel": {
+    "years": 1,
+    "sex": "female",
+    "site": "uppereyelid"
+   },
+   "values": {
+    "hpap": 77.11,
+    "rpap": 3.14,
+    "cells": 4.223,
+    "cvpap": 0.154,
+    "cvret": 0.538,
+    "cvhpap": 0.191,
+    "fsen": 0.019,
+    "H": 423.3,
+    "hep": 41.8
+   }
+  },
+  {
+   "sel": {
+    "years": 1,
+    "sex": "female",
+    "site": "upperlip"
+   },
+   "values": {
+    "hpap": 77.11,
+    "rpap": 3.14,
+    "cells": 4.223,
+    "cvpap": 0.154,
+    "cvret": 0.538,
+    "cvhpap": 0.191,
+    "fsen": 0.019,
+    "H": 1391.1,
+    "hep": 97.4
+   }
+  },
+  {
+   "sel": {
+    "years": 1,
+    "sex": "female",
+    "site": "neck"
+   },
+   "values": {
+    "hpap": 77.11,
+    "rpap": 3.14,
+    "cells": 4.223,
+    "cvpap": 0.154,
+    "cvret": 0.538,
+    "cvhpap": 0.191,
+    "fsen": 0.019,
+    "H": 826.0,
+    "hep": 73.0
    }
   },
   {
@@ -13978,7 +14194,7 @@
     "cvhpap": 0.191,
     "fsen": 0.019,
     "H": 1561.1,
-    "hep": 110.9
+    "hep": 83.0
    }
   },
   {
@@ -13996,7 +14212,7 @@
     "cvhpap": 0.191,
     "fsen": 0.019,
     "H": 1829.6,
-    "hep": 119.1
+    "hep": 78.1
    }
   },
   {
@@ -14014,7 +14230,7 @@
     "cvhpap": 0.191,
     "fsen": 0.019,
     "H": 774.8,
-    "hep": 115.7
+    "hep": 170.2
    }
   },
   {
@@ -14031,8 +14247,80 @@
     "cvret": 0.538,
     "cvhpap": 0.191,
     "fsen": 0.019,
-    "H": 1384.1,
-    "hep": 101.5
+    "H": 1366.9,
+    "hep": 82.8
+   }
+  },
+  {
+   "sel": {
+    "years": 1,
+    "sex": "male",
+    "site": "cheek"
+   },
+   "values": {
+    "hpap": 77.11,
+    "rpap": 3.14,
+    "cells": 4.223,
+    "cvpap": 0.154,
+    "cvret": 0.538,
+    "cvhpap": 0.191,
+    "fsen": 0.019,
+    "H": 1413.8,
+    "hep": 70.3
+   }
+  },
+  {
+   "sel": {
+    "years": 1,
+    "sex": "male",
+    "site": "uppereyelid"
+   },
+   "values": {
+    "hpap": 77.11,
+    "rpap": 3.14,
+    "cells": 4.223,
+    "cvpap": 0.154,
+    "cvret": 0.538,
+    "cvhpap": 0.191,
+    "fsen": 0.019,
+    "H": 368.4,
+    "hep": 41.8
+   }
+  },
+  {
+   "sel": {
+    "years": 1,
+    "sex": "male",
+    "site": "upperlip"
+   },
+   "values": {
+    "hpap": 77.11,
+    "rpap": 3.14,
+    "cells": 4.223,
+    "cvpap": 0.154,
+    "cvret": 0.538,
+    "cvhpap": 0.191,
+    "fsen": 0.019,
+    "H": 1540.6,
+    "hep": 97.4
+   }
+  },
+  {
+   "sel": {
+    "years": 1,
+    "sex": "male",
+    "site": "neck"
+   },
+   "values": {
+    "hpap": 77.11,
+    "rpap": 3.14,
+    "cells": 4.223,
+    "cvpap": 0.154,
+    "cvret": 0.538,
+    "cvhpap": 0.191,
+    "fsen": 0.019,
+    "H": 836.9,
+    "hep": 73.0
    }
   },
   {
@@ -14068,7 +14356,7 @@
     "cvhpap": 0.15,
     "fsen": 0.019,
     "H": 1777.7,
-    "hep": 116.8
+    "hep": 83.0
    }
   },
   {
@@ -14086,7 +14374,7 @@
     "cvhpap": 0.15,
     "fsen": 0.019,
     "H": 2281.5,
-    "hep": 128.3
+    "hep": 78.1
    }
   },
   {
@@ -14104,7 +14392,7 @@
     "cvhpap": 0.15,
     "fsen": 0.019,
     "H": 816.0,
-    "hep": 121.7
+    "hep": 170.2
    }
   },
   {
@@ -14121,8 +14409,80 @@
     "cvret": 0.493,
     "cvhpap": 0.15,
     "fsen": 0.019,
-    "H": 1635.2,
-    "hep": 101.5
+    "H": 1660.6,
+    "hep": 82.8
+   }
+  },
+  {
+   "sel": {
+    "years": 7,
+    "sex": "female",
+    "site": "cheek"
+   },
+   "values": {
+    "hpap": 75.01,
+    "rpap": 3.87,
+    "cells": 3.213,
+    "cvpap": 0.164,
+    "cvret": 0.493,
+    "cvhpap": 0.15,
+    "fsen": 0.019,
+    "H": 1495.9,
+    "hep": 70.3
+   }
+  },
+  {
+   "sel": {
+    "years": 7,
+    "sex": "female",
+    "site": "uppereyelid"
+   },
+   "values": {
+    "hpap": 75.01,
+    "rpap": 3.87,
+    "cells": 3.213,
+    "cvpap": 0.164,
+    "cvret": 0.493,
+    "cvhpap": 0.15,
+    "fsen": 0.019,
+    "H": 509.6,
+    "hep": 41.8
+   }
+  },
+  {
+   "sel": {
+    "years": 7,
+    "sex": "female",
+    "site": "upperlip"
+   },
+   "values": {
+    "hpap": 75.01,
+    "rpap": 3.87,
+    "cells": 3.213,
+    "cvpap": 0.164,
+    "cvret": 0.493,
+    "cvhpap": 0.15,
+    "fsen": 0.019,
+    "H": 1674.8,
+    "hep": 97.4
+   }
+  },
+  {
+   "sel": {
+    "years": 7,
+    "sex": "female",
+    "site": "neck"
+   },
+   "values": {
+    "hpap": 75.01,
+    "rpap": 3.87,
+    "cells": 3.213,
+    "cvpap": 0.164,
+    "cvret": 0.493,
+    "cvhpap": 0.15,
+    "fsen": 0.019,
+    "H": 994.5,
+    "hep": 73.0
    }
   },
   {
@@ -14158,7 +14518,7 @@
     "cvhpap": 0.15,
     "fsen": 0.019,
     "H": 1879.6,
-    "hep": 110.9
+    "hep": 83.0
    }
   },
   {
@@ -14176,7 +14536,7 @@
     "cvhpap": 0.15,
     "fsen": 0.019,
     "H": 2202.8,
-    "hep": 119.1
+    "hep": 78.1
    }
   },
   {
@@ -14194,7 +14554,7 @@
     "cvhpap": 0.15,
     "fsen": 0.019,
     "H": 932.9,
-    "hep": 115.7
+    "hep": 170.2
    }
   },
   {
@@ -14211,8 +14571,80 @@
     "cvret": 0.493,
     "cvhpap": 0.15,
     "fsen": 0.019,
-    "H": 1666.4,
-    "hep": 101.5
+    "H": 1645.5,
+    "hep": 82.8
+   }
+  },
+  {
+   "sel": {
+    "years": 7,
+    "sex": "male",
+    "site": "cheek"
+   },
+   "values": {
+    "hpap": 75.01,
+    "rpap": 3.87,
+    "cells": 3.213,
+    "cvpap": 0.164,
+    "cvret": 0.493,
+    "cvhpap": 0.15,
+    "fsen": 0.019,
+    "H": 1702.2,
+    "hep": 70.3
+   }
+  },
+  {
+   "sel": {
+    "years": 7,
+    "sex": "male",
+    "site": "uppereyelid"
+   },
+   "values": {
+    "hpap": 75.01,
+    "rpap": 3.87,
+    "cells": 3.213,
+    "cvpap": 0.164,
+    "cvret": 0.493,
+    "cvhpap": 0.15,
+    "fsen": 0.019,
+    "H": 443.6,
+    "hep": 41.8
+   }
+  },
+  {
+   "sel": {
+    "years": 7,
+    "sex": "male",
+    "site": "upperlip"
+   },
+   "values": {
+    "hpap": 75.01,
+    "rpap": 3.87,
+    "cells": 3.213,
+    "cvpap": 0.164,
+    "cvret": 0.493,
+    "cvhpap": 0.15,
+    "fsen": 0.019,
+    "H": 1854.8,
+    "hep": 97.4
+   }
+  },
+  {
+   "sel": {
+    "years": 7,
+    "sex": "male",
+    "site": "neck"
+   },
+   "values": {
+    "hpap": 75.01,
+    "rpap": 3.87,
+    "cells": 3.213,
+    "cvpap": 0.164,
+    "cvret": 0.493,
+    "cvhpap": 0.15,
+    "fsen": 0.019,
+    "H": 1007.6,
+    "hep": 73.0
    }
   },
   {
@@ -14248,7 +14680,7 @@
     "cvhpap": 0.108,
     "fsen": 0.019,
     "H": 2078.9,
-    "hep": 116.8
+    "hep": 83.0
    }
   },
   {
@@ -14266,7 +14698,7 @@
     "cvhpap": 0.108,
     "fsen": 0.019,
     "H": 2668.1,
-    "hep": 128.3
+    "hep": 78.1
    }
   },
   {
@@ -14284,7 +14716,7 @@
     "cvhpap": 0.108,
     "fsen": 0.019,
     "H": 954.3,
-    "hep": 121.7
+    "hep": 170.2
    }
   },
   {
@@ -14301,8 +14733,80 @@
     "cvret": 0.399,
     "cvhpap": 0.108,
     "fsen": 0.019,
-    "H": 1912.3,
-    "hep": 101.5
+    "H": 1941.9,
+    "hep": 82.8
+   }
+  },
+  {
+   "sel": {
+    "years": 13,
+    "sex": "female",
+    "site": "cheek"
+   },
+   "values": {
+    "hpap": 72.91,
+    "rpap": 5.38,
+    "cells": 2.202,
+    "cvpap": 0.175,
+    "cvret": 0.399,
+    "cvhpap": 0.108,
+    "fsen": 0.019,
+    "H": 1749.3,
+    "hep": 70.3
+   }
+  },
+  {
+   "sel": {
+    "years": 13,
+    "sex": "female",
+    "site": "uppereyelid"
+   },
+   "values": {
+    "hpap": 72.91,
+    "rpap": 5.38,
+    "cells": 2.202,
+    "cvpap": 0.175,
+    "cvret": 0.399,
+    "cvhpap": 0.108,
+    "fsen": 0.019,
+    "H": 596.0,
+    "hep": 41.8
+   }
+  },
+  {
+   "sel": {
+    "years": 13,
+    "sex": "female",
+    "site": "upperlip"
+   },
+   "values": {
+    "hpap": 72.91,
+    "rpap": 5.38,
+    "cells": 2.202,
+    "cvpap": 0.175,
+    "cvret": 0.399,
+    "cvhpap": 0.108,
+    "fsen": 0.019,
+    "H": 1958.4,
+    "hep": 97.4
+   }
+  },
+  {
+   "sel": {
+    "years": 13,
+    "sex": "female",
+    "site": "neck"
+   },
+   "values": {
+    "hpap": 72.91,
+    "rpap": 5.38,
+    "cells": 2.202,
+    "cvpap": 0.175,
+    "cvret": 0.399,
+    "cvhpap": 0.108,
+    "fsen": 0.019,
+    "H": 1162.9,
+    "hep": 73.0
    }
   },
   {
@@ -14338,7 +14842,7 @@
     "cvhpap": 0.108,
     "fsen": 0.019,
     "H": 2198.0,
-    "hep": 110.9
+    "hep": 83.0
    }
   },
   {
@@ -14356,7 +14860,7 @@
     "cvhpap": 0.108,
     "fsen": 0.019,
     "H": 2576.1,
-    "hep": 119.1
+    "hep": 78.1
    }
   },
   {
@@ -14374,7 +14878,7 @@
     "cvhpap": 0.108,
     "fsen": 0.019,
     "H": 1090.9,
-    "hep": 115.7
+    "hep": 170.2
    }
   },
   {
@@ -14391,8 +14895,80 @@
     "cvret": 0.399,
     "cvhpap": 0.108,
     "fsen": 0.019,
-    "H": 1948.8,
-    "hep": 101.5
+    "H": 1924.3,
+    "hep": 82.8
+   }
+  },
+  {
+   "sel": {
+    "years": 13,
+    "sex": "male",
+    "site": "cheek"
+   },
+   "values": {
+    "hpap": 72.91,
+    "rpap": 5.38,
+    "cells": 2.202,
+    "cvpap": 0.175,
+    "cvret": 0.399,
+    "cvhpap": 0.108,
+    "fsen": 0.019,
+    "H": 1990.7,
+    "hep": 70.3
+   }
+  },
+  {
+   "sel": {
+    "years": 13,
+    "sex": "male",
+    "site": "uppereyelid"
+   },
+   "values": {
+    "hpap": 72.91,
+    "rpap": 5.38,
+    "cells": 2.202,
+    "cvpap": 0.175,
+    "cvret": 0.399,
+    "cvhpap": 0.108,
+    "fsen": 0.019,
+    "H": 518.7,
+    "hep": 41.8
+   }
+  },
+  {
+   "sel": {
+    "years": 13,
+    "sex": "male",
+    "site": "upperlip"
+   },
+   "values": {
+    "hpap": 72.91,
+    "rpap": 5.38,
+    "cells": 2.202,
+    "cvpap": 0.175,
+    "cvret": 0.399,
+    "cvhpap": 0.108,
+    "fsen": 0.019,
+    "H": 2169.3,
+    "hep": 97.4
+   }
+  },
+  {
+   "sel": {
+    "years": 13,
+    "sex": "male",
+    "site": "neck"
+   },
+   "values": {
+    "hpap": 72.91,
+    "rpap": 5.38,
+    "cells": 2.202,
+    "cvpap": 0.175,
+    "cvret": 0.399,
+    "cvhpap": 0.108,
+    "fsen": 0.019,
+    "H": 1178.2,
+    "hep": 73.0
    }
   },
   {
@@ -14428,7 +15004,7 @@
     "cvhpap": 0.068,
     "fsen": 0.019,
     "H": 2379.9,
-    "hep": 116.8
+    "hep": 83.0
    }
   },
   {
@@ -14446,7 +15022,7 @@
     "cvhpap": 0.068,
     "fsen": 0.019,
     "H": 3054.4,
-    "hep": 128.3
+    "hep": 78.1
    }
   },
   {
@@ -14464,7 +15040,7 @@
     "cvhpap": 0.068,
     "fsen": 0.019,
     "H": 1092.4,
-    "hep": 121.7
+    "hep": 170.2
    }
   },
   {
@@ -14481,8 +15057,80 @@
     "cvret": 0.142,
     "cvhpap": 0.068,
     "fsen": 0.019,
-    "H": 2189.2,
-    "hep": 101.5
+    "H": 2223.2,
+    "hep": 82.8
+   }
+  },
+  {
+   "sel": {
+    "years": 19,
+    "sex": "female",
+    "site": "cheek"
+   },
+   "values": {
+    "hpap": 71.01,
+    "rpap": 9.61,
+    "cells": 1.258,
+    "cvpap": 0.188,
+    "cvret": 0.142,
+    "cvhpap": 0.068,
+    "fsen": 0.019,
+    "H": 2002.8,
+    "hep": 70.3
+   }
+  },
+  {
+   "sel": {
+    "years": 19,
+    "sex": "female",
+    "site": "uppereyelid"
+   },
+   "values": {
+    "hpap": 71.01,
+    "rpap": 9.61,
+    "cells": 1.258,
+    "cvpap": 0.188,
+    "cvret": 0.142,
+    "cvhpap": 0.068,
+    "fsen": 0.019,
+    "H": 682.3,
+    "hep": 41.8
+   }
+  },
+  {
+   "sel": {
+    "years": 19,
+    "sex": "female",
+    "site": "upperlip"
+   },
+   "values": {
+    "hpap": 71.01,
+    "rpap": 9.61,
+    "cells": 1.258,
+    "cvpap": 0.188,
+    "cvret": 0.142,
+    "cvhpap": 0.068,
+    "fsen": 0.019,
+    "H": 2242.3,
+    "hep": 97.4
+   }
+  },
+  {
+   "sel": {
+    "years": 19,
+    "sex": "female",
+    "site": "neck"
+   },
+   "values": {
+    "hpap": 71.01,
+    "rpap": 9.61,
+    "cells": 1.258,
+    "cvpap": 0.188,
+    "cvret": 0.142,
+    "cvhpap": 0.068,
+    "fsen": 0.019,
+    "H": 1331.5,
+    "hep": 73.0
    }
   },
   {
@@ -14518,7 +15166,7 @@
     "cvhpap": 0.068,
     "fsen": 0.019,
     "H": 2516.3,
-    "hep": 110.9
+    "hep": 83.0
    }
   },
   {
@@ -14536,7 +15184,7 @@
     "cvhpap": 0.068,
     "fsen": 0.019,
     "H": 2949.1,
-    "hep": 119.1
+    "hep": 78.1
    }
   },
   {
@@ -14554,7 +15202,7 @@
     "cvhpap": 0.068,
     "fsen": 0.019,
     "H": 1248.8,
-    "hep": 115.7
+    "hep": 170.2
    }
   },
   {
@@ -14571,8 +15219,80 @@
     "cvret": 0.142,
     "cvhpap": 0.068,
     "fsen": 0.019,
-    "H": 2230.9,
-    "hep": 101.5
+    "H": 2203.0,
+    "hep": 82.8
+   }
+  },
+  {
+   "sel": {
+    "years": 19,
+    "sex": "male",
+    "site": "cheek"
+   },
+   "values": {
+    "hpap": 71.01,
+    "rpap": 9.61,
+    "cells": 1.258,
+    "cvpap": 0.188,
+    "cvret": 0.142,
+    "cvhpap": 0.068,
+    "fsen": 0.019,
+    "H": 2279.1,
+    "hep": 70.3
+   }
+  },
+  {
+   "sel": {
+    "years": 19,
+    "sex": "male",
+    "site": "uppereyelid"
+   },
+   "values": {
+    "hpap": 71.01,
+    "rpap": 9.61,
+    "cells": 1.258,
+    "cvpap": 0.188,
+    "cvret": 0.142,
+    "cvhpap": 0.068,
+    "fsen": 0.019,
+    "H": 593.8,
+    "hep": 41.8
+   }
+  },
+  {
+   "sel": {
+    "years": 19,
+    "sex": "male",
+    "site": "upperlip"
+   },
+   "values": {
+    "hpap": 71.01,
+    "rpap": 9.61,
+    "cells": 1.258,
+    "cvpap": 0.188,
+    "cvret": 0.142,
+    "cvhpap": 0.068,
+    "fsen": 0.019,
+    "H": 2483.5,
+    "hep": 97.4
+   }
+  },
+  {
+   "sel": {
+    "years": 19,
+    "sex": "male",
+    "site": "neck"
+   },
+   "values": {
+    "hpap": 71.01,
+    "rpap": 9.61,
+    "cells": 1.258,
+    "cvpap": 0.188,
+    "cvret": 0.142,
+    "cvhpap": 0.068,
+    "fsen": 0.019,
+    "H": 1348.9,
+    "hep": 73.0
    }
   },
   {
@@ -14608,7 +15328,7 @@
     "cvhpap": 0.072,
     "fsen": 0.019,
     "H": 2430.1,
-    "hep": 116.8
+    "hep": 83.0
    }
   },
   {
@@ -14626,7 +15346,7 @@
     "cvhpap": 0.072,
     "fsen": 0.019,
     "H": 3118.9,
-    "hep": 128.3
+    "hep": 78.1
    }
   },
   {
@@ -14644,7 +15364,7 @@
     "cvhpap": 0.072,
     "fsen": 0.019,
     "H": 1115.5,
-    "hep": 121.7
+    "hep": 170.2
    }
   },
   {
@@ -14661,8 +15381,80 @@
     "cvret": 0.154,
     "cvhpap": 0.072,
     "fsen": 0.019,
-    "H": 2235.3,
-    "hep": 101.5
+    "H": 2270.0,
+    "hep": 82.8
+   }
+  },
+  {
+   "sel": {
+    "years": 20,
+    "sex": "female",
+    "site": "cheek"
+   },
+   "values": {
+    "hpap": 71.17,
+    "rpap": 9.58,
+    "cells": 1.256,
+    "cvpap": 0.188,
+    "cvret": 0.154,
+    "cvhpap": 0.072,
+    "fsen": 0.019,
+    "H": 2045.0,
+    "hep": 70.3
+   }
+  },
+  {
+   "sel": {
+    "years": 20,
+    "sex": "female",
+    "site": "uppereyelid"
+   },
+   "values": {
+    "hpap": 71.17,
+    "rpap": 9.58,
+    "cells": 1.256,
+    "cvpap": 0.188,
+    "cvret": 0.154,
+    "cvhpap": 0.072,
+    "fsen": 0.019,
+    "H": 696.6,
+    "hep": 41.8
+   }
+  },
+  {
+   "sel": {
+    "years": 20,
+    "sex": "female",
+    "site": "upperlip"
+   },
+   "values": {
+    "hpap": 71.17,
+    "rpap": 9.58,
+    "cells": 1.256,
+    "cvpap": 0.188,
+    "cvret": 0.154,
+    "cvhpap": 0.072,
+    "fsen": 0.019,
+    "H": 2289.5,
+    "hep": 97.4
+   }
+  },
+  {
+   "sel": {
+    "years": 20,
+    "sex": "female",
+    "site": "neck"
+   },
+   "values": {
+    "hpap": 71.17,
+    "rpap": 9.58,
+    "cells": 1.256,
+    "cvpap": 0.188,
+    "cvret": 0.154,
+    "cvhpap": 0.072,
+    "fsen": 0.019,
+    "H": 1359.5,
+    "hep": 73.0
    }
   },
   {
@@ -14698,7 +15490,7 @@
     "cvhpap": 0.072,
     "fsen": 0.019,
     "H": 2569.3,
-    "hep": 110.9
+    "hep": 83.0
    }
   },
   {
@@ -14716,7 +15508,7 @@
     "cvhpap": 0.072,
     "fsen": 0.019,
     "H": 3011.3,
-    "hep": 119.1
+    "hep": 78.1
    }
   },
   {
@@ -14734,7 +15526,7 @@
     "cvhpap": 0.072,
     "fsen": 0.019,
     "H": 1275.2,
-    "hep": 115.7
+    "hep": 170.2
    }
   },
   {
@@ -14751,8 +15543,80 @@
     "cvret": 0.154,
     "cvhpap": 0.072,
     "fsen": 0.019,
-    "H": 2277.9,
-    "hep": 101.5
+    "H": 2249.6,
+    "hep": 82.8
+   }
+  },
+  {
+   "sel": {
+    "years": 20,
+    "sex": "male",
+    "site": "cheek"
+   },
+   "values": {
+    "hpap": 71.17,
+    "rpap": 9.58,
+    "cells": 1.256,
+    "cvpap": 0.188,
+    "cvret": 0.154,
+    "cvhpap": 0.072,
+    "fsen": 0.019,
+    "H": 2327.0,
+    "hep": 70.3
+   }
+  },
+  {
+   "sel": {
+    "years": 20,
+    "sex": "male",
+    "site": "uppereyelid"
+   },
+   "values": {
+    "hpap": 71.17,
+    "rpap": 9.58,
+    "cells": 1.256,
+    "cvpap": 0.188,
+    "cvret": 0.154,
+    "cvhpap": 0.072,
+    "fsen": 0.019,
+    "H": 606.3,
+    "hep": 41.8
+   }
+  },
+  {
+   "sel": {
+    "years": 20,
+    "sex": "male",
+    "site": "upperlip"
+   },
+   "values": {
+    "hpap": 71.17,
+    "rpap": 9.58,
+    "cells": 1.256,
+    "cvpap": 0.188,
+    "cvret": 0.154,
+    "cvhpap": 0.072,
+    "fsen": 0.019,
+    "H": 2535.7,
+    "hep": 97.4
+   }
+  },
+  {
+   "sel": {
+    "years": 20,
+    "sex": "male",
+    "site": "neck"
+   },
+   "values": {
+    "hpap": 71.17,
+    "rpap": 9.58,
+    "cells": 1.256,
+    "cvpap": 0.188,
+    "cvret": 0.154,
+    "cvhpap": 0.072,
+    "fsen": 0.019,
+    "H": 1377.3,
+    "hep": 73.0
    }
   },
   {
@@ -14788,7 +15652,7 @@
     "cvhpap": 0.077,
     "fsen": 0.019,
     "H": 2424.2,
-    "hep": 116.8
+    "hep": 83.0
    }
   },
   {
@@ -14806,7 +15670,7 @@
     "cvhpap": 0.077,
     "fsen": 0.019,
     "H": 3111.3,
-    "hep": 128.3
+    "hep": 78.1
    }
   },
   {
@@ -14824,7 +15688,7 @@
     "cvhpap": 0.077,
     "fsen": 0.019,
     "H": 1112.8,
-    "hep": 121.7
+    "hep": 170.2
    }
   },
   {
@@ -14841,8 +15705,80 @@
     "cvret": 0.167,
     "cvhpap": 0.077,
     "fsen": 0.019,
-    "H": 2229.9,
-    "hep": 101.5
+    "H": 2263.2,
+    "hep": 82.8
+   }
+  },
+  {
+   "sel": {
+    "years": 21,
+    "sex": "female",
+    "site": "cheek"
+   },
+   "values": {
+    "hpap": 71.34,
+    "rpap": 9.54,
+    "cells": 1.253,
+    "cvpap": 0.188,
+    "cvret": 0.167,
+    "cvhpap": 0.077,
+    "fsen": 0.019,
+    "H": 2037.4,
+    "hep": 70.3
+   }
+  },
+  {
+   "sel": {
+    "years": 21,
+    "sex": "female",
+    "site": "uppereyelid"
+   },
+   "values": {
+    "hpap": 71.34,
+    "rpap": 9.54,
+    "cells": 1.253,
+    "cvpap": 0.188,
+    "cvret": 0.167,
+    "cvhpap": 0.077,
+    "fsen": 0.019,
+    "H": 694.6,
+    "hep": 41.8
+   }
+  },
+  {
+   "sel": {
+    "years": 21,
+    "sex": "female",
+    "site": "upperlip"
+   },
+   "values": {
+    "hpap": 71.34,
+    "rpap": 9.54,
+    "cells": 1.253,
+    "cvpap": 0.188,
+    "cvret": 0.167,
+    "cvhpap": 0.077,
+    "fsen": 0.019,
+    "H": 2281.0,
+    "hep": 97.4
+   }
+  },
+  {
+   "sel": {
+    "years": 21,
+    "sex": "female",
+    "site": "neck"
+   },
+   "values": {
+    "hpap": 71.34,
+    "rpap": 9.54,
+    "cells": 1.253,
+    "cvpap": 0.188,
+    "cvret": 0.167,
+    "cvhpap": 0.077,
+    "fsen": 0.019,
+    "H": 1356.2,
+    "hep": 73.0
    }
   },
   {
@@ -14878,7 +15814,7 @@
     "cvhpap": 0.077,
     "fsen": 0.019,
     "H": 2560.4,
-    "hep": 110.9
+    "hep": 83.0
    }
   },
   {
@@ -14896,7 +15832,7 @@
     "cvhpap": 0.077,
     "fsen": 0.019,
     "H": 3000.8,
-    "hep": 119.1
+    "hep": 78.1
    }
   },
   {
@@ -14914,7 +15850,7 @@
     "cvhpap": 0.077,
     "fsen": 0.019,
     "H": 1270.8,
-    "hep": 115.7
+    "hep": 170.2
    }
   },
   {
@@ -14931,8 +15867,80 @@
     "cvret": 0.167,
     "cvhpap": 0.077,
     "fsen": 0.019,
-    "H": 2270.0,
-    "hep": 101.5
+    "H": 2244.5,
+    "hep": 82.8
+   }
+  },
+  {
+   "sel": {
+    "years": 21,
+    "sex": "male",
+    "site": "cheek"
+   },
+   "values": {
+    "hpap": 71.34,
+    "rpap": 9.54,
+    "cells": 1.253,
+    "cvpap": 0.188,
+    "cvret": 0.167,
+    "cvhpap": 0.077,
+    "fsen": 0.019,
+    "H": 2319.0,
+    "hep": 70.3
+   }
+  },
+  {
+   "sel": {
+    "years": 21,
+    "sex": "male",
+    "site": "uppereyelid"
+   },
+   "values": {
+    "hpap": 71.34,
+    "rpap": 9.54,
+    "cells": 1.253,
+    "cvpap": 0.188,
+    "cvret": 0.167,
+    "cvhpap": 0.077,
+    "fsen": 0.019,
+    "H": 605.0,
+    "hep": 41.8
+   }
+  },
+  {
+   "sel": {
+    "years": 21,
+    "sex": "male",
+    "site": "upperlip"
+   },
+   "values": {
+    "hpap": 71.34,
+    "rpap": 9.54,
+    "cells": 1.253,
+    "cvpap": 0.188,
+    "cvret": 0.167,
+    "cvhpap": 0.077,
+    "fsen": 0.019,
+    "H": 2527.0,
+    "hep": 97.4
+   }
+  },
+  {
+   "sel": {
+    "years": 21,
+    "sex": "male",
+    "site": "neck"
+   },
+   "values": {
+    "hpap": 71.34,
+    "rpap": 9.54,
+    "cells": 1.253,
+    "cvpap": 0.188,
+    "cvret": 0.167,
+    "cvhpap": 0.077,
+    "fsen": 0.019,
+    "H": 1372.5,
+    "hep": 73.0
    }
   },
   {
@@ -14968,7 +15976,7 @@
     "cvhpap": 0.121,
     "fsen": 0.028,
     "H": 2371.0,
-    "hep": 116.1
+    "hep": 79.1
    }
   },
   {
@@ -14986,7 +15994,7 @@
     "cvhpap": 0.121,
     "fsen": 0.028,
     "H": 3043.0,
-    "hep": 127.4
+    "hep": 76.6
    }
   },
   {
@@ -15004,7 +16012,7 @@
     "cvhpap": 0.121,
     "fsen": 0.028,
     "H": 1088.4,
-    "hep": 121.0
+    "hep": 170.2
    }
   },
   {
@@ -15021,8 +16029,80 @@
     "cvret": 0.285,
     "cvhpap": 0.121,
     "fsen": 0.028,
-    "H": 2181.0,
-    "hep": 101.0
+    "H": 2201.7,
+    "hep": 79.4
+   }
+  },
+  {
+   "sel": {
+    "years": 30,
+    "sex": "female",
+    "site": "cheek"
+   },
+   "values": {
+    "hpap": 72.78,
+    "rpap": 9.24,
+    "cells": 1.229,
+    "cvpap": 0.191,
+    "cvret": 0.285,
+    "cvhpap": 0.121,
+    "fsen": 0.028,
+    "H": 1969.2,
+    "hep": 67.9
+   }
+  },
+  {
+   "sel": {
+    "years": 30,
+    "sex": "female",
+    "site": "uppereyelid"
+   },
+   "values": {
+    "hpap": 72.78,
+    "rpap": 9.24,
+    "cells": 1.229,
+    "cvpap": 0.191,
+    "cvret": 0.285,
+    "cvhpap": 0.121,
+    "fsen": 0.028,
+    "H": 675.6,
+    "hep": 40.1
+   }
+  },
+  {
+   "sel": {
+    "years": 30,
+    "sex": "female",
+    "site": "upperlip"
+   },
+   "values": {
+    "hpap": 72.78,
+    "rpap": 9.24,
+    "cells": 1.229,
+    "cvpap": 0.191,
+    "cvret": 0.285,
+    "cvhpap": 0.121,
+    "fsen": 0.028,
+    "H": 2204.6,
+    "hep": 94.1
+   }
+  },
+  {
+   "sel": {
+    "years": 30,
+    "sex": "female",
+    "site": "neck"
+   },
+   "values": {
+    "hpap": 72.78,
+    "rpap": 9.24,
+    "cells": 1.229,
+    "cvpap": 0.191,
+    "cvret": 0.285,
+    "cvhpap": 0.121,
+    "fsen": 0.028,
+    "H": 1326.4,
+    "hep": 70.5
    }
   },
   {
@@ -15058,7 +16138,7 @@
     "cvhpap": 0.121,
     "fsen": 0.028,
     "H": 2480.3,
-    "hep": 110.2
+    "hep": 79.1
    }
   },
   {
@@ -15076,7 +16156,7 @@
     "cvhpap": 0.121,
     "fsen": 0.028,
     "H": 2906.9,
-    "hep": 118.2
+    "hep": 76.6
    }
   },
   {
@@ -15094,7 +16174,7 @@
     "cvhpap": 0.121,
     "fsen": 0.028,
     "H": 1231.0,
-    "hep": 115.0
+    "hep": 170.2
    }
   },
   {
@@ -15112,7 +16192,79 @@
     "cvhpap": 0.121,
     "fsen": 0.028,
     "H": 2199.0,
-    "hep": 101.0
+    "hep": 79.4
+   }
+  },
+  {
+   "sel": {
+    "years": 30,
+    "sex": "male",
+    "site": "cheek"
+   },
+   "values": {
+    "hpap": 72.78,
+    "rpap": 9.24,
+    "cells": 1.229,
+    "cvpap": 0.191,
+    "cvret": 0.285,
+    "cvhpap": 0.121,
+    "fsen": 0.028,
+    "H": 2246.3,
+    "hep": 67.9
+   }
+  },
+  {
+   "sel": {
+    "years": 30,
+    "sex": "male",
+    "site": "uppereyelid"
+   },
+   "values": {
+    "hpap": 72.78,
+    "rpap": 9.24,
+    "cells": 1.229,
+    "cvpap": 0.191,
+    "cvret": 0.285,
+    "cvhpap": 0.121,
+    "fsen": 0.028,
+    "H": 592.7,
+    "hep": 40.1
+   }
+  },
+  {
+   "sel": {
+    "years": 30,
+    "sex": "male",
+    "site": "upperlip"
+   },
+   "values": {
+    "hpap": 72.78,
+    "rpap": 9.24,
+    "cells": 1.229,
+    "cvpap": 0.191,
+    "cvret": 0.285,
+    "cvhpap": 0.121,
+    "fsen": 0.028,
+    "H": 2447.7,
+    "hep": 94.1
+   }
+  },
+  {
+   "sel": {
+    "years": 30,
+    "sex": "male",
+    "site": "neck"
+   },
+   "values": {
+    "hpap": 72.78,
+    "rpap": 9.24,
+    "cells": 1.229,
+    "cvpap": 0.191,
+    "cvret": 0.285,
+    "cvhpap": 0.121,
+    "fsen": 0.028,
+    "H": 1329.5,
+    "hep": 70.5
    }
   },
   {
@@ -15148,7 +16300,7 @@
     "cvhpap": 0.163,
     "fsen": 0.041,
     "H": 2317.6,
-    "hep": 112.3
+    "hep": 73.4
    }
   },
   {
@@ -15166,7 +16318,7 @@
     "cvhpap": 0.163,
     "fsen": 0.041,
     "H": 2974.5,
-    "hep": 122.1
+    "hep": 74.9
    }
   },
   {
@@ -15184,7 +16336,7 @@
     "cvhpap": 0.163,
     "fsen": 0.041,
     "H": 1063.8,
-    "hep": 117.0
+    "hep": 170.2
    }
   },
   {
@@ -15201,8 +16353,80 @@
     "cvret": 0.407,
     "cvhpap": 0.163,
     "fsen": 0.041,
-    "H": 2131.8,
-    "hep": 98.3
+    "H": 2140.0,
+    "hep": 75.2
+   }
+  },
+  {
+   "sel": {
+    "years": 39,
+    "sex": "female",
+    "site": "cheek"
+   },
+   "values": {
+    "hpap": 74.22,
+    "rpap": 8.93,
+    "cells": 1.204,
+    "cvpap": 0.194,
+    "cvret": 0.407,
+    "cvhpap": 0.163,
+    "fsen": 0.041,
+    "H": 1900.7,
+    "hep": 62.5
+   }
+  },
+  {
+   "sel": {
+    "years": 39,
+    "sex": "female",
+    "site": "uppereyelid"
+   },
+   "values": {
+    "hpap": 74.22,
+    "rpap": 8.93,
+    "cells": 1.204,
+    "cvpap": 0.194,
+    "cvret": 0.407,
+    "cvhpap": 0.163,
+    "fsen": 0.041,
+    "H": 656.8,
+    "hep": 38.0
+   }
+  },
+  {
+   "sel": {
+    "years": 39,
+    "sex": "female",
+    "site": "upperlip"
+   },
+   "values": {
+    "hpap": 74.22,
+    "rpap": 8.93,
+    "cells": 1.204,
+    "cvpap": 0.194,
+    "cvret": 0.407,
+    "cvhpap": 0.163,
+    "fsen": 0.041,
+    "H": 2128.0,
+    "hep": 86.6
+   }
+  },
+  {
+   "sel": {
+    "years": 39,
+    "sex": "female",
+    "site": "neck"
+   },
+   "values": {
+    "hpap": 74.22,
+    "rpap": 8.93,
+    "cells": 1.204,
+    "cvpap": 0.194,
+    "cvret": 0.407,
+    "cvhpap": 0.163,
+    "fsen": 0.041,
+    "H": 1296.5,
+    "hep": 64.9
    }
   },
   {
@@ -15238,7 +16462,7 @@
     "cvhpap": 0.163,
     "fsen": 0.041,
     "H": 2400.2,
-    "hep": 106.5
+    "hep": 73.4
    }
   },
   {
@@ -15256,7 +16480,7 @@
     "cvhpap": 0.163,
     "fsen": 0.041,
     "H": 2813.0,
-    "hep": 113.3
+    "hep": 74.9
    }
   },
   {
@@ -15274,7 +16498,7 @@
     "cvhpap": 0.163,
     "fsen": 0.041,
     "H": 1191.2,
-    "hep": 111.2
+    "hep": 170.2
    }
   },
   {
@@ -15291,8 +16515,80 @@
     "cvret": 0.407,
     "cvhpap": 0.163,
     "fsen": 0.041,
-    "H": 2128.0,
-    "hep": 98.3
+    "H": 2153.5,
+    "hep": 75.2
+   }
+  },
+  {
+   "sel": {
+    "years": 39,
+    "sex": "male",
+    "site": "cheek"
+   },
+   "values": {
+    "hpap": 74.22,
+    "rpap": 8.93,
+    "cells": 1.204,
+    "cvpap": 0.194,
+    "cvret": 0.407,
+    "cvhpap": 0.163,
+    "fsen": 0.041,
+    "H": 2173.4,
+    "hep": 62.5
+   }
+  },
+  {
+   "sel": {
+    "years": 39,
+    "sex": "male",
+    "site": "uppereyelid"
+   },
+   "values": {
+    "hpap": 74.22,
+    "rpap": 8.93,
+    "cells": 1.204,
+    "cvpap": 0.194,
+    "cvret": 0.407,
+    "cvhpap": 0.163,
+    "fsen": 0.041,
+    "H": 580.4,
+    "hep": 38.0
+   }
+  },
+  {
+   "sel": {
+    "years": 39,
+    "sex": "male",
+    "site": "upperlip"
+   },
+   "values": {
+    "hpap": 74.22,
+    "rpap": 8.93,
+    "cells": 1.204,
+    "cvpap": 0.194,
+    "cvret": 0.407,
+    "cvhpap": 0.163,
+    "fsen": 0.041,
+    "H": 2368.3,
+    "hep": 86.6
+   }
+  },
+  {
+   "sel": {
+    "years": 39,
+    "sex": "male",
+    "site": "neck"
+   },
+   "values": {
+    "hpap": 74.22,
+    "rpap": 8.93,
+    "cells": 1.204,
+    "cvpap": 0.194,
+    "cvret": 0.407,
+    "cvhpap": 0.163,
+    "fsen": 0.041,
+    "H": 1286.6,
+    "hep": 64.9
    }
   },
   {
@@ -15328,7 +16624,7 @@
     "cvhpap": 0.167,
     "fsen": 0.043,
     "H": 2311.7,
-    "hep": 111.9
+    "hep": 72.8
    }
   },
   {
@@ -15346,7 +16642,7 @@
     "cvhpap": 0.167,
     "fsen": 0.043,
     "H": 2966.9,
-    "hep": 121.5
+    "hep": 74.7
    }
   },
   {
@@ -15364,7 +16660,7 @@
     "cvhpap": 0.167,
     "fsen": 0.043,
     "H": 1061.1,
-    "hep": 116.5
+    "hep": 170.2
    }
   },
   {
@@ -15381,8 +16677,80 @@
     "cvret": 0.421,
     "cvhpap": 0.167,
     "fsen": 0.043,
-    "H": 2126.4,
-    "hep": 98.0
+    "H": 2133.3,
+    "hep": 74.7
+   }
+  },
+  {
+   "sel": {
+    "years": 40,
+    "sex": "female",
+    "site": "cheek"
+   },
+   "values": {
+    "hpap": 74.38,
+    "rpap": 8.9,
+    "cells": 1.201,
+    "cvpap": 0.195,
+    "cvret": 0.421,
+    "cvhpap": 0.167,
+    "fsen": 0.043,
+    "H": 1893.2,
+    "hep": 61.9
+   }
+  },
+  {
+   "sel": {
+    "years": 40,
+    "sex": "female",
+    "site": "uppereyelid"
+   },
+   "values": {
+    "hpap": 74.38,
+    "rpap": 8.9,
+    "cells": 1.201,
+    "cvpap": 0.195,
+    "cvret": 0.421,
+    "cvhpap": 0.167,
+    "fsen": 0.043,
+    "H": 654.7,
+    "hep": 37.7
+   }
+  },
+  {
+   "sel": {
+    "years": 40,
+    "sex": "female",
+    "site": "upperlip"
+   },
+   "values": {
+    "hpap": 74.38,
+    "rpap": 8.9,
+    "cells": 1.201,
+    "cvpap": 0.195,
+    "cvret": 0.421,
+    "cvhpap": 0.167,
+    "fsen": 0.043,
+    "H": 2119.5,
+    "hep": 85.8
+   }
+  },
+  {
+   "sel": {
+    "years": 40,
+    "sex": "female",
+    "site": "neck"
+   },
+   "values": {
+    "hpap": 74.38,
+    "rpap": 8.9,
+    "cells": 1.201,
+    "cvpap": 0.195,
+    "cvret": 0.421,
+    "cvhpap": 0.167,
+    "fsen": 0.043,
+    "H": 1293.2,
+    "hep": 64.3
    }
   },
   {
@@ -15418,7 +16786,7 @@
     "cvhpap": 0.167,
     "fsen": 0.043,
     "H": 2391.3,
-    "hep": 106.1
+    "hep": 72.8
    }
   },
   {
@@ -15436,7 +16804,7 @@
     "cvhpap": 0.167,
     "fsen": 0.043,
     "H": 2802.5,
-    "hep": 112.8
+    "hep": 74.7
    }
   },
   {
@@ -15454,7 +16822,7 @@
     "cvhpap": 0.167,
     "fsen": 0.043,
     "H": 1186.8,
-    "hep": 110.7
+    "hep": 170.2
    }
   },
   {
@@ -15471,8 +16839,80 @@
     "cvret": 0.421,
     "cvhpap": 0.167,
     "fsen": 0.043,
-    "H": 2120.1,
-    "hep": 98.0
+    "H": 2148.4,
+    "hep": 74.7
+   }
+  },
+  {
+   "sel": {
+    "years": 40,
+    "sex": "male",
+    "site": "cheek"
+   },
+   "values": {
+    "hpap": 74.38,
+    "rpap": 8.9,
+    "cells": 1.201,
+    "cvpap": 0.195,
+    "cvret": 0.421,
+    "cvhpap": 0.167,
+    "fsen": 0.043,
+    "H": 2165.3,
+    "hep": 61.9
+   }
+  },
+  {
+   "sel": {
+    "years": 40,
+    "sex": "male",
+    "site": "uppereyelid"
+   },
+   "values": {
+    "hpap": 74.38,
+    "rpap": 8.9,
+    "cells": 1.201,
+    "cvpap": 0.195,
+    "cvret": 0.421,
+    "cvhpap": 0.167,
+    "fsen": 0.043,
+    "H": 579.1,
+    "hep": 37.7
+   }
+  },
+  {
+   "sel": {
+    "years": 40,
+    "sex": "male",
+    "site": "upperlip"
+   },
+   "values": {
+    "hpap": 74.38,
+    "rpap": 8.9,
+    "cells": 1.201,
+    "cvpap": 0.195,
+    "cvret": 0.421,
+    "cvhpap": 0.167,
+    "fsen": 0.043,
+    "H": 2359.5,
+    "hep": 85.8
+   }
+  },
+  {
+   "sel": {
+    "years": 40,
+    "sex": "male",
+    "site": "neck"
+   },
+   "values": {
+    "hpap": 74.38,
+    "rpap": 8.9,
+    "cells": 1.201,
+    "cvpap": 0.195,
+    "cvret": 0.421,
+    "cvhpap": 0.167,
+    "fsen": 0.043,
+    "H": 1281.7,
+    "hep": 64.3
    }
   },
   {
@@ -15508,7 +16948,7 @@
     "cvhpap": 0.184,
     "fsen": 0.052,
     "H": 2282.0,
-    "hep": 109.7
+    "hep": 69.7
    }
   },
   {
@@ -15526,7 +16966,7 @@
     "cvhpap": 0.184,
     "fsen": 0.052,
     "H": 2928.8,
-    "hep": 118.6
+    "hep": 73.7
    }
   },
   {
@@ -15544,7 +16984,7 @@
     "cvhpap": 0.184,
     "fsen": 0.052,
     "H": 1047.5,
-    "hep": 114.3
+    "hep": 170.2
    }
   },
   {
@@ -15562,7 +17002,79 @@
     "cvhpap": 0.184,
     "fsen": 0.052,
     "H": 2099.1,
-    "hep": 96.5
+    "hep": 72.3
+   }
+  },
+  {
+   "sel": {
+    "years": 45,
+    "sex": "female",
+    "site": "cheek"
+   },
+   "values": {
+    "hpap": 77.02,
+    "rpap": 8.93,
+    "cells": 1.178,
+    "cvpap": 0.194,
+    "cvret": 0.454,
+    "cvhpap": 0.184,
+    "fsen": 0.052,
+    "H": 1855.3,
+    "hep": 58.8
+   }
+  },
+  {
+   "sel": {
+    "years": 45,
+    "sex": "female",
+    "site": "uppereyelid"
+   },
+   "values": {
+    "hpap": 77.02,
+    "rpap": 8.93,
+    "cells": 1.178,
+    "cvpap": 0.194,
+    "cvret": 0.454,
+    "cvhpap": 0.184,
+    "fsen": 0.052,
+    "H": 644.2,
+    "hep": 36.5
+   }
+  },
+  {
+   "sel": {
+    "years": 45,
+    "sex": "female",
+    "site": "upperlip"
+   },
+   "values": {
+    "hpap": 77.02,
+    "rpap": 8.93,
+    "cells": 1.178,
+    "cvpap": 0.194,
+    "cvret": 0.454,
+    "cvhpap": 0.184,
+    "fsen": 0.052,
+    "H": 2077.1,
+    "hep": 81.5
+   }
+  },
+  {
+   "sel": {
+    "years": 45,
+    "sex": "female",
+    "site": "neck"
+   },
+   "values": {
+    "hpap": 77.02,
+    "rpap": 8.93,
+    "cells": 1.178,
+    "cvpap": 0.194,
+    "cvret": 0.454,
+    "cvhpap": 0.184,
+    "fsen": 0.052,
+    "H": 1276.6,
+    "hep": 61.0
    }
   },
   {
@@ -15598,7 +17110,7 @@
     "cvhpap": 0.184,
     "fsen": 0.052,
     "H": 2346.6,
-    "hep": 104.1
+    "hep": 69.7
    }
   },
   {
@@ -15616,7 +17128,7 @@
     "cvhpap": 0.184,
     "fsen": 0.052,
     "H": 2750.2,
-    "hep": 110.1
+    "hep": 73.7
    }
   },
   {
@@ -15634,7 +17146,7 @@
     "cvhpap": 0.184,
     "fsen": 0.052,
     "H": 1164.6,
-    "hep": 108.6
+    "hep": 170.2
    }
   },
   {
@@ -15651,8 +17163,80 @@
     "cvret": 0.454,
     "cvhpap": 0.184,
     "fsen": 0.052,
-    "H": 2080.5,
-    "hep": 96.5
+    "H": 2123.4,
+    "hep": 72.3
+   }
+  },
+  {
+   "sel": {
+    "years": 45,
+    "sex": "male",
+    "site": "cheek"
+   },
+   "values": {
+    "hpap": 77.02,
+    "rpap": 8.93,
+    "cells": 1.178,
+    "cvpap": 0.194,
+    "cvret": 0.454,
+    "cvhpap": 0.184,
+    "fsen": 0.052,
+    "H": 2125.0,
+    "hep": 58.8
+   }
+  },
+  {
+   "sel": {
+    "years": 45,
+    "sex": "male",
+    "site": "uppereyelid"
+   },
+   "values": {
+    "hpap": 77.02,
+    "rpap": 8.93,
+    "cells": 1.178,
+    "cvpap": 0.194,
+    "cvret": 0.454,
+    "cvhpap": 0.184,
+    "fsen": 0.052,
+    "H": 572.3,
+    "hep": 36.5
+   }
+  },
+  {
+   "sel": {
+    "years": 45,
+    "sex": "male",
+    "site": "upperlip"
+   },
+   "values": {
+    "hpap": 77.02,
+    "rpap": 8.93,
+    "cells": 1.178,
+    "cvpap": 0.194,
+    "cvret": 0.454,
+    "cvhpap": 0.184,
+    "fsen": 0.052,
+    "H": 2315.5,
+    "hep": 81.5
+   }
+  },
+  {
+   "sel": {
+    "years": 45,
+    "sex": "male",
+    "site": "neck"
+   },
+   "values": {
+    "hpap": 77.02,
+    "rpap": 8.93,
+    "cells": 1.178,
+    "cvpap": 0.194,
+    "cvret": 0.454,
+    "cvhpap": 0.184,
+    "fsen": 0.052,
+    "H": 1258.0,
+    "hep": 61.0
    }
   },
   {
@@ -15688,7 +17272,7 @@
     "cvhpap": 0.198,
     "fsen": 0.08,
     "H": 2222.7,
-    "hep": 105.4
+    "hep": 63.4
    }
   },
   {
@@ -15706,7 +17290,7 @@
     "cvhpap": 0.198,
     "fsen": 0.08,
     "H": 2852.7,
-    "hep": 112.8
+    "hep": 71.8
    }
   },
   {
@@ -15724,7 +17308,7 @@
     "cvhpap": 0.198,
     "fsen": 0.08,
     "H": 1020.3,
-    "hep": 109.8
+    "hep": 170.2
    }
   },
   {
@@ -15741,8 +17325,80 @@
     "cvret": 0.416,
     "cvhpap": 0.198,
     "fsen": 0.08,
-    "H": 2044.5,
-    "hep": 93.5
+    "H": 2030.7,
+    "hep": 67.6
+   }
+  },
+  {
+   "sel": {
+    "years": 55,
+    "sex": "female",
+    "site": "cheek"
+   },
+   "values": {
+    "hpap": 87.35,
+    "rpap": 9.67,
+    "cells": 1.103,
+    "cvpap": 0.183,
+    "cvret": 0.416,
+    "cvhpap": 0.198,
+    "fsen": 0.08,
+    "H": 1779.3,
+    "hep": 52.8
+   }
+  },
+  {
+   "sel": {
+    "years": 55,
+    "sex": "female",
+    "site": "uppereyelid"
+   },
+   "values": {
+    "hpap": 87.35,
+    "rpap": 9.67,
+    "cells": 1.103,
+    "cvpap": 0.183,
+    "cvret": 0.416,
+    "cvhpap": 0.198,
+    "fsen": 0.08,
+    "H": 623.2,
+    "hep": 34.1
+   }
+  },
+  {
+   "sel": {
+    "years": 55,
+    "sex": "female",
+    "site": "upperlip"
+   },
+   "values": {
+    "hpap": 87.35,
+    "rpap": 9.67,
+    "cells": 1.103,
+    "cvpap": 0.183,
+    "cvret": 0.416,
+    "cvhpap": 0.198,
+    "fsen": 0.08,
+    "H": 1992.0,
+    "hep": 73.2
+   }
+  },
+  {
+   "sel": {
+    "years": 55,
+    "sex": "female",
+    "site": "neck"
+   },
+   "values": {
+    "hpap": 87.35,
+    "rpap": 9.67,
+    "cells": 1.103,
+    "cvpap": 0.183,
+    "cvret": 0.416,
+    "cvhpap": 0.198,
+    "fsen": 0.08,
+    "H": 1243.5,
+    "hep": 54.8
    }
   },
   {
@@ -15778,7 +17434,7 @@
     "cvhpap": 0.198,
     "fsen": 0.08,
     "H": 2257.6,
-    "hep": 100.0
+    "hep": 63.4
    }
   },
   {
@@ -15796,7 +17452,7 @@
     "cvhpap": 0.198,
     "fsen": 0.08,
     "H": 2645.9,
-    "hep": 104.6
+    "hep": 71.8
    }
   },
   {
@@ -15814,7 +17470,7 @@
     "cvhpap": 0.198,
     "fsen": 0.08,
     "H": 1120.5,
-    "hep": 104.4
+    "hep": 170.2
    }
   },
   {
@@ -15831,8 +17487,80 @@
     "cvret": 0.416,
     "cvhpap": 0.198,
     "fsen": 0.08,
-    "H": 2001.5,
-    "hep": 93.5
+    "H": 2072.8,
+    "hep": 67.6
+   }
+  },
+  {
+   "sel": {
+    "years": 55,
+    "sex": "male",
+    "site": "cheek"
+   },
+   "values": {
+    "hpap": 87.35,
+    "rpap": 9.67,
+    "cells": 1.103,
+    "cvpap": 0.183,
+    "cvret": 0.416,
+    "cvhpap": 0.198,
+    "fsen": 0.08,
+    "H": 2044.0,
+    "hep": 52.8
+   }
+  },
+  {
+   "sel": {
+    "years": 55,
+    "sex": "male",
+    "site": "uppereyelid"
+   },
+   "values": {
+    "hpap": 87.35,
+    "rpap": 9.67,
+    "cells": 1.103,
+    "cvpap": 0.183,
+    "cvret": 0.416,
+    "cvhpap": 0.198,
+    "fsen": 0.08,
+    "H": 558.7,
+    "hep": 34.1
+   }
+  },
+  {
+   "sel": {
+    "years": 55,
+    "sex": "male",
+    "site": "upperlip"
+   },
+   "values": {
+    "hpap": 87.35,
+    "rpap": 9.67,
+    "cells": 1.103,
+    "cvpap": 0.183,
+    "cvret": 0.416,
+    "cvhpap": 0.198,
+    "fsen": 0.08,
+    "H": 2227.3,
+    "hep": 73.2
+   }
+  },
+  {
+   "sel": {
+    "years": 55,
+    "sex": "male",
+    "site": "neck"
+   },
+   "values": {
+    "hpap": 87.35,
+    "rpap": 9.67,
+    "cells": 1.103,
+    "cvpap": 0.183,
+    "cvret": 0.416,
+    "cvhpap": 0.198,
+    "fsen": 0.08,
+    "H": 1210.2,
+    "hep": 54.8
    }
   },
   {
@@ -15868,7 +17596,7 @@
     "cvhpap": 0.206,
     "fsen": 0.1,
     "H": 2181.1,
-    "hep": 102.4
+    "hep": 60.7
    }
   },
   {
@@ -15886,7 +17614,7 @@
     "cvhpap": 0.206,
     "fsen": 0.1,
     "H": 2799.3,
-    "hep": 108.7
+    "hep": 71.8
    }
   },
   {
@@ -15904,7 +17632,7 @@
     "cvhpap": 0.206,
     "fsen": 0.1,
     "H": 1001.2,
-    "hep": 106.7
+    "hep": 170.2
    }
   },
   {
@@ -15921,8 +17649,80 @@
     "cvret": 0.384,
     "cvhpap": 0.206,
     "fsen": 0.1,
-    "H": 2006.3,
-    "hep": 91.4
+    "H": 1982.8,
+    "hep": 64.3
+   }
+  },
+  {
+   "sel": {
+    "years": 62,
+    "sex": "female",
+    "site": "cheek"
+   },
+   "values": {
+    "hpap": 94.59,
+    "rpap": 10.31,
+    "cells": 1.05,
+    "cvpap": 0.174,
+    "cvret": 0.384,
+    "cvhpap": 0.206,
+    "fsen": 0.1,
+    "H": 1726.1,
+    "hep": 51.0
+   }
+  },
+  {
+   "sel": {
+    "years": 62,
+    "sex": "female",
+    "site": "uppereyelid"
+   },
+   "values": {
+    "hpap": 94.59,
+    "rpap": 10.31,
+    "cells": 1.05,
+    "cvpap": 0.174,
+    "cvret": 0.384,
+    "cvhpap": 0.206,
+    "fsen": 0.1,
+    "H": 608.5,
+    "hep": 32.5
+   }
+  },
+  {
+   "sel": {
+    "years": 62,
+    "sex": "female",
+    "site": "upperlip"
+   },
+   "values": {
+    "hpap": 94.59,
+    "rpap": 10.31,
+    "cells": 1.05,
+    "cvpap": 0.174,
+    "cvret": 0.384,
+    "cvhpap": 0.206,
+    "fsen": 0.1,
+    "H": 1932.5,
+    "hep": 70.7
+   }
+  },
+  {
+   "sel": {
+    "years": 62,
+    "sex": "female",
+    "site": "neck"
+   },
+   "values": {
+    "hpap": 94.59,
+    "rpap": 10.31,
+    "cells": 1.05,
+    "cvpap": 0.174,
+    "cvret": 0.384,
+    "cvhpap": 0.206,
+    "fsen": 0.1,
+    "H": 1220.2,
+    "hep": 52.9
    }
   },
   {
@@ -15958,7 +17758,7 @@
     "cvhpap": 0.206,
     "fsen": 0.1,
     "H": 2195.1,
-    "hep": 97.2
+    "hep": 60.7
    }
   },
   {
@@ -15976,7 +17776,7 @@
     "cvhpap": 0.206,
     "fsen": 0.1,
     "H": 2572.6,
-    "hep": 100.8
+    "hep": 71.8
    }
   },
   {
@@ -15994,7 +17794,7 @@
     "cvhpap": 0.206,
     "fsen": 0.1,
     "H": 1089.4,
-    "hep": 101.4
+    "hep": 170.2
    }
   },
   {
@@ -16011,8 +17811,80 @@
     "cvret": 0.384,
     "cvhpap": 0.206,
     "fsen": 0.1,
-    "H": 1946.1,
-    "hep": 91.4
+    "H": 2037.4,
+    "hep": 64.3
+   }
+  },
+  {
+   "sel": {
+    "years": 62,
+    "sex": "male",
+    "site": "cheek"
+   },
+   "values": {
+    "hpap": 94.59,
+    "rpap": 10.31,
+    "cells": 1.05,
+    "cvpap": 0.174,
+    "cvret": 0.384,
+    "cvhpap": 0.206,
+    "fsen": 0.1,
+    "H": 1987.4,
+    "hep": 51.0
+   }
+  },
+  {
+   "sel": {
+    "years": 62,
+    "sex": "male",
+    "site": "uppereyelid"
+   },
+   "values": {
+    "hpap": 94.59,
+    "rpap": 10.31,
+    "cells": 1.05,
+    "cvpap": 0.174,
+    "cvret": 0.384,
+    "cvhpap": 0.206,
+    "fsen": 0.1,
+    "H": 549.2,
+    "hep": 32.5
+   }
+  },
+  {
+   "sel": {
+    "years": 62,
+    "sex": "male",
+    "site": "upperlip"
+   },
+   "values": {
+    "hpap": 94.59,
+    "rpap": 10.31,
+    "cells": 1.05,
+    "cvpap": 0.174,
+    "cvret": 0.384,
+    "cvhpap": 0.206,
+    "fsen": 0.1,
+    "H": 2165.6,
+    "hep": 70.7
+   }
+  },
+  {
+   "sel": {
+    "years": 62,
+    "sex": "male",
+    "site": "neck"
+   },
+   "values": {
+    "hpap": 94.59,
+    "rpap": 10.31,
+    "cells": 1.05,
+    "cvpap": 0.174,
+    "cvret": 0.384,
+    "cvhpap": 0.206,
+    "fsen": 0.1,
+    "H": 1176.6,
+    "hep": 52.9
    }
   },
   {
@@ -16048,7 +17920,7 @@
     "cvhpap": 0.211,
     "fsen": 0.116,
     "H": 2145.8,
-    "hep": 99.8
+    "hep": 60.7
    }
   },
   {
@@ -16066,7 +17938,7 @@
     "cvhpap": 0.211,
     "fsen": 0.116,
     "H": 2754.0,
-    "hep": 105.2
+    "hep": 71.8
    }
   },
   {
@@ -16084,7 +17956,7 @@
     "cvhpap": 0.211,
     "fsen": 0.116,
     "H": 985.0,
-    "hep": 104.0
+    "hep": 170.2
    }
   },
   {
@@ -16101,8 +17973,80 @@
     "cvret": 0.35,
     "cvhpap": 0.211,
     "fsen": 0.116,
-    "H": 1973.8,
-    "hep": 89.6
+    "H": 1941.9,
+    "hep": 62.7
+   }
+  },
+  {
+   "sel": {
+    "years": 68,
+    "sex": "female",
+    "site": "cheek"
+   },
+   "values": {
+    "hpap": 100.79,
+    "rpap": 10.96,
+    "cells": 1.003,
+    "cvpap": 0.167,
+    "cvret": 0.35,
+    "cvhpap": 0.211,
+    "fsen": 0.116,
+    "H": 1680.5,
+    "hep": 51.0
+   }
+  },
+  {
+   "sel": {
+    "years": 68,
+    "sex": "female",
+    "site": "uppereyelid"
+   },
+   "values": {
+    "hpap": 100.79,
+    "rpap": 10.96,
+    "cells": 1.003,
+    "cvpap": 0.167,
+    "cvret": 0.35,
+    "cvhpap": 0.211,
+    "fsen": 0.116,
+    "H": 595.9,
+    "hep": 31.6
+   }
+  },
+  {
+   "sel": {
+    "years": 68,
+    "sex": "female",
+    "site": "upperlip"
+   },
+   "values": {
+    "hpap": 100.79,
+    "rpap": 10.96,
+    "cells": 1.003,
+    "cvpap": 0.167,
+    "cvret": 0.35,
+    "cvhpap": 0.211,
+    "fsen": 0.116,
+    "H": 1881.4,
+    "hep": 70.7
+   }
+  },
+  {
+   "sel": {
+    "years": 68,
+    "sex": "female",
+    "site": "neck"
+   },
+   "values": {
+    "hpap": 100.79,
+    "rpap": 10.96,
+    "cells": 1.003,
+    "cvpap": 0.167,
+    "cvret": 0.35,
+    "cvhpap": 0.211,
+    "fsen": 0.116,
+    "H": 1200.4,
+    "hep": 52.9
    }
   },
   {
@@ -16138,7 +18082,7 @@
     "cvhpap": 0.211,
     "fsen": 0.116,
     "H": 2141.7,
-    "hep": 94.7
+    "hep": 60.7
    }
   },
   {
@@ -16156,7 +18100,7 @@
     "cvhpap": 0.211,
     "fsen": 0.116,
     "H": 2510.1,
-    "hep": 97.6
+    "hep": 71.8
    }
   },
   {
@@ -16174,7 +18118,7 @@
     "cvhpap": 0.211,
     "fsen": 0.116,
     "H": 1063.0,
-    "hep": 98.9
+    "hep": 170.2
    }
   },
   {
@@ -16191,8 +18135,80 @@
     "cvret": 0.35,
     "cvhpap": 0.211,
     "fsen": 0.116,
-    "H": 1898.8,
-    "hep": 89.6
+    "H": 2007.0,
+    "hep": 62.7
+   }
+  },
+  {
+   "sel": {
+    "years": 68,
+    "sex": "male",
+    "site": "cheek"
+   },
+   "values": {
+    "hpap": 100.79,
+    "rpap": 10.96,
+    "cells": 1.003,
+    "cvpap": 0.167,
+    "cvret": 0.35,
+    "cvhpap": 0.211,
+    "fsen": 0.116,
+    "H": 1939.0,
+    "hep": 51.0
+   }
+  },
+  {
+   "sel": {
+    "years": 68,
+    "sex": "male",
+    "site": "uppereyelid"
+   },
+   "values": {
+    "hpap": 100.79,
+    "rpap": 10.96,
+    "cells": 1.003,
+    "cvpap": 0.167,
+    "cvret": 0.35,
+    "cvhpap": 0.211,
+    "fsen": 0.116,
+    "H": 541.0,
+    "hep": 31.6
+   }
+  },
+  {
+   "sel": {
+    "years": 68,
+    "sex": "male",
+    "site": "upperlip"
+   },
+   "values": {
+    "hpap": 100.79,
+    "rpap": 10.96,
+    "cells": 1.003,
+    "cvpap": 0.167,
+    "cvret": 0.35,
+    "cvhpap": 0.211,
+    "fsen": 0.116,
+    "H": 2112.9,
+    "hep": 70.7
+   }
+  },
+  {
+   "sel": {
+    "years": 68,
+    "sex": "male",
+    "site": "neck"
+   },
+   "values": {
+    "hpap": 100.79,
+    "rpap": 10.96,
+    "cells": 1.003,
+    "cvpap": 0.167,
+    "cvret": 0.35,
+    "cvhpap": 0.211,
+    "fsen": 0.116,
+    "H": 1148.0,
+    "hep": 52.9
    }
   },
   {
@@ -16228,7 +18244,7 @@
     "cvhpap": 0.212,
     "fsen": 0.122,
     "H": 2133.9,
-    "hep": 99.0
+    "hep": 60.7
    }
   },
   {
@@ -16246,7 +18262,7 @@
     "cvhpap": 0.212,
     "fsen": 0.122,
     "H": 2738.7,
-    "hep": 104.0
+    "hep": 71.8
    }
   },
   {
@@ -16264,7 +18280,7 @@
     "cvhpap": 0.212,
     "fsen": 0.122,
     "H": 979.5,
-    "hep": 103.1
+    "hep": 170.2
    }
   },
   {
@@ -16281,8 +18297,80 @@
     "cvret": 0.348,
     "cvhpap": 0.212,
     "fsen": 0.122,
-    "H": 1962.9,
-    "hep": 89.0
+    "H": 1928.2,
+    "hep": 62.7
+   }
+  },
+  {
+   "sel": {
+    "years": 70,
+    "sex": "female",
+    "site": "cheek"
+   },
+   "values": {
+    "hpap": 101.2,
+    "rpap": 11.01,
+    "cells": 1.0,
+    "cvpap": 0.166,
+    "cvret": 0.348,
+    "cvhpap": 0.212,
+    "fsen": 0.122,
+    "H": 1665.4,
+    "hep": 51.0
+   }
+  },
+  {
+   "sel": {
+    "years": 70,
+    "sex": "female",
+    "site": "uppereyelid"
+   },
+   "values": {
+    "hpap": 101.2,
+    "rpap": 11.01,
+    "cells": 1.0,
+    "cvpap": 0.166,
+    "cvret": 0.348,
+    "cvhpap": 0.212,
+    "fsen": 0.122,
+    "H": 591.7,
+    "hep": 31.6
+   }
+  },
+  {
+   "sel": {
+    "years": 70,
+    "sex": "female",
+    "site": "upperlip"
+   },
+   "values": {
+    "hpap": 101.2,
+    "rpap": 11.01,
+    "cells": 1.0,
+    "cvpap": 0.166,
+    "cvret": 0.348,
+    "cvhpap": 0.212,
+    "fsen": 0.122,
+    "H": 1864.5,
+    "hep": 70.7
+   }
+  },
+  {
+   "sel": {
+    "years": 70,
+    "sex": "female",
+    "site": "neck"
+   },
+   "values": {
+    "hpap": 101.2,
+    "rpap": 11.01,
+    "cells": 1.0,
+    "cvpap": 0.166,
+    "cvret": 0.348,
+    "cvhpap": 0.212,
+    "fsen": 0.122,
+    "H": 1193.7,
+    "hep": 52.9
    }
   },
   {
@@ -16318,7 +18406,7 @@
     "cvhpap": 0.212,
     "fsen": 0.122,
     "H": 2123.9,
-    "hep": 93.9
+    "hep": 60.7
    }
   },
   {
@@ -16336,7 +18424,7 @@
     "cvhpap": 0.212,
     "fsen": 0.122,
     "H": 2489.2,
-    "hep": 96.5
+    "hep": 71.8
    }
   },
   {
@@ -16354,7 +18442,7 @@
     "cvhpap": 0.212,
     "fsen": 0.122,
     "H": 1054.1,
-    "hep": 98.0
+    "hep": 170.2
    }
   },
   {
@@ -16371,8 +18459,80 @@
     "cvret": 0.348,
     "cvhpap": 0.212,
     "fsen": 0.122,
-    "H": 1883.0,
-    "hep": 89.0
+    "H": 1996.9,
+    "hep": 62.7
+   }
+  },
+  {
+   "sel": {
+    "years": 70,
+    "sex": "male",
+    "site": "cheek"
+   },
+   "values": {
+    "hpap": 101.2,
+    "rpap": 11.01,
+    "cells": 1.0,
+    "cvpap": 0.166,
+    "cvret": 0.348,
+    "cvhpap": 0.212,
+    "fsen": 0.122,
+    "H": 1922.7,
+    "hep": 51.0
+   }
+  },
+  {
+   "sel": {
+    "years": 70,
+    "sex": "male",
+    "site": "uppereyelid"
+   },
+   "values": {
+    "hpap": 101.2,
+    "rpap": 11.01,
+    "cells": 1.0,
+    "cvpap": 0.166,
+    "cvret": 0.348,
+    "cvhpap": 0.212,
+    "fsen": 0.122,
+    "H": 538.3,
+    "hep": 31.6
+   }
+  },
+  {
+   "sel": {
+    "years": 70,
+    "sex": "male",
+    "site": "upperlip"
+   },
+   "values": {
+    "hpap": 101.2,
+    "rpap": 11.01,
+    "cells": 1.0,
+    "cvpap": 0.166,
+    "cvret": 0.348,
+    "cvhpap": 0.212,
+    "fsen": 0.122,
+    "H": 2095.1,
+    "hep": 70.7
+   }
+  },
+  {
+   "sel": {
+    "years": 70,
+    "sex": "male",
+    "site": "neck"
+   },
+   "values": {
+    "hpap": 101.2,
+    "rpap": 11.01,
+    "cells": 1.0,
+    "cvpap": 0.166,
+    "cvret": 0.348,
+    "cvhpap": 0.212,
+    "fsen": 0.122,
+    "H": 1138.5,
+    "hep": 52.9
    }
   },
   {
@@ -16408,7 +18568,7 @@
     "cvhpap": 0.212,
     "fsen": 0.147,
     "H": 2080.5,
-    "hep": 98.5
+    "hep": 60.7
    }
   },
   {
@@ -16426,7 +18586,7 @@
     "cvhpap": 0.212,
     "fsen": 0.147,
     "H": 2670.2,
-    "hep": 103.3
+    "hep": 71.8
    }
   },
   {
@@ -16444,7 +18604,7 @@
     "cvhpap": 0.212,
     "fsen": 0.147,
     "H": 955.0,
-    "hep": 102.6
+    "hep": 170.2
    }
   },
   {
@@ -16461,8 +18621,80 @@
     "cvret": 0.348,
     "cvhpap": 0.212,
     "fsen": 0.147,
-    "H": 1913.7,
-    "hep": 88.6
+    "H": 1928.2,
+    "hep": 62.7
+   }
+  },
+  {
+   "sel": {
+    "years": 79,
+    "sex": "female",
+    "site": "cheek"
+   },
+   "values": {
+    "hpap": 101.2,
+    "rpap": 11.01,
+    "cells": 1.0,
+    "cvpap": 0.166,
+    "cvret": 0.348,
+    "cvhpap": 0.212,
+    "fsen": 0.147,
+    "H": 1665.4,
+    "hep": 51.0
+   }
+  },
+  {
+   "sel": {
+    "years": 79,
+    "sex": "female",
+    "site": "uppereyelid"
+   },
+   "values": {
+    "hpap": 101.2,
+    "rpap": 11.01,
+    "cells": 1.0,
+    "cvpap": 0.166,
+    "cvret": 0.348,
+    "cvhpap": 0.212,
+    "fsen": 0.147,
+    "H": 591.7,
+    "hep": 31.6
+   }
+  },
+  {
+   "sel": {
+    "years": 79,
+    "sex": "female",
+    "site": "upperlip"
+   },
+   "values": {
+    "hpap": 101.2,
+    "rpap": 11.01,
+    "cells": 1.0,
+    "cvpap": 0.166,
+    "cvret": 0.348,
+    "cvhpap": 0.212,
+    "fsen": 0.147,
+    "H": 1864.5,
+    "hep": 70.7
+   }
+  },
+  {
+   "sel": {
+    "years": 79,
+    "sex": "female",
+    "site": "neck"
+   },
+   "values": {
+    "hpap": 101.2,
+    "rpap": 11.01,
+    "cells": 1.0,
+    "cvpap": 0.166,
+    "cvret": 0.348,
+    "cvhpap": 0.212,
+    "fsen": 0.147,
+    "H": 1163.8,
+    "hep": 52.9
    }
   },
   {
@@ -16498,7 +18730,7 @@
     "cvhpap": 0.212,
     "fsen": 0.147,
     "H": 2043.8,
-    "hep": 93.4
+    "hep": 60.7
    }
   },
   {
@@ -16516,7 +18748,7 @@
     "cvhpap": 0.212,
     "fsen": 0.147,
     "H": 2395.3,
-    "hep": 95.9
+    "hep": 71.8
    }
   },
   {
@@ -16534,7 +18766,7 @@
     "cvhpap": 0.212,
     "fsen": 0.147,
     "H": 1014.3,
-    "hep": 97.5
+    "hep": 170.2
    }
   },
   {
@@ -16551,8 +18783,80 @@
     "cvret": 0.348,
     "cvhpap": 0.212,
     "fsen": 0.147,
-    "H": 1812.0,
-    "hep": 88.6
+    "H": 1996.9,
+    "hep": 62.7
+   }
+  },
+  {
+   "sel": {
+    "years": 79,
+    "sex": "male",
+    "site": "cheek"
+   },
+   "values": {
+    "hpap": 101.2,
+    "rpap": 11.01,
+    "cells": 1.0,
+    "cvpap": 0.166,
+    "cvret": 0.348,
+    "cvhpap": 0.212,
+    "fsen": 0.147,
+    "H": 1922.7,
+    "hep": 51.0
+   }
+  },
+  {
+   "sel": {
+    "years": 79,
+    "sex": "male",
+    "site": "uppereyelid"
+   },
+   "values": {
+    "hpap": 101.2,
+    "rpap": 11.01,
+    "cells": 1.0,
+    "cvpap": 0.166,
+    "cvret": 0.348,
+    "cvhpap": 0.212,
+    "fsen": 0.147,
+    "H": 538.3,
+    "hep": 31.6
+   }
+  },
+  {
+   "sel": {
+    "years": 79,
+    "sex": "male",
+    "site": "upperlip"
+   },
+   "values": {
+    "hpap": 101.2,
+    "rpap": 11.01,
+    "cells": 1.0,
+    "cvpap": 0.166,
+    "cvret": 0.348,
+    "cvhpap": 0.212,
+    "fsen": 0.147,
+    "H": 2095.1,
+    "hep": 70.7
+   }
+  },
+  {
+   "sel": {
+    "years": 79,
+    "sex": "male",
+    "site": "neck"
+   },
+   "values": {
+    "hpap": 101.2,
+    "rpap": 11.01,
+    "cells": 1.0,
+    "cvpap": 0.166,
+    "cvret": 0.348,
+    "cvhpap": 0.212,
+    "fsen": 0.147,
+    "H": 1095.5,
+    "hep": 52.9
    }
   },
   {
@@ -16588,7 +18892,7 @@
     "cvhpap": 0.212,
     "fsen": 0.15,
     "H": 2074.6,
-    "hep": 98.5
+    "hep": 60.7
    }
   },
   {
@@ -16606,7 +18910,7 @@
     "cvhpap": 0.212,
     "fsen": 0.15,
     "H": 2662.6,
-    "hep": 103.3
+    "hep": 71.8
    }
   },
   {
@@ -16624,7 +18928,7 @@
     "cvhpap": 0.212,
     "fsen": 0.15,
     "H": 952.3,
-    "hep": 102.6
+    "hep": 170.2
    }
   },
   {
@@ -16641,8 +18945,80 @@
     "cvret": 0.348,
     "cvhpap": 0.212,
     "fsen": 0.15,
-    "H": 1908.3,
-    "hep": 88.6
+    "H": 1928.2,
+    "hep": 62.7
+   }
+  },
+  {
+   "sel": {
+    "years": 80,
+    "sex": "female",
+    "site": "cheek"
+   },
+   "values": {
+    "hpap": 101.2,
+    "rpap": 11.01,
+    "cells": 1.0,
+    "cvpap": 0.166,
+    "cvret": 0.348,
+    "cvhpap": 0.212,
+    "fsen": 0.15,
+    "H": 1665.4,
+    "hep": 51.0
+   }
+  },
+  {
+   "sel": {
+    "years": 80,
+    "sex": "female",
+    "site": "uppereyelid"
+   },
+   "values": {
+    "hpap": 101.2,
+    "rpap": 11.01,
+    "cells": 1.0,
+    "cvpap": 0.166,
+    "cvret": 0.348,
+    "cvhpap": 0.212,
+    "fsen": 0.15,
+    "H": 591.7,
+    "hep": 31.6
+   }
+  },
+  {
+   "sel": {
+    "years": 80,
+    "sex": "female",
+    "site": "upperlip"
+   },
+   "values": {
+    "hpap": 101.2,
+    "rpap": 11.01,
+    "cells": 1.0,
+    "cvpap": 0.166,
+    "cvret": 0.348,
+    "cvhpap": 0.212,
+    "fsen": 0.15,
+    "H": 1864.5,
+    "hep": 70.7
+   }
+  },
+  {
+   "sel": {
+    "years": 80,
+    "sex": "female",
+    "site": "neck"
+   },
+   "values": {
+    "hpap": 101.2,
+    "rpap": 11.01,
+    "cells": 1.0,
+    "cvpap": 0.166,
+    "cvret": 0.348,
+    "cvhpap": 0.212,
+    "fsen": 0.15,
+    "H": 1160.5,
+    "hep": 52.9
    }
   },
   {
@@ -16678,7 +19054,7 @@
     "cvhpap": 0.212,
     "fsen": 0.15,
     "H": 2034.8,
-    "hep": 93.4
+    "hep": 60.7
    }
   },
   {
@@ -16696,7 +19072,7 @@
     "cvhpap": 0.212,
     "fsen": 0.15,
     "H": 2384.8,
-    "hep": 95.9
+    "hep": 71.8
    }
   },
   {
@@ -16714,7 +19090,7 @@
     "cvhpap": 0.212,
     "fsen": 0.15,
     "H": 1009.9,
-    "hep": 97.5
+    "hep": 170.2
    }
   },
   {
@@ -16731,8 +19107,80 @@
     "cvret": 0.348,
     "cvhpap": 0.212,
     "fsen": 0.15,
-    "H": 1804.1,
-    "hep": 88.6
+    "H": 1996.9,
+    "hep": 62.7
+   }
+  },
+  {
+   "sel": {
+    "years": 80,
+    "sex": "male",
+    "site": "cheek"
+   },
+   "values": {
+    "hpap": 101.2,
+    "rpap": 11.01,
+    "cells": 1.0,
+    "cvpap": 0.166,
+    "cvret": 0.348,
+    "cvhpap": 0.212,
+    "fsen": 0.15,
+    "H": 1922.7,
+    "hep": 51.0
+   }
+  },
+  {
+   "sel": {
+    "years": 80,
+    "sex": "male",
+    "site": "uppereyelid"
+   },
+   "values": {
+    "hpap": 101.2,
+    "rpap": 11.01,
+    "cells": 1.0,
+    "cvpap": 0.166,
+    "cvret": 0.348,
+    "cvhpap": 0.212,
+    "fsen": 0.15,
+    "H": 538.3,
+    "hep": 31.6
+   }
+  },
+  {
+   "sel": {
+    "years": 80,
+    "sex": "male",
+    "site": "upperlip"
+   },
+   "values": {
+    "hpap": 101.2,
+    "rpap": 11.01,
+    "cells": 1.0,
+    "cvpap": 0.166,
+    "cvret": 0.348,
+    "cvhpap": 0.212,
+    "fsen": 0.15,
+    "H": 2095.1,
+    "hep": 70.7
+   }
+  },
+  {
+   "sel": {
+    "years": 80,
+    "sex": "male",
+    "site": "neck"
+   },
+   "values": {
+    "hpap": 101.2,
+    "rpap": 11.01,
+    "cells": 1.0,
+    "cvpap": 0.166,
+    "cvret": 0.348,
+    "cvhpap": 0.212,
+    "fsen": 0.15,
+    "H": 1090.7,
+    "hep": 52.9
    }
   },
   {
@@ -16768,7 +19216,7 @@
     "cvhpap": 0.212,
     "fsen": 0.15,
     "H": 2044.9,
-    "hep": 98.5
+    "hep": 60.7
    }
   },
   {
@@ -16786,7 +19234,7 @@
     "cvhpap": 0.212,
     "fsen": 0.15,
     "H": 2624.5,
-    "hep": 103.3
+    "hep": 71.8
    }
   },
   {
@@ -16804,7 +19252,7 @@
     "cvhpap": 0.212,
     "fsen": 0.15,
     "H": 938.7,
-    "hep": 102.6
+    "hep": 170.2
    }
   },
   {
@@ -16821,8 +19269,80 @@
     "cvret": 0.348,
     "cvhpap": 0.212,
     "fsen": 0.15,
-    "H": 1881.0,
-    "hep": 88.6
+    "H": 1928.2,
+    "hep": 62.7
+   }
+  },
+  {
+   "sel": {
+    "years": 85,
+    "sex": "female",
+    "site": "cheek"
+   },
+   "values": {
+    "hpap": 101.2,
+    "rpap": 11.01,
+    "cells": 1.0,
+    "cvpap": 0.166,
+    "cvret": 0.348,
+    "cvhpap": 0.212,
+    "fsen": 0.15,
+    "H": 1665.4,
+    "hep": 51.0
+   }
+  },
+  {
+   "sel": {
+    "years": 85,
+    "sex": "female",
+    "site": "uppereyelid"
+   },
+   "values": {
+    "hpap": 101.2,
+    "rpap": 11.01,
+    "cells": 1.0,
+    "cvpap": 0.166,
+    "cvret": 0.348,
+    "cvhpap": 0.212,
+    "fsen": 0.15,
+    "H": 591.7,
+    "hep": 31.6
+   }
+  },
+  {
+   "sel": {
+    "years": 85,
+    "sex": "female",
+    "site": "upperlip"
+   },
+   "values": {
+    "hpap": 101.2,
+    "rpap": 11.01,
+    "cells": 1.0,
+    "cvpap": 0.166,
+    "cvret": 0.348,
+    "cvhpap": 0.212,
+    "fsen": 0.15,
+    "H": 1864.5,
+    "hep": 70.7
+   }
+  },
+  {
+   "sel": {
+    "years": 85,
+    "sex": "female",
+    "site": "neck"
+   },
+   "values": {
+    "hpap": 101.2,
+    "rpap": 11.01,
+    "cells": 1.0,
+    "cvpap": 0.166,
+    "cvret": 0.348,
+    "cvhpap": 0.212,
+    "fsen": 0.15,
+    "H": 1144.0,
+    "hep": 52.9
    }
   },
   {
@@ -16858,7 +19378,7 @@
     "cvhpap": 0.212,
     "fsen": 0.15,
     "H": 1990.2,
-    "hep": 93.4
+    "hep": 60.7
    }
   },
   {
@@ -16876,7 +19396,7 @@
     "cvhpap": 0.212,
     "fsen": 0.15,
     "H": 2332.5,
-    "hep": 95.9
+    "hep": 71.8
    }
   },
   {
@@ -16894,7 +19414,7 @@
     "cvhpap": 0.212,
     "fsen": 0.15,
     "H": 987.8,
-    "hep": 97.5
+    "hep": 170.2
    }
   },
   {
@@ -16911,8 +19431,80 @@
     "cvret": 0.348,
     "cvhpap": 0.212,
     "fsen": 0.15,
-    "H": 1764.5,
-    "hep": 88.6
+    "H": 1996.9,
+    "hep": 62.7
+   }
+  },
+  {
+   "sel": {
+    "years": 85,
+    "sex": "male",
+    "site": "cheek"
+   },
+   "values": {
+    "hpap": 101.2,
+    "rpap": 11.01,
+    "cells": 1.0,
+    "cvpap": 0.166,
+    "cvret": 0.348,
+    "cvhpap": 0.212,
+    "fsen": 0.15,
+    "H": 1922.7,
+    "hep": 51.0
+   }
+  },
+  {
+   "sel": {
+    "years": 85,
+    "sex": "male",
+    "site": "uppereyelid"
+   },
+   "values": {
+    "hpap": 101.2,
+    "rpap": 11.01,
+    "cells": 1.0,
+    "cvpap": 0.166,
+    "cvret": 0.348,
+    "cvhpap": 0.212,
+    "fsen": 0.15,
+    "H": 538.3,
+    "hep": 31.6
+   }
+  },
+  {
+   "sel": {
+    "years": 85,
+    "sex": "male",
+    "site": "upperlip"
+   },
+   "values": {
+    "hpap": 101.2,
+    "rpap": 11.01,
+    "cells": 1.0,
+    "cvpap": 0.166,
+    "cvret": 0.348,
+    "cvhpap": 0.212,
+    "fsen": 0.15,
+    "H": 2095.1,
+    "hep": 70.7
+   }
+  },
+  {
+   "sel": {
+    "years": 85,
+    "sex": "male",
+    "site": "neck"
+   },
+   "values": {
+    "hpap": 101.2,
+    "rpap": 11.01,
+    "cells": 1.0,
+    "cvpap": 0.166,
+    "cvret": 0.348,
+    "cvhpap": 0.212,
+    "fsen": 0.15,
+    "H": 1066.8,
+    "hep": 52.9
    }
   },
   {
@@ -16948,7 +19540,7 @@
     "cvhpap": 0.212,
     "fsen": 0.15,
     "H": 2044.9,
-    "hep": 98.5
+    "hep": 60.7
    }
   },
   {
@@ -16966,7 +19558,7 @@
     "cvhpap": 0.212,
     "fsen": 0.15,
     "H": 2624.5,
-    "hep": 103.3
+    "hep": 71.8
    }
   },
   {
@@ -16984,7 +19576,7 @@
     "cvhpap": 0.212,
     "fsen": 0.15,
     "H": 938.7,
-    "hep": 102.6
+    "hep": 170.2
    }
   },
   {
@@ -17001,8 +19593,80 @@
     "cvret": 0.348,
     "cvhpap": 0.212,
     "fsen": 0.15,
-    "H": 1881.0,
-    "hep": 88.6
+    "H": 1928.2,
+    "hep": 62.7
+   }
+  },
+  {
+   "sel": {
+    "years": 86,
+    "sex": "female",
+    "site": "cheek"
+   },
+   "values": {
+    "hpap": 101.2,
+    "rpap": 11.01,
+    "cells": 1.0,
+    "cvpap": 0.166,
+    "cvret": 0.348,
+    "cvhpap": 0.212,
+    "fsen": 0.15,
+    "H": 1665.4,
+    "hep": 51.0
+   }
+  },
+  {
+   "sel": {
+    "years": 86,
+    "sex": "female",
+    "site": "uppereyelid"
+   },
+   "values": {
+    "hpap": 101.2,
+    "rpap": 11.01,
+    "cells": 1.0,
+    "cvpap": 0.166,
+    "cvret": 0.348,
+    "cvhpap": 0.212,
+    "fsen": 0.15,
+    "H": 591.7,
+    "hep": 31.6
+   }
+  },
+  {
+   "sel": {
+    "years": 86,
+    "sex": "female",
+    "site": "upperlip"
+   },
+   "values": {
+    "hpap": 101.2,
+    "rpap": 11.01,
+    "cells": 1.0,
+    "cvpap": 0.166,
+    "cvret": 0.348,
+    "cvhpap": 0.212,
+    "fsen": 0.15,
+    "H": 1864.5,
+    "hep": 70.7
+   }
+  },
+  {
+   "sel": {
+    "years": 86,
+    "sex": "female",
+    "site": "neck"
+   },
+   "values": {
+    "hpap": 101.2,
+    "rpap": 11.01,
+    "cells": 1.0,
+    "cvpap": 0.166,
+    "cvret": 0.348,
+    "cvhpap": 0.212,
+    "fsen": 0.15,
+    "H": 1144.0,
+    "hep": 52.9
    }
   },
   {
@@ -17038,7 +19702,7 @@
     "cvhpap": 0.212,
     "fsen": 0.15,
     "H": 1990.2,
-    "hep": 93.4
+    "hep": 60.7
    }
   },
   {
@@ -17056,7 +19720,7 @@
     "cvhpap": 0.212,
     "fsen": 0.15,
     "H": 2332.5,
-    "hep": 95.9
+    "hep": 71.8
    }
   },
   {
@@ -17074,7 +19738,7 @@
     "cvhpap": 0.212,
     "fsen": 0.15,
     "H": 987.8,
-    "hep": 97.5
+    "hep": 170.2
    }
   },
   {
@@ -17091,8 +19755,80 @@
     "cvret": 0.348,
     "cvhpap": 0.212,
     "fsen": 0.15,
-    "H": 1764.5,
-    "hep": 88.6
+    "H": 1996.9,
+    "hep": 62.7
+   }
+  },
+  {
+   "sel": {
+    "years": 86,
+    "sex": "male",
+    "site": "cheek"
+   },
+   "values": {
+    "hpap": 101.2,
+    "rpap": 11.01,
+    "cells": 1.0,
+    "cvpap": 0.166,
+    "cvret": 0.348,
+    "cvhpap": 0.212,
+    "fsen": 0.15,
+    "H": 1922.7,
+    "hep": 51.0
+   }
+  },
+  {
+   "sel": {
+    "years": 86,
+    "sex": "male",
+    "site": "uppereyelid"
+   },
+   "values": {
+    "hpap": 101.2,
+    "rpap": 11.01,
+    "cells": 1.0,
+    "cvpap": 0.166,
+    "cvret": 0.348,
+    "cvhpap": 0.212,
+    "fsen": 0.15,
+    "H": 538.3,
+    "hep": 31.6
+   }
+  },
+  {
+   "sel": {
+    "years": 86,
+    "sex": "male",
+    "site": "upperlip"
+   },
+   "values": {
+    "hpap": 101.2,
+    "rpap": 11.01,
+    "cells": 1.0,
+    "cvpap": 0.166,
+    "cvret": 0.348,
+    "cvhpap": 0.212,
+    "fsen": 0.15,
+    "H": 2095.1,
+    "hep": 70.7
+   }
+  },
+  {
+   "sel": {
+    "years": 86,
+    "sex": "male",
+    "site": "neck"
+   },
+   "values": {
+    "hpap": 101.2,
+    "rpap": 11.01,
+    "cells": 1.0,
+    "cvpap": 0.166,
+    "cvret": 0.348,
+    "cvhpap": 0.212,
+    "fsen": 0.15,
+    "H": 1066.8,
+    "hep": 52.9
    }
   },
   {
@@ -17128,7 +19864,7 @@
     "cvhpap": 0.212,
     "fsen": 0.15,
     "H": 2044.9,
-    "hep": 98.5
+    "hep": 60.7
    }
   },
   {
@@ -17146,7 +19882,7 @@
     "cvhpap": 0.212,
     "fsen": 0.15,
     "H": 2624.5,
-    "hep": 103.3
+    "hep": 71.8
    }
   },
   {
@@ -17164,7 +19900,7 @@
     "cvhpap": 0.212,
     "fsen": 0.15,
     "H": 938.7,
-    "hep": 102.6
+    "hep": 170.2
    }
   },
   {
@@ -17181,8 +19917,80 @@
     "cvret": 0.348,
     "cvhpap": 0.212,
     "fsen": 0.15,
-    "H": 1881.0,
-    "hep": 88.6
+    "H": 1928.2,
+    "hep": 62.7
+   }
+  },
+  {
+   "sel": {
+    "years": 100,
+    "sex": "female",
+    "site": "cheek"
+   },
+   "values": {
+    "hpap": 101.2,
+    "rpap": 11.01,
+    "cells": 1.0,
+    "cvpap": 0.166,
+    "cvret": 0.348,
+    "cvhpap": 0.212,
+    "fsen": 0.15,
+    "H": 1665.4,
+    "hep": 51.0
+   }
+  },
+  {
+   "sel": {
+    "years": 100,
+    "sex": "female",
+    "site": "uppereyelid"
+   },
+   "values": {
+    "hpap": 101.2,
+    "rpap": 11.01,
+    "cells": 1.0,
+    "cvpap": 0.166,
+    "cvret": 0.348,
+    "cvhpap": 0.212,
+    "fsen": 0.15,
+    "H": 591.7,
+    "hep": 31.6
+   }
+  },
+  {
+   "sel": {
+    "years": 100,
+    "sex": "female",
+    "site": "upperlip"
+   },
+   "values": {
+    "hpap": 101.2,
+    "rpap": 11.01,
+    "cells": 1.0,
+    "cvpap": 0.166,
+    "cvret": 0.348,
+    "cvhpap": 0.212,
+    "fsen": 0.15,
+    "H": 1864.5,
+    "hep": 70.7
+   }
+  },
+  {
+   "sel": {
+    "years": 100,
+    "sex": "female",
+    "site": "neck"
+   },
+   "values": {
+    "hpap": 101.2,
+    "rpap": 11.01,
+    "cells": 1.0,
+    "cvpap": 0.166,
+    "cvret": 0.348,
+    "cvhpap": 0.212,
+    "fsen": 0.15,
+    "H": 1144.0,
+    "hep": 52.9
    }
   },
   {
@@ -17218,7 +20026,7 @@
     "cvhpap": 0.212,
     "fsen": 0.15,
     "H": 1990.2,
-    "hep": 93.4
+    "hep": 60.7
    }
   },
   {
@@ -17236,7 +20044,7 @@
     "cvhpap": 0.212,
     "fsen": 0.15,
     "H": 2332.5,
-    "hep": 95.9
+    "hep": 71.8
    }
   },
   {
@@ -17254,7 +20062,7 @@
     "cvhpap": 0.212,
     "fsen": 0.15,
     "H": 987.8,
-    "hep": 97.5
+    "hep": 170.2
    }
   },
   {
@@ -17271,8 +20079,80 @@
     "cvret": 0.348,
     "cvhpap": 0.212,
     "fsen": 0.15,
-    "H": 1764.5,
-    "hep": 88.6
+    "H": 1996.9,
+    "hep": 62.7
+   }
+  },
+  {
+   "sel": {
+    "years": 100,
+    "sex": "male",
+    "site": "cheek"
+   },
+   "values": {
+    "hpap": 101.2,
+    "rpap": 11.01,
+    "cells": 1.0,
+    "cvpap": 0.166,
+    "cvret": 0.348,
+    "cvhpap": 0.212,
+    "fsen": 0.15,
+    "H": 1922.7,
+    "hep": 51.0
+   }
+  },
+  {
+   "sel": {
+    "years": 100,
+    "sex": "male",
+    "site": "uppereyelid"
+   },
+   "values": {
+    "hpap": 101.2,
+    "rpap": 11.01,
+    "cells": 1.0,
+    "cvpap": 0.166,
+    "cvret": 0.348,
+    "cvhpap": 0.212,
+    "fsen": 0.15,
+    "H": 538.3,
+    "hep": 31.6
+   }
+  },
+  {
+   "sel": {
+    "years": 100,
+    "sex": "male",
+    "site": "upperlip"
+   },
+   "values": {
+    "hpap": 101.2,
+    "rpap": 11.01,
+    "cells": 1.0,
+    "cvpap": 0.166,
+    "cvret": 0.348,
+    "cvhpap": 0.212,
+    "fsen": 0.15,
+    "H": 2095.1,
+    "hep": 70.7
+   }
+  },
+  {
+   "sel": {
+    "years": 100,
+    "sex": "male",
+    "site": "neck"
+   },
+   "values": {
+    "hpap": 101.2,
+    "rpap": 11.01,
+    "cells": 1.0,
+    "cvpap": 0.166,
+    "cvret": 0.348,
+    "cvhpap": 0.212,
+    "fsen": 0.15,
+    "H": 1066.8,
+    "hep": 52.9
    }
   },
   {

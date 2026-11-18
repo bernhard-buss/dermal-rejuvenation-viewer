@@ -139,6 +139,15 @@ if (!errors.length) {
     drv.setBasic("age", ctx.window.DRV_PARAMS.basic.defaults.age);
     if (drv.stateQuery() !== "") errors.push("back at the default selection the address should be empty: " + drv.stateQuery());
     if (!/<svg/.test(byId("bodyFig").innerHTML) || !/Papillary dermis thickness/.test(byId("bodyData").innerHTML)) errors.push("the figure of whose skin or its data table was not drawn");
+    // the face: every facial site has a place on the face and nothing else does; a facial site shows the face, a body site the body
+    const faceSites = ctx.window.DRV_PARAMS.sites.groups.filter(g => g.region === "face").map(g => g.key), drawn = drv.faceAreas();
+    if ([...faceSites].sort().join() !== [...drawn].sort().join()) errors.push(`the face draws ${drawn} for the facial sites ${faceSites}`);
+    drv.setBasic("site", "cheek"); drv.drawBody();
+    if (drv.bodyView() !== "face" || (byId("bodyFig").innerHTML.match(/data-site="/g) || []).length < faceSites.length) errors.push("a facial site should show the face with all its areas");
+    drv.zoomBody("body");
+    if (drv.bodyView() !== "body" || !/data-zoom="face"/.test(byId("bodyFig").innerHTML) || drv.basic().site !== "cheek") errors.push("back to the body should keep the selection and show the head as the way into the face");
+    drv.setBasic("site", ctx.window.DRV_PARAMS.basic.defaults.site); drv.drawBody();
+    if (drv.bodyView() !== "body") errors.push("the skin model should show the body");
   } catch (e) { errors.push("basic model: " + (e.stack || e).toString().split("\n").slice(0, 2).join(" | ")); }
 }
 // DRV_PACK_OUT=DIR writes the hand-off pack of the default design, so the pipeline's test suite

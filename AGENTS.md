@@ -88,8 +88,8 @@ so that Claude Code reads the same text; add and change notes here, not there.
   `S.basic.age` to its group and is the only one of the two written to a link). The
   viewer computes no age value: `ageEntry(sel)` looks the group up in
   `DP.presets.groups` or the whole year in `DP.presets.years` (values, thickness
-  factor by sex for the dermis and by sex and body site for the epidermis
-  (`efactor`), shown data, and the kind and wording of each as runs of ages), all
+  factor by sex for the dermis (`factor`; `sitefactor` for a body site with a regression of
+  its own, read through `siteFactor`), the epidermis of each body site (`epidermis`), shown data, and the kind and wording of each as runs of ages), all
   computed by `dermsim.params`. `tests/smoke.mjs` checks `basicValues` against the
   `basic` cases of `data/golden.json`. A key of the four earlier groups
   (`DP.presets.renamed`) is read from a link or file as its successor.
@@ -105,9 +105,24 @@ so that Claude Code reads the same text; add and change notes here, not there.
   so that it cannot cover an area) and the table. Pointer or focus on an area is a
   preview (`previewBody`: the panel only, never `S`), a click or Enter selects
   (`setBasic("site", …)`); a full redraw happens only when the selection changes,
-  so the areas are not replaced under the pointer. The table underneath lists the tissue data of the selection with
-  a badge per kind (`.kd-measured`, `-interpolated`, `-held`, `-regression`) and
-  the source; values shown but not used by the model say so.
+  so the areas are not replaced under the pointer. **The face** is a second view of
+  the same figure (`bodyView`, `faceSvg`): on the body the head is one dashed area
+  (`.bzoom`, `data-zoom="face"`, with a "Face ›" label) and the facial sites
+  (`region: face` in the export) are not drawn there; a click on it or Enter shows a
+  face and neck (`FACE_SHAPE`: three hand-drawn half outlines, a child, a man, a woman,
+  blended by age and sex in `faceOutline` as the body; soft shading through blur filters;
+  hair, brows, lips and the lines of age by sex and age, hair and skin tone by ethnicity,
+  all illustration only) whose areas sit where `FACE_AREAS` puts them (hand-placed from the
+  names of their source), with the same preview and selection, and `‹ Body` (`data-zoom="body"`)
+  goes back (`zoomBody`). The view follows the selected site when the site changes
+  (a facial site shows the face) and otherwise stays as zoomed; both views use the
+  same `viewBox`, so the panel never changes height. A new facial site needs an
+  entry in `FACE_AREAS` (`tests/smoke.mjs` checks that the two lists agree). The
+  table underneath lists the tissue data of the selection with a badge per kind
+  (`.kd-measured`, `-interpolated`, `-held`, `-regression`, `-analogue`: taken from a
+  related site) and the source, each site's own study (`source`, `reference`) for
+  the dermis; values shown but not used by the model say so. The site picker of step
+  1 groups the sites (`siteSelect`: the skin model, Body, Face and neck).
 - **Versions are for the people using the viewer.** `VERSION` (top of the
   script) and `CHANGELOG.md` change only for user-facing changes:
   - a new feature, or a change in what the viewer computes or shows (including
