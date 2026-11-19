@@ -2,6 +2,13 @@
 
 Newest version first. Each entry says what you can do or see differently.
 
+## 0.20.0 — 2026-11-19
+
+- **The skin above and below the dermis is now part of the model.** The junction of epidermis and dermis is no longer a wall: as measured, proteins cross it, spread in the viable epidermis and stop at its tight junctions under the stratum corneum, and the epidermis takes some of the signal up. Below, the fat continues the dermis and clears the signal more slowly than the dermis does. Step 1 has new values for both: *Diffusion in the epidermis* (half the dermal value, measured), *Uptake in the epidermis* (per volume against the reticular dermis: 350, from counted cells, which make the epidermis 195 to 622 times as dense as the dermis, with the uptake per cell taken as equal, which nobody has compared directly; so the epidermis clears the signal within a few µm and acts nearly as an absorbing junction), *Stratum corneum* (the epidermis less this is the layer the signal enters), and *Clearance in the fat* (2 to 20 times slower than the dermis, measured for injected proteins). Help › *Above the dermis* and *Below the dermis* give the sources.
+- **Below the dermis has two cases instead of three: open or closed.** The absorbing deep side is gone, since the fat clears more slowly than the dermis and nothing makes the interface a sink. A link or a file that asked for it opens with the open side; one with the closed side keeps it.
+- The default design gives the same numbers to five digits. Designs with sites close under the junction lose signal to the epidermis, the more the closer; designs with sites close above the fat keep a little more than before.
+- The cross-section names the epidermis (its thickness up to the tight junctions and its uptake) at the top and the fat at the bottom; a sealed junction or a closed fat is drawn as a solid line.
+
 ## 0.19.1 — 2026-11-19
 
 - **Fixed: the legend beside the skin patch is no longer cut off.** Its longest line, the reticular dermis with its thickness, ran past the right edge of the figure on every body site. The figure is now wider by that much, at the same scale.

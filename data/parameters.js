@@ -49,6 +49,18 @@ window.DRV_PARAMS = {
  "renamed": {
   "layers": "dermis_model"
  },
+ "remapped": {
+  "deep": {
+   "to": "fat",
+   "values": [
+    0,
+    0,
+    1
+   ],
+   "since": "2026-11-19",
+   "note": "open · absorbing · closed became open · closed; absorbing reads as open (claim T51)"
+  }
+ },
  "parameters": [
   {
    "key": "H",
@@ -222,20 +234,92 @@ window.DRV_PARAMS = {
    "note": "Share of the host cells that are senescent. They are not counted as targets (coverage is over the others) and, with the SASP factor below, they raise the threshold around them. In human dermis, p21-positive cells increased with age and made up to 15 % of cells in donors over 65, while p16 was almost undetectable ({cite:idda2020senescence}); in baboon skin, dermal fibroblasts with damaged telomeres reached over 15 % of all fibroblasts ({cite:jeyapalan2007primates}; the same finding in {cite:herbig2006primates}). Two human-skin full texts support the direction only: p16-positive dermal cells per field rise from 0.0 to 3.1 to 8.2 with age ({cite:ressler2006p16}) and SA-β-gal staining of the dermis appears in all but one donor over 69 y and in none under 40 y ({cite:dimri1995biomarker}); neither gives a share of cells, so the magnitude rests on Idda alone (claim A16). Markers of senescence in all cells, not a count of senescent fibroblasts: an analogue. The age of the basic model sets it, scaled by how p21-positive dermal cells rise with age (our mapping of the age groups, claim K4). It belongs to the tissue, so it is set here; it acts in the Robustness analysis, which leaves senescent cells out of the targets and lets them shift the threshold around them. The maps of the average tissue do not change with it."
   },
   {
-   "key": "deep",
+   "key": "depi",
+   "group": "tissue",
+   "label": "Diffusion in the epidermis",
+   "unit": "× dermal D",
+   "value": 0.5,
+   "min": 0,
+   "max": 1.5,
+   "log": false,
+   "step": 0.05,
+   "status": "src",
+   "sources": [
+    "kazama1988charge",
+    "rabilloud1988albumin",
+    "yoshida2013sg2",
+    "romgens2015diffusion",
+    "wei2018microneedle"
+   ],
+   "note": "The dermis does not end at the dermal–epidermal junction. Proteins cross its basement membrane, which filters them by charge ({cite:kazama1988charge}; plasma albumin is found inside the epidermis, {cite:rabilloud1988albumin}), and spread between the keratinocytes up to the tight junctions of the second granular layer, which stop them ({cite:yoshida2013sg2}). So the model goes on above the junction with a layer of viable epidermis, closed at its tight junctions (claim T50), whose diffusion coefficient is this share of the dermal D: half the dermal value for a 40 kDa dextran ({cite:romgens2015diffusion}); 1–8 µm²/s in the epidermis against 1–20 µm²/s in the dermis ({cite:wei2018microneedle}). 0 seals the junction: nothing passes, the model before 2026-11-19. See {help:model/top|Above the dermis}."
+  },
+  {
+   "key": "kepi",
+   "group": "tissue",
+   "label": "Uptake in the epidermis",
+   "unit": "× reticular dermis",
+   "value": 350,
+   "min": 0.01,
+   "max": 1000,
+   "log": true,
+   "status": "ana",
+   "sources": [
+    "wakefield1987receptor",
+    "clarke2009depletion",
+    "bergstresser1978counting",
+    "bauer2001langerhans"
+   ],
+   "note": "How fast the epidermis takes up the signal, per volume, relative to the reticular dermis. Every cell type tested carries high-affinity TGF-β receptors, and at low concentrations all bind a similar number of molecules per cell ({cite:wakefield1987receptor}); cells clear TGF-β by taking it up ({cite:clarke2009depletion}). The uptake per volume therefore follows the density of cells, and this factor is the density of keratinocytes against that of reticular fibroblasts. Counted cells make the keratinocytes 195–622 times as dense as mid-dermal fibroblasts ({cite:bergstresser1978counting}, {cite:bauer2001langerhans}; claim T54); the default, 350, is the middle of that range on a log scale. It takes the uptake per keratinocyte as equal to a fibroblast's, which nobody has compared directly. At this density the epidermis clears the signal within a few µm and acts nearly as an absorbing junction. The two ends are the two bounds: at 0.01 the epidermis takes up almost nothing, and what enters it comes back; at 1000 it clears whatever crosses the junction. The epidermis is as thick as the epidermis of the tissue less its stratum corneum. See {help:model/top|Above the dermis}."
+  },
+  {
+   "key": "hsc",
+   "group": "tissue",
+   "label": "Stratum corneum",
+   "unit": "µm",
+   "value": 18.3,
+   "min": 0,
+   "max": 60,
+   "log": false,
+   "step": 0.1,
+   "status": "src",
+   "sources": [
+    "sandbymoller2003epidermis"
+   ],
+   "note": "The dead top of the epidermis, above the tight junctions that close the epidermis to the signal: the viable epidermis of the model is the epidermis thickness less this. 18.3 ± 4.9 µm on the dorsal forearm of 71 volunteers ({cite:sandbymoller2003epidermis}). The basic model does not change it."
+  },
+  {
+   "key": "fat",
    "group": "tissue",
    "label": "Below the dermis",
-   "unit": "0 open · 1 absorbing · 2 closed",
+   "unit": "0 open · 1 closed",
    "value": 0,
    "min": 0,
-   "max": 2,
+   "max": 1,
    "log": false,
    "step": 1,
    "status": "des",
    "sources": [
-    "braverman1997microcirculation"
+    "li2011fascial",
+    "driskell2014dwat",
+    "milewski2015dermis"
    ],
-   "note": "What happens at the deep side of the dermis, the hypodermis. 0, open: the dermis simply continues — the model up to M3, and the middle case, in which below H the signal is cleared as in the dermis. 1, absorbing: the deep vascular plexus at the dermal–subcutaneous junction ({cite:braverman1997microcirculation}) clears everything that reaches it. 2, closed: nothing passes into the fat. No measurement says which holds; 1 and 2 bracket 0. It matters only for sites within a few λ of the dermis thickness. See {help:model/deep|Below the dermis}."
+   "note": "What happens at the deep side of the dermis. 0, open: the fat continues the dermis. No barrier is described between them: the fibrous bands of the subcutis are contiguous with the dermis ({cite:li2011fascial}) and adipose tissue encases the follicles under the reticular dermis ({cite:driskell2014dwat}). The fat keeps the dermis's D and has its own, slower clearance (Clearance in the fat). 1, closed: nothing passes into the fat, the bound for a fat the signal cannot enter; its diffusion was never measured. The interface is no sink: the subcutis clears more slowly than the dermis ({cite:milewski2015dermis}), so the absorbing deep side of earlier versions is gone and an old file or link with it reads as open (claim T51). It matters only for sites within a few λ of the dermis thickness. See {help:model/deep|Below the dermis}."
+  },
+  {
+   "key": "kfat",
+   "group": "tissue",
+   "label": "Clearance in the fat",
+   "unit": "× dermis at H",
+   "value": 0.16,
+   "min": 0.01,
+   "max": 1,
+   "log": true,
+   "status": "src",
+   "sources": [
+    "milewski2015dermis",
+    "omahony2004igg"
+   ],
+   "note": "How fast the fat clears the signal, relative to the dermis at its deep side, when the fat is open. Absorption rate constants of eight peptides and proteins were 2- to 20-fold higher from the dermis than from the subcutis ({cite:milewski2015dermis}); an IgG depot cleared about three times faster after intradermal injection ({cite:omahony2004igg}). The default, 0.16, is the middle of 1/20 to 1/2 on a log scale. Absorption from a depot also holds its spread, so this is the nearest measured ratio, not a local rate (claim T51). 1 is the dermis continued, the open deep side before 2026-11-19. See {help:model/deep|Below the dermis}."
   },
   {
    "key": "sec",
@@ -24256,12 +24340,26 @@ window.DRV_PARAMS = {
    "checked": "full text",
    "what": "LC-OCT of 109 Asian women aged 20–70 years in China against 100 Caucasian women of the same method in France: at the cheekbone the viable epidermis is 15.4 % and the stratum corneum 9.6 % thicker on average across the age groups; at the temple and the mandible only in two and one of five age groups."
   },
+  "bauer2001langerhans": {
+   "short": "Bauer et al. 2001",
+   "cite": "Bauer J, Bahmer FA, Wörl J, et al.. A Strikingly Constant Ratio Exists Between Langerhans Cells and Other Epidermal Cells in Human Skin. A Stereologic Study Using the Optical Disector Method and the Confocal Laser Scanning Microscope11Presented in part at the International Investigative Dermatology 1998, Cologne, Germany 1998.. Journal of Investigative Dermatology. 2001;116:313–318.",
+   "doi": "10.1046/j.1523-1747.2001.01247.x",
+   "checked": "abstract",
+   "what": "Breast skin of eight women, optical disector: 73,952 ± 19,426 epidermal cells other than Langerhans cells per mm² of skin."
+  },
   "belyakov2005skin": {
    "short": "Belyakov et al. 2005",
    "cite": "Belyakov OV, Mitchell SA, Parikh D, et al.. Biological effects in unirradiated human tissue induced by radiation damage up to 1 mm away. Proceedings of the National Academy of Sciences. 2005;102:14203–14208.",
    "doi": "10.1073/pnas.0505020102",
    "checked": "abstract",
    "what": "In a 3D normal human tissue model, unirradiated cells up to 1 mm from irradiated cells showed more micronuclei (1.7-fold) and apoptosis (2.8-fold)."
+  },
+  "bergstresser1978counting": {
+   "short": "Bergstresser et al. 1978",
+   "cite": "Bergstresser PR, Pariser RJ, Taylor JR. Counting and Sizing of Epidermal Cells in Normal Human Skin. Journal of Investigative Dermatology. 1978;70:280–284.",
+   "doi": "10.1111/1523-1747.ep12541516",
+   "checked": "abstract",
+   "what": "Forearm, back and thigh of 6 men: 452–487 nucleated epidermal cells per 10⁴ µm² of skin."
   },
   "bonnier2023lcoct": {
    "short": "Bonnier et al. 2023",
@@ -24333,6 +24431,13 @@ window.DRV_PARAMS = {
    "checked": "abstract",
    "what": "Punch biopsies of 39 facial subunits from ten cadaveric heads: facial epidermis 29.6 µm (posterior auricular) to 62.6 µm (upper lip), dermis 759 µm (upper medial eyelid) to 1969 µm (lower nasal sidewall)."
   },
+  "clarke2009depletion": {
+   "short": "Clarke et al. 2009",
+   "cite": "Clarke DC, Brown ML, Erickson RA, et al.. Transforming Growth Factor β Depletion Is the Primary Determinant of Smad Signaling Kinetics. Molecular and Cellular Biology. 2009;29:2443–2455.",
+   "doi": "10.1128/mcb.01443-08",
+   "checked": "abstract",
+   "what": "Cells deplete TGF-β from their medium by uptake through the type II receptor and by reversible binding to the cell surface; the rate of depletion sets how long Smad signalling lasts."
+  },
   "coppe2008sasp": {
    "short": "Coppé et al. 2008",
    "cite": "Coppé JP, Patil CK, Rodier F, et al.. Senescence-Associated Secretory Phenotypes Reveal Cell-Nonautonomous Functions of Oncogenic RAS and the p53 Tumor Suppressor. PLoS Biology. 2008;6:e301.",
@@ -24395,6 +24500,13 @@ window.DRV_PARAMS = {
    "doi": "10.1016/j.jconrel.2010.08.008",
    "checked": "abstract",
    "what": "Measured by optical coherence tomography in porcine skin, 600 µm polymeric microneedles penetrated 330 µm at 4.4 N per array and 520 µm at 16.4 N; needle interspacing did not change the depth."
+  },
+  "driskell2014dwat": {
+   "short": "Driskell et al. 2014",
+   "cite": "Driskell RR, Jahoda CAB, Chuong C, et al.. Defining dermal adipose tissue. Experimental Dermatology. 2014;23:629–631.",
+   "doi": "10.1111/exd.12450",
+   "checked": "abstract",
+   "what": "A thick layer of adipocytes underlies the reticular dermis and encases mature hair follicles in rodents and humans; proposed name: dermal white adipose tissue."
   },
   "escoffier1989mechanical": {
    "short": "Escoffier et al. 1989",
@@ -24515,6 +24627,13 @@ window.DRV_PARAMS = {
    "checked": "abstract",
    "what": "In baboon skin, dermal fibroblasts with damaged telomeres accumulate with age and reach over 15 % of all fibroblasts."
   },
+  "kazama1988charge": {
+   "short": "Kazama et al. 1988",
+   "cite": "Kazama T, Yaoita E, Ito M, et al.. Charge-selective Permeability of Dermo-epidermal Junction: Tracer Studies with Cationic and Anionic Ferritins. Journal of Investigative Dermatology. 1988;91:560–565.",
+   "doi": "10.1111/1523-1747.ep12476939",
+   "checked": "abstract",
+   "what": "Newborn rat skin: cationic ferritins passed the lamina densa of the dermal–epidermal junction in large numbers, anionic ones far fewer; a charge- selective filter, less selective than the glomerular basement membrane."
+  },
   "kelley1993autoinduction": {
    "short": "Kelley et al. 1993",
    "cite": "Kelley J, Shull S, Walsh JJ, et al.. Auto-induction of Transforming Growth Factor- β in Human Lung Fibroblasts. American Journal of Respiratory Cell and Molecular Biology. 1993;8:417–424.",
@@ -24577,6 +24696,13 @@ window.DRV_PARAMS = {
    "doi": "10.1016/j.vaccine.2007.05.046",
    "checked": "abstract",
    "what": "20 MHz ultrasound in 342 adults: mean skin thickness (epidermis plus dermis) 2.02 mm at the deltoid and 1.91 mm at the waist; the authors conclude a 1.5 mm needle inserted perpendicularly reaches the dermis regardless of gender, age, ethnicity and body mass index."
+  },
+  "li2011fascial": {
+   "short": "Li & Ahn 2011",
+   "cite": "Li W, Ahn AC. Subcutaneous Fascial Bands—A Qualitative and Morphometric Analysis. PLoS ONE. 2011;6:e23987.",
+   "doi": "10.1371/journal.pone.0023987",
+   "checked": "abstract",
+   "what": "Ultrasound of 28 volunteers: the fibrous bands of the subcutis are contiguous with the dermis and the epimysium."
   },
   "liao2026chromatin": {
    "short": "Liao et al. 2026",
@@ -24655,6 +24781,13 @@ window.DRV_PARAMS = {
    "checked": "full text",
    "what": "41 French and 41 Brazilian women aged 40–65 years, confocal microscopy and ultrasound at the face and the forearm: viable epidermis and dermis not significantly different between the two groups."
   },
+  "milewski2015dermis": {
+   "short": "Milewski et al. 2015",
+   "cite": "Milewski M, Manser K, Nissley BP, et al.. Analysis of the absorption kinetics of macromolecules following intradermal and subcutaneous administration. European Journal of Pharmaceutics and Biopharmaceutics. 2015;89:134–144.",
+   "doi": "10.1016/j.ejpb.2014.11.013",
+   "checked": "abstract",
+   "what": "Eight peptides and proteins in humans and minipigs: apparent absorption rate constants 2- to 20-fold higher from the dermis than from the subcutis."
+  },
   "miller2003density": {
    "short": "Miller et al. 2003",
    "cite": "Miller CC, Godeau G, Lebreton‐DeCoster C, et al.. Validation of a morphometric method for evaluating fibroblast numbers in normal and pathologic tissues. Experimental Dermatology. 2003;12:403–411.",
@@ -24703,6 +24836,13 @@ window.DRV_PARAMS = {
    "doi": "10.1117/1.1645795",
    "checked": "full text",
    "what": "Confocal microscopy and OCT of the forearm and the temple in 15 volunteers aged 19–24 and 15 aged 54–57 years: the epidermis above the papillae is 47 and 50 µm thick on the forearm, the epidermis to the base of the rete ridges 89 and 75 µm; the dermal–epidermal junction flattens."
+  },
+  "omahony2004igg": {
+   "short": "O’Mahony et al. 2004",
+   "cite": "O’Mahony S, Rose SL, Chilvers AJ, et al.. Finding an optimal method for imaging lymphatic vessels of the upper limb. European Journal of Nuclear Medicine and Molecular Imaging. 2004;31:555–563.",
+   "doi": "10.1007/s00259-003-1399-3",
+   "checked": "abstract",
+   "what": "Twelve volunteers: the depot disappearance rate constant of radiolabelled IgG was about three times higher after intradermal than after subcutaneous injection."
   },
   "oyleryaniv2017niches": {
    "short": "Oyler-Yaniv et al. 2017",
@@ -24759,6 +24899,13 @@ window.DRV_PARAMS = {
    "doi": "10.1111/j.1600-0846.2009.00365.x",
    "checked": "abstract",
    "what": "In about 400 women of four ethnic groups, papillary dermis thickness appeared quite constant irrespective of age or ethnic group."
+  },
+  "rabilloud1988albumin": {
+   "short": "Rabilloud et al. 1989",
+   "cite": "Rabilloud T, Asselineau D, Darmon M. Presence of serum albumin in normal human epidermis: Possible implications for the nutrition and physiology of stratified epithelia. Molecular Biology Reports. 1989;13:213–219.",
+   "doi": "10.1007/bf00788173",
+   "checked": "abstract",
+   "what": "Plasma proteins such as albumin are present in normal human epidermis: large molecules diffuse through the epidermal basement membrane."
   },
   "raphael2013depth": {
    "short": "Raphael et al. 2013",
@@ -24907,6 +25054,13 @@ window.DRV_PARAMS = {
    "checked": "full text",
    "what": "Biopsies of the sun-protected inner upper arm of 286 persons aged 44 to 81 years: epidermal thickness 42.4, 42.6, 40.2 and 38.2 µm by age quartile, with a flattening of the epidermis."
   },
+  "wakefield1987receptor": {
+   "short": "Wakefield et al. 1987",
+   "cite": "Wakefield LM, Smith DM, Masui T, et al.. Distribution and modulation of the cellular receptor for transforming growth factor-beta.. The Journal of cell biology. 1987;105:965–975.",
+   "doi": "10.1083/jcb.105.2.965",
+   "checked": "abstract",
+   "what": "High-affinity TGF-β receptors (Kd 1–60 pM) on every cell type tested; at low concentrations all cells bind a similar number of molecules per cell."
+  },
   "wang2023density": {
    "short": "Wang et al. 2023",
    "cite": "Wang S, Yu R, Fan W, et al.. Detection of skin thickness and density in healthy Chinese people by using high‐frequency ultrasound. Skin Research and Technology. 2023;29:e13219.",
@@ -24948,6 +25102,13 @@ window.DRV_PARAMS = {
    "doi": "10.1117/1.1792650",
    "checked": "abstract",
    "what": "Controlling internal stress during the post-exposure bake gave SU-8 aspect ratios up to 40:1 in isolated open-field structures 1–1.5 mm thick with a standard broadband UV source."
+  },
+  "yoshida2013sg2": {
+   "short": "Yoshida et al. 2013",
+   "cite": "Yoshida K, Yokouchi M, Nagao K, et al.. Functional tight junction barrier localizes in the second layer of the stratum granulosum of human epidermis. Journal of Dermatological Science. 2013;71:89–99.",
+   "doi": "10.1016/j.jdermsci.2013.04.021",
+   "checked": "abstract",
+   "what": "Human skin ex vivo: proteins injected below the epidermis are stopped by the tight junctions of the second granular layer."
   },
   "zi2011dynamics": {
    "short": "Zi et al. 2011",

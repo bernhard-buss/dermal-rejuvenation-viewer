@@ -358,7 +358,7 @@ a.cite{text-decoration:none;border-bottom:1px dotted var(--teal)}
 <script src="data/parameters.js"></script>
 <script>
 "use strict";
-const VERSION = "0.19.1";
+const VERSION = "0.20.0";
 const $ = id => document.getElementById(id);
 function esc(s) { return String(s).replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); }
 
@@ -426,14 +426,31 @@ function tissueProfile(p) {                                        // `cells` sc
   const layered = dermisModel(p) > 0, f = Math.min(p.hpap, p.H) / p.H;
   const meanRho = layered ? p.rpap * f + (1 - f) : 1;
   const dDej = Math.min(p.ddej, p.D);
-  return {                                                         // below the dermis (z > H) the medium stays as at H
-    layered, kChem, kCell, meanRho,
-    density: z => layered ? (Math.min(z, p.H) < p.hpap ? p.rpap : 1) / meanRho : 1,
-    D: z => layered ? p.D - (p.D - dDej) * Math.exp(-Math.min(z, p.H) / Math.max(p.tdej, 1e-9)) : p.D,
-    k(z) { return layered ? kChem + kCell * this.density(z) : kChem + kCell; },
-    lam(z) { return Math.sqrt(this.D(z) / this.k(z)); }
+  // above the junction (z < 0) the viable epidermis, closed at its tight junctions at −Le (claim T50);
+  // below the dermis (z > H, when the fat is open) the dermis's D at H and kfat times its clearance (claim T51)
+  const De = p.depi * p.D, ke = kChem + kCell * p.kepi / meanRho, Le = Math.max(p.hep - p.hsc, 0), kfat = p.kfat, closed = fatClosed(p);
+  return {
+    layered, kChem, kCell, meanRho, De, ke, Le, kfat, closed,
+    density: z => layered ? (Math.min(Math.max(z, 0), p.H) < p.hpap ? p.rpap : 1) / meanRho : 1,
+    D: z => z < 0 ? De : layered ? p.D - (p.D - dDej) * Math.exp(-Math.min(Math.max(z, 0), p.H) / Math.max(p.tdej, 1e-9)) : p.D,
+    k(z) { if (z < 0) return ke; const v = layered ? kChem + kCell * this.density(z) : kChem + kCell; return z > p.H ? kfat * v : v; },
+    lam(z) { return Math.sqrt(this.D(z) / this.k(z)); },
+    topConductance(kap) {                                          // into the epidermis per unit concentration at the junction: De·m·tanh(m·Le)
+      if (De <= 0 || Le <= 0) return 0;
+      const m = Math.sqrt(kap * kap + ke / De); return De * m * Math.tanh(m * Le);
+    },
+    deepConductance(kap) {                                         // into the fat: a half-space, 0 if closed
+      if (closed) return 0;
+      const Dh = this.D(p.H), kh = kfat * this.k(p.H); return Dh * Math.sqrt(kap * kap + kh / Dh);
+    }
   };
 }
+const fatClosed = p => Math.round(p.fat ?? 0) >= 1;               // below the dermis: 0 open, 1 closed
+function reflection(D, lam, g) {                                  // image weight of a boundary of conductance g: 1 closed, −1 clearing, 0 the same medium
+  const s = D / lam, r = (s - g) / (s + g);
+  return Math.abs(r) < 1e-12 ? 0 : r;
+}
+const boundaryWeights = (p, D, lam, pr = tissueProfile(p)) => [reflection(D, lam, pr.topConductance(0)), reflection(D, lam, pr.deepConductance(0))];
 const cellularShare = p => { const t = tissueProfile(p); const s = t.kChem + t.kCell; return s > 0 ? t.kCell / s : 0; };
 function slabLambda(p) {                                           // uniform dermis at this cellularity
   if ((p.cells ?? 1) === 1) return p.lam;
@@ -443,11 +460,12 @@ function tissueEffective(p, z0, n = 400) {                         // sources at
   const pr = tissueProfile(p), lam0 = slabLambda(p);
   if (!pr.layered) return { D: p.D, k: p.D / (lam0 * lam0), lam: lam0, scale: lam0 / p.lam };
   const zs = z0 === undefined || z0 === null ? [Math.min(Math.max(p.z0, 20), p.H - 20)] : (Array.isArray(z0) ? z0 : [z0]);
+  const a = reflection(p.D, lam0, pr.topConductance(0));
   let sw = 0, sD = 0, sk = 0;
   for (let i = 0; i < n; i++) {
     const z = i / (n - 1) * p.H;
     let w = 0;
-    for (const s of zs) w += Math.exp(-Math.abs(z - s) / lam0) + Math.exp(-(z + s) / lam0);
+    for (const s of zs) w += Math.exp(-Math.abs(z - s) / lam0) + a * Math.exp(-(z + s) / lam0);   // the image in the junction, with its weight
     sw += w; sD += pr.D(z) * w; sk += pr.k(z) * w;
   }
   const D = sD / sw, k = sk / sw, lam = Math.sqrt(D / k);
@@ -512,20 +530,20 @@ function levelShift(pattern, l, a) {
 }
 const topDownSpacing = (pattern, a, levels) => levels <= 1 ? a : (pattern === "hex" ? a / SQRT3 : a / Math.SQRT2);
 const r9 = z => Math.round(z * 1e9) / 1e9;
-const deepMode = p => Math.min(2, Math.max(0, Math.round(p.deep ?? 0)));
 // --- the depth-resolved kernel (dermsim.depth) ------------------------------------
 // The dermis changes with depth but not sideways, so on a disc of radius P around a
 // site (c = 0 at its rim, P = R + 9.2 λmax) the field is a Fourier–Bessel series
 //   c(ρ, z) = Σ_n u_n(z) J0(κ_n ρ),  κ_n = j_n/P,  J0(j_n) = 0,
-// and each mode obeys −(D u′)′ + (D κ² + k) u = s_n(z) with the real D(z), k(z), no flux
-// at the junction and the deep side as set (open: exact radiation condition into the
-// medium as it is at H; absorbing; closed). Finite volumes in depth, one tridiagonal
+// and each mode obeys −(D u′)′ + (D κ² + k) u = s_n(z) with the real D(z), k(z), the epidermis
+// above the junction as an exact condition (D u′ = h u, h = De·m·tanh(m·Le), m = √(κ² + ke/De)) and
+// the fat below (open: exact radiation condition into a half-space of the dermis's D at H and kfat
+// times its clearance; closed: no flux). Finite volumes in depth, one tridiagonal
 // system per mode; the papillary boundary is on a cell face. The source sphere is a
 // disc of radius √(R² − (z − zs)²) at each depth, with transform ρ J1(κρ)/κ, rescaled
 // so that the discrete total is exact (a cluster cut by a boundary keeps its dose).
 // J0 and J1 are computed from their definitions with a fixed number of terms, exactly
 // as dermsim.depth does, so both give the same tables.
-const DEPTH = { NRHO: 384, KR: 60, KR_FINE: 120, NK_MIN: 96, HP: 2.5, HR: 10, SUB: 4, CUT: 9.2, X_SERIES: 12, N_SERIES: 34, N_ASYM: 24, CACHE_FULL: 48, CACHE_COLS: 600 };
+const DEPTH = { NRHO: 384, KR: 60, KR_FINE: 120, NK_MIN: 96, HP: 2.5, HR: 10, TF: 10, HF: 0.625, SUB: 4, CUT: 9.2, X_SERIES: 12, N_SERIES: 34, N_ASYM: 24, CACHE_FULL: 48, CACHE_COLS: 600 };
 function besselJ(x, nu) {                                          // J0 (nu = 0) or J1 (nu = 1), x ≥ 0
   if (x < DEPTH.X_SERIES) {                                        // power series
     const q = x * x / 4; let term = 1, s = 1;
@@ -561,23 +579,26 @@ function depthBasis(nk) {                                          // J0(j_n · 
   return DEPTH_BASIS;
 }
 function depthGrid(p) {                                            // cells of ~HP µm to the papillary boundary (on a face), ~HR µm below
-  const pr = tissueProfile(p), H = p.H, zg = deepMode(p) ? H : H + p.R;   // open below: R past the dermis
-  const hp = (pr.layered && p.hpap > 0 && p.hpap < H) ? p.hpap : 0, zf = [0];
-  if (hp > 0) { const np = Math.max(2, Math.floor(hp / DEPTH.HP + 0.5)); for (let j = 0; j < np; j++) zf.push(hp * (j + 1) / np); }
-  const hr = Math.min(DEPTH.HR, Math.max(DEPTH.HP, p.R / 8)), nr = Math.max(2, Math.ceil((zg - hp) / hr - 1e-9));
-  for (let j = 0; j < nr; j++) zf.push(hp + (zg - hp) * (j + 1) / nr);
-  const nz = zf.length - 1, zc = new Float64Array(nz), dz = new Float64Array(nz), D = new Float64Array(nz), k = new Float64Array(nz), zn = new Float64Array(nz + 1);
+  const pr = tissueProfile(p), H = p.H, zg = pr.closed ? H : H + p.R;   // open below: R past the dermis, H on a face
+  const hp = (pr.layered && p.hpap > 0 && p.hpap < H) ? p.hpap : 0, zf = [];
+  const tf = Math.min(DEPTH.TF, 0.5 * (hp > 0 ? hp : H)), nt = Math.max(1, Math.floor(tf / DEPTH.HF + 0.5));   // a fine zone under the junction:
+  for (let j = 0; j <= nt; j++) zf.push(tf * j / nt);              // the epidermis may clear fast and the field bend within a few µm
+  if (hp > 0) { const np = Math.max(2, Math.floor((hp - tf) / DEPTH.HP + 0.5)); for (let j = 0; j < np; j++) zf.push(tf + (hp - tf) * (j + 1) / np); }
+  const lo = hp > 0 ? hp : tf, hr = Math.min(DEPTH.HR, Math.max(DEPTH.HP, p.R / 8)), nr = Math.max(2, Math.ceil((H - lo) / hr - 1e-9));
+  for (let j = 0; j < nr; j++) zf.push(lo + (H - lo) * (j + 1) / nr);
+  if (zg > H) { const nf = Math.max(1, Math.ceil((zg - H) / hr - 1e-9)); for (let j = 0; j < nf; j++) zf.push(H + (zg - H) * (j + 1) / nf); }   // the fat
+  const nz = zf.length - 1, zc = new Float64Array(nz), dz = new Float64Array(nz), D = new Float64Array(nz), k = new Float64Array(nz), zn = new Float64Array(nz + 2);
   let lamMax = 0;
   for (let j = 0; j < nz; j++) {
-    zc[j] = 0.5 * (zf[j] + zf[j + 1]); dz[j] = zf[j + 1] - zf[j]; D[j] = pr.D(zc[j]); k[j] = pr.k(zc[j]); zn[j] = zc[j];
-    lamMax = Math.max(lamMax, Math.sqrt(D[j] / k[j]));
+    zc[j] = 0.5 * (zf[j] + zf[j + 1]); dz[j] = zf[j + 1] - zf[j]; D[j] = pr.D(zc[j]); k[j] = pr.k(zc[j]); zn[1 + j] = zc[j];
+    if (zc[j] <= H) lamMax = Math.max(lamMax, Math.sqrt(D[j] / k[j]));   // the reach is the dermis's (claim T51)
   }
-  zn[nz] = zg;
-  return { zf, zc, dz, zn, zg, D, k, lamMax, nz, hp };
+  zn[nz + 1] = zg;                                                 // node 0 is the junction, z = 0
+  return { zf, zc, dz, zn, zg, D, k, lamMax, nz, hp, pr };
 }
 const tableRadius = p => p.R + DEPTH.CUT * depthGrid(p).lamMax;    // in-plane reach of a table
 const nModes = (P, R, kr = DEPTH.KR) => Math.min(DEPTH.NRHO, Math.max(DEPTH.NK_MIN, Math.ceil(kr * P / (Math.PI * Math.max(R, 1e-9)))));
-function depthSolve(p, zs) {                                       // u_n at the nodes (cell centres and the deep end), unit source at depth zs
+function depthSolve(p, zs) {                                       // u_n at the nodes (the junction, cell centres, the deep end), unit source at depth zs
   // a cluster that the junction cuts (the signal decays over 10–40 µm right under it) gets twice the radial modes
   const g = depthGrid(p), R = p.R, P = R + DEPTH.CUT * g.lamMax, nk = nModes(P, R, g.hp > 0 && zs - R < 0 ? DEPTH.KR_FINE : DEPTH.KR), jz = j0Zeros(nk), B = depthBasis(nk), nz = g.nz, SUB = DEPTH.SUB;
   const kap = new Float64Array(nk); for (let n = 0; n < nk; n++) kap[n] = jz[n] / P;
@@ -601,14 +622,15 @@ function depthSolve(p, zs) {                                       // u_n at the
     for (let n = 0; n < nk; n++) S[n * nz + j] = 1 / (2 * Math.PI);
   } else for (let i = 0; i < S.length; i++) S[i] = S[i] / vol;
   const cond = new Float64Array(nz - 1); for (let j = 0; j < nz - 1; j++) cond[j] = 1 / (g.dz[j] / (2 * g.D[j]) + g.dz[j + 1] / (2 * g.D[j + 1]));
-  const deep = deepMode(p), gEnd = g.D[nz - 1] / (g.dz[nz - 1] / 2), u = new Float64Array(nk * (nz + 1)), cp = new Float64Array(nz), dp = new Float64Array(nz);
+  const closed = g.pr.closed, gEnd = g.D[nz - 1] / (g.dz[nz - 1] / 2), gTop = g.D[0] / (g.dz[0] / 2), nzn = nz + 2, u = new Float64Array(nk * nzn), cp = new Float64Array(nz), dp = new Float64Array(nz);
   for (let n = 0; n < nk; n++) {                                   // Thomas algorithm, mode by mode
-    const k2 = kap[n] * kap[n], wn = B.w[n] / (P * P), mu = g.D[nz - 1] * Math.sqrt(k2 + g.k[nz - 1] / g.D[nz - 1]);
+    const k2 = kap[n] * kap[n], wn = B.w[n] / (P * P), mu = g.D[nz - 1] * Math.sqrt(k2 + g.k[nz - 1] / g.D[nz - 1]), ht = g.pr.topConductance(kap[n]);
     const diag = j => {
       let v = g.k[j] * g.dz[j] + k2 * (g.D[j] * g.dz[j]);
       if (j < nz - 1) v += cond[j];
       if (j > 0) v += cond[j - 1];
-      if (j === nz - 1) { if (deep === 0) v += gEnd * mu / (gEnd + mu); else if (deep === 1) v += gEnd; }   // open: half cell in series with the half-space
+      if (j === 0) v += gTop * ht / (gTop + ht);                   // the first half cell in series with the epidermis
+      if (j === nz - 1 && !closed) v += gEnd * mu / (gEnd + mu);   // open: the last half cell in series with the fat
       return v;
     };
     const d0 = diag(0); cp[0] = -cond[0] / d0; dp[0] = S[n * nz] * wn / d0;
@@ -617,10 +639,11 @@ function depthSolve(p, zs) {                                       // u_n at the
       if (j < nz - 1) cp[j] = -cond[j] / m;
       dp[j] = (S[n * nz + j] * wn + cond[j - 1] * dp[j - 1]) / m;
     }
-    const o = n * (nz + 1);
+    const o = n * nzn + 1;                                          // node 0 is the junction
     u[o + nz - 1] = dp[nz - 1];
     for (let j = nz - 2; j >= 0; j--) u[o + j] = dp[j] - cp[j] * u[o + j + 1];
-    u[o + nz] = deep === 0 ? u[o + nz - 1] * gEnd / (gEnd + mu) : deep === 2 ? u[o + nz - 1] : 0;   // the value at the deep end
+    u[o - 1] = u[o] * gTop / (gTop + ht);                           // the value at the junction
+    u[o + nz] = closed ? u[o + nz - 1] : u[o + nz - 1] * gEnd / (gEnd + mu);   // the value at the deep end
   }
   return { u, g, P, nk };
 }
@@ -638,7 +661,7 @@ function cachedTable(store, limit, key, build) {
   while (store.size > limit) store.delete(store.keys().next().value);
   return t;
 }
-const tableKey = (p, zs) => [p.H, p.D, p.lam, p.thalfc, p.cells ?? 1, p.ddej, p.tdej, p.hpap, p.rpap, p.R, dermisModel(p) > 0 ? 1 : 0, deepMode(p), r9(zs)].join(",");
+const tableKey = (p, zs) => [p.H, p.D, p.lam, p.thalfc, p.cells ?? 1, p.ddej, p.tdej, p.hpap, p.rpap, p.R, p.depi, p.kepi, p.hep, p.hsc, p.kfat, dermisModel(p) > 0 ? 1 : 0, fatClosed(p) ? 1 : 0, r9(zs)].join(",");
 function synthesise(S, nodesU, nzn, zn) {                          // c[i, j] = Σ_n J0(j_n i/NRHO) u_n(z_j)
   const B = depthBasis(S.nk), N = DEPTH.NRHO, c = new Float64Array((N + 1) * nzn);
   for (let i = 0; i < N; i++) for (let n = 0; n < S.nk; n++) {
@@ -648,11 +671,11 @@ function synthesise(S, nodesU, nzn, zn) {                          // c[i, j] = 
   return { P: S.P, drho: S.P / N, zn, nzn, c, lamMax: S.g.lamMax, modes: S.nk };
 }
 function siteTable(p, zs) {                                        // c(ρ, z) around a site at depth zs, every depth of the grid (1 molecule/s)
-  return cachedTable(TABLES, DEPTH.CACHE_FULL, tableKey(p, zs), () => { const S = depthSolve(p, zs); return synthesise(S, S.u, S.g.nz + 1, S.g.zn); });
+  return cachedTable(TABLES, DEPTH.CACHE_FULL, tableKey(p, zs), () => { const S = depthSolve(p, zs); return synthesise(S, S.u, S.g.zn.length, S.g.zn); });
 }
 function siteColumns(p, zs, zOut) {                                // the same at the depths zOut only: column m is c(ρ, zOut[m])
   return cachedTable(COLUMNS, DEPTH.CACHE_COLS, tableKey(p, zs) + "|" + zOut.join(","), () => {
-    const S = depthSolve(p, zs), nzn = S.g.nz + 1, m = zOut.length, uo = new Float64Array(S.nk * m);
+    const S = depthSolve(p, zs), nzn = S.g.zn.length, m = zOut.length, uo = new Float64Array(S.nk * m);
     zOut.forEach((z, c) => { const [j, w] = zIndex(S.g.zn, z); for (let n = 0; n < S.nk; n++) uo[n * m + c] = S.u[n * nzn + j] * (1 - w) + S.u[n * nzn + j + 1] * w; });
     return synthesise(S, uo, m, Float64Array.from(zOut));
   });
@@ -674,7 +697,7 @@ function tableCol(t, rho, m) {                                     // look-up in
 // beyond which a site contributes nothing. The one place where the dermis model enters.
 function makeLevel(p, z, zOut) {
   const d = derived(p, z), f = kernel(p, d), resolved = dermisModel(p) === 2;
-  const rc = resolved ? tableRadius(p) : d.rc, rc2 = rc * rc, imgs = resolved ? [] : images(z, p.H, deepMode(p), rc);
+  const rc = resolved ? tableRadius(p) : d.rc, rc2 = rc * rc, imgs = resolved ? [] : images(z, p.H, ...boundaryWeights(p, d.D, d.lam), rc);
   let tab = null, cols = null, zq = NaN, jq = 0, wq = 0;
   const lev = { p, z, d, f, resolved, rc, rc2, imgs, zOut: zOut ?? null,
     table() { return tab || (tab = siteTable(p, z)); },
@@ -706,12 +729,12 @@ function levelKernels(p, depths, zOut) {                           // one level 
   return out;
 }
 const cutoff = (p, ks) => Math.max(...(ks ?? levelKernels(p)).map(k => k.rc));   // no site contributes beyond this
-function images(zs, H, deep, reach) {                              // [depth, sign]: junction, and the deep side if bounded
-  if (deep === 0) return [[zs, 1], [-zs, 1]];
-  const sg = deep === 1 ? -1 : 1, N = Math.ceil((reach + 2 * H) / (4 * H)), out = [];
+function images(zs, H, a, b, reach) {                              // [depth, weight]: the junction reflects with a, the deep side with b (boundaryWeights)
+  if (b === 0) return [[zs, 1], [-zs, a]];                         // between them the images repeat every 2H
+  const N = Math.ceil((reach + H) / (2 * H)) + 1, out = [];
   for (let n = -N; n <= N; n++) {
-    const o = 4 * n * H;
-    for (const [zi, g] of [[zs + o, 1], [-zs + o, 1], [2 * H - zs + o, sg], [2 * H + zs + o, sg]]) if (zi > -reach && zi < H + reach) out.push([zi, g]);
+    const o = 2 * n * H, g1 = (a * b) ** Math.abs(n), g2 = n >= 1 ? a ** (n - 1) * b ** n : a ** (1 - n) * b ** (-n);
+    for (const [zi, g] of [[zs + o, g1], [o - zs, g2]]) if (zi > -reach && zi < H + reach && g !== 0) out.push([zi, g]);
   }
   return out;
 }
@@ -953,11 +976,11 @@ function interpT(tab, row, t) {
 }
 function layoutField(tabs, nodes, media, Dref, p, pattern, n, dz, z0, o, zs) {   // nz × nu² values at the sample depths zs, current cells per site
   // each level: the tables of the two λ nodes around its own λ, blended, scaled by Dref/D_l;
-  // the images (junction, deep side) are further look-ups with their sign
+  // the images (junction, deep side) are further look-ups with their weights
   const nu = o.nu, nz = o.nz, F = new Float64Array(nz * nu * nu), depths = levelDepths({ ...p, levels: n, dz, z0 });
-  const deep = deepMode(p), reach = p.R + o.cut_lam * Math.max(...nodes);
+  const pr = tissueProfile(p), reach = p.R + o.cut_lam * Math.max(...nodes);
   depths.forEach((zl, l) => {
-    const sh = pattern === "hex" ? (l % 3) * nu / 3 : (l % 2) * nu / 2, [Dl, lamL] = media[l], imgs = images(zl, p.H, deep, reach), sD = Dref / Dl;
+    const sh = pattern === "hex" ? (l % 3) * nu / 3 : (l % 2) * nu / 2, [Dl, lamL] = media[l], imgs = images(zl, p.H, ...boundaryWeights(p, Dl, lamL, pr), reach), sD = Dref / Dl;
     let i = 0, w = 0;
     if (nodes.length > 1) { i = Math.max(0, Math.min(nodes.length - 2, nodes.filter(x => x <= lamL).length - 1)); w = (1 / lamL - 1 / nodes[i]) / (1 / nodes[i + 1] - 1 / nodes[i]); }
     for (let m = 0; m < nz; m++) {
@@ -1154,7 +1177,7 @@ function pathMedium(q, fRho, fD, pos, sites) {                     // the variat
   const g = [0, 1, 2].map(i => Float64Array.from({ length: n[i] }, (_, j) => lo[i] + j * step[i]));
   const fr = fieldOnGrid(fRho, q.sigrho, g[0], g[1], g[2]), fd = fieldOnGrid(fD, q.sigd, g[0], g[1], g[2]);
   const nx = n[0], ny = n[1], nz = n[2], s = new Float64Array(nx * ny * nz);
-  for (let iz = 0, o = 0; iz < nz; iz++) { const k0 = pr.k(g[2][iz]); for (let i = 0; i < nx * ny; i++, o++) s[o] = Math.sqrt((pr.kChem + (k0 - pr.kChem) * fr[o]) / (k0 * fd[o])); }
+  for (let iz = 0, o = 0; iz < nz; iz++) { const k0 = pr.k(Math.min(Math.max(g[2][iz], 0), q.H)); /* the dermis: its last row is H, not the fat */ for (let i = 0; i < nx * ny; i++, o++) s[o] = Math.sqrt((pr.kChem + (k0 - pr.kChem) * fr[o]) / (k0 * fd[o])); }
   const idx = (v, i) => { const t = Math.min(Math.max((v - lo[i]) / step[i], 0), n[i] - 1), j = Math.min(Math.floor(t), n[i] - 2); return [j, t - j]; };
   function sAt(x, y, z) {                                          // trilinear, clamped to the grid
     const [jx, fx] = idx(x, 0), [jy, fy] = idx(y, 1), [jz, fz] = idx(z, 2), b = (jz * ny + jy) * nx + jx, u = b + nx * ny;
@@ -1564,16 +1587,17 @@ function drawSection(nx) {
   ctx.setLineDash([3, 5]); ctx.strokeStyle = "rgba(27,42,51,.55)"; ctx.beginPath(); ctx.moveTo(0, T + p.zv * kz); ctx.lineTo(W, T + p.zv * kz); ctx.stroke(); ctx.setLineDash([]);
   const k = ks(secC); ctx.font = font(secC, 11);
   const label = (txt, x0, y0) => { const w = ctx.measureText(txt).width; ctx.fillStyle = "rgba(255,255,255,.82)"; ctx.fillRect(x0 - 3, y0 - 11 * k, w + 6, 14 * k); ctx.fillStyle = "#1B2A33"; ctx.fillText(txt, x0, y0); };
-  label("epidermis (not modelled)", 6, Math.min(T - 6, 4 + 11 * k));
+  const prB = tissueProfile(p), sealed = !(prB.De > 0 && prB.Le > 0), closed = prB.closed;
+  if (sealed) {                                                    // a sealed junction: a solid line, as a closed deep side
+    ctx.save(); ctx.strokeStyle = "#1B2A33"; ctx.lineWidth = 3 * k; ctx.beginPath(); ctx.moveTo(0, T); ctx.lineTo(W, T); ctx.stroke(); ctx.restore();
+  }
+  label(sealed ? "epidermis: sealed junction" : `epidermis: ${fmt(prB.Le)} µm to its tight junctions, uptake ${fmt(p.kepi)}×`, 6, Math.min(T - 6, 4 + 11 * k));
   label("papillary dermis", 6, T + Math.max(14, zp * kz * 0.6));
   label("reticular dermis", 6, T + zp * kz + 22);
-  const deep = deepMode(p);
-  if (deep) {                                                      // a bounded deep side: absorbing (dashed) or closed (solid)
-    ctx.save(); ctx.strokeStyle = deep === 1 ? "#A9472F" : "#1B2A33"; ctx.lineWidth = (deep === 1 ? 2 : 3) * k;
-    if (deep === 1) ctx.setLineDash([6 * k, 4 * k]);
-    ctx.beginPath(); ctx.moveTo(0, T + Hc); ctx.lineTo(W, T + Hc); ctx.stroke(); ctx.restore();
+  if (closed) {                                                    // a closed deep side: a solid line
+    ctx.save(); ctx.strokeStyle = "#1B2A33"; ctx.lineWidth = 3 * k; ctx.beginPath(); ctx.moveTo(0, T + Hc); ctx.lineTo(W, T + Hc); ctx.stroke(); ctx.restore();
   }
-  label(["hypodermis: the dermis continues (open)", "hypodermis: absorbing boundary", "hypodermis: closed boundary"][deep], 6, T + Hc + 25);
+  label(closed ? "hypodermis: closed" : `hypodermis: open, clearing ${fmt(p.kfat)}× as fast`, 6, T + Hc + 25);
   // λ against depth, drawn over the section, when the dermis has depth
   if (layered) {
     const pr = tissueProfile(p), lv = F.ks.map(kk => kk.d.lam), zl = levelDepths(p);
@@ -1597,7 +1621,8 @@ function drawSection(nx) {
   levelDepths(p).forEach((zl, i) => { const yy = T + zl * kz, txt = fmt(zl) + " µm"; ctx.fillStyle = multi ? LEVEL_COL[i % LEVEL_COL.length] : "#1B2A33"; ctx.fillRect(W - 8, yy - 1, 8, 2); label(txt, W - 14 - ctx.measureText(txt).width, yy + 4 * k); });
   $("secCap").innerHTML = `Cross-section at y = ${fmt(y)} µm through 0–${fmt(Hd)} µm of dermis (vertical scale ${(kz / kx).toFixed(2)}× the horizontal). Cells are drawn every ~${fmt(gap / kx)} µm and coloured by the signal where they sit; fibres and the bands above and below are schematic. ` +
     (layered ? `The papillary boundary is at the modelled ${fmt(p.hpap)} µm; the curve on the right is the decay length λ against depth` + (averaged ? `, and each dot the one λ an injection level decays with in the averaged model. ` : `. `) : `Layer boundaries are schematic: choose a <b>Dermis model</b> with depth (step 1) to model them. `) +
-    [`Below the dermis the model simply continues (open). `, `The line at the bottom is an absorbing boundary: the signal is cleared there. `, `The line at the bottom is a closed boundary: nothing passes into the fat. `][deepMode(p)] +
+    (sealed ? `The line at the top seals the junction: nothing passes into the epidermis. ` : `Above the junction the signal enters the epidermis, which takes up ${fmt(p.kepi)}× as much as the reticular dermis and is closed at its tight junctions. `) +
+    (closed ? `The line at the bottom is a closed boundary: nothing passes into the fat. ` : `Below the dermis the signal enters the fat, which clears it ${fmt(p.kfat)}× as fast as the dermis at its deep side. `) +
     `<a href="#help/start/cross" data-help="start/cross">More</a>`;
 }
 
@@ -2846,7 +2871,7 @@ function syncControls() {
     const same = isDefault(def.key), el = $("s_" + def.key), v = toSlider(def, S.p[def.key]);
     if (Math.abs(+el.value - v) > 0.5 * (+el.step || 1)) setSlider(el, v);
     $("v_" + def.key).textContent = def.unit === "0 / 1" ? (Math.round(S.p[def.key]) ? "on" : "off")
-      : def.key === "deep" ? ["open", "absorbing", "closed"][deepMode(S.p)]
+      : def.key === "fat" ? ["open", "closed"][fatClosed(S.p) ? 1 : 0]
       : def.key === "dermis_model" ? ["uniform", "averaged", "depth-resolved"][dermisModel(S.p)] : fmt(S.p[def.key]) + " " + def.unit;
     $("v_" + def.key).classList.toggle("changed", !same);
     $("r_" + def.key).hidden = same;
@@ -2903,6 +2928,10 @@ function render(n, final) { F = buildField(S.p, S.pattern, S.custom, S.seed); sy
 // link or file is read as the new key; the address is rewritten after the first render
 // and Save YAML writes the new names, so nothing has to be migrated by hand.
 const RENAMED = DP.renamed || {};
+// Parameters whose values changed meaning (DP.remapped: old key → {to, values}): the old value v reads as
+// values[round(v)] under the new key (`deep`, open · absorbing · closed until 2026-11-19, is `fat`).
+const REMAPPED = DP.remapped || {};
+const remapValue = (e, v) => e.values[Math.min(e.values.length - 1, Math.max(0, Math.round(v)))];
 const sig4 = v => +(+v).toPrecision(4);
 function stateQuery() {
   const q = new URLSearchParams();
@@ -2922,6 +2951,7 @@ function syncUrl() {
 function readUrlState() {
   const q = new URLSearchParams(location.search);
   for (const [old, now] of Object.entries(RENAMED)) if (q.has(old) && !q.has(now)) q.set(now, q.get(old));
+  for (const [old, e] of Object.entries(REMAPPED)) if (q.has(old) && !q.has(e.to)) q.set(e.to, remapValue(e, +q.get(old)));
   if (BASIC) {                                                     // the basic selection first: it sets the advanced values
     const ok = { age: AGES.map(g => g.key), sex: BASIC.sex, site: SITES.map(g => g.key), ethnicity: BASIC.ethnicity.options, phototype: BASIC.phototype.options };
     for (const k of Object.keys(ok)) {
@@ -3065,10 +3095,12 @@ function applyFile(text, name) {
   const unknown = [], clamped = [];
   let renamed = 0;
   for (const [key0, entry] of Object.entries(ps)) {
-    const v = entry && typeof entry === "object" ? entry.value : entry;
+    let v = entry && typeof entry === "object" ? entry.value : entry;
     if (typeof v !== "number" || !isFinite(v)) continue;
     if (RENAMED[key0] && RENAMED[key0] in ps) continue;           // an old name beside the new one: the new one counts
-    const key = RENAMED[key0] ?? key0;
+    if (REMAPPED[key0] && REMAPPED[key0].to in ps) continue;
+    if (REMAPPED[key0]) v = remapValue(REMAPPED[key0], v);        // a value that changed meaning
+    const key = REMAPPED[key0]?.to ?? RENAMED[key0] ?? key0;
     if (key !== key0) renamed++;
     const def = PDEF[key];
     if (!def) { unknown.push(key); continue; }
@@ -3222,7 +3254,7 @@ const HELP = [
       <ul><li><b>Height</b>, from the tips of the papillae to the base of the rete ridges, by body site and age: on the forearm 41 µm at a mean age of 22.5 years and 25 µm at 55.3, on the temple 30 and 20 µm, by confocal microscopy of the same persons (${cite("neerken2004oct")}); around the eyes one value for women aged 40 to 65 (${cite("mercurio2016brazilian")}); the cheek flat, with no papillae in any of 29 young volunteers (${cite("monnier2020lcoct")}). Every other site takes the line of the nearest of these, an <span class="kd kd-analogue">analogue</span>: the body and the neck the forearm's, the forehead, the root of the nose and the area in front of the ear the temple's, the eyelids the eyes', the lower face the cheek's. No study in living skin gives the height by sex or by skin type.</li>
       <li><b>Papillae</b> per area by <b>skin type</b> and age: counted in women of the six skin types at three ages on the back of the hand and the forearm, read off the study's chart (${cite("lagarrigue2012papilla")}). Darker skin has more papillae and loses fewer of them with age: between 18–25 and 65–75 years types I–II keep about a sixth of theirs, types V–VI about two thirds. This is what the skin type sets; at every site but the forearm it is an analogue.</li></ul>
       <p><b>The model's picture</b> of the junction is an egg-crate surface: the height above, and two papillae per period square, so that the papillae per area give the period and the distance between neighbouring papillae. Histology of fixed sections measures the junction longer (its convolution index) than this picture with the in vivo values gives, most of all in dark skin; the in vivo values are used because the model describes living skin.</p>
-      <p><b>Shown only.</b> In the model the junction is a flat plane through which nothing passes. Whether its shape matters was measured, not assumed: designs were solved in three dimensions with finite volumes, once with the flat junction and once with the egg-crate of the youngest, densest skin in the data and of the default 70+ skin. Next to the junction the field rises over some papillae and falls over others by tens of per cent, but on average hardly at all, and the share of host cells covered barely moved at the model's dose: the papillary dermis, where the junction acts, is not reached at that dose. A junction that let the signal into the epidermis, which would clear it, was bounded the same way. So the junction stays out of the model for now and is shown for what it says about the skin.</p>`],
+      <p><b>Shown only.</b> In the model the junction is a flat plane through which nothing passes. Whether its shape matters was measured, not assumed: designs were solved in three dimensions with finite volumes, once with the flat junction and once with the egg-crate of the youngest, densest skin in the data and of the default 70+ skin. Next to the junction the field rises over some papillae and falls over others by tens of per cent, but on average hardly at all, and the share of host cells covered barely moved at the model's dose: the papillary dermis, where the junction acts, is not reached at that dose. What lies above the junction matters more once a design reaches the papillary dermis: the signal passes into the epidermis, which takes some of it up, so the model carries on above the junction with a layer of viable epidermis (<b>Diffusion</b> and <b>Uptake in the epidermis</b> in step 1): see <a href="#help/model/top" data-help="model/top">Above the dermis</a>. The shape stays out of the model and is shown for what it says about the skin.</p>`],
     ["steps", "The steps of the design", () => `<p>The controls on the left describe the design, top down in the order you would decide it:</p>
       <ol>${(DP.groups || []).filter(g => (g.place || "design") === "design").map(g => `<li><b>${esc(g.title)}</b> — ${renderNote(g.note)}</li>`).join("")}</ol>
       <p>One step is open at a time: click a step's title to switch. A closed step shows how many of its values differ from their defaults, so a link someone shares with you cannot hide what it changed. Inside a step, the few values that usually matter come first and the rest fold away behind <b>▾ n more</b>; the fold opens itself when a folded value is not at its default.</p>
@@ -3233,7 +3265,7 @@ const HELP = [
       <p>reproduces exactly what you were looking at — and so do <code>optimize</code>, <code>time</code>, <code>sweep</code> and <code>scaffold</code>. Useful for attaching a design to an email or a lab notebook, for keeping several variants side by side, and for taking a design from the browser into the pipeline without typing numbers.</p>
       <p><b>Load YAML</b> reads such a file back, and also the pipeline's own <code>config/parameters.yaml</code> or a plain JSON file of <code>key: value</code> pairs. Only the values, the pattern, the colouring and the sites are taken; labels, sources and notes always come from this build of the viewer, so a file cannot put an unchecked source on screen. Values outside a slider's range are clamped and unknown names are ignored — the button says how many of each. A file saved before a parameter was renamed loads as well: the old name is read as the new one, and the next <b>Save YAML</b> writes the new names.</p>`],
     ["share", "Sharing a view", () => `<p>The address in your browser always holds the current view: every value that differs from its default (all sliders), the pattern, the colouring and, for a custom layout, the position and depth of every site. <b>Copy link</b> copies it; whoever opens the link sees the same view. A link to a help entry (e.g. <code>#help/model/window</code>) can be added at the end and opens that entry. For a file you can keep or hand to the pipeline, use <a href="#help/start/yaml" data-help="start/yaml">Save YAML</a>.</p>
-      <p>Address parameters: ${PARAMS.map(p => `<code>${p.key}</code>`).join(", ")} (each in the unit of its slider), <code>age</code>, <code>sex</code>, <code>site</code>, <code>ethnicity</code>, <code>phototype</code>, <code>pattern</code> (hex, square, random, custom), <code>show=concentration</code> or <code>show=response</code>, <code>scaffold=patch</code>, and <code>sites=x,y,z;…</code> in µm for custom layouts. Values outside a slider's range are clamped to it. A link made before a parameter was renamed still opens: the old name is read (${Object.entries(RENAMED).map(([o, nw]) => `<code>${o}</code> as <code>${nw}</code>`).join(", ") || "none so far"}) and the address is rewritten with the new one.</p>`],
+      <p>Address parameters: ${PARAMS.map(p => `<code>${p.key}</code>`).join(", ")} (each in the unit of its slider), <code>age</code>, <code>sex</code>, <code>site</code>, <code>ethnicity</code>, <code>phototype</code>, <code>pattern</code> (hex, square, random, custom), <code>show=concentration</code> or <code>show=response</code>, <code>scaffold=patch</code>, and <code>sites=x,y,z;…</code> in µm for custom layouts. Values outside a slider's range are clamped to it. A link made before a parameter was renamed still opens: the old name is read (${Object.entries(RENAMED).map(([o, nw]) => `<code>${o}</code> as <code>${nw}</code>`).join(", ") || "none so far"}) and the address is rewritten with the new one.${Object.keys(REMAPPED).length ? ` A parameter whose values changed meaning is read the same way: ${Object.entries(REMAPPED).map(([o, e]) => `<code>${o}</code> as <code>${e.to}</code> (${e.note})`).join(", ")}.` : ""}</p>`],
     ["status", "What the badges mean", () => `<p>Every value carries a badge; click it for its entry under <a href="#help/params" data-help="params">Parameters</a>.</p>
       <table><tr><td><span class="badge b-src">source</span></td><td>the default is a published value, checked against the source (abstract or full text) and listed under <a href="#help/refs" data-help="refs">References</a></td></tr>
       <tr><td><span class="badge b-ana">analogue</span></td><td>published value, checked against the source, but measured in a related system (other cells, another signal, another set-up) or as a related quantity (all nuclei instead of fibroblasts only); used until the value itself is measured in aged human dermis</td></tr>
@@ -3258,12 +3290,16 @@ const HELP = [
       <p>The default, ${n("lam.def", "µm")}, is the upper end of the cytokine measurement: an <span class="badge b-ana">analogue</span> until λ is measured for the rejuvenated cells' signals.</p>`],
     ["window", "The therapeutic window", () => `<p>Aged host cells are counted as activated above <code>c_on × s_age</code> and at risk of fibrotic activation above <code>c_fib</code>. The upper side is not hypothetical: the group notes that matrix deposition by implanted cells could also indicate fibrotic activation (${cite("roy2024implanting")}).</p>
       <p><b>Where the values come from.</b> No activation threshold or fibrotic ceiling has been measured in <i>dermal</i> fibroblasts, so both are <span class="badge b-ana">analogues</span> from related cells. The threshold, ${n("con.def", "ng/mL")}, is the dose that induced SMAD2 phosphorylation and α-SMA protein in primary human knee fibroblasts (${cite("dilger2025concentration")}). The ceiling, ${n("cfib.def", "ng/mL")}, is the lower of the two doses that raised α-SMA in nasal-polyp fibroblasts (${cite("serpero2006polyp")}); collagen deposition itself showed no upper limit up to 40 ng/mL (${cite("dilger2025concentration")}), so the ceiling here is the switch to myofibroblasts, not a loss of effect. The 10 ng/mL often used in experiments is a stimulation dose, not a threshold (${cite("liao2026chromatin")}). Windows with a lower and an upper side are documented for other signals too: CCN2 stimulates collagen gene expression below 50 ng/mL and inhibits it above (${cite("nakerakanti2011ccn2")}).</p>`],
-    ["boundary", "Boundaries", () => `<p>The dermal–epidermal junction is treated as impermeable: no signal crosses it (the depth-resolved model solves with that condition; the uniform and the averaged model give every site a mirror image above it). Measured diffusion is slowest at the junction (${cite("wei2018microneedle")}). The deep side of the dermis is open by default — the dermis simply continues — and <b>Below the dermis</b> in step 1 can bound it instead: see <a href="#help/model/deep" data-help="model/deep">Below the dermis</a>.</p>`],
-    ["deep", "Below the dermis", () => `<p>Under the dermis lies the hypodermis, mostly fat, and at the junction between the two runs the deep horizontal vascular plexus (${cite("braverman1997microcirculation")}). How much of the signal that plexus clears, and whether any passes into the fat, has not been measured, so the model offers the three cases that bracket it:</p>
-      <ul><li><b>Open</b> (the default, and the model up to M3): the dermis simply continues below its thickness H — the signal is cleared there as in the dermis.</li>
-      <li><b>Absorbing</b>: everything that reaches H is cleared (c = 0 at H), as by a perfect vascular sink. The cross-section draws a dashed line.</li>
-      <li><b>Closed</b>: nothing passes into the fat (no flux at H), and the signal reflects back into the dermis. A solid line.</li></ul>
-      <p>The exact solution with both boundaries is a series of mirror images, repeating every 4H: images across the junction keep their sign; across an absorbing boundary they change sign, across a closed one they keep it. The Python pipeline checks the series against its finite-volume solver, which ends at H with the same condition: they agree within 1 %. It matters only for sites within a few decay lengths of H.</p>`],
+    ["boundary", "Boundaries", () => `<p>The dermis has a layer on each side, and the model solves both rather than guessing an edge. Above the junction lies the viable epidermis: proteins cross the junction's basement membrane, which filters them by charge (${cite("kazama1988charge")}), and spread between the keratinocytes up to the tight junctions under the stratum corneum, which stop them (${cite("yoshida2013sg2")}). Below lies the fat: no barrier is described between it and the dermis (${cite("li2011fascial")}), and it clears injected proteins more slowly than the dermis does (${cite("milewski2015dermis")}). See <a href="#help/model/top" data-help="model/top">Above the dermis</a> and <a href="#help/model/deep" data-help="model/deep">Below the dermis</a>.</p>`],
+    ["top", "Above the dermis", () => `<p>Above the dermis lies the viable epidermis. The junction between them is no wall: macromolecules pass its basement membrane, positively charged ones more easily, held back by its heparan sulfate (${cite("kazama1988charge")}), and plasma albumin is found inside normal epidermis (${cite("rabilloud1988albumin")}). In the epidermis they spread between the cells up to the tight junctions of the second granular layer, which stop proteins (${cite("yoshida2013sg2")}). For the signal the epidermis is therefore a thin layer closed at its top, and the model solves it as one:</p>
+      <ul><li><b>Its thickness</b> is the epidermis of the tissue less its <b>Stratum corneum</b>, both in step 1.</li>
+      <li><b>Diffusion in the epidermis</b>: a share of the dermal D, half for a 40 kDa dextran (${cite("romgens2015diffusion")}).</li>
+      <li><b>Uptake in the epidermis</b>, per volume, against the reticular dermis. Every cell type tested carries high-affinity TGF-β receptors and at low concentrations binds a similar number of molecules per cell (${cite("wakefield1987receptor")}), so the uptake follows the density of cells: this factor is how much denser the keratinocytes are than the fibroblasts. Counted cells make them 195 to 622 times as dense (${cite("bergstresser1978counting")}, ${cite("bauer2001langerhans")}); the default, 350, is the middle of that range on a log scale. It takes the uptake per keratinocyte as equal to a fibroblast's, which nobody has compared directly. At that density the epidermis clears the signal within a few µm: nearly an absorbing junction.</li></ul>
+      <p>The two ends of the uptake are the two bounds: an epidermis that takes up almost nothing returns what enters it, and one that takes up at once clears whatever crosses the junction. Diffusion 0 seals the junction, the model before 2026-11-19 (a solid line in the cross-section). The depth-resolved model solves the layer exactly, for every ring-shaped pattern of the signal. The uniform and the averaged model give each site a mirror image above the junction, weighted by how the layer reflects the slowest pattern: exact for a sealed or a clearing junction and an approximation in between, measured against finite volumes that mesh the epidermis itself. The junction's undulating shape moved the coverage little, so the model keeps it flat: see <a href="#help/start/junction" data-help="start/junction">The junction</a>.</p>`],
+    ["deep", "Below the dermis", () => `<p>Under the dermis lies the hypodermis, mostly fat. No barrier is described between the two: the fibrous bands of the fat are contiguous with the dermis (${cite("li2011fascial")}), and adipose tissue encases the hair follicles right under the reticular dermis (${cite("driskell2014dwat")}). The deep vascular plexus runs at the junction (${cite("braverman1997microcirculation")}), but the junction is no sink: proteins injected into the subcutis are absorbed 2 to 20 times more slowly than from the dermis (${cite("milewski2015dermis")}), and an IgG depot about three times more slowly (${cite("omahony2004igg")}). So the signal goes on into the fat:</p>
+      <ul><li><b>Open</b> (the default): the fat continues the dermis, with the dermis's D at its deep side and its own clearance, <b>Clearance in the fat</b> times the dermis's. The default is the middle of 1/20 to 1/2 on a log scale; 1 is the dermis simply continued, the open side before 2026-11-19.</li>
+      <li><b>Closed</b>: nothing passes into the fat (no flux at H), a solid line in the cross-section. It is the bound for a fat the signal cannot enter: diffusion in fat was never measured.</li></ul>
+      <p>The absorbing deep side of earlier versions is gone, since nothing supports it; a link or a file that asks for it gets the open side. The depth-resolved model solves the fat exactly, as a half-space below H for every ring-shaped pattern; the uniform and the averaged model give each site mirror images weighted by how the fat reflects the slowest pattern. It matters only for sites within a few decay lengths of H.</p>`],
     ["dose", "Does the dose add up?", () => `<p>No — and that is the most useful thing this model currently says.</p>
       <p>Every value in the chain is now taken from a source. Fibroblasts release TGF-β almost entirely as a <b>latent</b> complex: active TGF-β1 is ≤ 2 % of the total at baseline in primary human dermal fibroblasts, 11 % once the cells contract and 36 % in dermal myofibroblasts (${cite("klingberg2014prestress")}). Total secretion by unstimulated fibroblasts is about 0.4 ng per 10⁶ cells per day (${cite("kelley1993autoinduction")}, ${cite("ghahary1998igf1")}). So an implanted cell releases roughly <b>8 pg of active signal per 10⁶ cells per day</b>.</p>
       <p>Put ${n("ncells.def")} cells on a site and the concentration peaks at about <b>${n("gapPeak", "ng/mL")}</b> at the centre of the cluster, against the <b>1 ng/mL</b> that induced SMAD2 phosphorylation and α-SMA in fibroblasts (${cite("dilger2025concentration")}). That is <b>${n("gapCentre")}× short at the centre</b> and <b>${n("gapWorst")}× short at the least-covered point</b> of the default lattice.</p>

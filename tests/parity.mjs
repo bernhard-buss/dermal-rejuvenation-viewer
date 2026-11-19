@@ -12,7 +12,7 @@ const api = new Function(`"use strict";${block[1]}
   return { derived, kernel, buildField, latticeAt, holePoint, criticalSpacing, singleReach, sitesPerCm2, fractions, unitCellFractions, unitCellCoverage, viewCoverage, levelDepths, nLevels, optimise, clustersApart,
     dermisModel, depthSamples, papillaryCellShare, besselJ, j0Zeros, depthGrid, nModes, siteTable, siteColumns, tableAt, tableCol, DEPTH,
     survival, hill, timeAbove, windowTimes, median, exposure, scaffoldPlan, scaffoldPositions,
-    tissueProfile, tissueEffective, reductionIsFaithful, cellularShare, levelKernels, images, deepMode,
+    tissueProfile, tissueEffective, reductionIsFaithful, cellularShare, levelKernels, images, boundaryWeights, fatClosed,
     rng, gauss, spectral, fieldG, fieldLog, donor, realise, mcStats, monteCarlo, hetFaithful, insertedDepths, robustFrontSteps };`)();
 const golden = JSON.parse(readFileSync(new URL("../data/golden.json", import.meta.url), "utf8"));
 const rtol = golden.rtol ?? 1e-9;
@@ -38,13 +38,13 @@ for (const c of golden.cases) {
   for (const [x, y, z, v] of c.field) close(`${c.name} field(${x.toFixed(0)},${y.toFixed(0)},${z.toFixed(0)})`, F.at(x, y, z), v, rtol, tiny);
   close(`${c.name} reach`, api.singleReach(p), c.reach);
   close(`${c.name} survival`, api.survival(p), c.survival, 1e-12);
-  // each level its own medium; the images of the junction and of a bounded deep side
+  // each level its own medium; the images of the junction and of the deep side, with their weights
   const ks = api.levelKernels(p);
   c.levels.forEach(([D_, lam_, rc_], l) => { close(`${c.name} level ${l} D`, ks[l].d.D, D_, 1e-12); close(`${c.name} level ${l} λ`, ks[l].d.lam, lam_, 1e-12); close(`${c.name} level ${l} reach`, ks[l].rc, rc_, 1e-12); });
   for (const [l, [zl, want]] of c.images.entries()) {
     const got = ks[l].imgs;                                        // none in the depth-resolved model: the boundaries are in the table
     if (got.length !== want.length) { fails++; console.error(`✗ ${c.name} images(${zl}): ${got.length} images, want ${want.length}`); continue; }
-    want.forEach(([zi, g], i) => { close(`${c.name} image ${zl}[${i}] depth`, got[i][0], zi, 1e-12); close(`${c.name} image ${zl}[${i}] sign`, got[i][1], g, 0); });
+    want.forEach(([zi, g], i) => { close(`${c.name} image ${zl}[${i}] depth`, got[i][0], zi, 1e-12); close(`${c.name} image ${zl}[${i}] weight`, got[i][1], g, 1e-12); });
   }
   // a dermis with depth: profiles, the effective medium and when it may be trusted
   const te = api.tissueEffective(p), tw = c.tissue;
