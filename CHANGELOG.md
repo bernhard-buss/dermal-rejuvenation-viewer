@@ -2,6 +2,10 @@
 
 Newest version first. Each entry says what you can do or see differently.
 
+## 0.19.1 — 2026-11-19
+
+- **Fixed: the legend beside the skin patch is no longer cut off.** Its longest line, the reticular dermis with its thickness, ran past the right edge of the figure on every body site. The figure is now wider by that much, at the same scale.
+
 ## 0.19.0 — 2026-11-19
 
 - **New: the junction of epidermis and dermis.** Under the legend of the skin patch the top of the skin is drawn magnified, in a section through the tips of the dermal papillae: the epidermis, the wavy junction and the papillary dermis following it, with a 100 µm bar, one scale for every selection, and a dashed box on the patch for the part shown. The table lists the junction's height (from the tips of the papillae to the base of the rete ridges) and, unless the junction is flat, its papillae per mm² and how far apart they are, each with its badge and source. The height follows the body site and the age: measured on the forearm and the temple at two ages, around the eyes in women aged 40 to 65, flat on the cheek; every other site takes the nearest of these, an analogue. The papillae follow the skin type and the age, from a count in women of all six types at three ages.
