@@ -134,6 +134,11 @@ if (!errors.length) {
       for (const [k, s] of Object.entries(c.spread || {})) for (const f of ["mean", "sd", "lo", "hi"])
         if (!sp[k] || sp[k][f] !== s[f]) { if (bad++ < 5) errors.push(`spread ${JSON.stringify(c.sel)}: ${k}.${f} = ${sp[k] && sp[k][f]}, the pipeline gives ${s[f]}`); }
       if (Object.keys(sp).length !== Object.keys(c.spread || {}).length && bad++ < 5) errors.push(`spread ${JSON.stringify(c.sel)}: layers ${Object.keys(sp)} instead of ${Object.keys(c.spread || {})}`);
+      const jn = drv.junctionOf(sel), gj = c.junction;                 // the junction, as dermsim.params.basic_junction (claim K119)
+      const jg = jn && { amplitude: jn.amplitude.value, amplitude_kind: jn.amplitude.kind, density: jn.density && jn.density.value, per_mm2: jn.density && jn.density.per_mm2,
+        density_kind: jn.density && jn.density.kind, period: jn.period, spacing: jn.spacing };
+      if (!gj !== !jg && bad++ < 5) errors.push(`junction ${JSON.stringify(c.sel)}: ${jg ? "given" : "missing"}, the pipeline ${gj ? "gives one" : "gives none"}`);
+      if (gj && jg) for (const [k, v] of Object.entries(gj)) if (jg[k] !== v && bad++ < 5) errors.push(`junction ${JSON.stringify(c.sel)}: ${k} = ${jg[k]}, the pipeline gives ${v}`);
     }
     // an age in years decides its group, travels in the address, and an earlier group key is read as its successor
     drv.setBasic("years", "47");
@@ -143,6 +148,11 @@ if (!errors.length) {
     drv.setBasic("age", ctx.window.DRV_PARAMS.basic.defaults.age);
     if (drv.stateQuery() !== "") errors.push("back at the default selection the address should be empty: " + drv.stateQuery());
     if (!/<svg/.test(byId("bodyFig").innerHTML) || !/Papillary dermis thickness/.test(byId("bodyData").innerHTML)) errors.push("the figure of whose skin or its data table was not drawn");
+    drv.setBasic("site", "forearm"); drv.drawBody();                   // the junction: magnified under the legend, and in the table
+    if (!/Junction, ×/.test(byId("bodyColumn").innerHTML) || !/Junction height/.test(byId("bodyData").innerHTML) || !/Dermal papillae/.test(byId("bodyData").innerHTML)) errors.push("the junction of the forearm should be drawn and listed");
+    drv.setBasic("site", "cheek"); drv.drawBody();
+    if (!/flat: no papillae/.test(byId("bodyColumn").innerHTML) || /Dermal papillae/.test(byId("bodyData").innerHTML)) errors.push("the cheek's junction is flat, without papillae");
+    drv.setBasic("site", ctx.window.DRV_PARAMS.basic.defaults.site); drv.zoomBody("body");
     // the face: every facial site has a place on the face and nothing else does; a facial site shows the face, a body site the body
     const faceSites = ctx.window.DRV_PARAMS.sites.groups.filter(g => g.region === "face").map(g => g.key), drawn = drv.faceAreas();
     if ([...faceSites].sort().join() !== [...drawn].sort().join()) errors.push(`the face draws ${drawn} for the facial sites ${faceSites}`);

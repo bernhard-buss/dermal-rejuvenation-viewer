@@ -125,8 +125,10 @@ so that Claude Code reads the same text; add and change notes here, not there.
   1 groups the sites (`siteSelect`: the skin model, Body, Face and neck).
   Ethnicity and skin type are two choices of step 1: the ethnicity sets only the factor
   the export carries (`DP.basic.ethnicity_factor`, read through `ethFactor`; an earlier
-  ethnicity is read as its group through `ethOf`), the skin type (`phototype`) sets nothing
-  and gives the figure its tone and hair (`BODY_TONE`, `HAIR`, keyed I–VI). Choosing an ethnicity sets the
+  ethnicity is read as its group through `ethOf`), the skin type (`phototype`) sets no model
+  value: it sets the papillae of the junction shown (`junctionOf`, as `dermsim.params.basic_junction`,
+  looked up in `YEARS.junction` and `DP.sites.junction`; drawn magnified under the legend by
+  `junctionInset`, one scale for all selections) and gives the figure its tone and hair (`BODY_TONE`, `HAIR`, keyed I–VI). Choosing an ethnicity sets the
   skin type it suggests (`ptSuggested`, from `DP.basic.phototype_suggested`, computed by
   `dermsim.params.phototype_suggested`; at the start too, unless a link or file gives one); a skin type
   chosen afterwards stays, and the address carries it only where it differs from the suggestion. The

@@ -13267,6 +13267,15 @@
      "lo": 63.6,
      "hi": 87.2
     }
+   },
+   "junction": {
+    "amplitude": 41.0,
+    "amplitude_kind": "analogue",
+    "density": 6.4,
+    "per_mm2": 25.6,
+    "density_kind": "analogue",
+    "period": 279.5,
+    "spacing": 197.6
    }
   },
   {
@@ -13305,6 +13314,15 @@
      "lo": 70.1,
      "hi": 91.1
     }
+   },
+   "junction": {
+    "amplitude": 41.0,
+    "amplitude_kind": "held",
+    "density": 6.4,
+    "per_mm2": 25.6,
+    "density_kind": "held",
+    "period": 279.5,
+    "spacing": 197.6
    }
   },
   {
@@ -13331,6 +13349,15 @@
      "lo": 63.6,
      "hi": 87.2
     }
+   },
+   "junction": {
+    "amplitude": 41.0,
+    "amplitude_kind": "analogue",
+    "density": 6.4,
+    "per_mm2": 25.6,
+    "density_kind": "analogue",
+    "period": 279.5,
+    "spacing": 197.6
    }
   },
   {
@@ -13369,6 +13396,15 @@
      "lo": 70.1,
      "hi": 91.1
     }
+   },
+   "junction": {
+    "amplitude": 41.0,
+    "amplitude_kind": "held",
+    "density": 6.4,
+    "per_mm2": 25.6,
+    "density_kind": "held",
+    "period": 279.5,
+    "spacing": 197.6
    }
   },
   {
@@ -13395,6 +13431,15 @@
      "lo": 66.3,
      "hi": 75.7
     }
+   },
+   "junction": {
+    "amplitude": 41.0,
+    "amplitude_kind": "analogue",
+    "density": 6.4,
+    "per_mm2": 25.6,
+    "density_kind": "analogue",
+    "period": 279.5,
+    "spacing": 197.6
    }
   },
   {
@@ -13433,6 +13478,15 @@
      "lo": 70.1,
      "hi": 91.1
     }
+   },
+   "junction": {
+    "amplitude": 41.0,
+    "amplitude_kind": "held",
+    "density": 6.4,
+    "per_mm2": 25.6,
+    "density_kind": "held",
+    "period": 279.5,
+    "spacing": 197.6
    }
   },
   {
@@ -13459,6 +13513,15 @@
      "lo": 66.3,
      "hi": 75.7
     }
+   },
+   "junction": {
+    "amplitude": 41.0,
+    "amplitude_kind": "analogue",
+    "density": 6.4,
+    "per_mm2": 25.6,
+    "density_kind": "analogue",
+    "period": 279.5,
+    "spacing": 197.6
    }
   },
   {
@@ -13497,6 +13560,15 @@
      "lo": 70.1,
      "hi": 91.1
     }
+   },
+   "junction": {
+    "amplitude": 41.0,
+    "amplitude_kind": "held",
+    "density": 6.4,
+    "per_mm2": 25.6,
+    "density_kind": "held",
+    "period": 279.5,
+    "spacing": 197.6
    }
   },
   {
@@ -13523,6 +13595,15 @@
      "lo": 63.5,
      "hi": 82.9
     }
+   },
+   "junction": {
+    "amplitude": 36.1,
+    "amplitude_kind": "analogue",
+    "density": 5.21,
+    "per_mm2": 20.8,
+    "density_kind": "analogue",
+    "period": 309.8,
+    "spacing": 219.1
    }
   },
   {
@@ -13561,6 +13642,15 @@
      "lo": 67.6,
      "hi": 88.0
     }
+   },
+   "junction": {
+    "amplitude": 36.1,
+    "amplitude_kind": "interpolated",
+    "density": 5.21,
+    "per_mm2": 20.8,
+    "density_kind": "interpolated",
+    "period": 309.8,
+    "spacing": 219.1
    }
   },
   {
@@ -13587,6 +13677,15 @@
      "lo": 63.5,
      "hi": 82.9
     }
+   },
+   "junction": {
+    "amplitude": 36.1,
+    "amplitude_kind": "analogue",
+    "density": 5.21,
+    "per_mm2": 20.8,
+    "density_kind": "analogue",
+    "period": 309.8,
+    "spacing": 219.1
    }
   },
   {
@@ -13625,6 +13724,15 @@
      "lo": 67.6,
      "hi": 88.0
     }
+   },
+   "junction": {
+    "amplitude": 36.1,
+    "amplitude_kind": "interpolated",
+    "density": 5.21,
+    "per_mm2": 20.8,
+    "density_kind": "interpolated",
+    "period": 309.8,
+    "spacing": 219.1
    }
   },
   {
@@ -13651,6 +13759,15 @@
      "lo": 61.4,
      "hi": 88.4
     }
+   },
+   "junction": {
+    "amplitude": 31.0,
+    "amplitude_kind": "analogue",
+    "density": 4.2,
+    "per_mm2": 16.8,
+    "density_kind": "analogue",
+    "period": 345.0,
+    "spacing": 244.0
    }
   },
   {
@@ -13689,6 +13806,15 @@
      "lo": 63.0,
      "hi": 81.8
     }
+   },
+   "junction": {
+    "amplitude": 31.0,
+    "amplitude_kind": "interpolated",
+    "density": 4.2,
+    "per_mm2": 16.8,
+    "density_kind": "interpolated",
+    "period": 345.0,
+    "spacing": 244.0
    }
   },
   {
@@ -13715,6 +13841,15 @@
      "lo": 61.4,
      "hi": 88.4
     }
+   },
+   "junction": {
+    "amplitude": 31.0,
+    "amplitude_kind": "analogue",
+    "density": 4.2,
+    "per_mm2": 16.8,
+    "density_kind": "analogue",
+    "period": 345.0,
+    "spacing": 244.0
    }
   },
   {
@@ -13753,6 +13888,15 @@
      "lo": 63.0,
      "hi": 81.8
     }
+   },
+   "junction": {
+    "amplitude": 31.0,
+    "amplitude_kind": "interpolated",
+    "density": 4.2,
+    "per_mm2": 16.8,
+    "density_kind": "interpolated",
+    "period": 345.0,
+    "spacing": 244.0
    }
   },
   {
@@ -13779,6 +13923,15 @@
      "lo": 75.1,
      "hi": 114.1
     }
+   },
+   "junction": {
+    "amplitude": 25.0,
+    "amplitude_kind": "analogue",
+    "density": 2.86,
+    "per_mm2": 11.4,
+    "density_kind": "analogue",
+    "period": 418.1,
+    "spacing": 295.7
    }
   },
   {
@@ -13817,6 +13970,15 @@
      "lo": 55.3,
      "hi": 71.9
     }
+   },
+   "junction": {
+    "amplitude": 25.0,
+    "amplitude_kind": "held",
+    "density": 2.86,
+    "per_mm2": 11.4,
+    "density_kind": "interpolated",
+    "period": 418.1,
+    "spacing": 295.7
    }
   },
   {
@@ -13843,6 +14005,15 @@
      "lo": 75.1,
      "hi": 114.1
     }
+   },
+   "junction": {
+    "amplitude": 25.0,
+    "amplitude_kind": "analogue",
+    "density": 2.86,
+    "per_mm2": 11.4,
+    "density_kind": "analogue",
+    "period": 418.1,
+    "spacing": 295.7
    }
   },
   {
@@ -13881,6 +14052,15 @@
      "lo": 55.3,
      "hi": 71.9
     }
+   },
+   "junction": {
+    "amplitude": 25.0,
+    "amplitude_kind": "held",
+    "density": 2.86,
+    "per_mm2": 11.4,
+    "density_kind": "interpolated",
+    "period": 418.1,
+    "spacing": 295.7
    }
   },
   {
@@ -13907,6 +14087,15 @@
      "lo": 79.7,
      "hi": 122.7
     }
+   },
+   "junction": {
+    "amplitude": 25.0,
+    "amplitude_kind": "analogue",
+    "density": 2.3,
+    "per_mm2": 9.2,
+    "density_kind": "analogue",
+    "period": 466.3,
+    "spacing": 329.7
    }
   },
   {
@@ -13945,6 +14134,15 @@
      "lo": 55.3,
      "hi": 71.9
     }
+   },
+   "junction": {
+    "amplitude": 25.0,
+    "amplitude_kind": "held",
+    "density": 2.3,
+    "per_mm2": 9.2,
+    "density_kind": "held",
+    "period": 466.3,
+    "spacing": 329.7
    }
   },
   {
@@ -13971,6 +14169,15 @@
      "lo": 79.7,
      "hi": 122.7
     }
+   },
+   "junction": {
+    "amplitude": 25.0,
+    "amplitude_kind": "analogue",
+    "density": 2.3,
+    "per_mm2": 9.2,
+    "density_kind": "analogue",
+    "period": 466.3,
+    "spacing": 329.7
    }
   },
   {
@@ -14009,6 +14216,15 @@
      "lo": 55.3,
      "hi": 71.9
     }
+   },
+   "junction": {
+    "amplitude": 25.0,
+    "amplitude_kind": "held",
+    "density": 2.3,
+    "per_mm2": 9.2,
+    "density_kind": "held",
+    "period": 466.3,
+    "spacing": 329.7
    }
   },
   {
@@ -14035,6 +14251,15 @@
      "lo": 62.4,
      "hi": 92.0
     }
+   },
+   "junction": {
+    "amplitude": 41.0,
+    "amplitude_kind": "analogue",
+    "density": 6.4,
+    "per_mm2": 25.6,
+    "density_kind": "analogue",
+    "period": 279.5,
+    "spacing": 197.6
    }
   },
   {
@@ -14073,6 +14298,15 @@
      "lo": 71.6,
      "hi": 94.4
     }
+   },
+   "junction": {
+    "amplitude": 41.0,
+    "amplitude_kind": "analogue",
+    "density": 6.4,
+    "per_mm2": 25.6,
+    "density_kind": "analogue",
+    "period": 279.5,
+    "spacing": 197.6
    }
   },
   {
@@ -14111,6 +14345,15 @@
      "lo": 66.7,
      "hi": 89.5
     }
+   },
+   "junction": {
+    "amplitude": 41.0,
+    "amplitude_kind": "analogue",
+    "density": 6.4,
+    "per_mm2": 25.6,
+    "density_kind": "analogue",
+    "period": 279.5,
+    "spacing": 197.6
    }
   },
   {
@@ -14149,6 +14392,15 @@
      "lo": 146.8,
      "hi": 193.6
     }
+   },
+   "junction": {
+    "amplitude": 41.0,
+    "amplitude_kind": "analogue",
+    "density": 6.4,
+    "per_mm2": 25.6,
+    "density_kind": "analogue",
+    "period": 279.5,
+    "spacing": 197.6
    }
   },
   {
@@ -14187,6 +14439,15 @@
      "lo": 73.7,
      "hi": 91.9
     }
+   },
+   "junction": {
+    "amplitude": 30.0,
+    "amplitude_kind": "analogue",
+    "density": 6.4,
+    "per_mm2": 25.6,
+    "density_kind": "analogue",
+    "period": 279.5,
+    "spacing": 197.6
    }
   },
   {
@@ -14225,6 +14486,15 @@
      "lo": 60.7,
      "hi": 79.9
     }
+   },
+   "junction": {
+    "amplitude": 0.0,
+    "amplitude_kind": "held",
+    "density": null,
+    "per_mm2": null,
+    "density_kind": null,
+    "period": null,
+    "spacing": null
    }
   },
   {
@@ -14263,6 +14533,15 @@
      "lo": 36.1,
      "hi": 47.5
     }
+   },
+   "junction": {
+    "amplitude": 13.7,
+    "amplitude_kind": "analogue",
+    "density": 6.4,
+    "per_mm2": 25.6,
+    "density_kind": "analogue",
+    "period": 279.5,
+    "spacing": 197.6
    }
   },
   {
@@ -14301,6 +14580,15 @@
      "lo": 84.0,
      "hi": 110.8
     }
+   },
+   "junction": {
+    "amplitude": 0.0,
+    "amplitude_kind": "analogue",
+    "density": null,
+    "per_mm2": null,
+    "density_kind": null,
+    "period": null,
+    "spacing": null
    }
   },
   {
@@ -14339,6 +14627,15 @@
      "lo": 63.0,
      "hi": 83.0
     }
+   },
+   "junction": {
+    "amplitude": 41.0,
+    "amplitude_kind": "analogue",
+    "density": 6.4,
+    "per_mm2": 25.6,
+    "density_kind": "analogue",
+    "period": 279.5,
+    "spacing": 197.6
    }
   },
   {
@@ -14365,6 +14662,15 @@
      "lo": 62.4,
      "hi": 92.0
     }
+   },
+   "junction": {
+    "amplitude": 41.0,
+    "amplitude_kind": "analogue",
+    "density": 6.4,
+    "per_mm2": 25.6,
+    "density_kind": "analogue",
+    "period": 279.5,
+    "spacing": 197.6
    }
   },
   {
@@ -14403,6 +14709,15 @@
      "lo": 71.6,
      "hi": 94.4
     }
+   },
+   "junction": {
+    "amplitude": 41.0,
+    "amplitude_kind": "analogue",
+    "density": 6.4,
+    "per_mm2": 25.6,
+    "density_kind": "analogue",
+    "period": 279.5,
+    "spacing": 197.6
    }
   },
   {
@@ -14441,6 +14756,15 @@
      "lo": 66.7,
      "hi": 89.5
     }
+   },
+   "junction": {
+    "amplitude": 41.0,
+    "amplitude_kind": "analogue",
+    "density": 6.4,
+    "per_mm2": 25.6,
+    "density_kind": "analogue",
+    "period": 279.5,
+    "spacing": 197.6
    }
   },
   {
@@ -14479,6 +14803,15 @@
      "lo": 146.8,
      "hi": 193.6
     }
+   },
+   "junction": {
+    "amplitude": 41.0,
+    "amplitude_kind": "analogue",
+    "density": 6.4,
+    "per_mm2": 25.6,
+    "density_kind": "analogue",
+    "period": 279.5,
+    "spacing": 197.6
    }
   },
   {
@@ -14517,6 +14850,15 @@
      "lo": 73.7,
      "hi": 91.9
     }
+   },
+   "junction": {
+    "amplitude": 30.0,
+    "amplitude_kind": "analogue",
+    "density": 6.4,
+    "per_mm2": 25.6,
+    "density_kind": "analogue",
+    "period": 279.5,
+    "spacing": 197.6
    }
   },
   {
@@ -14555,6 +14897,15 @@
      "lo": 60.7,
      "hi": 79.9
     }
+   },
+   "junction": {
+    "amplitude": 0.0,
+    "amplitude_kind": "held",
+    "density": null,
+    "per_mm2": null,
+    "density_kind": null,
+    "period": null,
+    "spacing": null
    }
   },
   {
@@ -14593,6 +14944,15 @@
      "lo": 36.1,
      "hi": 47.5
     }
+   },
+   "junction": {
+    "amplitude": 13.7,
+    "amplitude_kind": "analogue",
+    "density": 6.4,
+    "per_mm2": 25.6,
+    "density_kind": "analogue",
+    "period": 279.5,
+    "spacing": 197.6
    }
   },
   {
@@ -14631,6 +14991,15 @@
      "lo": 84.0,
      "hi": 110.8
     }
+   },
+   "junction": {
+    "amplitude": 0.0,
+    "amplitude_kind": "analogue",
+    "density": null,
+    "per_mm2": null,
+    "density_kind": null,
+    "period": null,
+    "spacing": null
    }
   },
   {
@@ -14669,6 +15038,15 @@
      "lo": 63.0,
      "hi": 83.0
     }
+   },
+   "junction": {
+    "amplitude": 41.0,
+    "amplitude_kind": "analogue",
+    "density": 6.4,
+    "per_mm2": 25.6,
+    "density_kind": "analogue",
+    "period": 279.5,
+    "spacing": 197.6
    }
   },
   {
@@ -14695,6 +15073,15 @@
      "lo": 62.4,
      "hi": 91.8
     }
+   },
+   "junction": {
+    "amplitude": 41.0,
+    "amplitude_kind": "analogue",
+    "density": 6.4,
+    "per_mm2": 25.6,
+    "density_kind": "analogue",
+    "period": 279.5,
+    "spacing": 197.6
    }
   },
   {
@@ -14733,6 +15120,15 @@
      "lo": 71.6,
      "hi": 94.4
     }
+   },
+   "junction": {
+    "amplitude": 41.0,
+    "amplitude_kind": "analogue",
+    "density": 6.4,
+    "per_mm2": 25.6,
+    "density_kind": "analogue",
+    "period": 279.5,
+    "spacing": 197.6
    }
   },
   {
@@ -14771,6 +15167,15 @@
      "lo": 66.7,
      "hi": 89.5
     }
+   },
+   "junction": {
+    "amplitude": 41.0,
+    "amplitude_kind": "analogue",
+    "density": 6.4,
+    "per_mm2": 25.6,
+    "density_kind": "analogue",
+    "period": 279.5,
+    "spacing": 197.6
    }
   },
   {
@@ -14809,6 +15214,15 @@
      "lo": 146.8,
      "hi": 193.6
     }
+   },
+   "junction": {
+    "amplitude": 41.0,
+    "amplitude_kind": "analogue",
+    "density": 6.4,
+    "per_mm2": 25.6,
+    "density_kind": "analogue",
+    "period": 279.5,
+    "spacing": 197.6
    }
   },
   {
@@ -14847,6 +15261,15 @@
      "lo": 73.7,
      "hi": 91.9
     }
+   },
+   "junction": {
+    "amplitude": 30.0,
+    "amplitude_kind": "analogue",
+    "density": 6.4,
+    "per_mm2": 25.6,
+    "density_kind": "analogue",
+    "period": 279.5,
+    "spacing": 197.6
    }
   },
   {
@@ -14885,6 +15308,15 @@
      "lo": 60.7,
      "hi": 79.9
     }
+   },
+   "junction": {
+    "amplitude": 0.0,
+    "amplitude_kind": "held",
+    "density": null,
+    "per_mm2": null,
+    "density_kind": null,
+    "period": null,
+    "spacing": null
    }
   },
   {
@@ -14923,6 +15355,15 @@
      "lo": 36.1,
      "hi": 47.5
     }
+   },
+   "junction": {
+    "amplitude": 13.7,
+    "amplitude_kind": "analogue",
+    "density": 6.4,
+    "per_mm2": 25.6,
+    "density_kind": "analogue",
+    "period": 279.5,
+    "spacing": 197.6
    }
   },
   {
@@ -14961,6 +15402,15 @@
      "lo": 84.0,
      "hi": 110.8
     }
+   },
+   "junction": {
+    "amplitude": 0.0,
+    "amplitude_kind": "analogue",
+    "density": null,
+    "per_mm2": null,
+    "density_kind": null,
+    "period": null,
+    "spacing": null
    }
   },
   {
@@ -14999,6 +15449,15 @@
      "lo": 63.0,
      "hi": 83.0
     }
+   },
+   "junction": {
+    "amplitude": 41.0,
+    "amplitude_kind": "analogue",
+    "density": 6.4,
+    "per_mm2": 25.6,
+    "density_kind": "analogue",
+    "period": 279.5,
+    "spacing": 197.6
    }
   },
   {
@@ -15025,6 +15484,15 @@
      "lo": 62.4,
      "hi": 91.8
     }
+   },
+   "junction": {
+    "amplitude": 41.0,
+    "amplitude_kind": "analogue",
+    "density": 6.4,
+    "per_mm2": 25.6,
+    "density_kind": "analogue",
+    "period": 279.5,
+    "spacing": 197.6
    }
   },
   {
@@ -15063,6 +15531,15 @@
      "lo": 71.6,
      "hi": 94.4
     }
+   },
+   "junction": {
+    "amplitude": 41.0,
+    "amplitude_kind": "analogue",
+    "density": 6.4,
+    "per_mm2": 25.6,
+    "density_kind": "analogue",
+    "period": 279.5,
+    "spacing": 197.6
    }
   },
   {
@@ -15101,6 +15578,15 @@
      "lo": 66.7,
      "hi": 89.5
     }
+   },
+   "junction": {
+    "amplitude": 41.0,
+    "amplitude_kind": "analogue",
+    "density": 6.4,
+    "per_mm2": 25.6,
+    "density_kind": "analogue",
+    "period": 279.5,
+    "spacing": 197.6
    }
   },
   {
@@ -15139,6 +15625,15 @@
      "lo": 146.8,
      "hi": 193.6
     }
+   },
+   "junction": {
+    "amplitude": 41.0,
+    "amplitude_kind": "analogue",
+    "density": 6.4,
+    "per_mm2": 25.6,
+    "density_kind": "analogue",
+    "period": 279.5,
+    "spacing": 197.6
    }
   },
   {
@@ -15177,6 +15672,15 @@
      "lo": 73.7,
      "hi": 91.9
     }
+   },
+   "junction": {
+    "amplitude": 30.0,
+    "amplitude_kind": "analogue",
+    "density": 6.4,
+    "per_mm2": 25.6,
+    "density_kind": "analogue",
+    "period": 279.5,
+    "spacing": 197.6
    }
   },
   {
@@ -15215,6 +15719,15 @@
      "lo": 60.7,
      "hi": 79.9
     }
+   },
+   "junction": {
+    "amplitude": 0.0,
+    "amplitude_kind": "held",
+    "density": null,
+    "per_mm2": null,
+    "density_kind": null,
+    "period": null,
+    "spacing": null
    }
   },
   {
@@ -15253,6 +15766,15 @@
      "lo": 36.1,
      "hi": 47.5
     }
+   },
+   "junction": {
+    "amplitude": 13.7,
+    "amplitude_kind": "analogue",
+    "density": 6.4,
+    "per_mm2": 25.6,
+    "density_kind": "analogue",
+    "period": 279.5,
+    "spacing": 197.6
    }
   },
   {
@@ -15291,6 +15813,15 @@
      "lo": 84.0,
      "hi": 110.8
     }
+   },
+   "junction": {
+    "amplitude": 0.0,
+    "amplitude_kind": "analogue",
+    "density": null,
+    "per_mm2": null,
+    "density_kind": null,
+    "period": null,
+    "spacing": null
    }
   },
   {
@@ -15329,6 +15860,15 @@
      "lo": 63.0,
      "hi": 83.0
     }
+   },
+   "junction": {
+    "amplitude": 41.0,
+    "amplitude_kind": "analogue",
+    "density": 6.4,
+    "per_mm2": 25.6,
+    "density_kind": "analogue",
+    "period": 279.5,
+    "spacing": 197.6
    }
   },
   {
@@ -15355,6 +15895,15 @@
      "lo": 63.7,
      "hi": 86.3
     }
+   },
+   "junction": {
+    "amplitude": 41.0,
+    "amplitude_kind": "analogue",
+    "density": 6.4,
+    "per_mm2": 25.6,
+    "density_kind": "analogue",
+    "period": 279.5,
+    "spacing": 197.6
    }
   },
   {
@@ -15393,6 +15942,15 @@
      "lo": 71.6,
      "hi": 94.4
     }
+   },
+   "junction": {
+    "amplitude": 41.0,
+    "amplitude_kind": "analogue",
+    "density": 6.4,
+    "per_mm2": 25.6,
+    "density_kind": "analogue",
+    "period": 279.5,
+    "spacing": 197.6
    }
   },
   {
@@ -15431,6 +15989,15 @@
      "lo": 66.7,
      "hi": 89.5
     }
+   },
+   "junction": {
+    "amplitude": 41.0,
+    "amplitude_kind": "analogue",
+    "density": 6.4,
+    "per_mm2": 25.6,
+    "density_kind": "analogue",
+    "period": 279.5,
+    "spacing": 197.6
    }
   },
   {
@@ -15469,6 +16036,15 @@
      "lo": 146.8,
      "hi": 193.6
     }
+   },
+   "junction": {
+    "amplitude": 41.0,
+    "amplitude_kind": "analogue",
+    "density": 6.4,
+    "per_mm2": 25.6,
+    "density_kind": "analogue",
+    "period": 279.5,
+    "spacing": 197.6
    }
   },
   {
@@ -15507,6 +16083,15 @@
      "lo": 73.7,
      "hi": 91.9
     }
+   },
+   "junction": {
+    "amplitude": 30.0,
+    "amplitude_kind": "analogue",
+    "density": 6.4,
+    "per_mm2": 25.6,
+    "density_kind": "analogue",
+    "period": 279.5,
+    "spacing": 197.6
    }
   },
   {
@@ -15545,6 +16130,15 @@
      "lo": 60.7,
      "hi": 79.9
     }
+   },
+   "junction": {
+    "amplitude": 0.0,
+    "amplitude_kind": "held",
+    "density": null,
+    "per_mm2": null,
+    "density_kind": null,
+    "period": null,
+    "spacing": null
    }
   },
   {
@@ -15583,6 +16177,15 @@
      "lo": 36.1,
      "hi": 47.5
     }
+   },
+   "junction": {
+    "amplitude": 13.7,
+    "amplitude_kind": "analogue",
+    "density": 6.4,
+    "per_mm2": 25.6,
+    "density_kind": "analogue",
+    "period": 279.5,
+    "spacing": 197.6
    }
   },
   {
@@ -15621,6 +16224,15 @@
      "lo": 84.0,
      "hi": 110.8
     }
+   },
+   "junction": {
+    "amplitude": 0.0,
+    "amplitude_kind": "analogue",
+    "density": null,
+    "per_mm2": null,
+    "density_kind": null,
+    "period": null,
+    "spacing": null
    }
   },
   {
@@ -15659,6 +16271,15 @@
      "lo": 63.0,
      "hi": 83.0
     }
+   },
+   "junction": {
+    "amplitude": 41.0,
+    "amplitude_kind": "analogue",
+    "density": 6.4,
+    "per_mm2": 25.6,
+    "density_kind": "analogue",
+    "period": 279.5,
+    "spacing": 197.6
    }
   },
   {
@@ -15685,6 +16306,15 @@
      "lo": 63.7,
      "hi": 86.3
     }
+   },
+   "junction": {
+    "amplitude": 41.0,
+    "amplitude_kind": "analogue",
+    "density": 6.4,
+    "per_mm2": 25.6,
+    "density_kind": "analogue",
+    "period": 279.5,
+    "spacing": 197.6
    }
   },
   {
@@ -15723,6 +16353,15 @@
      "lo": 71.6,
      "hi": 94.4
     }
+   },
+   "junction": {
+    "amplitude": 41.0,
+    "amplitude_kind": "analogue",
+    "density": 6.4,
+    "per_mm2": 25.6,
+    "density_kind": "analogue",
+    "period": 279.5,
+    "spacing": 197.6
    }
   },
   {
@@ -15761,6 +16400,15 @@
      "lo": 66.7,
      "hi": 89.5
     }
+   },
+   "junction": {
+    "amplitude": 41.0,
+    "amplitude_kind": "analogue",
+    "density": 6.4,
+    "per_mm2": 25.6,
+    "density_kind": "analogue",
+    "period": 279.5,
+    "spacing": 197.6
    }
   },
   {
@@ -15799,6 +16447,15 @@
      "lo": 146.8,
      "hi": 193.6
     }
+   },
+   "junction": {
+    "amplitude": 41.0,
+    "amplitude_kind": "analogue",
+    "density": 6.4,
+    "per_mm2": 25.6,
+    "density_kind": "analogue",
+    "period": 279.5,
+    "spacing": 197.6
    }
   },
   {
@@ -15837,6 +16494,15 @@
      "lo": 73.7,
      "hi": 91.9
     }
+   },
+   "junction": {
+    "amplitude": 30.0,
+    "amplitude_kind": "analogue",
+    "density": 6.4,
+    "per_mm2": 25.6,
+    "density_kind": "analogue",
+    "period": 279.5,
+    "spacing": 197.6
    }
   },
   {
@@ -15875,6 +16541,15 @@
      "lo": 60.7,
      "hi": 79.9
     }
+   },
+   "junction": {
+    "amplitude": 0.0,
+    "amplitude_kind": "held",
+    "density": null,
+    "per_mm2": null,
+    "density_kind": null,
+    "period": null,
+    "spacing": null
    }
   },
   {
@@ -15913,6 +16588,15 @@
      "lo": 36.1,
      "hi": 47.5
     }
+   },
+   "junction": {
+    "amplitude": 13.7,
+    "amplitude_kind": "analogue",
+    "density": 6.4,
+    "per_mm2": 25.6,
+    "density_kind": "analogue",
+    "period": 279.5,
+    "spacing": 197.6
    }
   },
   {
@@ -15951,6 +16635,15 @@
      "lo": 84.0,
      "hi": 110.8
     }
+   },
+   "junction": {
+    "amplitude": 0.0,
+    "amplitude_kind": "analogue",
+    "density": null,
+    "per_mm2": null,
+    "density_kind": null,
+    "period": null,
+    "spacing": null
    }
   },
   {
@@ -15989,6 +16682,15 @@
      "lo": 63.0,
      "hi": 83.0
     }
+   },
+   "junction": {
+    "amplitude": 41.0,
+    "amplitude_kind": "analogue",
+    "density": 6.4,
+    "per_mm2": 25.6,
+    "density_kind": "analogue",
+    "period": 279.5,
+    "spacing": 197.6
    }
   },
   {
@@ -16015,6 +16717,15 @@
      "lo": 65.0,
      "hi": 80.8
     }
+   },
+   "junction": {
+    "amplitude": 41.0,
+    "amplitude_kind": "analogue",
+    "density": 6.4,
+    "per_mm2": 25.6,
+    "density_kind": "analogue",
+    "period": 279.5,
+    "spacing": 197.6
    }
   },
   {
@@ -16053,6 +16764,15 @@
      "lo": 71.6,
      "hi": 94.4
     }
+   },
+   "junction": {
+    "amplitude": 41.0,
+    "amplitude_kind": "analogue",
+    "density": 6.4,
+    "per_mm2": 25.6,
+    "density_kind": "analogue",
+    "period": 279.5,
+    "spacing": 197.6
    }
   },
   {
@@ -16091,6 +16811,15 @@
      "lo": 66.7,
      "hi": 89.5
     }
+   },
+   "junction": {
+    "amplitude": 41.0,
+    "amplitude_kind": "analogue",
+    "density": 6.4,
+    "per_mm2": 25.6,
+    "density_kind": "analogue",
+    "period": 279.5,
+    "spacing": 197.6
    }
   },
   {
@@ -16129,6 +16858,15 @@
      "lo": 146.8,
      "hi": 193.6
     }
+   },
+   "junction": {
+    "amplitude": 41.0,
+    "amplitude_kind": "analogue",
+    "density": 6.4,
+    "per_mm2": 25.6,
+    "density_kind": "analogue",
+    "period": 279.5,
+    "spacing": 197.6
    }
   },
   {
@@ -16167,6 +16905,15 @@
      "lo": 73.7,
      "hi": 91.9
     }
+   },
+   "junction": {
+    "amplitude": 30.0,
+    "amplitude_kind": "analogue",
+    "density": 6.4,
+    "per_mm2": 25.6,
+    "density_kind": "analogue",
+    "period": 279.5,
+    "spacing": 197.6
    }
   },
   {
@@ -16205,6 +16952,15 @@
      "lo": 60.7,
      "hi": 79.9
     }
+   },
+   "junction": {
+    "amplitude": 0.0,
+    "amplitude_kind": "held",
+    "density": null,
+    "per_mm2": null,
+    "density_kind": null,
+    "period": null,
+    "spacing": null
    }
   },
   {
@@ -16243,6 +16999,15 @@
      "lo": 36.1,
      "hi": 47.5
     }
+   },
+   "junction": {
+    "amplitude": 13.7,
+    "amplitude_kind": "analogue",
+    "density": 6.4,
+    "per_mm2": 25.6,
+    "density_kind": "analogue",
+    "period": 279.5,
+    "spacing": 197.6
    }
   },
   {
@@ -16281,6 +17046,15 @@
      "lo": 84.0,
      "hi": 110.8
     }
+   },
+   "junction": {
+    "amplitude": 0.0,
+    "amplitude_kind": "analogue",
+    "density": null,
+    "per_mm2": null,
+    "density_kind": null,
+    "period": null,
+    "spacing": null
    }
   },
   {
@@ -16319,6 +17093,15 @@
      "lo": 63.0,
      "hi": 83.0
     }
+   },
+   "junction": {
+    "amplitude": 41.0,
+    "amplitude_kind": "analogue",
+    "density": 6.4,
+    "per_mm2": 25.6,
+    "density_kind": "analogue",
+    "period": 279.5,
+    "spacing": 197.6
    }
   },
   {
@@ -16345,6 +17128,15 @@
      "lo": 65.0,
      "hi": 80.8
     }
+   },
+   "junction": {
+    "amplitude": 41.0,
+    "amplitude_kind": "analogue",
+    "density": 6.4,
+    "per_mm2": 25.6,
+    "density_kind": "analogue",
+    "period": 279.5,
+    "spacing": 197.6
    }
   },
   {
@@ -16383,6 +17175,15 @@
      "lo": 71.6,
      "hi": 94.4
     }
+   },
+   "junction": {
+    "amplitude": 41.0,
+    "amplitude_kind": "analogue",
+    "density": 6.4,
+    "per_mm2": 25.6,
+    "density_kind": "analogue",
+    "period": 279.5,
+    "spacing": 197.6
    }
   },
   {
@@ -16421,6 +17222,15 @@
      "lo": 66.7,
      "hi": 89.5
     }
+   },
+   "junction": {
+    "amplitude": 41.0,
+    "amplitude_kind": "analogue",
+    "density": 6.4,
+    "per_mm2": 25.6,
+    "density_kind": "analogue",
+    "period": 279.5,
+    "spacing": 197.6
    }
   },
   {
@@ -16459,6 +17269,15 @@
      "lo": 146.8,
      "hi": 193.6
     }
+   },
+   "junction": {
+    "amplitude": 41.0,
+    "amplitude_kind": "analogue",
+    "density": 6.4,
+    "per_mm2": 25.6,
+    "density_kind": "analogue",
+    "period": 279.5,
+    "spacing": 197.6
    }
   },
   {
@@ -16497,6 +17316,15 @@
      "lo": 73.7,
      "hi": 91.9
     }
+   },
+   "junction": {
+    "amplitude": 30.0,
+    "amplitude_kind": "analogue",
+    "density": 6.4,
+    "per_mm2": 25.6,
+    "density_kind": "analogue",
+    "period": 279.5,
+    "spacing": 197.6
    }
   },
   {
@@ -16535,6 +17363,15 @@
      "lo": 60.7,
      "hi": 79.9
     }
+   },
+   "junction": {
+    "amplitude": 0.0,
+    "amplitude_kind": "held",
+    "density": null,
+    "per_mm2": null,
+    "density_kind": null,
+    "period": null,
+    "spacing": null
    }
   },
   {
@@ -16573,6 +17410,15 @@
      "lo": 36.1,
      "hi": 47.5
     }
+   },
+   "junction": {
+    "amplitude": 13.7,
+    "amplitude_kind": "analogue",
+    "density": 6.4,
+    "per_mm2": 25.6,
+    "density_kind": "analogue",
+    "period": 279.5,
+    "spacing": 197.6
    }
   },
   {
@@ -16611,6 +17457,15 @@
      "lo": 84.0,
      "hi": 110.8
     }
+   },
+   "junction": {
+    "amplitude": 0.0,
+    "amplitude_kind": "analogue",
+    "density": null,
+    "per_mm2": null,
+    "density_kind": null,
+    "period": null,
+    "spacing": null
    }
   },
   {
@@ -16649,6 +17504,15 @@
      "lo": 63.0,
      "hi": 83.0
     }
+   },
+   "junction": {
+    "amplitude": 41.0,
+    "amplitude_kind": "analogue",
+    "density": 6.4,
+    "per_mm2": 25.6,
+    "density_kind": "analogue",
+    "period": 279.5,
+    "spacing": 197.6
    }
   },
   {
@@ -16675,6 +17539,15 @@
      "lo": 66.2,
      "hi": 75.8
     }
+   },
+   "junction": {
+    "amplitude": 41.0,
+    "amplitude_kind": "analogue",
+    "density": 6.4,
+    "per_mm2": 25.6,
+    "density_kind": "analogue",
+    "period": 279.5,
+    "spacing": 197.6
    }
   },
   {
@@ -16713,6 +17586,15 @@
      "lo": 71.6,
      "hi": 94.4
     }
+   },
+   "junction": {
+    "amplitude": 41.0,
+    "amplitude_kind": "analogue",
+    "density": 6.4,
+    "per_mm2": 25.6,
+    "density_kind": "analogue",
+    "period": 279.5,
+    "spacing": 197.6
    }
   },
   {
@@ -16751,6 +17633,15 @@
      "lo": 66.7,
      "hi": 89.5
     }
+   },
+   "junction": {
+    "amplitude": 41.0,
+    "amplitude_kind": "analogue",
+    "density": 6.4,
+    "per_mm2": 25.6,
+    "density_kind": "analogue",
+    "period": 279.5,
+    "spacing": 197.6
    }
   },
   {
@@ -16789,6 +17680,15 @@
      "lo": 146.8,
      "hi": 193.6
     }
+   },
+   "junction": {
+    "amplitude": 41.0,
+    "amplitude_kind": "analogue",
+    "density": 6.4,
+    "per_mm2": 25.6,
+    "density_kind": "analogue",
+    "period": 279.5,
+    "spacing": 197.6
    }
   },
   {
@@ -16827,6 +17727,15 @@
      "lo": 73.7,
      "hi": 91.9
     }
+   },
+   "junction": {
+    "amplitude": 30.0,
+    "amplitude_kind": "analogue",
+    "density": 6.4,
+    "per_mm2": 25.6,
+    "density_kind": "analogue",
+    "period": 279.5,
+    "spacing": 197.6
    }
   },
   {
@@ -16865,6 +17774,15 @@
      "lo": 60.7,
      "hi": 79.9
     }
+   },
+   "junction": {
+    "amplitude": 0.0,
+    "amplitude_kind": "held",
+    "density": null,
+    "per_mm2": null,
+    "density_kind": null,
+    "period": null,
+    "spacing": null
    }
   },
   {
@@ -16903,6 +17821,15 @@
      "lo": 36.1,
      "hi": 47.5
     }
+   },
+   "junction": {
+    "amplitude": 13.7,
+    "amplitude_kind": "analogue",
+    "density": 6.4,
+    "per_mm2": 25.6,
+    "density_kind": "analogue",
+    "period": 279.5,
+    "spacing": 197.6
    }
   },
   {
@@ -16941,6 +17868,15 @@
      "lo": 84.0,
      "hi": 110.8
     }
+   },
+   "junction": {
+    "amplitude": 0.0,
+    "amplitude_kind": "analogue",
+    "density": null,
+    "per_mm2": null,
+    "density_kind": null,
+    "period": null,
+    "spacing": null
    }
   },
   {
@@ -16979,6 +17915,15 @@
      "lo": 63.0,
      "hi": 83.0
     }
+   },
+   "junction": {
+    "amplitude": 41.0,
+    "amplitude_kind": "analogue",
+    "density": 6.4,
+    "per_mm2": 25.6,
+    "density_kind": "analogue",
+    "period": 279.5,
+    "spacing": 197.6
    }
   },
   {
@@ -17005,6 +17950,15 @@
      "lo": 66.2,
      "hi": 75.8
     }
+   },
+   "junction": {
+    "amplitude": 41.0,
+    "amplitude_kind": "analogue",
+    "density": 6.4,
+    "per_mm2": 25.6,
+    "density_kind": "analogue",
+    "period": 279.5,
+    "spacing": 197.6
    }
   },
   {
@@ -17043,6 +17997,15 @@
      "lo": 71.6,
      "hi": 94.4
     }
+   },
+   "junction": {
+    "amplitude": 41.0,
+    "amplitude_kind": "analogue",
+    "density": 6.4,
+    "per_mm2": 25.6,
+    "density_kind": "analogue",
+    "period": 279.5,
+    "spacing": 197.6
    }
   },
   {
@@ -17081,6 +18044,15 @@
      "lo": 66.7,
      "hi": 89.5
     }
+   },
+   "junction": {
+    "amplitude": 41.0,
+    "amplitude_kind": "analogue",
+    "density": 6.4,
+    "per_mm2": 25.6,
+    "density_kind": "analogue",
+    "period": 279.5,
+    "spacing": 197.6
    }
   },
   {
@@ -17119,6 +18091,15 @@
      "lo": 146.8,
      "hi": 193.6
     }
+   },
+   "junction": {
+    "amplitude": 41.0,
+    "amplitude_kind": "analogue",
+    "density": 6.4,
+    "per_mm2": 25.6,
+    "density_kind": "analogue",
+    "period": 279.5,
+    "spacing": 197.6
    }
   },
   {
@@ -17157,6 +18138,15 @@
      "lo": 73.7,
      "hi": 91.9
     }
+   },
+   "junction": {
+    "amplitude": 30.0,
+    "amplitude_kind": "analogue",
+    "density": 6.4,
+    "per_mm2": 25.6,
+    "density_kind": "analogue",
+    "period": 279.5,
+    "spacing": 197.6
    }
   },
   {
@@ -17195,6 +18185,15 @@
      "lo": 60.7,
      "hi": 79.9
     }
+   },
+   "junction": {
+    "amplitude": 0.0,
+    "amplitude_kind": "held",
+    "density": null,
+    "per_mm2": null,
+    "density_kind": null,
+    "period": null,
+    "spacing": null
    }
   },
   {
@@ -17233,6 +18232,15 @@
      "lo": 36.1,
      "hi": 47.5
     }
+   },
+   "junction": {
+    "amplitude": 13.7,
+    "amplitude_kind": "analogue",
+    "density": 6.4,
+    "per_mm2": 25.6,
+    "density_kind": "analogue",
+    "period": 279.5,
+    "spacing": 197.6
    }
   },
   {
@@ -17271,6 +18279,15 @@
      "lo": 84.0,
      "hi": 110.8
     }
+   },
+   "junction": {
+    "amplitude": 0.0,
+    "amplitude_kind": "analogue",
+    "density": null,
+    "per_mm2": null,
+    "density_kind": null,
+    "period": null,
+    "spacing": null
    }
   },
   {
@@ -17309,6 +18326,15 @@
      "lo": 63.0,
      "hi": 83.0
     }
+   },
+   "junction": {
+    "amplitude": 41.0,
+    "amplitude_kind": "analogue",
+    "density": 6.4,
+    "per_mm2": 25.6,
+    "density_kind": "analogue",
+    "period": 279.5,
+    "spacing": 197.6
    }
   },
   {
@@ -17335,6 +18361,15 @@
      "lo": 66.1,
      "hi": 76.3
     }
+   },
+   "junction": {
+    "amplitude": 41.0,
+    "amplitude_kind": "analogue",
+    "density": 6.4,
+    "per_mm2": 25.6,
+    "density_kind": "analogue",
+    "period": 279.5,
+    "spacing": 197.6
    }
   },
   {
@@ -17373,6 +18408,15 @@
      "lo": 71.6,
      "hi": 94.4
     }
+   },
+   "junction": {
+    "amplitude": 41.0,
+    "amplitude_kind": "analogue",
+    "density": 6.4,
+    "per_mm2": 25.6,
+    "density_kind": "analogue",
+    "period": 279.5,
+    "spacing": 197.6
    }
   },
   {
@@ -17411,6 +18455,15 @@
      "lo": 66.7,
      "hi": 89.5
     }
+   },
+   "junction": {
+    "amplitude": 41.0,
+    "amplitude_kind": "analogue",
+    "density": 6.4,
+    "per_mm2": 25.6,
+    "density_kind": "analogue",
+    "period": 279.5,
+    "spacing": 197.6
    }
   },
   {
@@ -17449,6 +18502,15 @@
      "lo": 146.8,
      "hi": 193.6
     }
+   },
+   "junction": {
+    "amplitude": 41.0,
+    "amplitude_kind": "analogue",
+    "density": 6.4,
+    "per_mm2": 25.6,
+    "density_kind": "analogue",
+    "period": 279.5,
+    "spacing": 197.6
    }
   },
   {
@@ -17487,6 +18549,15 @@
      "lo": 73.7,
      "hi": 91.9
     }
+   },
+   "junction": {
+    "amplitude": 30.0,
+    "amplitude_kind": "analogue",
+    "density": 6.4,
+    "per_mm2": 25.6,
+    "density_kind": "analogue",
+    "period": 279.5,
+    "spacing": 197.6
    }
   },
   {
@@ -17525,6 +18596,15 @@
      "lo": 60.7,
      "hi": 79.9
     }
+   },
+   "junction": {
+    "amplitude": 0.0,
+    "amplitude_kind": "held",
+    "density": null,
+    "per_mm2": null,
+    "density_kind": null,
+    "period": null,
+    "spacing": null
    }
   },
   {
@@ -17563,6 +18643,15 @@
      "lo": 36.1,
      "hi": 47.5
     }
+   },
+   "junction": {
+    "amplitude": 13.7,
+    "amplitude_kind": "analogue",
+    "density": 6.4,
+    "per_mm2": 25.6,
+    "density_kind": "analogue",
+    "period": 279.5,
+    "spacing": 197.6
    }
   },
   {
@@ -17601,6 +18690,15 @@
      "lo": 84.0,
      "hi": 110.8
     }
+   },
+   "junction": {
+    "amplitude": 0.0,
+    "amplitude_kind": "analogue",
+    "density": null,
+    "per_mm2": null,
+    "density_kind": null,
+    "period": null,
+    "spacing": null
    }
   },
   {
@@ -17639,6 +18737,15 @@
      "lo": 63.0,
      "hi": 83.0
     }
+   },
+   "junction": {
+    "amplitude": 41.0,
+    "amplitude_kind": "analogue",
+    "density": 6.4,
+    "per_mm2": 25.6,
+    "density_kind": "analogue",
+    "period": 279.5,
+    "spacing": 197.6
    }
   },
   {
@@ -17665,6 +18772,15 @@
      "lo": 66.1,
      "hi": 76.3
     }
+   },
+   "junction": {
+    "amplitude": 41.0,
+    "amplitude_kind": "analogue",
+    "density": 6.4,
+    "per_mm2": 25.6,
+    "density_kind": "analogue",
+    "period": 279.5,
+    "spacing": 197.6
    }
   },
   {
@@ -17703,6 +18819,15 @@
      "lo": 71.6,
      "hi": 94.4
     }
+   },
+   "junction": {
+    "amplitude": 41.0,
+    "amplitude_kind": "analogue",
+    "density": 6.4,
+    "per_mm2": 25.6,
+    "density_kind": "analogue",
+    "period": 279.5,
+    "spacing": 197.6
    }
   },
   {
@@ -17741,6 +18866,15 @@
      "lo": 66.7,
      "hi": 89.5
     }
+   },
+   "junction": {
+    "amplitude": 41.0,
+    "amplitude_kind": "analogue",
+    "density": 6.4,
+    "per_mm2": 25.6,
+    "density_kind": "analogue",
+    "period": 279.5,
+    "spacing": 197.6
    }
   },
   {
@@ -17779,6 +18913,15 @@
      "lo": 146.8,
      "hi": 193.6
     }
+   },
+   "junction": {
+    "amplitude": 41.0,
+    "amplitude_kind": "analogue",
+    "density": 6.4,
+    "per_mm2": 25.6,
+    "density_kind": "analogue",
+    "period": 279.5,
+    "spacing": 197.6
    }
   },
   {
@@ -17817,6 +18960,15 @@
      "lo": 73.7,
      "hi": 91.9
     }
+   },
+   "junction": {
+    "amplitude": 30.0,
+    "amplitude_kind": "analogue",
+    "density": 6.4,
+    "per_mm2": 25.6,
+    "density_kind": "analogue",
+    "period": 279.5,
+    "spacing": 197.6
    }
   },
   {
@@ -17855,6 +19007,15 @@
      "lo": 60.7,
      "hi": 79.9
     }
+   },
+   "junction": {
+    "amplitude": 0.0,
+    "amplitude_kind": "held",
+    "density": null,
+    "per_mm2": null,
+    "density_kind": null,
+    "period": null,
+    "spacing": null
    }
   },
   {
@@ -17893,6 +19054,15 @@
      "lo": 36.1,
      "hi": 47.5
     }
+   },
+   "junction": {
+    "amplitude": 13.7,
+    "amplitude_kind": "analogue",
+    "density": 6.4,
+    "per_mm2": 25.6,
+    "density_kind": "analogue",
+    "period": 279.5,
+    "spacing": 197.6
    }
   },
   {
@@ -17931,6 +19101,15 @@
      "lo": 84.0,
      "hi": 110.8
     }
+   },
+   "junction": {
+    "amplitude": 0.0,
+    "amplitude_kind": "analogue",
+    "density": null,
+    "per_mm2": null,
+    "density_kind": null,
+    "period": null,
+    "spacing": null
    }
   },
   {
@@ -17969,6 +19148,15 @@
      "lo": 63.0,
      "hi": 83.0
     }
+   },
+   "junction": {
+    "amplitude": 41.0,
+    "amplitude_kind": "analogue",
+    "density": 6.4,
+    "per_mm2": 25.6,
+    "density_kind": "analogue",
+    "period": 279.5,
+    "spacing": 197.6
    }
   },
   {
@@ -17995,6 +19183,15 @@
      "lo": 65.8,
      "hi": 76.8
     }
+   },
+   "junction": {
+    "amplitude": 41.0,
+    "amplitude_kind": "analogue",
+    "density": 6.4,
+    "per_mm2": 25.6,
+    "density_kind": "analogue",
+    "period": 279.5,
+    "spacing": 197.6
    }
   },
   {
@@ -18033,6 +19230,15 @@
      "lo": 71.6,
      "hi": 94.4
     }
+   },
+   "junction": {
+    "amplitude": 41.0,
+    "amplitude_kind": "analogue",
+    "density": 6.4,
+    "per_mm2": 25.6,
+    "density_kind": "analogue",
+    "period": 279.5,
+    "spacing": 197.6
    }
   },
   {
@@ -18071,6 +19277,15 @@
      "lo": 66.7,
      "hi": 89.5
     }
+   },
+   "junction": {
+    "amplitude": 41.0,
+    "amplitude_kind": "analogue",
+    "density": 6.4,
+    "per_mm2": 25.6,
+    "density_kind": "analogue",
+    "period": 279.5,
+    "spacing": 197.6
    }
   },
   {
@@ -18109,6 +19324,15 @@
      "lo": 146.8,
      "hi": 193.6
     }
+   },
+   "junction": {
+    "amplitude": 41.0,
+    "amplitude_kind": "analogue",
+    "density": 6.4,
+    "per_mm2": 25.6,
+    "density_kind": "analogue",
+    "period": 279.5,
+    "spacing": 197.6
    }
   },
   {
@@ -18147,6 +19371,15 @@
      "lo": 73.7,
      "hi": 91.9
     }
+   },
+   "junction": {
+    "amplitude": 30.0,
+    "amplitude_kind": "analogue",
+    "density": 6.4,
+    "per_mm2": 25.6,
+    "density_kind": "analogue",
+    "period": 279.5,
+    "spacing": 197.6
    }
   },
   {
@@ -18185,6 +19418,15 @@
      "lo": 60.7,
      "hi": 79.9
     }
+   },
+   "junction": {
+    "amplitude": 0.0,
+    "amplitude_kind": "held",
+    "density": null,
+    "per_mm2": null,
+    "density_kind": null,
+    "period": null,
+    "spacing": null
    }
   },
   {
@@ -18223,6 +19465,15 @@
      "lo": 36.1,
      "hi": 47.5
     }
+   },
+   "junction": {
+    "amplitude": 13.7,
+    "amplitude_kind": "analogue",
+    "density": 6.4,
+    "per_mm2": 25.6,
+    "density_kind": "analogue",
+    "period": 279.5,
+    "spacing": 197.6
    }
   },
   {
@@ -18261,6 +19512,15 @@
      "lo": 84.0,
      "hi": 110.8
     }
+   },
+   "junction": {
+    "amplitude": 0.0,
+    "amplitude_kind": "analogue",
+    "density": null,
+    "per_mm2": null,
+    "density_kind": null,
+    "period": null,
+    "spacing": null
    }
   },
   {
@@ -18299,6 +19559,15 @@
      "lo": 63.0,
      "hi": 83.0
     }
+   },
+   "junction": {
+    "amplitude": 41.0,
+    "amplitude_kind": "analogue",
+    "density": 6.4,
+    "per_mm2": 25.6,
+    "density_kind": "analogue",
+    "period": 279.5,
+    "spacing": 197.6
    }
   },
   {
@@ -18325,6 +19594,15 @@
      "lo": 65.8,
      "hi": 76.8
     }
+   },
+   "junction": {
+    "amplitude": 41.0,
+    "amplitude_kind": "analogue",
+    "density": 6.4,
+    "per_mm2": 25.6,
+    "density_kind": "analogue",
+    "period": 279.5,
+    "spacing": 197.6
    }
   },
   {
@@ -18363,6 +19641,15 @@
      "lo": 71.6,
      "hi": 94.4
     }
+   },
+   "junction": {
+    "amplitude": 41.0,
+    "amplitude_kind": "analogue",
+    "density": 6.4,
+    "per_mm2": 25.6,
+    "density_kind": "analogue",
+    "period": 279.5,
+    "spacing": 197.6
    }
   },
   {
@@ -18401,6 +19688,15 @@
      "lo": 66.7,
      "hi": 89.5
     }
+   },
+   "junction": {
+    "amplitude": 41.0,
+    "amplitude_kind": "analogue",
+    "density": 6.4,
+    "per_mm2": 25.6,
+    "density_kind": "analogue",
+    "period": 279.5,
+    "spacing": 197.6
    }
   },
   {
@@ -18439,6 +19735,15 @@
      "lo": 146.8,
      "hi": 193.6
     }
+   },
+   "junction": {
+    "amplitude": 41.0,
+    "amplitude_kind": "analogue",
+    "density": 6.4,
+    "per_mm2": 25.6,
+    "density_kind": "analogue",
+    "period": 279.5,
+    "spacing": 197.6
    }
   },
   {
@@ -18477,6 +19782,15 @@
      "lo": 73.7,
      "hi": 91.9
     }
+   },
+   "junction": {
+    "amplitude": 30.0,
+    "amplitude_kind": "analogue",
+    "density": 6.4,
+    "per_mm2": 25.6,
+    "density_kind": "analogue",
+    "period": 279.5,
+    "spacing": 197.6
    }
   },
   {
@@ -18515,6 +19829,15 @@
      "lo": 60.7,
      "hi": 79.9
     }
+   },
+   "junction": {
+    "amplitude": 0.0,
+    "amplitude_kind": "held",
+    "density": null,
+    "per_mm2": null,
+    "density_kind": null,
+    "period": null,
+    "spacing": null
    }
   },
   {
@@ -18553,6 +19876,15 @@
      "lo": 36.1,
      "hi": 47.5
     }
+   },
+   "junction": {
+    "amplitude": 13.7,
+    "amplitude_kind": "analogue",
+    "density": 6.4,
+    "per_mm2": 25.6,
+    "density_kind": "analogue",
+    "period": 279.5,
+    "spacing": 197.6
    }
   },
   {
@@ -18591,6 +19923,15 @@
      "lo": 84.0,
      "hi": 110.8
     }
+   },
+   "junction": {
+    "amplitude": 0.0,
+    "amplitude_kind": "analogue",
+    "density": null,
+    "per_mm2": null,
+    "density_kind": null,
+    "period": null,
+    "spacing": null
    }
   },
   {
@@ -18629,6 +19970,15 @@
      "lo": 63.0,
      "hi": 83.0
     }
+   },
+   "junction": {
+    "amplitude": 41.0,
+    "amplitude_kind": "analogue",
+    "density": 6.4,
+    "per_mm2": 25.6,
+    "density_kind": "analogue",
+    "period": 279.5,
+    "spacing": 197.6
    }
   },
   {
@@ -18655,6 +20005,15 @@
      "lo": 64.0,
      "hi": 81.6
     }
+   },
+   "junction": {
+    "amplitude": 37.3,
+    "amplitude_kind": "analogue",
+    "density": 5.48,
+    "per_mm2": 21.9,
+    "density_kind": "analogue",
+    "period": 302.1,
+    "spacing": 213.6
    }
   },
   {
@@ -18693,6 +20052,15 @@
      "lo": 68.2,
      "hi": 90.0
     }
+   },
+   "junction": {
+    "amplitude": 37.3,
+    "amplitude_kind": "analogue",
+    "density": 5.48,
+    "per_mm2": 21.9,
+    "density_kind": "analogue",
+    "period": 302.1,
+    "spacing": 213.6
    }
   },
   {
@@ -18731,6 +20099,15 @@
      "lo": 65.4,
      "hi": 87.8
     }
+   },
+   "junction": {
+    "amplitude": 37.3,
+    "amplitude_kind": "analogue",
+    "density": 5.48,
+    "per_mm2": 21.9,
+    "density_kind": "analogue",
+    "period": 302.1,
+    "spacing": 213.6
    }
   },
   {
@@ -18769,6 +20146,15 @@
      "lo": 146.8,
      "hi": 193.6
     }
+   },
+   "junction": {
+    "amplitude": 37.3,
+    "amplitude_kind": "analogue",
+    "density": 5.48,
+    "per_mm2": 21.9,
+    "density_kind": "analogue",
+    "period": 302.1,
+    "spacing": 213.6
    }
   },
   {
@@ -18807,6 +20193,15 @@
      "lo": 70.7,
      "hi": 88.1
     }
+   },
+   "junction": {
+    "amplitude": 27.7,
+    "amplitude_kind": "analogue",
+    "density": 5.48,
+    "per_mm2": 21.9,
+    "density_kind": "analogue",
+    "period": 302.1,
+    "spacing": 213.6
    }
   },
   {
@@ -18845,6 +20240,15 @@
      "lo": 58.6,
      "hi": 77.2
     }
+   },
+   "junction": {
+    "amplitude": 0.0,
+    "amplitude_kind": "held",
+    "density": null,
+    "per_mm2": null,
+    "density_kind": null,
+    "period": null,
+    "spacing": null
    }
   },
   {
@@ -18883,6 +20287,15 @@
      "lo": 34.6,
      "hi": 45.6
     }
+   },
+   "junction": {
+    "amplitude": 13.7,
+    "amplitude_kind": "analogue",
+    "density": 5.48,
+    "per_mm2": 21.9,
+    "density_kind": "analogue",
+    "period": 302.1,
+    "spacing": 213.6
    }
   },
   {
@@ -18921,6 +20334,15 @@
      "lo": 81.2,
      "hi": 107.0
     }
+   },
+   "junction": {
+    "amplitude": 0.0,
+    "amplitude_kind": "analogue",
+    "density": null,
+    "per_mm2": null,
+    "density_kind": null,
+    "period": null,
+    "spacing": null
    }
   },
   {
@@ -18959,6 +20381,15 @@
      "lo": 60.8,
      "hi": 80.2
     }
+   },
+   "junction": {
+    "amplitude": 37.3,
+    "amplitude_kind": "analogue",
+    "density": 5.48,
+    "per_mm2": 21.9,
+    "density_kind": "analogue",
+    "period": 302.1,
+    "spacing": 213.6
    }
   },
   {
@@ -18985,6 +20416,15 @@
      "lo": 64.0,
      "hi": 81.6
     }
+   },
+   "junction": {
+    "amplitude": 37.3,
+    "amplitude_kind": "analogue",
+    "density": 5.48,
+    "per_mm2": 21.9,
+    "density_kind": "analogue",
+    "period": 302.1,
+    "spacing": 213.6
    }
   },
   {
@@ -19023,6 +20463,15 @@
      "lo": 68.2,
      "hi": 90.0
     }
+   },
+   "junction": {
+    "amplitude": 37.3,
+    "amplitude_kind": "analogue",
+    "density": 5.48,
+    "per_mm2": 21.9,
+    "density_kind": "analogue",
+    "period": 302.1,
+    "spacing": 213.6
    }
   },
   {
@@ -19061,6 +20510,15 @@
      "lo": 65.4,
      "hi": 87.8
     }
+   },
+   "junction": {
+    "amplitude": 37.3,
+    "amplitude_kind": "analogue",
+    "density": 5.48,
+    "per_mm2": 21.9,
+    "density_kind": "analogue",
+    "period": 302.1,
+    "spacing": 213.6
    }
   },
   {
@@ -19099,6 +20557,15 @@
      "lo": 146.8,
      "hi": 193.6
     }
+   },
+   "junction": {
+    "amplitude": 37.3,
+    "amplitude_kind": "analogue",
+    "density": 5.48,
+    "per_mm2": 21.9,
+    "density_kind": "analogue",
+    "period": 302.1,
+    "spacing": 213.6
    }
   },
   {
@@ -19137,6 +20604,15 @@
      "lo": 70.7,
      "hi": 88.1
     }
+   },
+   "junction": {
+    "amplitude": 27.7,
+    "amplitude_kind": "analogue",
+    "density": 5.48,
+    "per_mm2": 21.9,
+    "density_kind": "analogue",
+    "period": 302.1,
+    "spacing": 213.6
    }
   },
   {
@@ -19175,6 +20651,15 @@
      "lo": 58.6,
      "hi": 77.2
     }
+   },
+   "junction": {
+    "amplitude": 0.0,
+    "amplitude_kind": "held",
+    "density": null,
+    "per_mm2": null,
+    "density_kind": null,
+    "period": null,
+    "spacing": null
    }
   },
   {
@@ -19213,6 +20698,15 @@
      "lo": 34.6,
      "hi": 45.6
     }
+   },
+   "junction": {
+    "amplitude": 13.7,
+    "amplitude_kind": "analogue",
+    "density": 5.48,
+    "per_mm2": 21.9,
+    "density_kind": "analogue",
+    "period": 302.1,
+    "spacing": 213.6
    }
   },
   {
@@ -19251,6 +20745,15 @@
      "lo": 81.2,
      "hi": 107.0
     }
+   },
+   "junction": {
+    "amplitude": 0.0,
+    "amplitude_kind": "analogue",
+    "density": null,
+    "per_mm2": null,
+    "density_kind": null,
+    "period": null,
+    "spacing": null
    }
   },
   {
@@ -19289,6 +20792,15 @@
      "lo": 60.8,
      "hi": 80.2
     }
+   },
+   "junction": {
+    "amplitude": 37.3,
+    "amplitude_kind": "analogue",
+    "density": 5.48,
+    "per_mm2": 21.9,
+    "density_kind": "analogue",
+    "period": 302.1,
+    "spacing": 213.6
    }
   },
   {
@@ -19315,6 +20827,15 @@
      "lo": 62.1,
      "hi": 86.3
     }
+   },
+   "junction": {
+    "amplitude": 33.0,
+    "amplitude_kind": "analogue",
+    "density": 4.51,
+    "per_mm2": 18.0,
+    "density_kind": "analogue",
+    "period": 333.0,
+    "spacing": 235.4
    }
   },
   {
@@ -19353,6 +20874,15 @@
      "lo": 63.3,
      "hi": 83.5
     }
+   },
+   "junction": {
+    "amplitude": 33.0,
+    "amplitude_kind": "analogue",
+    "density": 4.51,
+    "per_mm2": 18.0,
+    "density_kind": "analogue",
+    "period": 333.0,
+    "spacing": 235.4
    }
   },
   {
@@ -19391,6 +20921,15 @@
      "lo": 64.0,
      "hi": 85.8
     }
+   },
+   "junction": {
+    "amplitude": 33.0,
+    "amplitude_kind": "analogue",
+    "density": 4.51,
+    "per_mm2": 18.0,
+    "density_kind": "analogue",
+    "period": 333.0,
+    "spacing": 235.4
    }
   },
   {
@@ -19429,6 +20968,15 @@
      "lo": 146.8,
      "hi": 193.6
     }
+   },
+   "junction": {
+    "amplitude": 33.0,
+    "amplitude_kind": "analogue",
+    "density": 4.51,
+    "per_mm2": 18.0,
+    "density_kind": "analogue",
+    "period": 333.0,
+    "spacing": 235.4
    }
   },
   {
@@ -19467,6 +21015,15 @@
      "lo": 66.9,
      "hi": 83.5
     }
+   },
+   "junction": {
+    "amplitude": 25.0,
+    "amplitude_kind": "analogue",
+    "density": 4.51,
+    "per_mm2": 18.0,
+    "density_kind": "analogue",
+    "period": 333.0,
+    "spacing": 235.4
    }
   },
   {
@@ -19505,6 +21062,15 @@
      "lo": 53.9,
      "hi": 71.1
     }
+   },
+   "junction": {
+    "amplitude": 0.0,
+    "amplitude_kind": "held",
+    "density": null,
+    "per_mm2": null,
+    "density_kind": null,
+    "period": null,
+    "spacing": null
    }
   },
   {
@@ -19543,6 +21109,15 @@
      "lo": 32.8,
      "hi": 43.2
     }
+   },
+   "junction": {
+    "amplitude": 13.7,
+    "amplitude_kind": "analogue",
+    "density": 4.51,
+    "per_mm2": 18.0,
+    "density_kind": "analogue",
+    "period": 333.0,
+    "spacing": 235.4
    }
   },
   {
@@ -19581,6 +21156,15 @@
      "lo": 74.7,
      "hi": 98.5
     }
+   },
+   "junction": {
+    "amplitude": 0.0,
+    "amplitude_kind": "analogue",
+    "density": null,
+    "per_mm2": null,
+    "density_kind": null,
+    "period": null,
+    "spacing": null
    }
   },
   {
@@ -19619,6 +21203,15 @@
      "lo": 56.0,
      "hi": 73.8
     }
+   },
+   "junction": {
+    "amplitude": 33.0,
+    "amplitude_kind": "analogue",
+    "density": 4.51,
+    "per_mm2": 18.0,
+    "density_kind": "analogue",
+    "period": 333.0,
+    "spacing": 235.4
    }
   },
   {
@@ -19645,6 +21238,15 @@
      "lo": 62.1,
      "hi": 86.3
     }
+   },
+   "junction": {
+    "amplitude": 33.0,
+    "amplitude_kind": "analogue",
+    "density": 4.51,
+    "per_mm2": 18.0,
+    "density_kind": "analogue",
+    "period": 333.0,
+    "spacing": 235.4
    }
   },
   {
@@ -19683,6 +21285,15 @@
      "lo": 63.3,
      "hi": 83.5
     }
+   },
+   "junction": {
+    "amplitude": 33.0,
+    "amplitude_kind": "analogue",
+    "density": 4.51,
+    "per_mm2": 18.0,
+    "density_kind": "analogue",
+    "period": 333.0,
+    "spacing": 235.4
    }
   },
   {
@@ -19721,6 +21332,15 @@
      "lo": 64.0,
      "hi": 85.8
     }
+   },
+   "junction": {
+    "amplitude": 33.0,
+    "amplitude_kind": "analogue",
+    "density": 4.51,
+    "per_mm2": 18.0,
+    "density_kind": "analogue",
+    "period": 333.0,
+    "spacing": 235.4
    }
   },
   {
@@ -19759,6 +21379,15 @@
      "lo": 146.8,
      "hi": 193.6
     }
+   },
+   "junction": {
+    "amplitude": 33.0,
+    "amplitude_kind": "analogue",
+    "density": 4.51,
+    "per_mm2": 18.0,
+    "density_kind": "analogue",
+    "period": 333.0,
+    "spacing": 235.4
    }
   },
   {
@@ -19797,6 +21426,15 @@
      "lo": 66.9,
      "hi": 83.5
     }
+   },
+   "junction": {
+    "amplitude": 25.0,
+    "amplitude_kind": "analogue",
+    "density": 4.51,
+    "per_mm2": 18.0,
+    "density_kind": "analogue",
+    "period": 333.0,
+    "spacing": 235.4
    }
   },
   {
@@ -19835,6 +21473,15 @@
      "lo": 53.9,
      "hi": 71.1
     }
+   },
+   "junction": {
+    "amplitude": 0.0,
+    "amplitude_kind": "held",
+    "density": null,
+    "per_mm2": null,
+    "density_kind": null,
+    "period": null,
+    "spacing": null
    }
   },
   {
@@ -19873,6 +21520,15 @@
      "lo": 32.8,
      "hi": 43.2
     }
+   },
+   "junction": {
+    "amplitude": 13.7,
+    "amplitude_kind": "analogue",
+    "density": 4.51,
+    "per_mm2": 18.0,
+    "density_kind": "analogue",
+    "period": 333.0,
+    "spacing": 235.4
    }
   },
   {
@@ -19911,6 +21567,15 @@
      "lo": 74.7,
      "hi": 98.5
     }
+   },
+   "junction": {
+    "amplitude": 0.0,
+    "amplitude_kind": "analogue",
+    "density": null,
+    "per_mm2": null,
+    "density_kind": null,
+    "period": null,
+    "spacing": null
    }
   },
   {
@@ -19949,6 +21614,15 @@
      "lo": 56.0,
      "hi": 73.8
     }
+   },
+   "junction": {
+    "amplitude": 33.0,
+    "amplitude_kind": "analogue",
+    "density": 4.51,
+    "per_mm2": 18.0,
+    "density_kind": "analogue",
+    "period": 333.0,
+    "spacing": 235.4
    }
   },
   {
@@ -19975,6 +21649,15 @@
      "lo": 62.0,
      "hi": 86.8
     }
+   },
+   "junction": {
+    "amplitude": 32.5,
+    "amplitude_kind": "analogue",
+    "density": 4.4,
+    "per_mm2": 17.6,
+    "density_kind": "analogue",
+    "period": 337.1,
+    "spacing": 238.4
    }
   },
   {
@@ -20013,6 +21696,15 @@
      "lo": 62.8,
      "hi": 82.8
     }
+   },
+   "junction": {
+    "amplitude": 32.5,
+    "amplitude_kind": "analogue",
+    "density": 4.4,
+    "per_mm2": 17.6,
+    "density_kind": "analogue",
+    "period": 337.1,
+    "spacing": 238.4
    }
   },
   {
@@ -20051,6 +21743,15 @@
      "lo": 63.8,
      "hi": 85.6
     }
+   },
+   "junction": {
+    "amplitude": 32.5,
+    "amplitude_kind": "analogue",
+    "density": 4.4,
+    "per_mm2": 17.6,
+    "density_kind": "analogue",
+    "period": 337.1,
+    "spacing": 238.4
    }
   },
   {
@@ -20089,6 +21790,15 @@
      "lo": 146.8,
      "hi": 193.6
     }
+   },
+   "junction": {
+    "amplitude": 32.5,
+    "amplitude_kind": "analogue",
+    "density": 4.4,
+    "per_mm2": 17.6,
+    "density_kind": "analogue",
+    "period": 337.1,
+    "spacing": 238.4
    }
   },
   {
@@ -20127,6 +21837,15 @@
      "lo": 66.5,
      "hi": 82.9
     }
+   },
+   "junction": {
+    "amplitude": 24.7,
+    "amplitude_kind": "analogue",
+    "density": 4.4,
+    "per_mm2": 17.6,
+    "density_kind": "analogue",
+    "period": 337.1,
+    "spacing": 238.4
    }
   },
   {
@@ -20165,6 +21884,15 @@
      "lo": 53.4,
      "hi": 70.4
     }
+   },
+   "junction": {
+    "amplitude": 0.0,
+    "amplitude_kind": "held",
+    "density": null,
+    "per_mm2": null,
+    "density_kind": null,
+    "period": null,
+    "spacing": null
    }
   },
   {
@@ -20203,6 +21931,15 @@
      "lo": 32.5,
      "hi": 42.9
     }
+   },
+   "junction": {
+    "amplitude": 13.7,
+    "amplitude_kind": "analogue",
+    "density": 4.4,
+    "per_mm2": 17.6,
+    "density_kind": "analogue",
+    "period": 337.1,
+    "spacing": 238.4
    }
   },
   {
@@ -20241,6 +21978,15 @@
      "lo": 74.0,
      "hi": 97.6
     }
+   },
+   "junction": {
+    "amplitude": 0.0,
+    "amplitude_kind": "analogue",
+    "density": null,
+    "per_mm2": null,
+    "density_kind": null,
+    "period": null,
+    "spacing": null
    }
   },
   {
@@ -20279,6 +22025,15 @@
      "lo": 55.5,
      "hi": 73.1
     }
+   },
+   "junction": {
+    "amplitude": 32.5,
+    "amplitude_kind": "analogue",
+    "density": 4.4,
+    "per_mm2": 17.6,
+    "density_kind": "analogue",
+    "period": 337.1,
+    "spacing": 238.4
    }
   },
   {
@@ -20305,6 +22060,15 @@
      "lo": 62.0,
      "hi": 86.8
     }
+   },
+   "junction": {
+    "amplitude": 32.5,
+    "amplitude_kind": "analogue",
+    "density": 4.4,
+    "per_mm2": 17.6,
+    "density_kind": "analogue",
+    "period": 337.1,
+    "spacing": 238.4
    }
   },
   {
@@ -20343,6 +22107,15 @@
      "lo": 62.8,
      "hi": 82.8
     }
+   },
+   "junction": {
+    "amplitude": 32.5,
+    "amplitude_kind": "analogue",
+    "density": 4.4,
+    "per_mm2": 17.6,
+    "density_kind": "analogue",
+    "period": 337.1,
+    "spacing": 238.4
    }
   },
   {
@@ -20381,6 +22154,15 @@
      "lo": 63.8,
      "hi": 85.6
     }
+   },
+   "junction": {
+    "amplitude": 32.5,
+    "amplitude_kind": "analogue",
+    "density": 4.4,
+    "per_mm2": 17.6,
+    "density_kind": "analogue",
+    "period": 337.1,
+    "spacing": 238.4
    }
   },
   {
@@ -20419,6 +22201,15 @@
      "lo": 146.8,
      "hi": 193.6
     }
+   },
+   "junction": {
+    "amplitude": 32.5,
+    "amplitude_kind": "analogue",
+    "density": 4.4,
+    "per_mm2": 17.6,
+    "density_kind": "analogue",
+    "period": 337.1,
+    "spacing": 238.4
    }
   },
   {
@@ -20457,6 +22248,15 @@
      "lo": 66.5,
      "hi": 82.9
     }
+   },
+   "junction": {
+    "amplitude": 24.7,
+    "amplitude_kind": "analogue",
+    "density": 4.4,
+    "per_mm2": 17.6,
+    "density_kind": "analogue",
+    "period": 337.1,
+    "spacing": 238.4
    }
   },
   {
@@ -20495,6 +22295,15 @@
      "lo": 53.4,
      "hi": 70.4
     }
+   },
+   "junction": {
+    "amplitude": 0.0,
+    "amplitude_kind": "held",
+    "density": null,
+    "per_mm2": null,
+    "density_kind": null,
+    "period": null,
+    "spacing": null
    }
   },
   {
@@ -20533,6 +22342,15 @@
      "lo": 32.5,
      "hi": 42.9
     }
+   },
+   "junction": {
+    "amplitude": 13.7,
+    "amplitude_kind": "analogue",
+    "density": 4.4,
+    "per_mm2": 17.6,
+    "density_kind": "analogue",
+    "period": 337.1,
+    "spacing": 238.4
    }
   },
   {
@@ -20571,6 +22389,15 @@
      "lo": 74.0,
      "hi": 97.6
     }
+   },
+   "junction": {
+    "amplitude": 0.0,
+    "amplitude_kind": "analogue",
+    "density": null,
+    "per_mm2": null,
+    "density_kind": null,
+    "period": null,
+    "spacing": null
    }
   },
   {
@@ -20609,6 +22436,15 @@
      "lo": 55.5,
      "hi": 73.1
     }
+   },
+   "junction": {
+    "amplitude": 32.5,
+    "amplitude_kind": "analogue",
+    "density": 4.4,
+    "per_mm2": 17.6,
+    "density_kind": "analogue",
+    "period": 337.1,
+    "spacing": 238.4
    }
   },
   {
@@ -20635,6 +22471,15 @@
      "lo": 62.8,
      "hi": 91.2
     }
+   },
+   "junction": {
+    "amplitude": 30.0,
+    "amplitude_kind": "analogue",
+    "density": 4.05,
+    "per_mm2": 16.2,
+    "density_kind": "analogue",
+    "period": 351.4,
+    "spacing": 248.5
    }
   },
   {
@@ -20673,6 +22518,15 @@
      "lo": 60.1,
      "hi": 79.3
     }
+   },
+   "junction": {
+    "amplitude": 30.0,
+    "amplitude_kind": "analogue",
+    "density": 4.05,
+    "per_mm2": 16.2,
+    "density_kind": "analogue",
+    "period": 351.4,
+    "spacing": 248.5
    }
   },
   {
@@ -20711,6 +22565,15 @@
      "lo": 62.9,
      "hi": 84.5
     }
+   },
+   "junction": {
+    "amplitude": 30.0,
+    "amplitude_kind": "analogue",
+    "density": 4.05,
+    "per_mm2": 16.2,
+    "density_kind": "analogue",
+    "period": 351.4,
+    "spacing": 248.5
    }
   },
   {
@@ -20749,6 +22612,15 @@
      "lo": 146.8,
      "hi": 193.6
     }
+   },
+   "junction": {
+    "amplitude": 30.0,
+    "amplitude_kind": "analogue",
+    "density": 4.05,
+    "per_mm2": 16.2,
+    "density_kind": "analogue",
+    "period": 351.4,
+    "spacing": 248.5
    }
   },
   {
@@ -20787,6 +22659,15 @@
      "lo": 64.4,
      "hi": 80.2
     }
+   },
+   "junction": {
+    "amplitude": 23.1,
+    "amplitude_kind": "analogue",
+    "density": 4.05,
+    "per_mm2": 16.2,
+    "density_kind": "analogue",
+    "period": 351.4,
+    "spacing": 248.5
    }
   },
   {
@@ -20825,6 +22706,15 @@
      "lo": 50.7,
      "hi": 66.9
     }
+   },
+   "junction": {
+    "amplitude": 0.0,
+    "amplitude_kind": "held",
+    "density": null,
+    "per_mm2": null,
+    "density_kind": null,
+    "period": null,
+    "spacing": null
    }
   },
   {
@@ -20863,6 +22753,15 @@
      "lo": 31.5,
      "hi": 41.5
     }
+   },
+   "junction": {
+    "amplitude": 13.7,
+    "amplitude_kind": "analogue",
+    "density": 4.05,
+    "per_mm2": 16.2,
+    "density_kind": "analogue",
+    "period": 351.4,
+    "spacing": 248.5
    }
   },
   {
@@ -20901,6 +22800,15 @@
      "lo": 70.3,
      "hi": 92.7
     }
+   },
+   "junction": {
+    "amplitude": 0.0,
+    "amplitude_kind": "analogue",
+    "density": null,
+    "per_mm2": null,
+    "density_kind": null,
+    "period": null,
+    "spacing": null
    }
   },
   {
@@ -20939,6 +22847,15 @@
      "lo": 52.6,
      "hi": 69.4
     }
+   },
+   "junction": {
+    "amplitude": 30.0,
+    "amplitude_kind": "analogue",
+    "density": 4.05,
+    "per_mm2": 16.2,
+    "density_kind": "analogue",
+    "period": 351.4,
+    "spacing": 248.5
    }
   },
   {
@@ -20965,6 +22882,15 @@
      "lo": 62.8,
      "hi": 91.2
     }
+   },
+   "junction": {
+    "amplitude": 30.0,
+    "amplitude_kind": "analogue",
+    "density": 4.05,
+    "per_mm2": 16.2,
+    "density_kind": "analogue",
+    "period": 351.4,
+    "spacing": 248.5
    }
   },
   {
@@ -21003,6 +22929,15 @@
      "lo": 60.1,
      "hi": 79.3
     }
+   },
+   "junction": {
+    "amplitude": 30.0,
+    "amplitude_kind": "analogue",
+    "density": 4.05,
+    "per_mm2": 16.2,
+    "density_kind": "analogue",
+    "period": 351.4,
+    "spacing": 248.5
    }
   },
   {
@@ -21041,6 +22976,15 @@
      "lo": 62.9,
      "hi": 84.5
     }
+   },
+   "junction": {
+    "amplitude": 30.0,
+    "amplitude_kind": "analogue",
+    "density": 4.05,
+    "per_mm2": 16.2,
+    "density_kind": "analogue",
+    "period": 351.4,
+    "spacing": 248.5
    }
   },
   {
@@ -21079,6 +23023,15 @@
      "lo": 146.8,
      "hi": 193.6
     }
+   },
+   "junction": {
+    "amplitude": 30.0,
+    "amplitude_kind": "analogue",
+    "density": 4.05,
+    "per_mm2": 16.2,
+    "density_kind": "analogue",
+    "period": 351.4,
+    "spacing": 248.5
    }
   },
   {
@@ -21117,6 +23070,15 @@
      "lo": 64.4,
      "hi": 80.2
     }
+   },
+   "junction": {
+    "amplitude": 23.1,
+    "amplitude_kind": "analogue",
+    "density": 4.05,
+    "per_mm2": 16.2,
+    "density_kind": "analogue",
+    "period": 351.4,
+    "spacing": 248.5
    }
   },
   {
@@ -21155,6 +23117,15 @@
      "lo": 50.7,
      "hi": 66.9
     }
+   },
+   "junction": {
+    "amplitude": 0.0,
+    "amplitude_kind": "held",
+    "density": null,
+    "per_mm2": null,
+    "density_kind": null,
+    "period": null,
+    "spacing": null
    }
   },
   {
@@ -21193,6 +23164,15 @@
      "lo": 31.5,
      "hi": 41.5
     }
+   },
+   "junction": {
+    "amplitude": 13.7,
+    "amplitude_kind": "analogue",
+    "density": 4.05,
+    "per_mm2": 16.2,
+    "density_kind": "analogue",
+    "period": 351.4,
+    "spacing": 248.5
    }
   },
   {
@@ -21231,6 +23211,15 @@
      "lo": 70.3,
      "hi": 92.7
     }
+   },
+   "junction": {
+    "amplitude": 0.0,
+    "amplitude_kind": "analogue",
+    "density": null,
+    "per_mm2": null,
+    "density_kind": null,
+    "period": null,
+    "spacing": null
    }
   },
   {
@@ -21269,6 +23258,15 @@
      "lo": 52.6,
      "hi": 69.4
     }
+   },
+   "junction": {
+    "amplitude": 30.0,
+    "amplitude_kind": "analogue",
+    "density": 4.05,
+    "per_mm2": 16.2,
+    "density_kind": "analogue",
+    "period": 351.4,
+    "spacing": 248.5
    }
   },
   {
@@ -21295,6 +23293,15 @@
      "lo": 70.1,
      "hi": 104.7
     }
+   },
+   "junction": {
+    "amplitude": 25.1,
+    "amplitude_kind": "analogue",
+    "density": 3.35,
+    "per_mm2": 13.4,
+    "density_kind": "analogue",
+    "period": 386.3,
+    "spacing": 273.2
    }
   },
   {
@@ -21333,6 +23340,15 @@
      "lo": 54.7,
      "hi": 72.1
     }
+   },
+   "junction": {
+    "amplitude": 25.1,
+    "amplitude_kind": "analogue",
+    "density": 3.35,
+    "per_mm2": 13.4,
+    "density_kind": "analogue",
+    "period": 386.3,
+    "spacing": 273.2
    }
   },
   {
@@ -21371,6 +23387,15 @@
      "lo": 61.3,
      "hi": 82.3
     }
+   },
+   "junction": {
+    "amplitude": 25.1,
+    "amplitude_kind": "analogue",
+    "density": 3.35,
+    "per_mm2": 13.4,
+    "density_kind": "analogue",
+    "period": 386.3,
+    "spacing": 273.2
    }
   },
   {
@@ -21409,6 +23434,15 @@
      "lo": 146.8,
      "hi": 193.6
     }
+   },
+   "junction": {
+    "amplitude": 25.1,
+    "amplitude_kind": "analogue",
+    "density": 3.35,
+    "per_mm2": 13.4,
+    "density_kind": "analogue",
+    "period": 386.3,
+    "spacing": 273.2
    }
   },
   {
@@ -21447,6 +23481,15 @@
      "lo": 60.2,
      "hi": 75.0
     }
+   },
+   "junction": {
+    "amplitude": 20.1,
+    "amplitude_kind": "analogue",
+    "density": 3.35,
+    "per_mm2": 13.4,
+    "density_kind": "analogue",
+    "period": 386.3,
+    "spacing": 273.2
    }
   },
   {
@@ -21485,6 +23528,15 @@
      "lo": 45.6,
      "hi": 60.0
     }
+   },
+   "junction": {
+    "amplitude": 0.0,
+    "amplitude_kind": "held",
+    "density": null,
+    "per_mm2": null,
+    "density_kind": null,
+    "period": null,
+    "spacing": null
    }
   },
   {
@@ -21523,6 +23575,15 @@
      "lo": 29.4,
      "hi": 38.8
     }
+   },
+   "junction": {
+    "amplitude": 13.7,
+    "amplitude_kind": "analogue",
+    "density": 3.35,
+    "per_mm2": 13.4,
+    "density_kind": "analogue",
+    "period": 386.3,
+    "spacing": 273.2
    }
   },
   {
@@ -21561,6 +23622,15 @@
      "lo": 63.2,
      "hi": 83.2
     }
+   },
+   "junction": {
+    "amplitude": 0.0,
+    "amplitude_kind": "analogue",
+    "density": null,
+    "per_mm2": null,
+    "density_kind": null,
+    "period": null,
+    "spacing": null
    }
   },
   {
@@ -21599,6 +23669,15 @@
      "lo": 47.3,
      "hi": 62.3
     }
+   },
+   "junction": {
+    "amplitude": 25.1,
+    "amplitude_kind": "analogue",
+    "density": 3.35,
+    "per_mm2": 13.4,
+    "density_kind": "analogue",
+    "period": 386.3,
+    "spacing": 273.2
    }
   },
   {
@@ -21625,6 +23704,15 @@
      "lo": 70.1,
      "hi": 104.7
     }
+   },
+   "junction": {
+    "amplitude": 25.1,
+    "amplitude_kind": "analogue",
+    "density": 3.35,
+    "per_mm2": 13.4,
+    "density_kind": "analogue",
+    "period": 386.3,
+    "spacing": 273.2
    }
   },
   {
@@ -21663,6 +23751,15 @@
      "lo": 54.7,
      "hi": 72.1
     }
+   },
+   "junction": {
+    "amplitude": 25.1,
+    "amplitude_kind": "analogue",
+    "density": 3.35,
+    "per_mm2": 13.4,
+    "density_kind": "analogue",
+    "period": 386.3,
+    "spacing": 273.2
    }
   },
   {
@@ -21701,6 +23798,15 @@
      "lo": 61.3,
      "hi": 82.3
     }
+   },
+   "junction": {
+    "amplitude": 25.1,
+    "amplitude_kind": "analogue",
+    "density": 3.35,
+    "per_mm2": 13.4,
+    "density_kind": "analogue",
+    "period": 386.3,
+    "spacing": 273.2
    }
   },
   {
@@ -21739,6 +23845,15 @@
      "lo": 146.8,
      "hi": 193.6
     }
+   },
+   "junction": {
+    "amplitude": 25.1,
+    "amplitude_kind": "analogue",
+    "density": 3.35,
+    "per_mm2": 13.4,
+    "density_kind": "analogue",
+    "period": 386.3,
+    "spacing": 273.2
    }
   },
   {
@@ -21777,6 +23892,15 @@
      "lo": 60.2,
      "hi": 75.0
     }
+   },
+   "junction": {
+    "amplitude": 20.1,
+    "amplitude_kind": "analogue",
+    "density": 3.35,
+    "per_mm2": 13.4,
+    "density_kind": "analogue",
+    "period": 386.3,
+    "spacing": 273.2
    }
   },
   {
@@ -21815,6 +23939,15 @@
      "lo": 45.6,
      "hi": 60.0
     }
+   },
+   "junction": {
+    "amplitude": 0.0,
+    "amplitude_kind": "held",
+    "density": null,
+    "per_mm2": null,
+    "density_kind": null,
+    "period": null,
+    "spacing": null
    }
   },
   {
@@ -21853,6 +23986,15 @@
      "lo": 29.4,
      "hi": 38.8
     }
+   },
+   "junction": {
+    "amplitude": 13.7,
+    "amplitude_kind": "analogue",
+    "density": 3.35,
+    "per_mm2": 13.4,
+    "density_kind": "analogue",
+    "period": 386.3,
+    "spacing": 273.2
    }
   },
   {
@@ -21891,6 +24033,15 @@
      "lo": 63.2,
      "hi": 83.2
     }
+   },
+   "junction": {
+    "amplitude": 0.0,
+    "amplitude_kind": "analogue",
+    "density": null,
+    "per_mm2": null,
+    "density_kind": null,
+    "period": null,
+    "spacing": null
    }
   },
   {
@@ -21929,6 +24080,15 @@
      "lo": 47.3,
      "hi": 62.3
     }
+   },
+   "junction": {
+    "amplitude": 25.1,
+    "amplitude_kind": "analogue",
+    "density": 3.35,
+    "per_mm2": 13.4,
+    "density_kind": "analogue",
+    "period": 386.3,
+    "spacing": 273.2
    }
   },
   {
@@ -21955,6 +24115,15 @@
      "lo": 75.1,
      "hi": 114.1
     }
+   },
+   "junction": {
+    "amplitude": 25.0,
+    "amplitude_kind": "analogue",
+    "density": 2.86,
+    "per_mm2": 11.4,
+    "density_kind": "analogue",
+    "period": 418.1,
+    "spacing": 295.7
    }
   },
   {
@@ -21993,6 +24162,15 @@
      "lo": 52.4,
      "hi": 69.0
     }
+   },
+   "junction": {
+    "amplitude": 25.0,
+    "amplitude_kind": "analogue",
+    "density": 2.86,
+    "per_mm2": 11.4,
+    "density_kind": "analogue",
+    "period": 418.1,
+    "spacing": 295.7
    }
   },
   {
@@ -22031,6 +24209,15 @@
      "lo": 61.3,
      "hi": 82.3
     }
+   },
+   "junction": {
+    "amplitude": 25.0,
+    "amplitude_kind": "analogue",
+    "density": 2.86,
+    "per_mm2": 11.4,
+    "density_kind": "analogue",
+    "period": 418.1,
+    "spacing": 295.7
    }
   },
   {
@@ -22069,6 +24256,15 @@
      "lo": 146.8,
      "hi": 193.6
     }
+   },
+   "junction": {
+    "amplitude": 25.0,
+    "amplitude_kind": "analogue",
+    "density": 2.86,
+    "per_mm2": 11.4,
+    "density_kind": "analogue",
+    "period": 418.1,
+    "spacing": 295.7
    }
   },
   {
@@ -22107,6 +24303,15 @@
      "lo": 57.2,
      "hi": 71.4
     }
+   },
+   "junction": {
+    "amplitude": 20.0,
+    "amplitude_kind": "analogue",
+    "density": 2.86,
+    "per_mm2": 11.4,
+    "density_kind": "analogue",
+    "period": 418.1,
+    "spacing": 295.7
    }
   },
   {
@@ -22145,6 +24350,15 @@
      "lo": 44.0,
      "hi": 58.0
     }
+   },
+   "junction": {
+    "amplitude": 0.0,
+    "amplitude_kind": "held",
+    "density": null,
+    "per_mm2": null,
+    "density_kind": null,
+    "period": null,
+    "spacing": null
    }
   },
   {
@@ -22183,6 +24397,15 @@
      "lo": 28.0,
      "hi": 37.0
     }
+   },
+   "junction": {
+    "amplitude": 13.7,
+    "amplitude_kind": "analogue",
+    "density": 2.86,
+    "per_mm2": 11.4,
+    "density_kind": "analogue",
+    "period": 418.1,
+    "spacing": 295.7
    }
   },
   {
@@ -22221,6 +24444,15 @@
      "lo": 61.0,
      "hi": 80.4
     }
+   },
+   "junction": {
+    "amplitude": 0.0,
+    "amplitude_kind": "analogue",
+    "density": null,
+    "per_mm2": null,
+    "density_kind": null,
+    "period": null,
+    "spacing": null
    }
   },
   {
@@ -22259,6 +24491,15 @@
      "lo": 45.6,
      "hi": 60.2
     }
+   },
+   "junction": {
+    "amplitude": 25.0,
+    "amplitude_kind": "analogue",
+    "density": 2.86,
+    "per_mm2": 11.4,
+    "density_kind": "analogue",
+    "period": 418.1,
+    "spacing": 295.7
    }
   },
   {
@@ -22285,6 +24526,15 @@
      "lo": 75.1,
      "hi": 114.1
     }
+   },
+   "junction": {
+    "amplitude": 25.0,
+    "amplitude_kind": "analogue",
+    "density": 2.86,
+    "per_mm2": 11.4,
+    "density_kind": "analogue",
+    "period": 418.1,
+    "spacing": 295.7
    }
   },
   {
@@ -22323,6 +24573,15 @@
      "lo": 52.4,
      "hi": 69.0
     }
+   },
+   "junction": {
+    "amplitude": 25.0,
+    "amplitude_kind": "analogue",
+    "density": 2.86,
+    "per_mm2": 11.4,
+    "density_kind": "analogue",
+    "period": 418.1,
+    "spacing": 295.7
    }
   },
   {
@@ -22361,6 +24620,15 @@
      "lo": 61.3,
      "hi": 82.3
     }
+   },
+   "junction": {
+    "amplitude": 25.0,
+    "amplitude_kind": "analogue",
+    "density": 2.86,
+    "per_mm2": 11.4,
+    "density_kind": "analogue",
+    "period": 418.1,
+    "spacing": 295.7
    }
   },
   {
@@ -22399,6 +24667,15 @@
      "lo": 146.8,
      "hi": 193.6
     }
+   },
+   "junction": {
+    "amplitude": 25.0,
+    "amplitude_kind": "analogue",
+    "density": 2.86,
+    "per_mm2": 11.4,
+    "density_kind": "analogue",
+    "period": 418.1,
+    "spacing": 295.7
    }
   },
   {
@@ -22437,6 +24714,15 @@
      "lo": 57.2,
      "hi": 71.4
     }
+   },
+   "junction": {
+    "amplitude": 20.0,
+    "amplitude_kind": "analogue",
+    "density": 2.86,
+    "per_mm2": 11.4,
+    "density_kind": "analogue",
+    "period": 418.1,
+    "spacing": 295.7
    }
   },
   {
@@ -22475,6 +24761,15 @@
      "lo": 44.0,
      "hi": 58.0
     }
+   },
+   "junction": {
+    "amplitude": 0.0,
+    "amplitude_kind": "held",
+    "density": null,
+    "per_mm2": null,
+    "density_kind": null,
+    "period": null,
+    "spacing": null
    }
   },
   {
@@ -22513,6 +24808,15 @@
      "lo": 28.0,
      "hi": 37.0
     }
+   },
+   "junction": {
+    "amplitude": 13.7,
+    "amplitude_kind": "analogue",
+    "density": 2.86,
+    "per_mm2": 11.4,
+    "density_kind": "analogue",
+    "period": 418.1,
+    "spacing": 295.7
    }
   },
   {
@@ -22551,6 +24855,15 @@
      "lo": 61.0,
      "hi": 80.4
     }
+   },
+   "junction": {
+    "amplitude": 0.0,
+    "amplitude_kind": "analogue",
+    "density": null,
+    "per_mm2": null,
+    "density_kind": null,
+    "period": null,
+    "spacing": null
    }
   },
   {
@@ -22589,6 +24902,15 @@
      "lo": 45.6,
      "hi": 60.2
     }
+   },
+   "junction": {
+    "amplitude": 25.0,
+    "amplitude_kind": "analogue",
+    "density": 2.86,
+    "per_mm2": 11.4,
+    "density_kind": "analogue",
+    "period": 418.1,
+    "spacing": 295.7
    }
   },
   {
@@ -22615,6 +24937,15 @@
      "lo": 79.5,
      "hi": 122.1
     }
+   },
+   "junction": {
+    "amplitude": 25.0,
+    "amplitude_kind": "analogue",
+    "density": 2.44,
+    "per_mm2": 9.8,
+    "density_kind": "analogue",
+    "period": 452.7,
+    "spacing": 320.1
    }
   },
   {
@@ -22653,6 +24984,15 @@
      "lo": 52.4,
      "hi": 69.0
     }
+   },
+   "junction": {
+    "amplitude": 25.0,
+    "amplitude_kind": "analogue",
+    "density": 2.44,
+    "per_mm2": 9.8,
+    "density_kind": "analogue",
+    "period": 452.7,
+    "spacing": 320.1
    }
   },
   {
@@ -22691,6 +25031,15 @@
      "lo": 61.3,
      "hi": 82.3
     }
+   },
+   "junction": {
+    "amplitude": 25.0,
+    "amplitude_kind": "analogue",
+    "density": 2.44,
+    "per_mm2": 9.8,
+    "density_kind": "analogue",
+    "period": 452.7,
+    "spacing": 320.1
    }
   },
   {
@@ -22729,6 +25078,15 @@
      "lo": 146.8,
      "hi": 193.6
     }
+   },
+   "junction": {
+    "amplitude": 25.0,
+    "amplitude_kind": "analogue",
+    "density": 2.44,
+    "per_mm2": 9.8,
+    "density_kind": "analogue",
+    "period": 452.7,
+    "spacing": 320.1
    }
   },
   {
@@ -22767,6 +25125,15 @@
      "lo": 55.8,
      "hi": 69.6
     }
+   },
+   "junction": {
+    "amplitude": 20.0,
+    "amplitude_kind": "analogue",
+    "density": 2.44,
+    "per_mm2": 9.8,
+    "density_kind": "analogue",
+    "period": 452.7,
+    "spacing": 320.1
    }
   },
   {
@@ -22805,6 +25172,15 @@
      "lo": 44.0,
      "hi": 58.0
     }
+   },
+   "junction": {
+    "amplitude": 0.0,
+    "amplitude_kind": "held",
+    "density": null,
+    "per_mm2": null,
+    "density_kind": null,
+    "period": null,
+    "spacing": null
    }
   },
   {
@@ -22843,6 +25219,15 @@
      "lo": 27.3,
      "hi": 35.9
     }
+   },
+   "junction": {
+    "amplitude": 13.7,
+    "amplitude_kind": "analogue",
+    "density": 2.44,
+    "per_mm2": 9.8,
+    "density_kind": "analogue",
+    "period": 452.7,
+    "spacing": 320.1
    }
   },
   {
@@ -22881,6 +25266,15 @@
      "lo": 61.0,
      "hi": 80.4
     }
+   },
+   "junction": {
+    "amplitude": 0.0,
+    "amplitude_kind": "analogue",
+    "density": null,
+    "per_mm2": null,
+    "density_kind": null,
+    "period": null,
+    "spacing": null
    }
   },
   {
@@ -22919,6 +25313,15 @@
      "lo": 45.6,
      "hi": 60.2
     }
+   },
+   "junction": {
+    "amplitude": 25.0,
+    "amplitude_kind": "analogue",
+    "density": 2.44,
+    "per_mm2": 9.8,
+    "density_kind": "analogue",
+    "period": 452.7,
+    "spacing": 320.1
    }
   },
   {
@@ -22945,6 +25348,15 @@
      "lo": 79.5,
      "hi": 122.1
     }
+   },
+   "junction": {
+    "amplitude": 25.0,
+    "amplitude_kind": "analogue",
+    "density": 2.44,
+    "per_mm2": 9.8,
+    "density_kind": "analogue",
+    "period": 452.7,
+    "spacing": 320.1
    }
   },
   {
@@ -22983,6 +25395,15 @@
      "lo": 52.4,
      "hi": 69.0
     }
+   },
+   "junction": {
+    "amplitude": 25.0,
+    "amplitude_kind": "analogue",
+    "density": 2.44,
+    "per_mm2": 9.8,
+    "density_kind": "analogue",
+    "period": 452.7,
+    "spacing": 320.1
    }
   },
   {
@@ -23021,6 +25442,15 @@
      "lo": 61.3,
      "hi": 82.3
     }
+   },
+   "junction": {
+    "amplitude": 25.0,
+    "amplitude_kind": "analogue",
+    "density": 2.44,
+    "per_mm2": 9.8,
+    "density_kind": "analogue",
+    "period": 452.7,
+    "spacing": 320.1
    }
   },
   {
@@ -23059,6 +25489,15 @@
      "lo": 146.8,
      "hi": 193.6
     }
+   },
+   "junction": {
+    "amplitude": 25.0,
+    "amplitude_kind": "analogue",
+    "density": 2.44,
+    "per_mm2": 9.8,
+    "density_kind": "analogue",
+    "period": 452.7,
+    "spacing": 320.1
    }
   },
   {
@@ -23097,6 +25536,15 @@
      "lo": 55.8,
      "hi": 69.6
     }
+   },
+   "junction": {
+    "amplitude": 20.0,
+    "amplitude_kind": "analogue",
+    "density": 2.44,
+    "per_mm2": 9.8,
+    "density_kind": "analogue",
+    "period": 452.7,
+    "spacing": 320.1
    }
   },
   {
@@ -23135,6 +25583,15 @@
      "lo": 44.0,
      "hi": 58.0
     }
+   },
+   "junction": {
+    "amplitude": 0.0,
+    "amplitude_kind": "held",
+    "density": null,
+    "per_mm2": null,
+    "density_kind": null,
+    "period": null,
+    "spacing": null
    }
   },
   {
@@ -23173,6 +25630,15 @@
      "lo": 27.3,
      "hi": 35.9
     }
+   },
+   "junction": {
+    "amplitude": 13.7,
+    "amplitude_kind": "analogue",
+    "density": 2.44,
+    "per_mm2": 9.8,
+    "density_kind": "analogue",
+    "period": 452.7,
+    "spacing": 320.1
    }
   },
   {
@@ -23211,6 +25677,15 @@
      "lo": 61.0,
      "hi": 80.4
     }
+   },
+   "junction": {
+    "amplitude": 0.0,
+    "amplitude_kind": "analogue",
+    "density": null,
+    "per_mm2": null,
+    "density_kind": null,
+    "period": null,
+    "spacing": null
    }
   },
   {
@@ -23249,6 +25724,15 @@
      "lo": 45.6,
      "hi": 60.2
     }
+   },
+   "junction": {
+    "amplitude": 25.0,
+    "amplitude_kind": "analogue",
+    "density": 2.44,
+    "per_mm2": 9.8,
+    "density_kind": "analogue",
+    "period": 452.7,
+    "spacing": 320.1
    }
   },
   {
@@ -23275,6 +25759,15 @@
      "lo": 79.7,
      "hi": 122.7
     }
+   },
+   "junction": {
+    "amplitude": 25.0,
+    "amplitude_kind": "analogue",
+    "density": 2.3,
+    "per_mm2": 9.2,
+    "density_kind": "analogue",
+    "period": 466.3,
+    "spacing": 329.7
    }
   },
   {
@@ -23313,6 +25806,15 @@
      "lo": 52.4,
      "hi": 69.0
     }
+   },
+   "junction": {
+    "amplitude": 25.0,
+    "amplitude_kind": "analogue",
+    "density": 2.3,
+    "per_mm2": 9.2,
+    "density_kind": "analogue",
+    "period": 466.3,
+    "spacing": 329.7
    }
   },
   {
@@ -23351,6 +25853,15 @@
      "lo": 61.3,
      "hi": 82.3
     }
+   },
+   "junction": {
+    "amplitude": 25.0,
+    "amplitude_kind": "analogue",
+    "density": 2.3,
+    "per_mm2": 9.2,
+    "density_kind": "analogue",
+    "period": 466.3,
+    "spacing": 329.7
    }
   },
   {
@@ -23389,6 +25900,15 @@
      "lo": 146.8,
      "hi": 193.6
     }
+   },
+   "junction": {
+    "amplitude": 25.0,
+    "amplitude_kind": "analogue",
+    "density": 2.3,
+    "per_mm2": 9.2,
+    "density_kind": "analogue",
+    "period": 466.3,
+    "spacing": 329.7
    }
   },
   {
@@ -23427,6 +25947,15 @@
      "lo": 55.8,
      "hi": 69.6
     }
+   },
+   "junction": {
+    "amplitude": 20.0,
+    "amplitude_kind": "analogue",
+    "density": 2.3,
+    "per_mm2": 9.2,
+    "density_kind": "analogue",
+    "period": 466.3,
+    "spacing": 329.7
    }
   },
   {
@@ -23465,6 +25994,15 @@
      "lo": 44.0,
      "hi": 58.0
     }
+   },
+   "junction": {
+    "amplitude": 0.0,
+    "amplitude_kind": "held",
+    "density": null,
+    "per_mm2": null,
+    "density_kind": null,
+    "period": null,
+    "spacing": null
    }
   },
   {
@@ -23503,6 +26041,15 @@
      "lo": 27.3,
      "hi": 35.9
     }
+   },
+   "junction": {
+    "amplitude": 13.7,
+    "amplitude_kind": "analogue",
+    "density": 2.3,
+    "per_mm2": 9.2,
+    "density_kind": "analogue",
+    "period": 466.3,
+    "spacing": 329.7
    }
   },
   {
@@ -23541,6 +26088,15 @@
      "lo": 61.0,
      "hi": 80.4
     }
+   },
+   "junction": {
+    "amplitude": 0.0,
+    "amplitude_kind": "analogue",
+    "density": null,
+    "per_mm2": null,
+    "density_kind": null,
+    "period": null,
+    "spacing": null
    }
   },
   {
@@ -23579,6 +26135,15 @@
      "lo": 45.6,
      "hi": 60.2
     }
+   },
+   "junction": {
+    "amplitude": 25.0,
+    "amplitude_kind": "analogue",
+    "density": 2.3,
+    "per_mm2": 9.2,
+    "density_kind": "analogue",
+    "period": 466.3,
+    "spacing": 329.7
    }
   },
   {
@@ -23605,6 +26170,15 @@
      "lo": 79.7,
      "hi": 122.7
     }
+   },
+   "junction": {
+    "amplitude": 25.0,
+    "amplitude_kind": "analogue",
+    "density": 2.3,
+    "per_mm2": 9.2,
+    "density_kind": "analogue",
+    "period": 466.3,
+    "spacing": 329.7
    }
   },
   {
@@ -23643,6 +26217,15 @@
      "lo": 52.4,
      "hi": 69.0
     }
+   },
+   "junction": {
+    "amplitude": 25.0,
+    "amplitude_kind": "analogue",
+    "density": 2.3,
+    "per_mm2": 9.2,
+    "density_kind": "analogue",
+    "period": 466.3,
+    "spacing": 329.7
    }
   },
   {
@@ -23681,6 +26264,15 @@
      "lo": 61.3,
      "hi": 82.3
     }
+   },
+   "junction": {
+    "amplitude": 25.0,
+    "amplitude_kind": "analogue",
+    "density": 2.3,
+    "per_mm2": 9.2,
+    "density_kind": "analogue",
+    "period": 466.3,
+    "spacing": 329.7
    }
   },
   {
@@ -23719,6 +26311,15 @@
      "lo": 146.8,
      "hi": 193.6
     }
+   },
+   "junction": {
+    "amplitude": 25.0,
+    "amplitude_kind": "analogue",
+    "density": 2.3,
+    "per_mm2": 9.2,
+    "density_kind": "analogue",
+    "period": 466.3,
+    "spacing": 329.7
    }
   },
   {
@@ -23757,6 +26358,15 @@
      "lo": 55.8,
      "hi": 69.6
     }
+   },
+   "junction": {
+    "amplitude": 20.0,
+    "amplitude_kind": "analogue",
+    "density": 2.3,
+    "per_mm2": 9.2,
+    "density_kind": "analogue",
+    "period": 466.3,
+    "spacing": 329.7
    }
   },
   {
@@ -23795,6 +26405,15 @@
      "lo": 44.0,
      "hi": 58.0
     }
+   },
+   "junction": {
+    "amplitude": 0.0,
+    "amplitude_kind": "held",
+    "density": null,
+    "per_mm2": null,
+    "density_kind": null,
+    "period": null,
+    "spacing": null
    }
   },
   {
@@ -23833,6 +26452,15 @@
      "lo": 27.3,
      "hi": 35.9
     }
+   },
+   "junction": {
+    "amplitude": 13.7,
+    "amplitude_kind": "analogue",
+    "density": 2.3,
+    "per_mm2": 9.2,
+    "density_kind": "analogue",
+    "period": 466.3,
+    "spacing": 329.7
    }
   },
   {
@@ -23871,6 +26499,15 @@
      "lo": 61.0,
      "hi": 80.4
     }
+   },
+   "junction": {
+    "amplitude": 0.0,
+    "amplitude_kind": "analogue",
+    "density": null,
+    "per_mm2": null,
+    "density_kind": null,
+    "period": null,
+    "spacing": null
    }
   },
   {
@@ -23909,6 +26546,15 @@
      "lo": 45.6,
      "hi": 60.2
     }
+   },
+   "junction": {
+    "amplitude": 25.0,
+    "amplitude_kind": "analogue",
+    "density": 2.3,
+    "per_mm2": 9.2,
+    "density_kind": "analogue",
+    "period": 466.3,
+    "spacing": 329.7
    }
   },
   {
@@ -23935,6 +26581,15 @@
      "lo": 79.7,
      "hi": 122.7
     }
+   },
+   "junction": {
+    "amplitude": 25.0,
+    "amplitude_kind": "analogue",
+    "density": 2.3,
+    "per_mm2": 9.2,
+    "density_kind": "analogue",
+    "period": 466.3,
+    "spacing": 329.7
    }
   },
   {
@@ -23973,6 +26628,15 @@
      "lo": 52.4,
      "hi": 69.0
     }
+   },
+   "junction": {
+    "amplitude": 25.0,
+    "amplitude_kind": "analogue",
+    "density": 2.3,
+    "per_mm2": 9.2,
+    "density_kind": "analogue",
+    "period": 466.3,
+    "spacing": 329.7
    }
   },
   {
@@ -24011,6 +26675,15 @@
      "lo": 61.3,
      "hi": 82.3
     }
+   },
+   "junction": {
+    "amplitude": 25.0,
+    "amplitude_kind": "analogue",
+    "density": 2.3,
+    "per_mm2": 9.2,
+    "density_kind": "analogue",
+    "period": 466.3,
+    "spacing": 329.7
    }
   },
   {
@@ -24049,6 +26722,15 @@
      "lo": 146.8,
      "hi": 193.6
     }
+   },
+   "junction": {
+    "amplitude": 25.0,
+    "amplitude_kind": "analogue",
+    "density": 2.3,
+    "per_mm2": 9.2,
+    "density_kind": "analogue",
+    "period": 466.3,
+    "spacing": 329.7
    }
   },
   {
@@ -24087,6 +26769,15 @@
      "lo": 55.8,
      "hi": 69.6
     }
+   },
+   "junction": {
+    "amplitude": 20.0,
+    "amplitude_kind": "analogue",
+    "density": 2.3,
+    "per_mm2": 9.2,
+    "density_kind": "analogue",
+    "period": 466.3,
+    "spacing": 329.7
    }
   },
   {
@@ -24125,6 +26816,15 @@
      "lo": 44.0,
      "hi": 58.0
     }
+   },
+   "junction": {
+    "amplitude": 0.0,
+    "amplitude_kind": "held",
+    "density": null,
+    "per_mm2": null,
+    "density_kind": null,
+    "period": null,
+    "spacing": null
    }
   },
   {
@@ -24163,6 +26863,15 @@
      "lo": 27.3,
      "hi": 35.9
     }
+   },
+   "junction": {
+    "amplitude": 13.7,
+    "amplitude_kind": "analogue",
+    "density": 2.3,
+    "per_mm2": 9.2,
+    "density_kind": "analogue",
+    "period": 466.3,
+    "spacing": 329.7
    }
   },
   {
@@ -24201,6 +26910,15 @@
      "lo": 61.0,
      "hi": 80.4
     }
+   },
+   "junction": {
+    "amplitude": 0.0,
+    "amplitude_kind": "analogue",
+    "density": null,
+    "per_mm2": null,
+    "density_kind": null,
+    "period": null,
+    "spacing": null
    }
   },
   {
@@ -24239,6 +26957,15 @@
      "lo": 45.6,
      "hi": 60.2
     }
+   },
+   "junction": {
+    "amplitude": 25.0,
+    "amplitude_kind": "analogue",
+    "density": 2.3,
+    "per_mm2": 9.2,
+    "density_kind": "analogue",
+    "period": 466.3,
+    "spacing": 329.7
    }
   },
   {
@@ -24265,6 +26992,15 @@
      "lo": 79.7,
      "hi": 122.7
     }
+   },
+   "junction": {
+    "amplitude": 25.0,
+    "amplitude_kind": "analogue",
+    "density": 2.3,
+    "per_mm2": 9.2,
+    "density_kind": "analogue",
+    "period": 466.3,
+    "spacing": 329.7
    }
   },
   {
@@ -24303,6 +27039,15 @@
      "lo": 52.4,
      "hi": 69.0
     }
+   },
+   "junction": {
+    "amplitude": 25.0,
+    "amplitude_kind": "analogue",
+    "density": 2.3,
+    "per_mm2": 9.2,
+    "density_kind": "analogue",
+    "period": 466.3,
+    "spacing": 329.7
    }
   },
   {
@@ -24341,6 +27086,15 @@
      "lo": 61.3,
      "hi": 82.3
     }
+   },
+   "junction": {
+    "amplitude": 25.0,
+    "amplitude_kind": "analogue",
+    "density": 2.3,
+    "per_mm2": 9.2,
+    "density_kind": "analogue",
+    "period": 466.3,
+    "spacing": 329.7
    }
   },
   {
@@ -24379,6 +27133,15 @@
      "lo": 146.8,
      "hi": 193.6
     }
+   },
+   "junction": {
+    "amplitude": 25.0,
+    "amplitude_kind": "analogue",
+    "density": 2.3,
+    "per_mm2": 9.2,
+    "density_kind": "analogue",
+    "period": 466.3,
+    "spacing": 329.7
    }
   },
   {
@@ -24417,6 +27180,15 @@
      "lo": 55.8,
      "hi": 69.6
     }
+   },
+   "junction": {
+    "amplitude": 20.0,
+    "amplitude_kind": "analogue",
+    "density": 2.3,
+    "per_mm2": 9.2,
+    "density_kind": "analogue",
+    "period": 466.3,
+    "spacing": 329.7
    }
   },
   {
@@ -24455,6 +27227,15 @@
      "lo": 44.0,
      "hi": 58.0
     }
+   },
+   "junction": {
+    "amplitude": 0.0,
+    "amplitude_kind": "held",
+    "density": null,
+    "per_mm2": null,
+    "density_kind": null,
+    "period": null,
+    "spacing": null
    }
   },
   {
@@ -24493,6 +27274,15 @@
      "lo": 27.3,
      "hi": 35.9
     }
+   },
+   "junction": {
+    "amplitude": 13.7,
+    "amplitude_kind": "analogue",
+    "density": 2.3,
+    "per_mm2": 9.2,
+    "density_kind": "analogue",
+    "period": 466.3,
+    "spacing": 329.7
    }
   },
   {
@@ -24531,6 +27321,15 @@
      "lo": 61.0,
      "hi": 80.4
     }
+   },
+   "junction": {
+    "amplitude": 0.0,
+    "amplitude_kind": "analogue",
+    "density": null,
+    "per_mm2": null,
+    "density_kind": null,
+    "period": null,
+    "spacing": null
    }
   },
   {
@@ -24569,6 +27368,15 @@
      "lo": 45.6,
      "hi": 60.2
     }
+   },
+   "junction": {
+    "amplitude": 25.0,
+    "amplitude_kind": "analogue",
+    "density": 2.3,
+    "per_mm2": 9.2,
+    "density_kind": "analogue",
+    "period": 466.3,
+    "spacing": 329.7
    }
   },
   {
@@ -24595,6 +27403,15 @@
      "lo": 79.7,
      "hi": 122.7
     }
+   },
+   "junction": {
+    "amplitude": 25.0,
+    "amplitude_kind": "analogue",
+    "density": 2.3,
+    "per_mm2": 9.2,
+    "density_kind": "analogue",
+    "period": 466.3,
+    "spacing": 329.7
    }
   },
   {
@@ -24633,6 +27450,15 @@
      "lo": 52.4,
      "hi": 69.0
     }
+   },
+   "junction": {
+    "amplitude": 25.0,
+    "amplitude_kind": "analogue",
+    "density": 2.3,
+    "per_mm2": 9.2,
+    "density_kind": "analogue",
+    "period": 466.3,
+    "spacing": 329.7
    }
   },
   {
@@ -24671,6 +27497,15 @@
      "lo": 61.3,
      "hi": 82.3
     }
+   },
+   "junction": {
+    "amplitude": 25.0,
+    "amplitude_kind": "analogue",
+    "density": 2.3,
+    "per_mm2": 9.2,
+    "density_kind": "analogue",
+    "period": 466.3,
+    "spacing": 329.7
    }
   },
   {
@@ -24709,6 +27544,15 @@
      "lo": 146.8,
      "hi": 193.6
     }
+   },
+   "junction": {
+    "amplitude": 25.0,
+    "amplitude_kind": "analogue",
+    "density": 2.3,
+    "per_mm2": 9.2,
+    "density_kind": "analogue",
+    "period": 466.3,
+    "spacing": 329.7
    }
   },
   {
@@ -24747,6 +27591,15 @@
      "lo": 55.8,
      "hi": 69.6
     }
+   },
+   "junction": {
+    "amplitude": 20.0,
+    "amplitude_kind": "analogue",
+    "density": 2.3,
+    "per_mm2": 9.2,
+    "density_kind": "analogue",
+    "period": 466.3,
+    "spacing": 329.7
    }
   },
   {
@@ -24785,6 +27638,15 @@
      "lo": 44.0,
      "hi": 58.0
     }
+   },
+   "junction": {
+    "amplitude": 0.0,
+    "amplitude_kind": "held",
+    "density": null,
+    "per_mm2": null,
+    "density_kind": null,
+    "period": null,
+    "spacing": null
    }
   },
   {
@@ -24823,6 +27685,15 @@
      "lo": 27.3,
      "hi": 35.9
     }
+   },
+   "junction": {
+    "amplitude": 13.7,
+    "amplitude_kind": "analogue",
+    "density": 2.3,
+    "per_mm2": 9.2,
+    "density_kind": "analogue",
+    "period": 466.3,
+    "spacing": 329.7
    }
   },
   {
@@ -24861,6 +27732,15 @@
      "lo": 61.0,
      "hi": 80.4
     }
+   },
+   "junction": {
+    "amplitude": 0.0,
+    "amplitude_kind": "analogue",
+    "density": null,
+    "per_mm2": null,
+    "density_kind": null,
+    "period": null,
+    "spacing": null
    }
   },
   {
@@ -24899,6 +27779,15 @@
      "lo": 45.6,
      "hi": 60.2
     }
+   },
+   "junction": {
+    "amplitude": 25.0,
+    "amplitude_kind": "analogue",
+    "density": 2.3,
+    "per_mm2": 9.2,
+    "density_kind": "analogue",
+    "period": 466.3,
+    "spacing": 329.7
    }
   },
   {
@@ -24925,6 +27814,15 @@
      "lo": 79.7,
      "hi": 122.7
     }
+   },
+   "junction": {
+    "amplitude": 25.0,
+    "amplitude_kind": "analogue",
+    "density": 2.3,
+    "per_mm2": 9.2,
+    "density_kind": "analogue",
+    "period": 466.3,
+    "spacing": 329.7
    }
   },
   {
@@ -24963,6 +27861,15 @@
      "lo": 52.4,
      "hi": 69.0
     }
+   },
+   "junction": {
+    "amplitude": 25.0,
+    "amplitude_kind": "analogue",
+    "density": 2.3,
+    "per_mm2": 9.2,
+    "density_kind": "analogue",
+    "period": 466.3,
+    "spacing": 329.7
    }
   },
   {
@@ -25001,6 +27908,15 @@
      "lo": 61.3,
      "hi": 82.3
     }
+   },
+   "junction": {
+    "amplitude": 25.0,
+    "amplitude_kind": "analogue",
+    "density": 2.3,
+    "per_mm2": 9.2,
+    "density_kind": "analogue",
+    "period": 466.3,
+    "spacing": 329.7
    }
   },
   {
@@ -25039,6 +27955,15 @@
      "lo": 146.8,
      "hi": 193.6
     }
+   },
+   "junction": {
+    "amplitude": 25.0,
+    "amplitude_kind": "analogue",
+    "density": 2.3,
+    "per_mm2": 9.2,
+    "density_kind": "analogue",
+    "period": 466.3,
+    "spacing": 329.7
    }
   },
   {
@@ -25077,6 +28002,15 @@
      "lo": 55.8,
      "hi": 69.6
     }
+   },
+   "junction": {
+    "amplitude": 20.0,
+    "amplitude_kind": "analogue",
+    "density": 2.3,
+    "per_mm2": 9.2,
+    "density_kind": "analogue",
+    "period": 466.3,
+    "spacing": 329.7
    }
   },
   {
@@ -25115,6 +28049,15 @@
      "lo": 44.0,
      "hi": 58.0
     }
+   },
+   "junction": {
+    "amplitude": 0.0,
+    "amplitude_kind": "held",
+    "density": null,
+    "per_mm2": null,
+    "density_kind": null,
+    "period": null,
+    "spacing": null
    }
   },
   {
@@ -25153,6 +28096,15 @@
      "lo": 27.3,
      "hi": 35.9
     }
+   },
+   "junction": {
+    "amplitude": 13.7,
+    "amplitude_kind": "analogue",
+    "density": 2.3,
+    "per_mm2": 9.2,
+    "density_kind": "analogue",
+    "period": 466.3,
+    "spacing": 329.7
    }
   },
   {
@@ -25191,6 +28143,15 @@
      "lo": 61.0,
      "hi": 80.4
     }
+   },
+   "junction": {
+    "amplitude": 0.0,
+    "amplitude_kind": "analogue",
+    "density": null,
+    "per_mm2": null,
+    "density_kind": null,
+    "period": null,
+    "spacing": null
    }
   },
   {
@@ -25229,6 +28190,15 @@
      "lo": 45.6,
      "hi": 60.2
     }
+   },
+   "junction": {
+    "amplitude": 25.0,
+    "amplitude_kind": "analogue",
+    "density": 2.3,
+    "per_mm2": 9.2,
+    "density_kind": "analogue",
+    "period": 466.3,
+    "spacing": 329.7
    }
   },
   {
@@ -25255,6 +28225,15 @@
      "lo": 79.7,
      "hi": 122.7
     }
+   },
+   "junction": {
+    "amplitude": 25.0,
+    "amplitude_kind": "analogue",
+    "density": 2.3,
+    "per_mm2": 9.2,
+    "density_kind": "analogue",
+    "period": 466.3,
+    "spacing": 329.7
    }
   },
   {
@@ -25293,6 +28272,15 @@
      "lo": 52.4,
      "hi": 69.0
     }
+   },
+   "junction": {
+    "amplitude": 25.0,
+    "amplitude_kind": "analogue",
+    "density": 2.3,
+    "per_mm2": 9.2,
+    "density_kind": "analogue",
+    "period": 466.3,
+    "spacing": 329.7
    }
   },
   {
@@ -25331,6 +28319,15 @@
      "lo": 61.3,
      "hi": 82.3
     }
+   },
+   "junction": {
+    "amplitude": 25.0,
+    "amplitude_kind": "analogue",
+    "density": 2.3,
+    "per_mm2": 9.2,
+    "density_kind": "analogue",
+    "period": 466.3,
+    "spacing": 329.7
    }
   },
   {
@@ -25369,6 +28366,15 @@
      "lo": 146.8,
      "hi": 193.6
     }
+   },
+   "junction": {
+    "amplitude": 25.0,
+    "amplitude_kind": "analogue",
+    "density": 2.3,
+    "per_mm2": 9.2,
+    "density_kind": "analogue",
+    "period": 466.3,
+    "spacing": 329.7
    }
   },
   {
@@ -25407,6 +28413,15 @@
      "lo": 55.8,
      "hi": 69.6
     }
+   },
+   "junction": {
+    "amplitude": 20.0,
+    "amplitude_kind": "analogue",
+    "density": 2.3,
+    "per_mm2": 9.2,
+    "density_kind": "analogue",
+    "period": 466.3,
+    "spacing": 329.7
    }
   },
   {
@@ -25445,6 +28460,15 @@
      "lo": 44.0,
      "hi": 58.0
     }
+   },
+   "junction": {
+    "amplitude": 0.0,
+    "amplitude_kind": "held",
+    "density": null,
+    "per_mm2": null,
+    "density_kind": null,
+    "period": null,
+    "spacing": null
    }
   },
   {
@@ -25483,6 +28507,15 @@
      "lo": 27.3,
      "hi": 35.9
     }
+   },
+   "junction": {
+    "amplitude": 13.7,
+    "amplitude_kind": "analogue",
+    "density": 2.3,
+    "per_mm2": 9.2,
+    "density_kind": "analogue",
+    "period": 466.3,
+    "spacing": 329.7
    }
   },
   {
@@ -25521,6 +28554,15 @@
      "lo": 61.0,
      "hi": 80.4
     }
+   },
+   "junction": {
+    "amplitude": 0.0,
+    "amplitude_kind": "analogue",
+    "density": null,
+    "per_mm2": null,
+    "density_kind": null,
+    "period": null,
+    "spacing": null
    }
   },
   {
@@ -25559,6 +28601,15 @@
      "lo": 45.6,
      "hi": 60.2
     }
+   },
+   "junction": {
+    "amplitude": 25.0,
+    "amplitude_kind": "analogue",
+    "density": 2.3,
+    "per_mm2": 9.2,
+    "density_kind": "analogue",
+    "period": 466.3,
+    "spacing": 329.7
    }
   },
   {
@@ -25585,6 +28636,15 @@
      "lo": 79.7,
      "hi": 122.7
     }
+   },
+   "junction": {
+    "amplitude": 25.0,
+    "amplitude_kind": "analogue",
+    "density": 2.3,
+    "per_mm2": 9.2,
+    "density_kind": "analogue",
+    "period": 466.3,
+    "spacing": 329.7
    }
   },
   {
@@ -25623,6 +28683,15 @@
      "lo": 52.4,
      "hi": 69.0
     }
+   },
+   "junction": {
+    "amplitude": 25.0,
+    "amplitude_kind": "analogue",
+    "density": 2.3,
+    "per_mm2": 9.2,
+    "density_kind": "analogue",
+    "period": 466.3,
+    "spacing": 329.7
    }
   },
   {
@@ -25661,6 +28730,15 @@
      "lo": 61.3,
      "hi": 82.3
     }
+   },
+   "junction": {
+    "amplitude": 25.0,
+    "amplitude_kind": "analogue",
+    "density": 2.3,
+    "per_mm2": 9.2,
+    "density_kind": "analogue",
+    "period": 466.3,
+    "spacing": 329.7
    }
   },
   {
@@ -25699,6 +28777,15 @@
      "lo": 146.8,
      "hi": 193.6
     }
+   },
+   "junction": {
+    "amplitude": 25.0,
+    "amplitude_kind": "analogue",
+    "density": 2.3,
+    "per_mm2": 9.2,
+    "density_kind": "analogue",
+    "period": 466.3,
+    "spacing": 329.7
    }
   },
   {
@@ -25737,6 +28824,15 @@
      "lo": 55.8,
      "hi": 69.6
     }
+   },
+   "junction": {
+    "amplitude": 20.0,
+    "amplitude_kind": "analogue",
+    "density": 2.3,
+    "per_mm2": 9.2,
+    "density_kind": "analogue",
+    "period": 466.3,
+    "spacing": 329.7
    }
   },
   {
@@ -25775,6 +28871,15 @@
      "lo": 44.0,
      "hi": 58.0
     }
+   },
+   "junction": {
+    "amplitude": 0.0,
+    "amplitude_kind": "held",
+    "density": null,
+    "per_mm2": null,
+    "density_kind": null,
+    "period": null,
+    "spacing": null
    }
   },
   {
@@ -25813,6 +28918,15 @@
      "lo": 27.3,
      "hi": 35.9
     }
+   },
+   "junction": {
+    "amplitude": 13.7,
+    "amplitude_kind": "analogue",
+    "density": 2.3,
+    "per_mm2": 9.2,
+    "density_kind": "analogue",
+    "period": 466.3,
+    "spacing": 329.7
    }
   },
   {
@@ -25851,6 +28965,15 @@
      "lo": 61.0,
      "hi": 80.4
     }
+   },
+   "junction": {
+    "amplitude": 0.0,
+    "amplitude_kind": "analogue",
+    "density": null,
+    "per_mm2": null,
+    "density_kind": null,
+    "period": null,
+    "spacing": null
    }
   },
   {
@@ -25889,6 +29012,15 @@
      "lo": 45.6,
      "hi": 60.2
     }
+   },
+   "junction": {
+    "amplitude": 25.0,
+    "amplitude_kind": "analogue",
+    "density": 2.3,
+    "per_mm2": 9.2,
+    "density_kind": "analogue",
+    "period": 466.3,
+    "spacing": 329.7
    }
   },
   {
@@ -25915,6 +29047,15 @@
      "lo": 79.7,
      "hi": 122.7
     }
+   },
+   "junction": {
+    "amplitude": 25.0,
+    "amplitude_kind": "analogue",
+    "density": 2.3,
+    "per_mm2": 9.2,
+    "density_kind": "analogue",
+    "period": 466.3,
+    "spacing": 329.7
    }
   },
   {
@@ -25953,6 +29094,15 @@
      "lo": 52.4,
      "hi": 69.0
     }
+   },
+   "junction": {
+    "amplitude": 25.0,
+    "amplitude_kind": "analogue",
+    "density": 2.3,
+    "per_mm2": 9.2,
+    "density_kind": "analogue",
+    "period": 466.3,
+    "spacing": 329.7
    }
   },
   {
@@ -25991,6 +29141,15 @@
      "lo": 61.3,
      "hi": 82.3
     }
+   },
+   "junction": {
+    "amplitude": 25.0,
+    "amplitude_kind": "analogue",
+    "density": 2.3,
+    "per_mm2": 9.2,
+    "density_kind": "analogue",
+    "period": 466.3,
+    "spacing": 329.7
    }
   },
   {
@@ -26029,6 +29188,15 @@
      "lo": 146.8,
      "hi": 193.6
     }
+   },
+   "junction": {
+    "amplitude": 25.0,
+    "amplitude_kind": "analogue",
+    "density": 2.3,
+    "per_mm2": 9.2,
+    "density_kind": "analogue",
+    "period": 466.3,
+    "spacing": 329.7
    }
   },
   {
@@ -26067,6 +29235,15 @@
      "lo": 55.8,
      "hi": 69.6
     }
+   },
+   "junction": {
+    "amplitude": 20.0,
+    "amplitude_kind": "analogue",
+    "density": 2.3,
+    "per_mm2": 9.2,
+    "density_kind": "analogue",
+    "period": 466.3,
+    "spacing": 329.7
    }
   },
   {
@@ -26105,6 +29282,15 @@
      "lo": 44.0,
      "hi": 58.0
     }
+   },
+   "junction": {
+    "amplitude": 0.0,
+    "amplitude_kind": "held",
+    "density": null,
+    "per_mm2": null,
+    "density_kind": null,
+    "period": null,
+    "spacing": null
    }
   },
   {
@@ -26143,6 +29329,15 @@
      "lo": 27.3,
      "hi": 35.9
     }
+   },
+   "junction": {
+    "amplitude": 13.7,
+    "amplitude_kind": "analogue",
+    "density": 2.3,
+    "per_mm2": 9.2,
+    "density_kind": "analogue",
+    "period": 466.3,
+    "spacing": 329.7
    }
   },
   {
@@ -26181,6 +29376,15 @@
      "lo": 61.0,
      "hi": 80.4
     }
+   },
+   "junction": {
+    "amplitude": 0.0,
+    "amplitude_kind": "analogue",
+    "density": null,
+    "per_mm2": null,
+    "density_kind": null,
+    "period": null,
+    "spacing": null
    }
   },
   {
@@ -26219,6 +29423,15 @@
      "lo": 45.6,
      "hi": 60.2
     }
+   },
+   "junction": {
+    "amplitude": 25.0,
+    "amplitude_kind": "analogue",
+    "density": 2.3,
+    "per_mm2": 9.2,
+    "density_kind": "analogue",
+    "period": 466.3,
+    "spacing": 329.7
    }
   },
   {
@@ -26245,6 +29458,15 @@
      "lo": 79.7,
      "hi": 122.7
     }
+   },
+   "junction": {
+    "amplitude": 25.0,
+    "amplitude_kind": "analogue",
+    "density": 2.3,
+    "per_mm2": 9.2,
+    "density_kind": "analogue",
+    "period": 466.3,
+    "spacing": 329.7
    }
   },
   {
@@ -26283,6 +29505,15 @@
      "lo": 52.4,
      "hi": 69.0
     }
+   },
+   "junction": {
+    "amplitude": 25.0,
+    "amplitude_kind": "analogue",
+    "density": 2.3,
+    "per_mm2": 9.2,
+    "density_kind": "analogue",
+    "period": 466.3,
+    "spacing": 329.7
    }
   },
   {
@@ -26321,6 +29552,15 @@
      "lo": 61.3,
      "hi": 82.3
     }
+   },
+   "junction": {
+    "amplitude": 25.0,
+    "amplitude_kind": "analogue",
+    "density": 2.3,
+    "per_mm2": 9.2,
+    "density_kind": "analogue",
+    "period": 466.3,
+    "spacing": 329.7
    }
   },
   {
@@ -26359,6 +29599,15 @@
      "lo": 146.8,
      "hi": 193.6
     }
+   },
+   "junction": {
+    "amplitude": 25.0,
+    "amplitude_kind": "analogue",
+    "density": 2.3,
+    "per_mm2": 9.2,
+    "density_kind": "analogue",
+    "period": 466.3,
+    "spacing": 329.7
    }
   },
   {
@@ -26397,6 +29646,15 @@
      "lo": 55.8,
      "hi": 69.6
     }
+   },
+   "junction": {
+    "amplitude": 20.0,
+    "amplitude_kind": "analogue",
+    "density": 2.3,
+    "per_mm2": 9.2,
+    "density_kind": "analogue",
+    "period": 466.3,
+    "spacing": 329.7
    }
   },
   {
@@ -26435,6 +29693,15 @@
      "lo": 44.0,
      "hi": 58.0
     }
+   },
+   "junction": {
+    "amplitude": 0.0,
+    "amplitude_kind": "held",
+    "density": null,
+    "per_mm2": null,
+    "density_kind": null,
+    "period": null,
+    "spacing": null
    }
   },
   {
@@ -26473,6 +29740,15 @@
      "lo": 27.3,
      "hi": 35.9
     }
+   },
+   "junction": {
+    "amplitude": 13.7,
+    "amplitude_kind": "analogue",
+    "density": 2.3,
+    "per_mm2": 9.2,
+    "density_kind": "analogue",
+    "period": 466.3,
+    "spacing": 329.7
    }
   },
   {
@@ -26511,6 +29787,15 @@
      "lo": 61.0,
      "hi": 80.4
     }
+   },
+   "junction": {
+    "amplitude": 0.0,
+    "amplitude_kind": "analogue",
+    "density": null,
+    "per_mm2": null,
+    "density_kind": null,
+    "period": null,
+    "spacing": null
    }
   },
   {
@@ -26549,6 +29834,15 @@
      "lo": 45.6,
      "hi": 60.2
     }
+   },
+   "junction": {
+    "amplitude": 25.0,
+    "amplitude_kind": "analogue",
+    "density": 2.3,
+    "per_mm2": 9.2,
+    "density_kind": "analogue",
+    "period": 466.3,
+    "spacing": 329.7
    }
   },
   {
@@ -26575,6 +29869,15 @@
      "lo": 79.7,
      "hi": 122.7
     }
+   },
+   "junction": {
+    "amplitude": 25.0,
+    "amplitude_kind": "analogue",
+    "density": 2.3,
+    "per_mm2": 9.2,
+    "density_kind": "analogue",
+    "period": 466.3,
+    "spacing": 329.7
    }
   },
   {
@@ -26613,6 +29916,15 @@
      "lo": 52.4,
      "hi": 69.0
     }
+   },
+   "junction": {
+    "amplitude": 25.0,
+    "amplitude_kind": "analogue",
+    "density": 2.3,
+    "per_mm2": 9.2,
+    "density_kind": "analogue",
+    "period": 466.3,
+    "spacing": 329.7
    }
   },
   {
@@ -26651,6 +29963,15 @@
      "lo": 61.3,
      "hi": 82.3
     }
+   },
+   "junction": {
+    "amplitude": 25.0,
+    "amplitude_kind": "analogue",
+    "density": 2.3,
+    "per_mm2": 9.2,
+    "density_kind": "analogue",
+    "period": 466.3,
+    "spacing": 329.7
    }
   },
   {
@@ -26689,6 +30010,15 @@
      "lo": 146.8,
      "hi": 193.6
     }
+   },
+   "junction": {
+    "amplitude": 25.0,
+    "amplitude_kind": "analogue",
+    "density": 2.3,
+    "per_mm2": 9.2,
+    "density_kind": "analogue",
+    "period": 466.3,
+    "spacing": 329.7
    }
   },
   {
@@ -26727,6 +30057,15 @@
      "lo": 55.8,
      "hi": 69.6
     }
+   },
+   "junction": {
+    "amplitude": 20.0,
+    "amplitude_kind": "analogue",
+    "density": 2.3,
+    "per_mm2": 9.2,
+    "density_kind": "analogue",
+    "period": 466.3,
+    "spacing": 329.7
    }
   },
   {
@@ -26765,6 +30104,15 @@
      "lo": 44.0,
      "hi": 58.0
     }
+   },
+   "junction": {
+    "amplitude": 0.0,
+    "amplitude_kind": "held",
+    "density": null,
+    "per_mm2": null,
+    "density_kind": null,
+    "period": null,
+    "spacing": null
    }
   },
   {
@@ -26803,6 +30151,15 @@
      "lo": 27.3,
      "hi": 35.9
     }
+   },
+   "junction": {
+    "amplitude": 13.7,
+    "amplitude_kind": "analogue",
+    "density": 2.3,
+    "per_mm2": 9.2,
+    "density_kind": "analogue",
+    "period": 466.3,
+    "spacing": 329.7
    }
   },
   {
@@ -26841,6 +30198,15 @@
      "lo": 61.0,
      "hi": 80.4
     }
+   },
+   "junction": {
+    "amplitude": 0.0,
+    "amplitude_kind": "analogue",
+    "density": null,
+    "per_mm2": null,
+    "density_kind": null,
+    "period": null,
+    "spacing": null
    }
   },
   {
@@ -26879,6 +30245,15 @@
      "lo": 45.6,
      "hi": 60.2
     }
+   },
+   "junction": {
+    "amplitude": 25.0,
+    "amplitude_kind": "analogue",
+    "density": 2.3,
+    "per_mm2": 9.2,
+    "density_kind": "analogue",
+    "period": 466.3,
+    "spacing": 329.7
    }
   },
   {
@@ -26905,6 +30280,15 @@
      "lo": 79.7,
      "hi": 122.7
     }
+   },
+   "junction": {
+    "amplitude": 25.0,
+    "amplitude_kind": "analogue",
+    "density": 2.3,
+    "per_mm2": 9.2,
+    "density_kind": "analogue",
+    "period": 466.3,
+    "spacing": 329.7
    }
   },
   {
@@ -26943,6 +30327,15 @@
      "lo": 52.4,
      "hi": 69.0
     }
+   },
+   "junction": {
+    "amplitude": 25.0,
+    "amplitude_kind": "analogue",
+    "density": 2.3,
+    "per_mm2": 9.2,
+    "density_kind": "analogue",
+    "period": 466.3,
+    "spacing": 329.7
    }
   },
   {
@@ -26981,6 +30374,15 @@
      "lo": 61.3,
      "hi": 82.3
     }
+   },
+   "junction": {
+    "amplitude": 25.0,
+    "amplitude_kind": "analogue",
+    "density": 2.3,
+    "per_mm2": 9.2,
+    "density_kind": "analogue",
+    "period": 466.3,
+    "spacing": 329.7
    }
   },
   {
@@ -27019,6 +30421,15 @@
      "lo": 146.8,
      "hi": 193.6
     }
+   },
+   "junction": {
+    "amplitude": 25.0,
+    "amplitude_kind": "analogue",
+    "density": 2.3,
+    "per_mm2": 9.2,
+    "density_kind": "analogue",
+    "period": 466.3,
+    "spacing": 329.7
    }
   },
   {
@@ -27057,6 +30468,15 @@
      "lo": 55.8,
      "hi": 69.6
     }
+   },
+   "junction": {
+    "amplitude": 20.0,
+    "amplitude_kind": "analogue",
+    "density": 2.3,
+    "per_mm2": 9.2,
+    "density_kind": "analogue",
+    "period": 466.3,
+    "spacing": 329.7
    }
   },
   {
@@ -27095,6 +30515,15 @@
      "lo": 44.0,
      "hi": 58.0
     }
+   },
+   "junction": {
+    "amplitude": 0.0,
+    "amplitude_kind": "held",
+    "density": null,
+    "per_mm2": null,
+    "density_kind": null,
+    "period": null,
+    "spacing": null
    }
   },
   {
@@ -27133,6 +30562,15 @@
      "lo": 27.3,
      "hi": 35.9
     }
+   },
+   "junction": {
+    "amplitude": 13.7,
+    "amplitude_kind": "analogue",
+    "density": 2.3,
+    "per_mm2": 9.2,
+    "density_kind": "analogue",
+    "period": 466.3,
+    "spacing": 329.7
    }
   },
   {
@@ -27171,6 +30609,15 @@
      "lo": 61.0,
      "hi": 80.4
     }
+   },
+   "junction": {
+    "amplitude": 0.0,
+    "amplitude_kind": "analogue",
+    "density": null,
+    "per_mm2": null,
+    "density_kind": null,
+    "period": null,
+    "spacing": null
    }
   },
   {
@@ -27209,6 +30656,15 @@
      "lo": 45.6,
      "hi": 60.2
     }
+   },
+   "junction": {
+    "amplitude": 25.0,
+    "amplitude_kind": "analogue",
+    "density": 2.3,
+    "per_mm2": 9.2,
+    "density_kind": "analogue",
+    "period": 466.3,
+    "spacing": 329.7
    }
   },
   {
@@ -27249,6 +30705,15 @@
      "lo": 69.3,
      "hi": 91.3
     }
+   },
+   "junction": {
+    "amplitude": 0.0,
+    "amplitude_kind": "held",
+    "density": null,
+    "per_mm2": null,
+    "density_kind": null,
+    "period": null,
+    "spacing": null
    }
   },
   {
@@ -27289,6 +30754,15 @@
      "lo": 60.7,
      "hi": 79.9
     }
+   },
+   "junction": {
+    "amplitude": 0.0,
+    "amplitude_kind": "held",
+    "density": null,
+    "per_mm2": null,
+    "density_kind": null,
+    "period": null,
+    "spacing": null
    }
   },
   {
@@ -27329,6 +30803,15 @@
      "lo": 69.3,
      "hi": 91.3
     }
+   },
+   "junction": {
+    "amplitude": 0.0,
+    "amplitude_kind": "held",
+    "density": null,
+    "per_mm2": null,
+    "density_kind": null,
+    "period": null,
+    "spacing": null
    }
   },
   {
@@ -27369,6 +30852,15 @@
      "lo": 60.7,
      "hi": 79.9
     }
+   },
+   "junction": {
+    "amplitude": 0.0,
+    "amplitude_kind": "held",
+    "density": null,
+    "per_mm2": null,
+    "density_kind": null,
+    "period": null,
+    "spacing": null
    }
   },
   {
@@ -27409,6 +30901,15 @@
      "lo": 63.2,
      "hi": 83.4
     }
+   },
+   "junction": {
+    "amplitude": 30.0,
+    "amplitude_kind": "held",
+    "density": 7.5,
+    "per_mm2": 30.0,
+    "density_kind": "analogue",
+    "period": 258.2,
+    "spacing": 182.6
    }
   },
   {
@@ -27449,6 +30950,15 @@
      "lo": 63.2,
      "hi": 83.4
     }
+   },
+   "junction": {
+    "amplitude": 30.0,
+    "amplitude_kind": "held",
+    "density": 5.7,
+    "per_mm2": 22.8,
+    "density_kind": "analogue",
+    "period": 296.2,
+    "spacing": 209.4
    }
   },
   {
@@ -27489,6 +30999,15 @@
      "lo": 63.2,
      "hi": 83.4
     }
+   },
+   "junction": {
+    "amplitude": 30.0,
+    "amplitude_kind": "held",
+    "density": 6.4,
+    "per_mm2": 25.6,
+    "density_kind": "analogue",
+    "period": 279.5,
+    "spacing": 197.6
    }
   },
   {
@@ -27529,6 +31048,15 @@
      "lo": 63.2,
      "hi": 83.4
     }
+   },
+   "junction": {
+    "amplitude": 30.0,
+    "amplitude_kind": "held",
+    "density": 8.9,
+    "per_mm2": 35.6,
+    "density_kind": "analogue",
+    "period": 237.0,
+    "spacing": 167.6
    }
   },
   {
@@ -27569,6 +31097,15 @@
      "lo": 70.1,
      "hi": 91.1
     }
+   },
+   "junction": {
+    "amplitude": 41.0,
+    "amplitude_kind": "held",
+    "density": 7.5,
+    "per_mm2": 30.0,
+    "density_kind": "held",
+    "period": 258.2,
+    "spacing": 182.6
    }
   },
   {
@@ -27609,6 +31146,15 @@
      "lo": 70.1,
      "hi": 91.1
     }
+   },
+   "junction": {
+    "amplitude": 41.0,
+    "amplitude_kind": "held",
+    "density": 5.7,
+    "per_mm2": 22.8,
+    "density_kind": "held",
+    "period": 296.2,
+    "spacing": 209.4
    }
   },
   {
@@ -27649,6 +31195,15 @@
      "lo": 70.1,
      "hi": 91.1
     }
+   },
+   "junction": {
+    "amplitude": 41.0,
+    "amplitude_kind": "held",
+    "density": 6.4,
+    "per_mm2": 25.6,
+    "density_kind": "held",
+    "period": 279.5,
+    "spacing": 197.6
    }
   },
   {
@@ -27689,6 +31244,15 @@
      "lo": 70.1,
      "hi": 91.1
     }
+   },
+   "junction": {
+    "amplitude": 41.0,
+    "amplitude_kind": "held",
+    "density": 8.9,
+    "per_mm2": 35.6,
+    "density_kind": "held",
+    "period": 237.0,
+    "spacing": 167.6
    }
   },
   {
@@ -27729,6 +31293,15 @@
      "lo": 69.3,
      "hi": 91.3
     }
+   },
+   "junction": {
+    "amplitude": 0.0,
+    "amplitude_kind": "held",
+    "density": null,
+    "per_mm2": null,
+    "density_kind": null,
+    "period": null,
+    "spacing": null
    }
   },
   {
@@ -27769,6 +31342,15 @@
      "lo": 60.7,
      "hi": 79.9
     }
+   },
+   "junction": {
+    "amplitude": 0.0,
+    "amplitude_kind": "held",
+    "density": null,
+    "per_mm2": null,
+    "density_kind": null,
+    "period": null,
+    "spacing": null
    }
   },
   {
@@ -27809,6 +31391,15 @@
      "lo": 69.3,
      "hi": 91.3
     }
+   },
+   "junction": {
+    "amplitude": 0.0,
+    "amplitude_kind": "held",
+    "density": null,
+    "per_mm2": null,
+    "density_kind": null,
+    "period": null,
+    "spacing": null
    }
   },
   {
@@ -27849,6 +31440,15 @@
      "lo": 60.7,
      "hi": 79.9
     }
+   },
+   "junction": {
+    "amplitude": 0.0,
+    "amplitude_kind": "held",
+    "density": null,
+    "per_mm2": null,
+    "density_kind": null,
+    "period": null,
+    "spacing": null
    }
   },
   {
@@ -27889,6 +31489,15 @@
      "lo": 63.2,
      "hi": 83.4
     }
+   },
+   "junction": {
+    "amplitude": 30.0,
+    "amplitude_kind": "held",
+    "density": 7.5,
+    "per_mm2": 30.0,
+    "density_kind": "analogue",
+    "period": 258.2,
+    "spacing": 182.6
    }
   },
   {
@@ -27929,6 +31538,15 @@
      "lo": 63.2,
      "hi": 83.4
     }
+   },
+   "junction": {
+    "amplitude": 30.0,
+    "amplitude_kind": "held",
+    "density": 5.7,
+    "per_mm2": 22.8,
+    "density_kind": "analogue",
+    "period": 296.2,
+    "spacing": 209.4
    }
   },
   {
@@ -27969,6 +31587,15 @@
      "lo": 63.2,
      "hi": 83.4
     }
+   },
+   "junction": {
+    "amplitude": 30.0,
+    "amplitude_kind": "held",
+    "density": 6.4,
+    "per_mm2": 25.6,
+    "density_kind": "analogue",
+    "period": 279.5,
+    "spacing": 197.6
    }
   },
   {
@@ -28009,6 +31636,15 @@
      "lo": 63.2,
      "hi": 83.4
     }
+   },
+   "junction": {
+    "amplitude": 30.0,
+    "amplitude_kind": "held",
+    "density": 8.9,
+    "per_mm2": 35.6,
+    "density_kind": "analogue",
+    "period": 237.0,
+    "spacing": 167.6
    }
   },
   {
@@ -28049,6 +31685,15 @@
      "lo": 70.1,
      "hi": 91.1
     }
+   },
+   "junction": {
+    "amplitude": 41.0,
+    "amplitude_kind": "held",
+    "density": 7.5,
+    "per_mm2": 30.0,
+    "density_kind": "held",
+    "period": 258.2,
+    "spacing": 182.6
    }
   },
   {
@@ -28089,6 +31734,15 @@
      "lo": 70.1,
      "hi": 91.1
     }
+   },
+   "junction": {
+    "amplitude": 41.0,
+    "amplitude_kind": "held",
+    "density": 5.7,
+    "per_mm2": 22.8,
+    "density_kind": "held",
+    "period": 296.2,
+    "spacing": 209.4
    }
   },
   {
@@ -28129,6 +31783,15 @@
      "lo": 70.1,
      "hi": 91.1
     }
+   },
+   "junction": {
+    "amplitude": 41.0,
+    "amplitude_kind": "held",
+    "density": 6.4,
+    "per_mm2": 25.6,
+    "density_kind": "held",
+    "period": 279.5,
+    "spacing": 197.6
    }
   },
   {
@@ -28169,6 +31832,15 @@
      "lo": 70.1,
      "hi": 91.1
     }
+   },
+   "junction": {
+    "amplitude": 41.0,
+    "amplitude_kind": "held",
+    "density": 8.9,
+    "per_mm2": 35.6,
+    "density_kind": "held",
+    "period": 237.0,
+    "spacing": 167.6
    }
   },
   {
@@ -28209,6 +31881,15 @@
      "lo": 66.9,
      "hi": 88.1
     }
+   },
+   "junction": {
+    "amplitude": 0.0,
+    "amplitude_kind": "held",
+    "density": null,
+    "per_mm2": null,
+    "density_kind": null,
+    "period": null,
+    "spacing": null
    }
   },
   {
@@ -28249,6 +31930,15 @@
      "lo": 58.6,
      "hi": 77.2
     }
+   },
+   "junction": {
+    "amplitude": 0.0,
+    "amplitude_kind": "held",
+    "density": null,
+    "per_mm2": null,
+    "density_kind": null,
+    "period": null,
+    "spacing": null
    }
   },
   {
@@ -28289,6 +31979,15 @@
      "lo": 66.9,
      "hi": 88.1
     }
+   },
+   "junction": {
+    "amplitude": 0.0,
+    "amplitude_kind": "held",
+    "density": null,
+    "per_mm2": null,
+    "density_kind": null,
+    "period": null,
+    "spacing": null
    }
   },
   {
@@ -28329,6 +32028,15 @@
      "lo": 58.6,
      "hi": 77.2
     }
+   },
+   "junction": {
+    "amplitude": 0.0,
+    "amplitude_kind": "held",
+    "density": null,
+    "per_mm2": null,
+    "density_kind": null,
+    "period": null,
+    "spacing": null
    }
   },
   {
@@ -28369,6 +32077,15 @@
      "lo": 60.7,
      "hi": 79.9
     }
+   },
+   "junction": {
+    "amplitude": 27.7,
+    "amplitude_kind": "interpolated",
+    "density": 6.72,
+    "per_mm2": 26.9,
+    "density_kind": "analogue",
+    "period": 272.8,
+    "spacing": 192.9
    }
   },
   {
@@ -28409,6 +32126,15 @@
      "lo": 60.7,
      "hi": 79.9
     }
+   },
+   "junction": {
+    "amplitude": 27.7,
+    "amplitude_kind": "interpolated",
+    "density": 4.87,
+    "per_mm2": 19.5,
+    "density_kind": "analogue",
+    "period": 320.4,
+    "spacing": 226.6
    }
   },
   {
@@ -28449,6 +32175,15 @@
      "lo": 60.7,
      "hi": 79.9
     }
+   },
+   "junction": {
+    "amplitude": 27.7,
+    "amplitude_kind": "interpolated",
+    "density": 5.48,
+    "per_mm2": 21.9,
+    "density_kind": "analogue",
+    "period": 302.1,
+    "spacing": 213.6
    }
   },
   {
@@ -28489,6 +32224,15 @@
      "lo": 60.7,
      "hi": 79.9
     }
+   },
+   "junction": {
+    "amplitude": 27.7,
+    "amplitude_kind": "interpolated",
+    "density": 7.84,
+    "per_mm2": 31.4,
+    "density_kind": "analogue",
+    "period": 252.5,
+    "spacing": 178.6
    }
   },
   {
@@ -28529,6 +32273,15 @@
      "lo": 68.8,
      "hi": 89.4
     }
+   },
+   "junction": {
+    "amplitude": 37.3,
+    "amplitude_kind": "interpolated",
+    "density": 6.72,
+    "per_mm2": 26.9,
+    "density_kind": "interpolated",
+    "period": 272.8,
+    "spacing": 192.9
    }
   },
   {
@@ -28569,6 +32322,15 @@
      "lo": 68.8,
      "hi": 89.4
     }
+   },
+   "junction": {
+    "amplitude": 37.3,
+    "amplitude_kind": "interpolated",
+    "density": 4.87,
+    "per_mm2": 19.5,
+    "density_kind": "interpolated",
+    "period": 320.4,
+    "spacing": 226.6
    }
   },
   {
@@ -28609,6 +32371,15 @@
      "lo": 68.8,
      "hi": 89.4
     }
+   },
+   "junction": {
+    "amplitude": 37.3,
+    "amplitude_kind": "interpolated",
+    "density": 5.48,
+    "per_mm2": 21.9,
+    "density_kind": "interpolated",
+    "period": 302.1,
+    "spacing": 213.6
    }
   },
   {
@@ -28649,6 +32420,15 @@
      "lo": 68.8,
      "hi": 89.4
     }
+   },
+   "junction": {
+    "amplitude": 37.3,
+    "amplitude_kind": "interpolated",
+    "density": 7.84,
+    "per_mm2": 31.4,
+    "density_kind": "interpolated",
+    "period": 252.5,
+    "spacing": 178.6
    }
   },
   {
@@ -28689,6 +32469,15 @@
      "lo": 66.9,
      "hi": 88.1
     }
+   },
+   "junction": {
+    "amplitude": 0.0,
+    "amplitude_kind": "held",
+    "density": null,
+    "per_mm2": null,
+    "density_kind": null,
+    "period": null,
+    "spacing": null
    }
   },
   {
@@ -28729,6 +32518,15 @@
      "lo": 58.6,
      "hi": 77.2
     }
+   },
+   "junction": {
+    "amplitude": 0.0,
+    "amplitude_kind": "held",
+    "density": null,
+    "per_mm2": null,
+    "density_kind": null,
+    "period": null,
+    "spacing": null
    }
   },
   {
@@ -28769,6 +32567,15 @@
      "lo": 66.9,
      "hi": 88.1
     }
+   },
+   "junction": {
+    "amplitude": 0.0,
+    "amplitude_kind": "held",
+    "density": null,
+    "per_mm2": null,
+    "density_kind": null,
+    "period": null,
+    "spacing": null
    }
   },
   {
@@ -28809,6 +32616,15 @@
      "lo": 58.6,
      "hi": 77.2
     }
+   },
+   "junction": {
+    "amplitude": 0.0,
+    "amplitude_kind": "held",
+    "density": null,
+    "per_mm2": null,
+    "density_kind": null,
+    "period": null,
+    "spacing": null
    }
   },
   {
@@ -28849,6 +32665,15 @@
      "lo": 60.7,
      "hi": 79.9
     }
+   },
+   "junction": {
+    "amplitude": 27.7,
+    "amplitude_kind": "interpolated",
+    "density": 6.72,
+    "per_mm2": 26.9,
+    "density_kind": "analogue",
+    "period": 272.8,
+    "spacing": 192.9
    }
   },
   {
@@ -28889,6 +32714,15 @@
      "lo": 60.7,
      "hi": 79.9
     }
+   },
+   "junction": {
+    "amplitude": 27.7,
+    "amplitude_kind": "interpolated",
+    "density": 4.87,
+    "per_mm2": 19.5,
+    "density_kind": "analogue",
+    "period": 320.4,
+    "spacing": 226.6
    }
   },
   {
@@ -28929,6 +32763,15 @@
      "lo": 60.7,
      "hi": 79.9
     }
+   },
+   "junction": {
+    "amplitude": 27.7,
+    "amplitude_kind": "interpolated",
+    "density": 5.48,
+    "per_mm2": 21.9,
+    "density_kind": "analogue",
+    "period": 302.1,
+    "spacing": 213.6
    }
   },
   {
@@ -28969,6 +32812,15 @@
      "lo": 60.7,
      "hi": 79.9
     }
+   },
+   "junction": {
+    "amplitude": 27.7,
+    "amplitude_kind": "interpolated",
+    "density": 7.84,
+    "per_mm2": 31.4,
+    "density_kind": "analogue",
+    "period": 252.5,
+    "spacing": 178.6
    }
   },
   {
@@ -29009,6 +32861,15 @@
      "lo": 68.8,
      "hi": 89.4
     }
+   },
+   "junction": {
+    "amplitude": 37.3,
+    "amplitude_kind": "interpolated",
+    "density": 6.72,
+    "per_mm2": 26.9,
+    "density_kind": "interpolated",
+    "period": 272.8,
+    "spacing": 192.9
    }
   },
   {
@@ -29049,6 +32910,15 @@
      "lo": 68.8,
      "hi": 89.4
     }
+   },
+   "junction": {
+    "amplitude": 37.3,
+    "amplitude_kind": "interpolated",
+    "density": 4.87,
+    "per_mm2": 19.5,
+    "density_kind": "interpolated",
+    "period": 320.4,
+    "spacing": 226.6
    }
   },
   {
@@ -29089,6 +32959,15 @@
      "lo": 68.8,
      "hi": 89.4
     }
+   },
+   "junction": {
+    "amplitude": 37.3,
+    "amplitude_kind": "interpolated",
+    "density": 5.48,
+    "per_mm2": 21.9,
+    "density_kind": "interpolated",
+    "period": 302.1,
+    "spacing": 213.6
    }
   },
   {
@@ -29129,6 +33008,15 @@
      "lo": 68.8,
      "hi": 89.4
     }
+   },
+   "junction": {
+    "amplitude": 37.3,
+    "amplitude_kind": "interpolated",
+    "density": 7.84,
+    "per_mm2": 31.4,
+    "density_kind": "interpolated",
+    "period": 252.5,
+    "spacing": 178.6
    }
   },
   {
@@ -29169,6 +33057,15 @@
      "lo": 50.2,
      "hi": 66.2
     }
+   },
+   "junction": {
+    "amplitude": 0.0,
+    "amplitude_kind": "held",
+    "density": null,
+    "per_mm2": null,
+    "density_kind": null,
+    "period": null,
+    "spacing": null
    }
   },
   {
@@ -29209,6 +33106,15 @@
      "lo": 44.0,
      "hi": 58.0
     }
+   },
+   "junction": {
+    "amplitude": 0.0,
+    "amplitude_kind": "held",
+    "density": null,
+    "per_mm2": null,
+    "density_kind": null,
+    "period": null,
+    "spacing": null
    }
   },
   {
@@ -29249,6 +33155,15 @@
      "lo": 50.2,
      "hi": 66.2
     }
+   },
+   "junction": {
+    "amplitude": 0.0,
+    "amplitude_kind": "held",
+    "density": null,
+    "per_mm2": null,
+    "density_kind": null,
+    "period": null,
+    "spacing": null
    }
   },
   {
@@ -29289,6 +33204,15 @@
      "lo": 44.0,
      "hi": 58.0
     }
+   },
+   "junction": {
+    "amplitude": 0.0,
+    "amplitude_kind": "held",
+    "density": null,
+    "per_mm2": null,
+    "density_kind": null,
+    "period": null,
+    "spacing": null
    }
   },
   {
@@ -29329,6 +33253,15 @@
      "lo": 49.1,
      "hi": 64.7
     }
+   },
+   "junction": {
+    "amplitude": 20.0,
+    "amplitude_kind": "held",
+    "density": 3.23,
+    "per_mm2": 12.9,
+    "density_kind": "analogue",
+    "period": 393.4,
+    "spacing": 278.2
    }
   },
   {
@@ -29369,6 +33302,15 @@
      "lo": 49.1,
      "hi": 64.7
     }
+   },
+   "junction": {
+    "amplitude": 20.0,
+    "amplitude_kind": "held",
+    "density": 1.7,
+    "per_mm2": 6.8,
+    "density_kind": "analogue",
+    "period": 542.3,
+    "spacing": 383.5
    }
   },
   {
@@ -29409,6 +33351,15 @@
      "lo": 49.1,
      "hi": 64.7
     }
+   },
+   "junction": {
+    "amplitude": 20.0,
+    "amplitude_kind": "held",
+    "density": 2.86,
+    "per_mm2": 11.4,
+    "density_kind": "analogue",
+    "period": 418.1,
+    "spacing": 295.7
    }
   },
   {
@@ -29449,6 +33400,15 @@
      "lo": 49.1,
      "hi": 64.7
     }
+   },
+   "junction": {
+    "amplitude": 20.0,
+    "amplitude_kind": "held",
+    "density": 5.87,
+    "per_mm2": 23.5,
+    "density_kind": "analogue",
+    "period": 291.9,
+    "spacing": 206.4
    }
   },
   {
@@ -29489,6 +33449,15 @@
      "lo": 55.3,
      "hi": 71.9
     }
+   },
+   "junction": {
+    "amplitude": 25.0,
+    "amplitude_kind": "held",
+    "density": 3.23,
+    "per_mm2": 12.9,
+    "density_kind": "interpolated",
+    "period": 393.4,
+    "spacing": 278.2
    }
   },
   {
@@ -29529,6 +33498,15 @@
      "lo": 55.3,
      "hi": 71.9
     }
+   },
+   "junction": {
+    "amplitude": 25.0,
+    "amplitude_kind": "held",
+    "density": 1.7,
+    "per_mm2": 6.8,
+    "density_kind": "interpolated",
+    "period": 542.3,
+    "spacing": 383.5
    }
   },
   {
@@ -29569,6 +33547,15 @@
      "lo": 55.3,
      "hi": 71.9
     }
+   },
+   "junction": {
+    "amplitude": 25.0,
+    "amplitude_kind": "held",
+    "density": 2.86,
+    "per_mm2": 11.4,
+    "density_kind": "interpolated",
+    "period": 418.1,
+    "spacing": 295.7
    }
   },
   {
@@ -29609,6 +33596,15 @@
      "lo": 55.3,
      "hi": 71.9
     }
+   },
+   "junction": {
+    "amplitude": 25.0,
+    "amplitude_kind": "held",
+    "density": 5.87,
+    "per_mm2": 23.5,
+    "density_kind": "interpolated",
+    "period": 291.9,
+    "spacing": 206.4
    }
   },
   {
@@ -29649,6 +33645,15 @@
      "lo": 50.2,
      "hi": 66.2
     }
+   },
+   "junction": {
+    "amplitude": 0.0,
+    "amplitude_kind": "held",
+    "density": null,
+    "per_mm2": null,
+    "density_kind": null,
+    "period": null,
+    "spacing": null
    }
   },
   {
@@ -29689,6 +33694,15 @@
      "lo": 44.0,
      "hi": 58.0
     }
+   },
+   "junction": {
+    "amplitude": 0.0,
+    "amplitude_kind": "held",
+    "density": null,
+    "per_mm2": null,
+    "density_kind": null,
+    "period": null,
+    "spacing": null
    }
   },
   {
@@ -29729,6 +33743,15 @@
      "lo": 50.2,
      "hi": 66.2
     }
+   },
+   "junction": {
+    "amplitude": 0.0,
+    "amplitude_kind": "held",
+    "density": null,
+    "per_mm2": null,
+    "density_kind": null,
+    "period": null,
+    "spacing": null
    }
   },
   {
@@ -29769,6 +33792,15 @@
      "lo": 44.0,
      "hi": 58.0
     }
+   },
+   "junction": {
+    "amplitude": 0.0,
+    "amplitude_kind": "held",
+    "density": null,
+    "per_mm2": null,
+    "density_kind": null,
+    "period": null,
+    "spacing": null
    }
   },
   {
@@ -29809,6 +33841,15 @@
      "lo": 49.1,
      "hi": 64.7
     }
+   },
+   "junction": {
+    "amplitude": 20.0,
+    "amplitude_kind": "held",
+    "density": 3.23,
+    "per_mm2": 12.9,
+    "density_kind": "analogue",
+    "period": 393.4,
+    "spacing": 278.2
    }
   },
   {
@@ -29849,6 +33890,15 @@
      "lo": 49.1,
      "hi": 64.7
     }
+   },
+   "junction": {
+    "amplitude": 20.0,
+    "amplitude_kind": "held",
+    "density": 1.7,
+    "per_mm2": 6.8,
+    "density_kind": "analogue",
+    "period": 542.3,
+    "spacing": 383.5
    }
   },
   {
@@ -29889,6 +33939,15 @@
      "lo": 49.1,
      "hi": 64.7
     }
+   },
+   "junction": {
+    "amplitude": 20.0,
+    "amplitude_kind": "held",
+    "density": 2.86,
+    "per_mm2": 11.4,
+    "density_kind": "analogue",
+    "period": 418.1,
+    "spacing": 295.7
    }
   },
   {
@@ -29929,6 +33988,15 @@
      "lo": 49.1,
      "hi": 64.7
     }
+   },
+   "junction": {
+    "amplitude": 20.0,
+    "amplitude_kind": "held",
+    "density": 5.87,
+    "per_mm2": 23.5,
+    "density_kind": "analogue",
+    "period": 291.9,
+    "spacing": 206.4
    }
   },
   {
@@ -29969,6 +34037,15 @@
      "lo": 55.3,
      "hi": 71.9
     }
+   },
+   "junction": {
+    "amplitude": 25.0,
+    "amplitude_kind": "held",
+    "density": 3.23,
+    "per_mm2": 12.9,
+    "density_kind": "interpolated",
+    "period": 393.4,
+    "spacing": 278.2
    }
   },
   {
@@ -30009,6 +34086,15 @@
      "lo": 55.3,
      "hi": 71.9
     }
+   },
+   "junction": {
+    "amplitude": 25.0,
+    "amplitude_kind": "held",
+    "density": 1.7,
+    "per_mm2": 6.8,
+    "density_kind": "interpolated",
+    "period": 542.3,
+    "spacing": 383.5
    }
   },
   {
@@ -30049,6 +34135,15 @@
      "lo": 55.3,
      "hi": 71.9
     }
+   },
+   "junction": {
+    "amplitude": 25.0,
+    "amplitude_kind": "held",
+    "density": 2.86,
+    "per_mm2": 11.4,
+    "density_kind": "interpolated",
+    "period": 418.1,
+    "spacing": 295.7
    }
   },
   {
@@ -30089,6 +34184,15 @@
      "lo": 55.3,
      "hi": 71.9
     }
+   },
+   "junction": {
+    "amplitude": 25.0,
+    "amplitude_kind": "held",
+    "density": 5.87,
+    "per_mm2": 23.5,
+    "density_kind": "interpolated",
+    "period": 291.9,
+    "spacing": 206.4
    }
   },
   {
@@ -30129,6 +34233,15 @@
      "lo": 50.2,
      "hi": 66.2
     }
+   },
+   "junction": {
+    "amplitude": 0.0,
+    "amplitude_kind": "held",
+    "density": null,
+    "per_mm2": null,
+    "density_kind": null,
+    "period": null,
+    "spacing": null
    }
   },
   {
@@ -30169,6 +34282,15 @@
      "lo": 44.0,
      "hi": 58.0
     }
+   },
+   "junction": {
+    "amplitude": 0.0,
+    "amplitude_kind": "held",
+    "density": null,
+    "per_mm2": null,
+    "density_kind": null,
+    "period": null,
+    "spacing": null
    }
   },
   {
@@ -30209,6 +34331,15 @@
      "lo": 50.2,
      "hi": 66.2
     }
+   },
+   "junction": {
+    "amplitude": 0.0,
+    "amplitude_kind": "held",
+    "density": null,
+    "per_mm2": null,
+    "density_kind": null,
+    "period": null,
+    "spacing": null
    }
   },
   {
@@ -30249,6 +34380,15 @@
      "lo": 44.0,
      "hi": 58.0
     }
+   },
+   "junction": {
+    "amplitude": 0.0,
+    "amplitude_kind": "held",
+    "density": null,
+    "per_mm2": null,
+    "density_kind": null,
+    "period": null,
+    "spacing": null
    }
   },
   {
@@ -30289,6 +34429,15 @@
      "lo": 47.9,
      "hi": 63.1
     }
+   },
+   "junction": {
+    "amplitude": 20.0,
+    "amplitude_kind": "held",
+    "density": 2.3,
+    "per_mm2": 9.2,
+    "density_kind": "analogue",
+    "period": 466.3,
+    "spacing": 329.7
    }
   },
   {
@@ -30329,6 +34478,15 @@
      "lo": 47.9,
      "hi": 63.1
     }
+   },
+   "junction": {
+    "amplitude": 20.0,
+    "amplitude_kind": "held",
+    "density": 0.9,
+    "per_mm2": 3.6,
+    "density_kind": "analogue",
+    "period": 745.4,
+    "spacing": 527.0
    }
   },
   {
@@ -30369,6 +34527,15 @@
      "lo": 47.9,
      "hi": 63.1
     }
+   },
+   "junction": {
+    "amplitude": 20.0,
+    "amplitude_kind": "held",
+    "density": 2.3,
+    "per_mm2": 9.2,
+    "density_kind": "analogue",
+    "period": 466.3,
+    "spacing": 329.7
    }
   },
   {
@@ -30409,6 +34576,15 @@
      "lo": 47.9,
      "hi": 63.1
     }
+   },
+   "junction": {
+    "amplitude": 20.0,
+    "amplitude_kind": "held",
+    "density": 5.6,
+    "per_mm2": 22.4,
+    "density_kind": "analogue",
+    "period": 298.8,
+    "spacing": 211.3
    }
   },
   {
@@ -30449,6 +34625,15 @@
      "lo": 55.3,
      "hi": 71.9
     }
+   },
+   "junction": {
+    "amplitude": 25.0,
+    "amplitude_kind": "held",
+    "density": 2.3,
+    "per_mm2": 9.2,
+    "density_kind": "held",
+    "period": 466.3,
+    "spacing": 329.7
    }
   },
   {
@@ -30489,6 +34674,15 @@
      "lo": 55.3,
      "hi": 71.9
     }
+   },
+   "junction": {
+    "amplitude": 25.0,
+    "amplitude_kind": "held",
+    "density": 0.9,
+    "per_mm2": 3.6,
+    "density_kind": "held",
+    "period": 745.4,
+    "spacing": 527.0
    }
   },
   {
@@ -30529,6 +34723,15 @@
      "lo": 55.3,
      "hi": 71.9
     }
+   },
+   "junction": {
+    "amplitude": 25.0,
+    "amplitude_kind": "held",
+    "density": 2.3,
+    "per_mm2": 9.2,
+    "density_kind": "held",
+    "period": 466.3,
+    "spacing": 329.7
    }
   },
   {
@@ -30569,6 +34772,15 @@
      "lo": 55.3,
      "hi": 71.9
     }
+   },
+   "junction": {
+    "amplitude": 25.0,
+    "amplitude_kind": "held",
+    "density": 5.6,
+    "per_mm2": 22.4,
+    "density_kind": "held",
+    "period": 298.8,
+    "spacing": 211.3
    }
   },
   {
@@ -30609,6 +34821,15 @@
      "lo": 50.2,
      "hi": 66.2
     }
+   },
+   "junction": {
+    "amplitude": 0.0,
+    "amplitude_kind": "held",
+    "density": null,
+    "per_mm2": null,
+    "density_kind": null,
+    "period": null,
+    "spacing": null
    }
   },
   {
@@ -30649,6 +34870,15 @@
      "lo": 44.0,
      "hi": 58.0
     }
+   },
+   "junction": {
+    "amplitude": 0.0,
+    "amplitude_kind": "held",
+    "density": null,
+    "per_mm2": null,
+    "density_kind": null,
+    "period": null,
+    "spacing": null
    }
   },
   {
@@ -30689,6 +34919,15 @@
      "lo": 50.2,
      "hi": 66.2
     }
+   },
+   "junction": {
+    "amplitude": 0.0,
+    "amplitude_kind": "held",
+    "density": null,
+    "per_mm2": null,
+    "density_kind": null,
+    "period": null,
+    "spacing": null
    }
   },
   {
@@ -30729,6 +34968,15 @@
      "lo": 44.0,
      "hi": 58.0
     }
+   },
+   "junction": {
+    "amplitude": 0.0,
+    "amplitude_kind": "held",
+    "density": null,
+    "per_mm2": null,
+    "density_kind": null,
+    "period": null,
+    "spacing": null
    }
   },
   {
@@ -30769,6 +35017,15 @@
      "lo": 47.9,
      "hi": 63.1
     }
+   },
+   "junction": {
+    "amplitude": 20.0,
+    "amplitude_kind": "held",
+    "density": 2.3,
+    "per_mm2": 9.2,
+    "density_kind": "analogue",
+    "period": 466.3,
+    "spacing": 329.7
    }
   },
   {
@@ -30809,6 +35066,15 @@
      "lo": 47.9,
      "hi": 63.1
     }
+   },
+   "junction": {
+    "amplitude": 20.0,
+    "amplitude_kind": "held",
+    "density": 0.9,
+    "per_mm2": 3.6,
+    "density_kind": "analogue",
+    "period": 745.4,
+    "spacing": 527.0
    }
   },
   {
@@ -30849,6 +35115,15 @@
      "lo": 47.9,
      "hi": 63.1
     }
+   },
+   "junction": {
+    "amplitude": 20.0,
+    "amplitude_kind": "held",
+    "density": 2.3,
+    "per_mm2": 9.2,
+    "density_kind": "analogue",
+    "period": 466.3,
+    "spacing": 329.7
    }
   },
   {
@@ -30889,6 +35164,15 @@
      "lo": 47.9,
      "hi": 63.1
     }
+   },
+   "junction": {
+    "amplitude": 20.0,
+    "amplitude_kind": "held",
+    "density": 5.6,
+    "per_mm2": 22.4,
+    "density_kind": "analogue",
+    "period": 298.8,
+    "spacing": 211.3
    }
   },
   {
@@ -30929,6 +35213,15 @@
      "lo": 55.3,
      "hi": 71.9
     }
+   },
+   "junction": {
+    "amplitude": 25.0,
+    "amplitude_kind": "held",
+    "density": 2.3,
+    "per_mm2": 9.2,
+    "density_kind": "held",
+    "period": 466.3,
+    "spacing": 329.7
    }
   },
   {
@@ -30969,6 +35262,15 @@
      "lo": 55.3,
      "hi": 71.9
     }
+   },
+   "junction": {
+    "amplitude": 25.0,
+    "amplitude_kind": "held",
+    "density": 0.9,
+    "per_mm2": 3.6,
+    "density_kind": "held",
+    "period": 745.4,
+    "spacing": 527.0
    }
   },
   {
@@ -31009,6 +35311,15 @@
      "lo": 55.3,
      "hi": 71.9
     }
+   },
+   "junction": {
+    "amplitude": 25.0,
+    "amplitude_kind": "held",
+    "density": 2.3,
+    "per_mm2": 9.2,
+    "density_kind": "held",
+    "period": 466.3,
+    "spacing": 329.7
    }
   },
   {
@@ -31049,6 +35360,15 @@
      "lo": 55.3,
      "hi": 71.9
     }
+   },
+   "junction": {
+    "amplitude": 25.0,
+    "amplitude_kind": "held",
+    "density": 5.6,
+    "per_mm2": 22.4,
+    "density_kind": "held",
+    "period": 298.8,
+    "spacing": 211.3
    }
   },
   {
@@ -31073,6 +35393,15 @@
      "lo": 63.6,
      "hi": 87.2
     }
+   },
+   "junction": {
+    "amplitude": 41.0,
+    "amplitude_kind": "analogue",
+    "density": 6.4,
+    "per_mm2": 25.6,
+    "density_kind": "analogue",
+    "period": 279.5,
+    "spacing": 197.6
    }
   },
   {
@@ -31097,6 +35426,15 @@
      "lo": 66.3,
      "hi": 75.7
     }
+   },
+   "junction": {
+    "amplitude": 41.0,
+    "amplitude_kind": "analogue",
+    "density": 6.4,
+    "per_mm2": 25.6,
+    "density_kind": "analogue",
+    "period": 279.5,
+    "spacing": 197.6
    }
   },
   {
@@ -31121,6 +35459,15 @@
      "lo": 61.4,
      "hi": 88.4
     }
+   },
+   "junction": {
+    "amplitude": 31.0,
+    "amplitude_kind": "analogue",
+    "density": 4.2,
+    "per_mm2": 16.8,
+    "density_kind": "analogue",
+    "period": 345.0,
+    "spacing": 244.0
    }
   },
   {
@@ -31145,6 +35492,15 @@
      "lo": 79.7,
      "hi": 122.7
     }
+   },
+   "junction": {
+    "amplitude": 25.0,
+    "amplitude_kind": "analogue",
+    "density": 2.3,
+    "per_mm2": 9.2,
+    "density_kind": "analogue",
+    "period": 466.3,
+    "spacing": 329.7
    }
   },
   {
@@ -31167,6 +35523,15 @@
      "lo": 79.7,
      "hi": 122.7
     }
+   },
+   "junction": {
+    "amplitude": 25.0,
+    "amplitude_kind": "analogue",
+    "density": 2.3,
+    "per_mm2": 9.2,
+    "density_kind": "analogue",
+    "period": 466.3,
+    "spacing": 329.7
    }
   }
  ]

@@ -358,7 +358,7 @@ a.cite{text-decoration:none;border-bottom:1px dotted var(--teal)}
 <script src="data/parameters.js"></script>
 <script>
 "use strict";
-const VERSION = "0.18.1";
+const VERSION = "0.19.0";
 const $ = id => document.getElementById(id);
 function esc(s) { return String(s).replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); }
 
@@ -2205,7 +2205,12 @@ function ageEntry(sel) {
   const sitefactor = {}, epidermis = {};                            // per body site: its own thickness regression where it has one, and its epidermis at this age
   for (const sx in YEARS.sitefactor || {}) { sitefactor[sx] = {}; for (const k in YEARS.sitefactor[sx]) sitefactor[sx][k] = { value: YEARS.sitefactor[sx][k][y], ...run(`sitefactor_${sx}_${k}`) }; }
   for (const k in YEARS.epidermis || {}) epidermis[k] = { value: YEARS.epidermis[k][y], ...run(`epidermis_${k}`) };
-  return { key: YEARS.group[y], years: y, age: y, label: y + " y", values, raw, provenance, shown, sitefactor, epidermis,
+  const YJ = YEARS.junction, junction = YJ ? { amplitude: {}, density: {} } : null;   // the junction: its height per body site, its papillae per skin type
+  if (YJ) {
+    for (const k in YJ.amplitude) junction.amplitude[k] = { value: YJ.amplitude[k][y], ...run(`junction_amplitude_${k}`) };
+    for (const t in YJ.density) junction.density[t] = { value: YJ.density[t][y], per_mm2: YJ.per_mm2[t][y], period: YJ.period[t][y], spacing: YJ.spacing[t][y], ...run(`junction_density_${t}`) };
+  }
+  return { key: YEARS.group[y], years: y, age: y, label: y + " y", values, raw, provenance, shown, sitefactor, epidermis, junction,
     factor: { female: { value: YEARS.factor.female[y], ...run("factor_female") }, male: { value: YEARS.factor.male[y], ...run("factor_male") } } };
 }
 const ethFactor = (eth, site) => { const f = BASIC && BASIC.ethnicity_factor && BASIC.ethnicity_factor[ethOf(eth)]; return (f && f[site]) || null; };   // as dermsim.params.ethnicity_factor
@@ -2221,6 +2226,23 @@ function basicValues(sel) {                                        // as dermsim
       if (ep) v.hep = ef ? Math.round(ep.value * ef.value * 10) / 10 : ep.value;
     }
     Object.assign(out, v);
+  }
+  return out;
+}
+// The dermal–epidermal junction of a selection, as dermsim.params.basic_junction — looked up, never computed: its height
+// (tips of the papillae to the base of the rete ridges) by body site and age, its papillae by skin type and age. A site
+// without a measurement of its own takes a measured site's line (DP.sites.junction.lines), an analogue; a flat junction has
+// no papillae. The same for both sexes. Shown only: no value of the model takes it (claims K119, K120).
+function junctionOf(sel) {
+  const J = DP.sites && DP.sites.junction, a = ageEntry(sel);
+  if (!J || !a || !a.junction) return null;
+  const amp = a.junction.amplitude[sel.site];
+  if (!amp) return null;
+  const out = { amplitude: amp, density: null, period: null, spacing: null };
+  if (amp.value > 0) {
+    const n = { ...a.junction.density[sel.phototype || "III"] };
+    if (!J.density_measured.includes(sel.site)) { n.kind = "analogue"; n.text = J.density_analogue + n.text; }
+    Object.assign(out, { density: n, period: n.period, spacing: n.spacing });
   }
   return out;
 }
@@ -2354,9 +2376,9 @@ function bodySvg(sel, a) {
 // lines of age follow sex and age, skin tone and hair the skin phototype. All of it is illustration only; where an area lies
 // follows the names of its source (claim K75).
 const FACE_AREAS = {                                               // centre offset from the midline (both sides where dx > 0), centre height, radii
-  forehead: [0, 111, 38, 14], temple: [62, 140, 6.5, 12], uppereyelid: [28, 143.5, 12, 3.6], lowereyelid: [28, 160.5, 11.5, 3.2], noseroot: [0, 150, 5.5, 9],
-  cheek: [44, 182, 14, 13], nasolabial: [19.5, 201, 3.8, 9.5], upperlip: [0, 202.5, 8.5, 3.8], mouthcorner: [23, 214.5, 3.8, 3.8], lowerlip: [0, 231.5, 9.5, 3.6],
-  chin: [0, 244, 16, 7.5], preauricular: [63, 171, 4.2, 12], neck: [0, 286, 24, 17] };
+  forehead: [0, 112, 43, 17], temple: [57, 137, 6.5, 13], uppereyelid: [28, 144, 0, 0], lowereyelid: [28, 160.5, 0, 0], noseroot: [0, 151, 6, 9],
+  cheek: [44, 184, 16, 15], nasolabial: [19.5, 200, 0, 0], upperlip: [0, 207, 0, 0], mouthcorner: [23, 214.3, 3.2, 3.2], lowerlip: [0, 224, 0, 0],
+  chin: [0, 246, 19, 8], preauricular: [64, 172, 4.6, 13], neck: [0, 290, 30, 21] };   // radii 0: drawn to the features in faceSvg
 // Half outlines of the head, top of the skull to the chin, 14 points each: [half-width, height] in the drawing's units.
 const FACE_SHAPE = {
   child: [[0, 50], [32, 52], [55, 62], [68, 79], [74, 102], [75, 126], [74, 150], [72, 172], [67, 192], [58, 210], [46, 225], [31, 238], [15, 246], [0, 249]],
@@ -2460,13 +2482,39 @@ function faceSvg(sel, a) {
        `M${cx + 22} 62 C${cx + 40} 70 ${cx + 56} 86 ${cx + 64} 120`, `M${cx - 72} 140 C${cx - 76} 112 ${cx - 72} 88 ${cx - 56} 68`]
         .map((d, n) => strand(d, n % 2 ? -.12 : .1)).join("") +
       mir(s => strand(`M${cx + s * 86} 200 C${cx + s * 87} 232 ${cx + s * 89} 262 ${cx + s * 90} 296`, -.14) + strand(`M${cx + s * 80} 210 C${cx + s * 80} 240 ${cx + s * 78} 270 ${cx + s * 72} 298`, .09));
+  // The folds and lips are drawn to the features above, so they move with the mouth: each lip from the line where the
+  // lips meet to the skin under the nose (upper) or to the groove above the chin (lower), the fold as a band along its line.
+  const low = 226 + 1.5 * woman, m = mouthW;
+  const foldBand = s => {                                            // the drawn fold (a cubic), from below the nose wing to above the corner of the mouth
+    const P = [[14, 188], [21, 196], [23, 205], [23, 214]], ring = [], back = [], n = 10, t0 = 0.12, t1 = 0.8;
+    for (let i = 0; i <= n; i++) {
+      const v = i / n, t = t0 + (t1 - t0) * v, u = 1 - t, b = [u * u * u, 3 * u * u * t, 3 * u * t * t, t * t * t], d = [-3 * u * u, 3 * u * u - 6 * u * t, 6 * u * t - 3 * t * t, 3 * t * t];
+      const at = (w, k) => w.reduce((a, c, j) => a + c * P[j][k], 0), x = at(b, 0), y = at(b, 1), tx = at(d, 0), ty = at(d, 1), len = Math.hypot(tx, ty);
+      const w = 1 + 2.4 * Math.sin(Math.PI * v);                     // half-width, narrow at both ends
+      ring.push([x - ty / len * w, y + tx / len * w]); back.push([x + ty / len * w, y - tx / len * w]);
+    }
+    return closedCurve([...ring, ...back.reverse()].map(([x, y]) => [cx + s * x, y]));
+  };
+  const lid = (s, upper) => { const ex = cx + s * 28, X = d => f1(ex + d);   // each eyelid from the lid margin of the drawn eye to the brow or the cheek
+    return upper ? `M${X(-15.5)} 151.2 C${X(-10)} 144.3 ${X(9)} 143.8 ${X(15.5)} 150.7 C${X(12)} 143 ${X(5)} 139.6 ${X(-1)} 139.6 C${X(-7)} 139.6 ${X(-13)} 142.5 ${X(-15.5)} 151.2 Z`
+      : `M${X(-14.5)} 153.5 C${X(-9)} 159.3 ${X(9)} 158.8 ${X(14.5)} 153 C${X(11)} 163.5 ${X(4)} 165 ${X(-1)} 165 C${X(-7)} 165 ${X(-12)} 162 ${X(-14.5)} 153.5 Z`; };
+  const shaped = {
+    uppereyelid: s => lid(s, true), lowereyelid: s => lid(s, false),
+    nasolabial: s => foldBand(s),
+    upperlip: () => `M${f1(cx - m - 0.3)} 213.2 C${f1(cx - m + 2.5)} 206 ${cx - 14} 201.6 ${cx - 8.5} 200.9 Q${cx} 202 ${cx + 8.5} 200.9 C${cx + 14} 201.6 ${f1(cx + m - 2.5)} 206 ${f1(cx + m + 0.3)} 213.2 Q${cx} 214.6 ${f1(cx - m - 0.3)} 213.2 Z`,
+    lowerlip: () => `M${f1(cx - m - 0.3)} 215.6 Q${cx} 218.6 ${f1(cx + m + 0.3)} 215.6 C${f1(cx + m - 1)} 224 ${cx + 13} ${f1(low + 6.5)} ${cx} ${f1(low + 7.6)} C${cx - 13} ${f1(low + 6.5)} ${f1(cx - m + 1)} 224 ${f1(cx - m - 0.3)} 215.6 Z` };   // a gap along the line where the lips meet
   bodyGeo = { centre: {}, cx, base: 384 };
   let areas = "";
   for (const st of SITES) {
     const r = FACE_AREAS[st.key]; if (!r) continue;
-    const [dx, ay, rx, ry] = r, xs = dx ? [cx + dx, cx - dx] : [cx];
+    const chinY = half[half.length - 1][1], chin = st.key === "chin";   // the chin from the groove under the lower lip to the drawn chin, a child's shorter
+    const [dx0, ay0, rx, ry0] = r, ay = chin ? (238 + chinY) / 2 : ay0, ry = chin ? Math.max(3, (chinY - 238) / 2 - 0.5) : ry0;
+    const dx = st.key === "mouthcorner" ? m + 3.6 : dx0, xs = dx ? [cx + dx, cx - dx] : [cx];   // the corner of the mouth just outside it
     bodyGeo.centre[st.key] = [xs[0], ay];
-    areas += xs.map((x, i) => `<ellipse class="bsite${st.key === sel.site ? " on" : ""}" data-site="${st.key}" cx="${f1(x)}" cy="${ay}" rx="${rx}" ry="${ry}"${i ? "" : ` tabindex="0" role="button" aria-label="${esc(st.title)}: preview on hover, select with a click"`}><title>${esc(st.title)}</title></ellipse>`).join("");
+    const attrs = i => `class="bsite${st.key === sel.site ? " on" : ""}" data-site="${st.key}"${i ? "" : ` tabindex="0" role="button" aria-label="${esc(st.title)}: preview on hover, select with a click"`}`;
+    areas += xs.map((x, i) => shaped[st.key]
+      ? `<path ${attrs(i)} d="${shaped[st.key](i ? -1 : 1)}"><title>${esc(st.title)}</title></path>`
+      : `<ellipse ${attrs(i)} cx="${f1(x)}" cy="${ay}" rx="${rx}" ry="${ry}"><title>${esc(st.title)}</title></ellipse>`).join("");
   }
   const who = `${sel.sex}, ${a.years !== null ? a.years + " years" : ageLabel(a) + " years"}, ${ethOf(sel.ethnicity)}, skin type ${sel.phototype}`;
   return `<svg viewBox="0 24 500 376" role="img" aria-label="Face and neck: ${esc(who)}. The dashed areas are the facial areas: hover for a preview, click to select.">` +
@@ -2482,7 +2530,29 @@ function faceSvg(sel, a) {
 // patch shows how much the layers differ between persons (claim K117): its left edge is every layer at the mean − 1 SD,
 // its right edge at the mean + 1 SD, and the middle third the mean, flat so that it can be read. Every patch is drawn to
 // one depth, the deepest skin of the basic model (DP.sites.depth_max), so that sites and persons compare; a ruler in mm.
-function bodyColumn(st, v, preview, sp) {
+// Below the legend the junction, magnified: the top of the skin in section through the papilla tips, x and depth at the
+// same scale (one scale for every selection, so that they compare), the junction as the egg-crate of dermsim.params.junction_at
+// with a papilla tip in the middle, the papillary dermis following it. A dashed box on the patch marks the part shown.
+function junctionInset(j, v, x0, y0, patch) {
+  const f1 = x => x.toFixed(1), ink = "#1B2A33", soft = "#44525A", W = 136, umW = 560, s = W / umW, umH = 260, H = umH * s;
+  const A = j.amplitude.value, lam = j.period, hep = v.hep, hpap = v.hpap, n = 56;
+  const zj = u => hep - (A > 0 && lam ? (A / 2) * Math.cos(2 * Math.PI * (u - umW / 2) / lam) : 0);   // depth of the junction below the surface, µm
+  const X = u => x0 + u * s, Y = d => y0 + Math.min(d, umH) * s, us = Array.from({ length: n + 1 }, (_, i) => i / n * umW);
+  const band = (top, bot, fill) => `<polygon points="${[...us.map(u => `${f1(X(u))},${f1(Y(top(u)))}`), ...us.slice().reverse().map(u => `${f1(X(u))},${f1(Y(bot(u)))}`)].join(" ")}" fill="${fill}"/>`;
+  let out = `<text x="${x0}" y="${y0 - 6}" font-size="11" font-weight="600" fill="${ink}">Junction, ×${(s / patch.scale).toFixed(1)}</text>` +
+    band(() => 0, zj, "#C98B74") + band(zj, u => zj(u) + hpap, "#EBC9B5") + band(u => zj(u) + hpap, () => umH, "#F6E6DA") +
+    `<polyline points="${us.map(u => `${f1(X(u))},${f1(Y(zj(u)))}`).join(" ")}" fill="none" stroke="${soft}" stroke-width=".8"/>` +
+    `<rect x="${x0}" y="${y0}" width="${W}" height="${f1(H)}" fill="none" stroke="${soft}" stroke-width=".8"/>` +
+    `<line x1="${x0 + 4}" y1="${f1(y0 + H - 5)}" x2="${f1(x0 + 4 + 100 * s)}" y2="${f1(y0 + H - 5)}" stroke="${ink}" stroke-width="1.4"/>` +
+    `<text x="${f1(x0 + 8 + 100 * s)}" y="${f1(y0 + H - 2)}" font-size="9.5" fill="${ink}">100 µm</text>`;
+  const lines = A > 0 ? [`papillae ${fmt(A)} µm high`, j.density ? `${fmt(j.density.per_mm2)} / mm², every ${fmt(j.spacing)} µm` : ""] : ["flat: no papillae seen"];
+  out += lines.filter(Boolean).map((l, i) => `<text x="${x0}" y="${f1(y0 + H + 13 + i * 13)}" font-size="10.5" fill="${soft}">${esc(l)}</text>`).join("");
+  const bx0 = patch.x0, bx1 = patch.x1, by1 = patch.y0 + Math.min(umH, patch.total) / patch.total * patch.h;   // the part of the patch shown
+  out += `<rect x="${f1(bx0)}" y="${patch.y0}" width="${f1(bx1 - bx0)}" height="${f1(by1 - patch.y0)}" fill="none" stroke="${ink}" stroke-width=".8" stroke-dasharray="2 1.5"/>` +
+    `<path d="M${f1(bx1)} ${f1((patch.y0 + by1) / 2)} L${f1(x0 - 5)} ${f1((patch.y0 + by1) / 2)} L${f1(x0 - 5)} ${f1(y0 + H / 2)} L${x0} ${f1(y0 + H / 2)}" fill="none" stroke="${ink}" stroke-width=".7" stroke-dasharray="2 1.5" opacity=".8"/>`;
+  return out;
+}
+function bodyColumn(st, v, preview, sp, j) {
   const f1 = x => x.toFixed(1), ink = "#1B2A33", soft = "#44525A", teal = "#2A6F75";
   const colX = 244, colW = 100, colY = 78, colH = 250, legX = colX + colW + 11, cut = [0, 0.33, 0.67, 1], at = ["lo", "mean", "mean", "hi"];
   const val = (k, w) => sp[k] ? sp[k][w] : v[k];
@@ -2518,6 +2588,8 @@ function bodyColumn(st, v, preview, sp) {
     return (fill ? `<rect x="${legX}" y="${yy + 1}" width="10" height="10" fill="${fill}" stroke="${soft}" stroke-width=".6"/>` : "") +
       `<text x="${legX + 16}" y="${yy + 10}" font-size="11" fill="${ink}">${name} ${esc(fmt(mean))} µm</text>` +
       (r ? `<text x="${legX + 16}" y="${yy + 23}" font-size="10.5" fill="${soft}">${esc(r)}</text>` : ""); }).join("");
+  if (j) out += junctionInset(j, { hep: val("hep", "mean"), hpap: thick("hpap", "mean") }, legX, colY + rows.length * 31 + 26,
+    { x0: xs[1], x1: xs[2], y0: colY, h: colH, total, scale: colH / total });
   const c = bodyGeo.centre[st.key];
   if (c) {                                                           // from the site to its skin
     const bend = `L${colX - 40} ${f1(c[1])} L${colX - 40} ${colY - 16}`;   // round the ruler, into the patch from above
@@ -2536,8 +2608,8 @@ function fillBody(hover) {
   if (!a || !st) return;
   const own = SITES.find(g => g.key === S.basic.site) || st;         // the header names the selection, also during a preview: it must not change height
   $("bodySum").textContent = $("bodySum").title = `${S.basic.sex} · ${a.years !== null ? a.years + " y" : ageLabel(a) + " y"} · ${own.title} · ${S.basic.ethnicity} · type ${S.basic.phototype}`;
-  const sp = basicSpread(sel);
-  $("bodyColumn").innerHTML = bodyColumn(st, v, preview, sp);
+  const sp = basicSpread(sel), jn = junctionOf(sel);
+  $("bodyColumn").innerHTML = bodyColumn(st, v, preview, sp, jn);
   const kd = p => `<span class="kd kd-${p.kind}" title="${esc(p.text)}">${p.kind}</span>`;
   const yours = k => !preview && k && k in S.p && !near(S.p[k], v[k]) ? ` <span class="yours" title="You changed this advanced value by hand">· yours: ${fmt(S.p[k])}</span>` : "";
   const fac = siteFactor(a, sel.sex, st.key), fit = DP.presets.fits.thickness, pv = a.provenance, ep = st.measured && a.epidermis && a.epidermis[st.key];
@@ -2549,6 +2621,10 @@ function fillBody(hover) {
       ep ? `${esc(ep.text)} (${cite(ep.source)})${ethFactor(sel.ethnicity, st.key) ? `; ${esc(ethFactor(sel.ethnicity, st.key).text)} (${cite(ethFactor(sel.ethnicity, st.key).source)} against ${cite(ethFactor(sel.ethnicity, st.key).against)})` : ""}${st.values[sel.sex].hep !== undefined ? `. The ultrasound of the site table reads ${fmt(st.values[sel.sex].hep)} µm here, an entry echo, and is not used` : ""}`
         : st.measured ? `by ultrasound at this site (${cite(DP.sites.source)})` : `forearm epidermis by histology (${cite("sandbymoller2003epidermis")}); not a body site, so not scaled with age`, "hep"],
     ["Papillary dermis thickness", `${fmt(v.hpap)} µm`, kd(pv.hpap), `${esc(pv.hpap.text)} (${cite(pv.hpap.source)})`, "hpap"],
+    ...(jn ? [["Junction height", jn.amplitude.value > 0 ? `${fmt(jn.amplitude.value)} µm` : "flat", kd(jn.amplitude),
+      `from the tips of the dermal papillae to the base of the rete ridges; ${esc(jn.amplitude.text)} (${cite(jn.amplitude.source)}); the same for both sexes and every skin type. Shown only: the model's junction is flat <a href="#help/start/junction" data-help="start/junction">More</a>`, null]] : []),
+    ...(jn && jn.density ? [["Dermal papillae", `${fmt(jn.density.per_mm2)} / mm²<br><span class="rng" title="distance between neighbouring papillae">every ${fmt(jn.spacing)} µm</span>`, kd(jn.density),
+      `${fmt(jn.density.value)} per 500 × 500 µm² image, skin type ${esc(S.basic.phototype)}; ${esc(jn.density.text)} (${cite(jn.density.source)}); neighbouring papillae ${fmt(jn.spacing)} µm apart in the model's picture of the junction. Shown only`, null]] : []),
     ["Cells, papillary dermis", `${fmt(a.raw.cells_pap)} / mm²`, kd(pv.cells_pap), `all nuclei per mm² of section; ${esc(pv.cells_pap.text)} (${cite(pv.cells_pap.source)})`, null],
     ["Cells, reticular dermis", `${fmt(a.raw.cells_ret)} / mm²`, kd(pv.cells_ret), `${esc(pv.cells_ret.text)} (${cite(pv.cells_ret.source)})`, null],
     ["Senescent share of cells", `${fmt(100 * v.fsen)} %`, kd(pv.p21),
@@ -2623,8 +2699,8 @@ function syncBasic() {
   drawBody();
   const sug = ptSuggested(S.basic.ethnicity), sugTxt = DP.basic.phototype_suggested && DP.basic.phototype_suggested[ethOf(S.basic.ethnicity)];
   for (const b of document.querySelectorAll('.seg.pt button')) b.classList.toggle("sug", b.dataset.v === sug);
-  if ($("ptNote")) { $("ptNote").textContent = (sug ? `suggested for ${S.basic.ethnicity}: ${sug}` : `no type known for ${S.basic.ethnicity}`) + " · sets nothing yet";
-    $("ptNote").title = sug ? `${sugTxt.text} (${sugTxt.sources.join(", ")}); claims K115, K116. What differs with the skin type is the junction of epidermis and dermis, which the model does not have yet` : "No source gives a skin type for this group; the skin type stays as you choose it"; }
+  if ($("ptNote")) { $("ptNote").textContent = (sug ? `suggested for ${S.basic.ethnicity}: ${sug}` : `no type known for ${S.basic.ethnicity}`) + " · sets the papillae shown";
+    $("ptNote").title = sug ? `${sugTxt.text} (${sugTxt.sources.join(", ")}); claims K115, K116. What differs with the skin type is the junction of epidermis and dermis: the skin type sets its papillae, shown under the skin patch; the model's junction is flat, so it sets no model value` : "No source gives a skin type for this group; the skin type stays as you choose it"; }
   if ($("ethNote")) $("ethNote").textContent = ethFactor(S.basic.ethnicity, "cheek") ? (S.basic.site === "cheek" ? "sets the epidermis here" : "sets the cheek's epidermis only") : "sets nothing";
   if ($("sexNote")) $("sexNote").hidden = !st || st.measured;
   const cus = customKeys();
@@ -3132,14 +3208,20 @@ const HELP = [
       <li><span class="kd kd-interpolated">interpolated</span> — on the straight line between two measured group means. No donor of that age was measured; hover over the badge for the two groups.</li>
       <li><span class="kd kd-held">held</span> — beyond the youngest or the oldest group mean the value is kept, never extrapolated.</li>
       <li><span class="kd kd-regression">regression</span> — from a published fit on age, inside the ages it was fitted for: the skin thickness that scales the dermis of a body site (${cite("tan1982ultrasound")}; the forehead and the cheek by their own, ${cite("denda1990facial")}) and the collagen area fraction (${cite("marcosgarces2014collagen")}).</li>
-      <li><span class="kd kd-analogue">analogue</span> — not measured at this site: taken from a related one and scaled where a source gives the ratio. The epidermis of the facial areas other than the forehead and the cheek is one (see <a href="#help/start/face" data-help="start/face">The face</a>).</li></ul>
+      <li><span class="kd kd-analogue">analogue</span> — not measured at this site: taken from a related one and scaled where a source gives the ratio. The epidermis of the facial areas other than the forehead and the cheek is one (see <a href="#help/start/face" data-help="start/face">The face</a>), and so is the junction at most sites.</li></ul>
+      <p><b>Under the legend</b> the junction of epidermis and dermis is drawn magnified, with its height and its papillae in the table: see <a href="#help/start/junction" data-help="start/junction">The junction</a>.</p>
       <p>The <b>collagen area fraction</b> is shown only: no value of the model takes it. So are the last two rows, the papillary and the reticular thickness by the regressions of a second histology series (${cite("marcosgarces2014collagen")}): they stand beside the values in use for comparison. For the papillary dermis the two differ, and imaging of living skin finds the opposite trend with age (${cite("pedrazzani2020lcoct")}, ${cite("boone2015hdoct")}); see <a href="#help/model/age" data-help="model/age">Age of the skin</a>. A value marked <span class="cchip">yours</span> is an advanced value you changed by hand; the table then shows what the basic model would give.</p>
-      <p><b>The figure is an illustration.</b> Its outline is a blend of three hand-drawn bodies, a small child, a man and a woman: its size and proportions follow the age, its build the sex (from puberty on) and its tone and hair the skin type; none of these is taken from a source, and none sets a value. The skin type in particular sets nothing yet: ${renderNote(DP.basic.phototype.note)} The <b>skin model</b> is a reconstructed tissue in a dish, not a place on the body, so the figure is greyed and neither the sex nor the age changes its thickness. How the age groups were derived: <a href="#help/model/age" data-help="model/age">Age of the skin</a>.</p>`],
+      <p><b>The figure is an illustration.</b> Its outline is a blend of three hand-drawn bodies, a small child, a man and a woman: its size and proportions follow the age, its build the sex (from puberty on) and its tone and hair the skin type; none of these is taken from a source, and none sets a value. The skin type sets no model value either: ${renderNote(DP.basic.phototype.note)} The <b>skin model</b> is a reconstructed tissue in a dish, not a place on the body, so the figure is greyed and neither the sex nor the age changes its thickness. How the age groups were derived: <a href="#help/model/age" data-help="model/age">Age of the skin</a>.</p>`],
     ["face", "The face", () => { const fs = SITES.filter(g => g.region === "face"); return `<p><b>The face and neck</b> are ${fs.length} body sites of their own: ${fs.map(g => esc(g.title).toLowerCase()).join(", ")}. Click the head of the figure to see them on a face, or pick one under <b>Body site</b> in step 1.</p>
       <p><b>Dermis.</b> The forehead is the site table's (${cite(DP.sites.source)}). The other twelve come from a second ultrasound study that measured the dermis by sex at the head and neck in 20 men and 20 women aged 15 to 76 years (${cite("hoffmann1994sonography")}); its forehead agrees with the site table's within 10 %, so the face sits on the same scale as the body. That study could not measure the outer corner of the eye or the wing and bridge of the nose, and no study gives the glabella, the nasal tip or the jaw as dermis by sex, so they are not offered. The dermis follows the age from the median ages of those volunteers (32 years for the men, 47 for the women): forehead and cheek by regressions measured there, the temple, eyelids and root of the nose by the forehead's, the folds, lips, corner of the mouth, chin and the area in front of the ear by the cheek's (${cite("denda1990facial")}), the neck by the forearm line, as the body sites.</p>
       <p><b>The level is the weak point.</b> Other ultrasound series find the facial dermis about half as thick, around 1 mm on the forehead (${cite("meng2022facial")}, ${cite("jeong2023facial")}). The order of the areas — eyelids thinnest, chin, lips and nose thickest — agrees across studies; the level does not. A needle length on the face is as uncertain as that level.</p>
       <p><b>Epidermis.</b> Forehead and cheek from pooled values of a meta-analysis by age (${cite("lintzeri2022epidermis")}). Every other area takes the forehead's (upper face) or the cheek's (lower face) value at your age, times the ratio of the area to it: from the same meta-analysis where it pools the area (the upper eyelid is half the forehead), else from histology of 39 facial subunits (${cite("chopra2015face")}); the lower lip is in neither and takes the cheek's. These carry the badge <span class="kd kd-analogue">analogue</span>.</p>
       <p><b>What the face does not change.</b> No source gives the papillary dermis, the cell density or the senescent share by facial area; at a facial area they are those of the age, as at every body site. Sun damage, which thickens the upper dermis of the face from about 40 years (${cite("hoffmann1994sonography")}, ${cite("pellacani1999facial")}), the depth of fat and muscle and the vessels are not in the model: the face describes the dermis by site, sex and age, and is no injection guidance.</p>`; }],
+    ["junction", "The junction of epidermis and dermis", () => `<p><b>The dermal–epidermal junction</b> is not flat: the dermis rises into the epidermis in <b>papillae</b> between the downward <b>rete ridges</b> of the epidermis. The panel shows it under the legend, magnified, in a section through the tips of the papillae, with the height and the spacing of the selection: the same scale for every selection, so that they compare, and a dashed box on the skin patch for the part it shows.</p>
+      <ul><li><b>Height</b>, from the tips of the papillae to the base of the rete ridges, by body site and age: on the forearm 41 µm at a mean age of 22.5 years and 25 µm at 55.3, on the temple 30 and 20 µm, by confocal microscopy of the same persons (${cite("neerken2004oct")}); around the eyes one value for women aged 40 to 65 (${cite("mercurio2016brazilian")}); the cheek flat, with no papillae in any of 29 young volunteers (${cite("monnier2020lcoct")}). Every other site takes the line of the nearest of these, an <span class="kd kd-analogue">analogue</span>: the body and the neck the forearm's, the forehead, the root of the nose and the area in front of the ear the temple's, the eyelids the eyes', the lower face the cheek's. No study in living skin gives the height by sex or by skin type.</li>
+      <li><b>Papillae</b> per area by <b>skin type</b> and age: counted in women of the six skin types at three ages on the back of the hand and the forearm, read off the study's chart (${cite("lagarrigue2012papilla")}). Darker skin has more papillae and loses fewer of them with age: between 18–25 and 65–75 years types I–II keep about a sixth of theirs, types V–VI about two thirds. This is what the skin type sets; at every site but the forearm it is an analogue.</li></ul>
+      <p><b>The model's picture</b> of the junction is an egg-crate surface: the height above, and two papillae per period square, so that the papillae per area give the period and the distance between neighbouring papillae. Histology of fixed sections measures the junction longer (its convolution index) than this picture with the in vivo values gives, most of all in dark skin; the in vivo values are used because the model describes living skin.</p>
+      <p><b>Shown only.</b> In the model the junction is a flat plane through which nothing passes. Whether its shape matters was measured, not assumed: designs were solved in three dimensions with finite volumes, once with the flat junction and once with the egg-crate of the youngest, densest skin in the data and of the default 70+ skin. Next to the junction the field rises over some papillae and falls over others by tens of per cent, but on average hardly at all, and the share of host cells covered barely moved at the model's dose: the papillary dermis, where the junction acts, is not reached at that dose. A junction that let the signal into the epidermis, which would clear it, was bounded the same way. So the junction stays out of the model for now and is shown for what it says about the skin.</p>`],
     ["steps", "The steps of the design", () => `<p>The controls on the left describe the design, top down in the order you would decide it:</p>
       <ol>${(DP.groups || []).filter(g => (g.place || "design") === "design").map(g => `<li><b>${esc(g.title)}</b> — ${renderNote(g.note)}</li>`).join("")}</ol>
       <p>One step is open at a time: click a step's title to switch. A closed step shows how many of its values differ from their defaults, so a link someone shares with you cannot hide what it changed. Inside a step, the few values that usually matter come first and the rest fold away behind <b>▾ n more</b>; the fold opens itself when a folded value is not at its default.</p>
@@ -3451,7 +3533,7 @@ window.__drv = {
   scaffold: () => scaffoldPlan(S.p, geoPattern()),
   scFiles, paramsYaml, applyFile, readYamlish,
   stateQuery, syncUrl, readUrlState, resetParam, isDefault,
-  basicValues, ageEntry, setBasic, basic: () => ({ ...S.basic }), previewBody, faceAreas: () => Object.keys(FACE_AREAS), bodyView: () => bodyView, zoomBody, drawBody, basicSpread,
+  basicValues, ageEntry, setBasic, basic: () => ({ ...S.basic }), previewBody, faceAreas: () => Object.keys(FACE_AREAS), bodyView: () => bodyView, zoomBody, drawBody, basicSpread, junctionOf,
   openHelp, closeHelp, helpTargets: () => [...document.querySelectorAll("[data-help]")].map(a => a.dataset.help)
 };
 
