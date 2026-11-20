@@ -317,7 +317,7 @@
     "milewski2015dermis",
     "omahony2004igg"
    ],
-   "note": "How fast the fat clears the signal, relative to the dermis at its deep side, when the fat is open. Absorption rate constants of eight peptides and proteins were 2- to 20-fold higher from the dermis than from the subcutis ({cite:milewski2015dermis}); an IgG depot cleared about three times faster after intradermal injection ({cite:omahony2004igg}). The default, 0.16, is the middle of 1/20 to 1/2 on a log scale. Absorption from a depot also holds its spread, so this is the nearest measured ratio, not a local rate (claim T51). 1 is the dermis continued, the open deep side before 2026-11-19. See {help:model/deep|Below the dermis}."
+   "note": "How fast the fat clears the signal, relative to the dermis at its deep side, when the fat is open. Absorption rate constants of eight peptides and proteins were 2- to 20-fold higher from the dermis than from the subcutis, 4- to 12-fold without the two compounds whose constants are rough ({cite:milewski2015dermis}, claim T123); an IgG depot cleared about three times faster after intradermal injection ({cite:omahony2004igg}). The default, 0.16, is the middle of 1/20 to 1/2 on a log scale. Absorption from a depot also holds its spread, so this is the nearest measured ratio, not a local rate (claim T51). 1 is the dermis continued, the open deep side before 2026-11-19. See {help:model/deep|Below the dermis}."
   },
   {
    "key": "sec",
@@ -384,9 +384,11 @@
    "status": "ana",
    "sources": [
     "oyleryaniv2017niches",
-    "francis1997distances"
+    "francis1997distances",
+    "albro2016heterogeneous",
+    "dogru2024delivery"
    ],
-   "note": "How far the signal carries before uptake, capture and degradation remove it. Default: the upper end of 80–120 µm measured for cytokines in dense tissue in vivo ({cite:oyleryaniv2017niches}), an analogous system, not TGF-β itself. A single cell communicates within about 250 µm ({cite:francis1997distances}). Diffusion and chemical clearance alone would give about 1.6 mm (our calculation from {cite:romgens2015diffusion} and {cite:sprugel1987kinetics}). See {help:model/lambda|Decay length λ}."
+   "note": "How far the signal carries before uptake, capture and degradation remove it. Default: the upper end of 80–120 µm measured for cytokines in dense tissue in vivo ({cite:oyleryaniv2017niches}), an analogous system, not TGF-β itself. A single cell communicates within about 250 µm ({cite:francis1997distances}). Diffusion and chemical clearance alone would give about 1.6 mm (our calculation from {cite:romgens2015diffusion} and {cite:sprugel1987kinetics}). The only measured uptake rates of TGF-β itself, in chondrocytes ({cite:albro2016heterogeneous}, {cite:dogru2024delivery}), give 310–1480 µm at the fibroblast density of the mid-dermis (our calculation, claim T124): the default may be several times too short, and the dose gap depends on it more than on any other value. See {help:model/lambda|Decay length λ}."
   },
   {
    "key": "D",
@@ -24317,6 +24319,13 @@
    "checked": "full text",
    "what": "Collagen types I and III by immunohistochemistry in skin biopsies of 32 women aged 28–68 years, 14 before and 18 after the menopause: both types and their ratio are lower after the menopause (type I 5.79 ± 0.75 against 2.69 ± 0.73 % of the area) and correlate with the years since the menopause."
   },
+  "albro2016heterogeneous": {
+   "short": "Albro et al. 2016",
+   "cite": "Albro MB, Nims RJ, Durney KM, et al.. Heterogeneous engineered cartilage growth results from gradients of media-supplemented active TGF-β and is ameliorated by the alternative supplementation of latent TGF-β. Biomaterials. 2016;77:173–185.",
+   "doi": "10.1016/j.biomaterials.2015.10.018",
+   "checked": "full text",
+   "what": "Active TGF-β1 in chondrocyte constructs of 60 × 10⁶ cells/mL: diffusivity 23 µm²/s in agarose, internalisation 3.0–4.5 × 10⁻⁴ per second (Table 1)."
+  },
   "andrew1964dermis": {
    "short": "Andrew et al. 1964",
    "cite": "Andrew W, Behnke RH, Sato T. Changes with advancing age in the cell population of human dermis. Gerontologia. 1964;10:1–19.",
@@ -24491,6 +24500,13 @@
    "doi": "10.1046/j.0412-5463.2001.00105.x",
    "checked": "full text",
    "what": "20 MHz ultrasound of the volar forearm in 206 volunteers aged 6 months to 90 years: skin thickness rises from 0 to 20 years (0.7 mm + 0.009 mm × age in girls, 0.7 mm + 0.01 mm × age in boys) and falls after 60 years, especially in women (1.3 mm − 0.006 mm × age)."
+  },
+  "dogru2024delivery": {
+   "short": "Dogru et al. 2024",
+   "cite": "Dogru S, Alba GM, Pierce KC, et al.. Cell mediated reactions create TGF-β delivery limitations in engineered cartilage. Acta Biomaterialia. 2024;190:178–190.",
+   "doi": "10.1016/j.actbio.2024.10.032",
+   "checked": "abstract",
+   "what": "Chondrocyte constructs: TGF-β internalisation follows Michaelis–Menten kinetics, Vmax 2.4 molecules per cell per second, Km 1.7 ng/mL."
   },
   "donnelly2010geometry": {
    "short": "Donnelly et al. 2010",
