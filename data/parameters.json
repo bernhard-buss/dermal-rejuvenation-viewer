@@ -464,9 +464,11 @@
    "max": 100,
    "log": false,
    "step": 1,
-   "status": "ph",
-   "sources": [],
-   "note": "Only converts between ng/mL, pM and molecules. Placeholder (mature TGF-β dimer assumed) until sourced."
+   "status": "src",
+   "sources": [
+    "lyons1988proteolytic"
+   ],
+   "note": "Only converts between ng/mL, pM and molecules. The active form of TGF-β is a 25 kD protein ({cite:lyons1988proteolytic}, claim T62)."
   },
   {
    "key": "a",
@@ -24752,6 +24754,13 @@
    "doi": "10.1111/j.1365-2133.1987.tb04921.x",
    "checked": "full text",
    "what": "Abdominal skin of 30 subjects aged 0 to 90 years: the collagen concentration does not vary with age; type III is 18 to 21.5 % of types I plus III between 14 and 65 years and more variable, up to 31 %, from 65 years."
+  },
+  "lyons1988proteolytic": {
+   "short": "Lyons et al. 1988",
+   "cite": "Lyons RM, Keski-Oja J, Moses HL. Proteolytic activation of latent transforming growth factor-beta from fibroblast-conditioned medium.. The Journal of cell biology. 1988;106:1659–1665.",
+   "doi": "10.1083/jcb.106.5.1659",
+   "checked": "abstract",
+   "what": "Plasmin and cathepsin D release the active form of TGF-β from the latent complex of fibroblast-conditioned medium, seen as 25-kD bands."
   },
   "marcosgarces2014collagen": {
    "short": "Marcos‐Garcés et al. 2014",
